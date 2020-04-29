@@ -1,7 +1,9 @@
 import * as React from 'react'
-import Link from 'next/link'
 import Head from 'next/head'
-
+import { ThemeProvider, CSSReset, ColorModeProvider } from '@chakra-ui/core'
+import theme from '@theme/index'
+import { Header } from './Header'
+import { Main } from './Main'
 type Props = {
 	title?: string
 }
@@ -9,30 +11,24 @@ type Props = {
 const Layout: React.FunctionComponent<Props> = ({
 	children,
 	title = 'This is the default title'
-}) => (
-	<div>
-		<Head>
-			<title>{title}</title>
-			<meta charSet='utf-8' />
-			<meta name='viewport' content='initial-scale=1.0, width=device-width' />
-		</Head>
-		<header>
-			<nav>
-				<Link href='/'>
-					<a>Home</a>
-				</Link>{' '}
-				|{' '}
-				<Link href='/blog/[slug]' as='/blog/test-post'>
-					<a>Test post</a>
-				</Link>
-			</nav>
-		</header>
-		{children}
-		<footer>
-			<hr />
-			<span>I'm here to stay (Footer)</span>
-		</footer>
-	</div>
-)
+}) => {
+	return (
+		<>
+			<Head>
+				<title>{title}</title>
+				<meta charSet='utf-8' />
+				<meta name='viewport' content='initial-scale=1.0, width=device-width' />
+			</Head>
+
+			<ThemeProvider theme={theme}>
+				<CSSReset />
+				<ColorModeProvider>
+					<Header />
+					<Main>{children}</Main>
+				</ColorModeProvider>
+			</ThemeProvider>
+		</>
+	)
+}
 
 export default Layout

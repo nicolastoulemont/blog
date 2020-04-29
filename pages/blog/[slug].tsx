@@ -4,14 +4,15 @@ import matter from 'gray-matter'
 import marked from 'marked'
 import path from 'path'
 import fs from 'fs'
+import { Box, Flex } from '@chakra-ui/core'
 
 export default function Post({ html, data }: any) {
 	return (
 		<Layout title={data.title}>
-			<div>
+			<Flex align='center' direction='column' justify='center'>
 				<h2>Content below</h2>
-				<div dangerouslySetInnerHTML={{ __html: html }} />
-			</div>
+				<Box dangerouslySetInnerHTML={{ __html: html }}></Box>
+			</Flex>
 		</Layout>
 	)
 }

@@ -9,12 +9,17 @@
 		"type-check": "tsc"
 	},
 	"dependencies": {
+		"@chakra-ui/core": "^0.7.0",
+		"@emotion/core": "^10.0.28",
+		"@emotion/styled": "^10.0.27",
+		"emotion-theming": "^10.0.27",
 		"gray-matter": "^4.0.2",
 		"isomorphic-unfetch": "3.0.0",
 		"marked": "^1.0.0",
 		"next": "latest",
 		"react": "^16.12.0",
-		"react-dom": "^16.12.0"
+		"react-dom": "^16.12.0",
+		"react-icons": "^3.10.0"
 	},
 	"devDependencies": {
 		"@types/marked": "^0.7.4",
