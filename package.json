@@ -6,27 +6,38 @@
 		"build": "next build",
 		"start": "next start",
 		"export": "next export",
-		"type-check": "tsc"
+		"type-check": "tsc",
+		"gen": "graphql-codegen --config codegen.yml"
 	},
 	"dependencies": {
+		"@apollo/react-hooks": "^3.1.5",
+		"@apollo/react-ssr": "^3.1.5",
 		"@chakra-ui/core": "^0.7.0",
 		"@emotion/core": "^10.0.28",
 		"@emotion/styled": "^10.0.27",
+		"apollo-cache-inmemory": "^1.6.5",
+		"apollo-client": "^2.6.8",
+		"apollo-link-http": "^1.5.17",
+		"date-fns": "^2.11.0",
 		"emotion-theming": "^10.0.27",
-		"gray-matter": "^4.0.2",
+		"graphql": "^15.0.0",
+		"graphql-tag": "^2.10.3",
 		"isomorphic-unfetch": "3.0.0",
-		"marked": "^1.0.0",
 		"next": "latest",
 		"react": "^16.12.0",
 		"react-dom": "^16.12.0",
-		"react-icons": "^3.10.0"
+		"react-icons": "^3.10.0",
+		"react-markdown": "^4.3.1"
 	},
 	"devDependencies": {
-		"@types/marked": "^0.7.4",
+		"@graphql-codegen/cli": "^1.8.3",
+		"@graphql-codegen/typescript": "^1.8.3",
+		"@graphql-codegen/typescript-operations": "^1.8.3",
+		"@graphql-codegen/typescript-react-apollo": "^1.8.3",
 		"@types/node": "^12.12.21",
 		"@types/react": "^16.9.16",
 		"@types/react-dom": "^16.9.4",
-		"typescript": "3.7.3"
+		"typescript": "3.8.3"
 	},
 	"license": "ISC"
 }

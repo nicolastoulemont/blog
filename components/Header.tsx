@@ -37,7 +37,7 @@ export function Header() {
 
 	return (
 		<nav style={{ color: color[colorMode], backgroundColor: panelBgColor[colorMode] }}>
-			<Flex align='center' justify='space-between' width='66%'>
+			<Flex align='center' justify='space-between' width='66%' maxWidth='850px'>
 				<NextLink href='/'>
 					<Link
 						display='flex'

@@ -1,11 +1,14 @@
 import Layout from '@components/Layout'
 import { Flex, Heading, PseudoBox, Text } from '@chakra-ui/core'
 import { GiHand } from 'react-icons/gi'
+import { withApollo } from 'lib/apollo'
 import Link from 'next/link'
 import Card from 'layouts/Card'
-import fs from 'fs'
+import { usePostsQuery } from 'generated/graphql'
 
-export default function IndexPage({ slugs }: { slugs: Array<string> }) {
+export default withApollo(function IndexPage() {
+	const { data } = usePostsQuery()
+
 	return (
 		<Layout title='Home | Next.js + TypeScript Example'>
 			<Flex align='center' justify='space-between' pt={8}>
@@ -24,24 +27,19 @@ export default function IndexPage({ slugs }: { slugs: Array<string> }) {
 			</Flex>
 
 			<div>
-				{slugs.map((slug: string) => (
-					<div key={slug}>
-						<Link key={slug} href='/blog/[slug]' as={`/blog/${slug}`}>
-							<a>{slug}</a>
-						</Link>
-					</div>
+				{data?.posts?.map((post) => (
+					<Link
+						key={post?.id}
+						href='/blog/[id]/[slug]'
+						as={`/blog/${post?.id}/${post?.slug}`}
+					>
+						<a>
+							<p>{post?.title}</p>
+							<p>{post?.description}</p>
+						</a>
+					</Link>
 				))}
 			</div>
 		</Layout>
 	)
-}
-
-export async function getStaticProps() {
-	const files = fs.readdirSync('posts')
-	const slugs = files.map((fileName) => fileName.split('.')[0])
-	return {
-		props: {
-			slugs
-		}
-	}
-}
+})
