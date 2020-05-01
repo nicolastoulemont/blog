@@ -2,12 +2,17 @@ import gql from 'graphql-tag'
 
 export const POSTS = gql`
 	query Posts {
-		posts {
-			id
+		posts(sort: "published_at:DESC") {
 			id
 			title
 			slug
-			description
+			image {
+				url
+				alternativeText
+			}
+			categories {
+				name
+			}
 		}
 	}
 `

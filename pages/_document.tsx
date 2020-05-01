@@ -20,17 +20,18 @@ class MyDocument extends Document {
 								width: 100%;
 							}
 
+							main {
+								height: 100%;
+								width: 100%;
+								overflow: auto;
+							}
+
 							nav {
-								height: 10%;
+								height: 60px;
 								width: 100%;
 								display: flex;
 								align-items: center;
 								justify-content: center;
-							}
-
-							main {
-								height: 90%;
-								width: 100%;
 							}
 						`}
 					</style>

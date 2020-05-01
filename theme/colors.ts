@@ -24,6 +24,6 @@ export const select = {
 }
 
 export const hoverColor = {
-	light: '#B2F5EA',
+	light: '#f4f4f4',
 	dark: '#282c2e'
 }

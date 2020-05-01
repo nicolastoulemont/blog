@@ -2,7 +2,6 @@ import * as React from 'react'
 import Head from 'next/head'
 import { ThemeProvider, CSSReset, ColorModeProvider } from '@chakra-ui/core'
 import theme from '@theme/index'
-import { Header } from './Header'
 import { Main } from './Main'
 type Props = {
 	title?: string
@@ -30,7 +29,6 @@ const Layout: React.FunctionComponent<Props> = ({
 			<ThemeProvider theme={theme}>
 				<CSSReset />
 				<ColorModeProvider>
-					<Header />
 					<Main>{children}</Main>
 				</ColorModeProvider>
 			</ThemeProvider>

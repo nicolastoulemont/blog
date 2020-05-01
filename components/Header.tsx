@@ -35,9 +35,24 @@ export const DarkModeSwitch = () => {
 export function Header() {
 	const { colorMode } = useColorMode()
 
+	const shadow = {
+		light: '1px 2px 18px rgba(0,0,0,.1)',
+		dark: '1px 2px 18px rgba(0,0,0,.1)'
+	}
+
 	return (
-		<nav style={{ color: color[colorMode], backgroundColor: panelBgColor[colorMode] }}>
-			<Flex align='center' justify='space-between' width='66%' maxWidth='850px'>
+		<nav
+			style={{
+				color: color[colorMode],
+				backgroundColor: panelBgColor[colorMode],
+				boxShadow: shadow[colorMode],
+				marginBottom: '2rem',
+				position: 'sticky',
+				width: '100%',
+				top: 0
+			}}
+		>
+			<Flex align='center' justify='space-between' width='90%' maxWidth='850px' py={4}>
 				<NextLink href='/'>
 					<Link
 						display='flex'
@@ -46,7 +61,7 @@ export function Header() {
 						_hover={{ textDecor: 'none' }}
 					>
 						<PseudoBox as={FaCheck} mr={2} fontSize={20} color='green.400' />
-						<Heading as='h1' size='lg'>
+						<Heading as='span' size='lg' fontWeight='600'>
 							Nicolas Toulemont
 						</Heading>
 					</Link>
