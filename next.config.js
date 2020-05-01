@@ -6,5 +6,8 @@ module.exports = {
 			(config.resolve.alias['@theme'] = path.join(__dirname, 'theme'))
 
 		return config
+	},
+	env: {
+		API_URL: 'https://api.nicolastoulemont.dev/'
 	}
 }
