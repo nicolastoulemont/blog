@@ -8,6 +8,6 @@ module.exports = {
 		return config
 	},
 	env: {
-		API_URL: 'https://api.nicolastoulemont.dev'
+		API_URL: 'https://nt-blog-cms.herokuapp.com'
 	}
 }
