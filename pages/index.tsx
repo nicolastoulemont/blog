@@ -6,7 +6,7 @@ import { Repositories } from 'layouts/root/Repositories'
 
 export default withApollo(function IndexPage() {
 	return (
-		<Layout title='Home | Next.js + TypeScript Example'>
+		<Layout>
 			<Intro />
 			<Articles />
 			<Repositories />

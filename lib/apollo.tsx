@@ -142,7 +142,8 @@ function createApolloClient(initialState = {}, cookie?: any) {
 		}).then((response) => response)
 	}
 
-	const URL = process.env.API_URL || 'http://localhost:1337'
+	const URL =
+		process.env.NODE_ENV !== 'development' ? process.env.API_URL : 'http://localhost:1337'
 	const httpLink = new HttpLink({
 		uri: URL + '/graphql',
 		fetch: enchancedFetch

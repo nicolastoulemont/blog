@@ -22,7 +22,7 @@ const Layout: React.FunctionComponent<Props> = ({
 				<meta charSet='utf-8' />
 				<meta name='viewport' content='initial-scale=1.0, width=device-width' />
 				<meta name='description' content={description} />
-				<meta name='keywords' content={keywords} />
+				<meta name='keywords' content={'HTML, CSS, Javascript, '.concat(keywords)} />
 				<meta name='author' content='Nicolas Toulemont' />
 			</Head>
 
