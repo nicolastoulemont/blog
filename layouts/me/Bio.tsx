@@ -12,8 +12,8 @@ export function Bio() {
 				Learning software development is a continuous process, I document mine here.
 			</Text>
 			<Text my={6}>
-				I aim to create a distraction free space documenting my projects and processes for
-				both myself and anyone interested to use them.
+				I aim to create a distraction-free space to document my projects and processes, for
+				myself and anyone interested in using them.
 			</Text>
 		</Box>
 	)
