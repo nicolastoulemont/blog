@@ -1,6 +1,6 @@
 # Personal Blog
 
-This project is bare bone front end for a blog.
+This project is a bare bone front end for a blog.
 It is heavily inspired by [Tania Rascia amazing blog](https://www.taniarascia.com/) but with a different stack.
 
 ## Features
@@ -11,7 +11,7 @@ It is heavily inspired by [Tania Rascia amazing blog](https://www.taniarascia.co
 
 ## Stack
 
-This projects uses :
+This project uses:
 
 -   [Typescript](https://www.typescriptlang.org/)
 -   [Nextjs](https://nextjs.org/)
