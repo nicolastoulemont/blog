@@ -21,7 +21,7 @@ export function Intro() {
 				</Flex>
 
 				<Text fontSize='xl' textAlign={['center', 'left']}>
-					I'm a full stack web developer using Typescript, Node, React and GraphQL.
+					I'm a full stack software developer using Typescript, Node, React and GraphQL.
 				</Text>
 			</Flex>
 			<Card

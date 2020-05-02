@@ -2,6 +2,7 @@ import React from 'react'
 import { useColorMode, Box } from '@chakra-ui/core'
 import { color, panelBgColor } from '@theme/colors'
 import { Header } from './Header'
+import { Footer } from './Footer'
 
 export const Main: React.FunctionComponent = ({ children }) => {
 	const { colorMode } = useColorMode()
@@ -16,6 +17,7 @@ export const Main: React.FunctionComponent = ({ children }) => {
 			<Box width='90%' maxWidth='850px' margin='0 auto'>
 				{children}
 			</Box>
+			<Footer />
 		</main>
 	)
 }

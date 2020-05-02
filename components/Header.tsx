@@ -1,7 +1,6 @@
 import React from 'react'
 import NextLink from 'next/link'
-import { Flex, Heading, Link, PseudoBox, useColorMode } from '@chakra-ui/core'
-import { FaCheck } from 'react-icons/fa'
+import { Flex, Heading, Link, PseudoBox, useColorMode, Image } from '@chakra-ui/core'
 import { FiSun, FiMoon } from 'react-icons/fi'
 import { color, panelBgColor, hoverColor } from '@theme/colors'
 
@@ -60,7 +59,7 @@ export function Header() {
 						justifyContent='center'
 						_hover={{ textDecor: 'none' }}
 					>
-						<PseudoBox as={FaCheck} mr={2} fontSize={20} color='green.400' />
+						<Image src='/icons/icon-96x96.png' alt='website_icon' width='20px' mr={4} />
 						<Heading as='span' size='lg' fontWeight='600'>
 							Nicolas Toulemont
 						</Heading>

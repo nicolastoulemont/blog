@@ -13,38 +13,6 @@ class MyDocument extends Document {
 					/>
 				</Head>
 				<body>
-					<style jsx global>
-						{`
-							html {
-								height: 100vh;
-								width: 100%;
-							}
-
-							body {
-								height: 100%;
-								width: 100%;
-							}
-
-							#__next {
-								height: 100%;
-								width: 100%;
-							}
-
-							main {
-								height: 100%;
-								width: 100%;
-								overflow: auto;
-							}
-
-							nav {
-								height: 60px;
-								width: 100%;
-								display: flex;
-								align-items: center;
-								justify-content: center;
-							}
-						`}
-					</style>
 					<Main />
 					<NextScript />
 				</body>
