@@ -43,7 +43,7 @@ export function Card({ img, links }: CardProps) {
 							{link.external ? (
 								<a
 									href={link.href}
-									target='_blank'
+									target='blank'
 									style={{
 										display: 'flex',
 										alignItems: 'center',

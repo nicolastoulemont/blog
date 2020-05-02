@@ -15,7 +15,7 @@ export function Repositories() {
 			</Heading>
 			{!data || (data?.repositories?.length === 0 && <Text>No posts yet</Text>)}
 			{data?.repositories?.map((repository) => (
-				<a href={repository?.repository_url} target='_blank' key={repository?.id}>
+				<a href={repository?.repository_url} target='blank' key={repository?.id}>
 					<PseudoBox
 						display='flex'
 						alignItems='center'

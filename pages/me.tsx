@@ -1,6 +1,14 @@
 import Layout from '@components/Layout'
-import { withApollo } from 'lib/apollo'
+import { Bio } from 'layouts/me/Bio'
+import { Tools } from 'layouts/me/Tools'
+import { Me } from 'layouts/me/Me'
 
-export default withApollo(function AboutMePage() {
-	return <Layout title='About me - Nicolas Toulemont'>About me</Layout>
-})
+export default function AboutMePage() {
+	return (
+		<Layout title='About me - Nicolas Toulemont'>
+			<Bio />
+			<Me />
+			<Tools />
+		</Layout>
+	)
+}
