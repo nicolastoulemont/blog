@@ -3,7 +3,7 @@ import Document, { Html, Head, Main, NextScript } from 'next/document'
 class MyDocument extends Document {
 	render() {
 		return (
-			<Html lang='en' style={{ width: '100%', height: '100%' }}>
+			<Html lang='en'>
 				<Head>
 					<meta httpEquiv='Content-Type' content='text/html; charset=utf-8' />
 					<meta
@@ -12,9 +12,19 @@ class MyDocument extends Document {
 						key='viewport'
 					/>
 				</Head>
-				<body style={{ width: '100%', height: '100%' }}>
+				<body>
 					<style jsx global>
 						{`
+							html {
+								height: 100vh;
+								width: 100%;
+							}
+
+							body {
+								height: 100%;
+								width: 100%;
+							}
+
 							#__next {
 								height: 100%;
 								width: 100%;
