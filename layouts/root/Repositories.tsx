@@ -1,7 +1,6 @@
 import React from 'react'
 import { useRepositoriesQuery } from 'generated/graphql'
 import { Flex, Image, Heading, Box, Text, Tag, PseudoBox, useColorMode } from '@chakra-ui/core'
-import { imgUrl } from 'utils'
 import { hoverColor } from '@theme/colors'
 
 export function Repositories() {
@@ -30,7 +29,7 @@ export function Repositories() {
 					>
 						<Flex align='center' justify='left'>
 							<Image
-								src={imgUrl(repository?.image?.url as string)}
+								src={repository?.image?.url}
 								alt={repository?.image?.alternativeText as string}
 								borderRadius='4px'
 								alignSelf='center'

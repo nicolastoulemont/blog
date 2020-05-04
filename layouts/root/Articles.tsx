@@ -2,7 +2,6 @@ import React from 'react'
 import { usePostsQuery } from 'generated/graphql'
 import Link from 'next/link'
 import { Flex, Image, Heading, Box, Text, Tag, PseudoBox, useColorMode } from '@chakra-ui/core'
-import { imgUrl } from 'utils'
 import { hoverColor } from '@theme/colors'
 
 export function Articles() {
@@ -36,7 +35,7 @@ export function Articles() {
 						>
 							<Flex align='center' justify='left'>
 								<Image
-									src={imgUrl(post?.image?.url as string)}
+									src={post?.image?.url}
 									alt={post?.image?.alternativeText as string}
 									borderRadius='4px'
 									alignSelf='center'

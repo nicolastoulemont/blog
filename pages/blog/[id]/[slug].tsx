@@ -5,7 +5,7 @@ import { withApollo } from 'lib/apollo'
 import { usePostQuery } from 'generated/graphql'
 import { format } from 'date-fns'
 import { useRouter } from 'next/router'
-import { imgUrl, DATE_FORMAT } from 'utils/index'
+import { DATE_FORMAT } from 'utils/index'
 import Link from 'next/link'
 import { Markdown } from '@components/Markdown'
 
@@ -50,11 +50,7 @@ export default withApollo(function Post() {
 					</Flex>
 				</Box>
 
-				<Image
-					src={imgUrl(post?.image?.url as string)}
-					width={['50px', '150px']}
-					borderRadius='4px'
-				/>
+				<Image src={post?.image?.url} width={['50px', '150px']} borderRadius='4px' />
 			</Flex>
 			<Markdown content={post?.content} />
 		</Layout>
