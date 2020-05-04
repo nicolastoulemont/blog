@@ -2,7 +2,7 @@ import gql from 'graphql-tag'
 
 export const POSTS = gql`
 	query Posts {
-		posts(sort: "published_at:DESC") {
+		posts(sort: "published_at:DESC", where: { show: true }) {
 			id
 			title
 			slug

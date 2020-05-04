@@ -226,7 +226,7 @@ export type UploadFileRelatedArgs = {
 };
 
 
-export type Morph = UsersPermissionsMe | UsersPermissionsMeRole | UsersPermissionsLoginPayload | ForgotPassword | Category | CategoryConnection | CategoryAggregator | CategoryGroupBy | CategoryConnectionId | CategoryConnectionCreated_At | CategoryConnectionUpdated_At | CategoryConnectionName | CategoryConnectionImage | CreateCategoryPayload | UpdateCategoryPayload | DeleteCategoryPayload | Post | PostConnection | PostAggregator | PostGroupBy | PostConnectionId | PostConnectionCreated_At | PostConnectionUpdated_At | PostConnectionTitle | PostConnectionDescription | PostConnectionContent | PostConnectionImage | PostConnectionPublished_At | PostConnectionSlug | CreatePostPayload | UpdatePostPayload | DeletePostPayload | Repository | RepositoryConnection | RepositoryAggregator | RepositoryGroupBy | RepositoryConnectionId | RepositoryConnectionCreated_At | RepositoryConnectionUpdated_At | RepositoryConnectionName | RepositoryConnectionImage | RepositoryConnectionRepository_Url | RepositoryConnectionDescription | RepositoryConnectionPublished_At | CreateRepositoryPayload | UpdateRepositoryPayload | DeleteRepositoryPayload | UploadFile | UploadFileConnection | UploadFileAggregator | UploadFileAggregatorSum | UploadFileAggregatorAvg | UploadFileAggregatorMin | UploadFileAggregatorMax | UploadFileGroupBy | UploadFileConnectionId | UploadFileConnectionCreated_At | UploadFileConnectionUpdated_At | UploadFileConnectionName | UploadFileConnectionAlternativeText | UploadFileConnectionCaption | UploadFileConnectionWidth | UploadFileConnectionHeight | UploadFileConnectionFormats | UploadFileConnectionHash | UploadFileConnectionExt | UploadFileConnectionMime | UploadFileConnectionSize | UploadFileConnectionUrl | UploadFileConnectionPreviewUrl | UploadFileConnectionProvider | UploadFileConnectionProvider_Metadata | UsersPermissionsPermission | UsersPermissionsRole | UsersPermissionsRoleConnection | UsersPermissionsRoleAggregator | UsersPermissionsRoleGroupBy | UsersPermissionsRoleConnectionId | UsersPermissionsRoleConnectionName | UsersPermissionsRoleConnectionDescription | UsersPermissionsRoleConnectionType | CreateRolePayload | UpdateRolePayload | DeleteRolePayload | UsersPermissionsUser | UsersPermissionsUserConnection | UsersPermissionsUserAggregator | UsersPermissionsUserGroupBy | UsersPermissionsUserConnectionId | UsersPermissionsUserConnectionCreated_At | UsersPermissionsUserConnectionUpdated_At | UsersPermissionsUserConnectionUsername | UsersPermissionsUserConnectionEmail | UsersPermissionsUserConnectionProvider | UsersPermissionsUserConnectionConfirmed | UsersPermissionsUserConnectionBlocked | UsersPermissionsUserConnectionRole | CreateUserPayload | UpdateUserPayload | DeleteUserPayload;
+export type Morph = UsersPermissionsMe | UsersPermissionsMeRole | UsersPermissionsLoginPayload | ForgotPassword | Category | CategoryConnection | CategoryAggregator | CategoryGroupBy | CategoryConnectionId | CategoryConnectionCreated_At | CategoryConnectionUpdated_At | CategoryConnectionName | CategoryConnectionImage | CreateCategoryPayload | UpdateCategoryPayload | DeleteCategoryPayload | Post | PostConnection | PostAggregator | PostGroupBy | PostConnectionId | PostConnectionCreated_At | PostConnectionUpdated_At | PostConnectionTitle | PostConnectionDescription | PostConnectionContent | PostConnectionImage | PostConnectionPublished_At | PostConnectionSlug | PostConnectionShow | CreatePostPayload | UpdatePostPayload | DeletePostPayload | Repository | RepositoryConnection | RepositoryAggregator | RepositoryGroupBy | RepositoryConnectionId | RepositoryConnectionCreated_At | RepositoryConnectionUpdated_At | RepositoryConnectionName | RepositoryConnectionImage | RepositoryConnectionRepository_Url | RepositoryConnectionDescription | RepositoryConnectionPublished_At | CreateRepositoryPayload | UpdateRepositoryPayload | DeleteRepositoryPayload | UploadFile | UploadFileConnection | UploadFileAggregator | UploadFileAggregatorSum | UploadFileAggregatorAvg | UploadFileAggregatorMin | UploadFileAggregatorMax | UploadFileGroupBy | UploadFileConnectionId | UploadFileConnectionCreated_At | UploadFileConnectionUpdated_At | UploadFileConnectionName | UploadFileConnectionAlternativeText | UploadFileConnectionCaption | UploadFileConnectionWidth | UploadFileConnectionHeight | UploadFileConnectionFormats | UploadFileConnectionHash | UploadFileConnectionExt | UploadFileConnectionMime | UploadFileConnectionSize | UploadFileConnectionUrl | UploadFileConnectionPreviewUrl | UploadFileConnectionProvider | UploadFileConnectionProvider_Metadata | UsersPermissionsPermission | UsersPermissionsRole | UsersPermissionsRoleConnection | UsersPermissionsRoleAggregator | UsersPermissionsRoleGroupBy | UsersPermissionsRoleConnectionId | UsersPermissionsRoleConnectionName | UsersPermissionsRoleConnectionDescription | UsersPermissionsRoleConnectionType | CreateRolePayload | UpdateRolePayload | DeleteRolePayload | UsersPermissionsUser | UsersPermissionsUserConnection | UsersPermissionsUserAggregator | UsersPermissionsUserGroupBy | UsersPermissionsUserConnectionId | UsersPermissionsUserConnectionCreated_At | UsersPermissionsUserConnectionUpdated_At | UsersPermissionsUserConnectionUsername | UsersPermissionsUserConnectionEmail | UsersPermissionsUserConnectionProvider | UsersPermissionsUserConnectionConfirmed | UsersPermissionsUserConnectionBlocked | UsersPermissionsUserConnectionRole | CreateUserPayload | UpdateUserPayload | DeleteUserPayload;
 
 export type UsersPermissionsMe = {
    __typename?: 'UsersPermissionsMe';
@@ -335,6 +335,7 @@ export type Post = {
   image?: Maybe<UploadFile>;
   published_at: Scalars['Date'];
   slug: Scalars['String'];
+  show: Scalars['Boolean'];
   categories?: Maybe<Array<Maybe<Category>>>;
 };
 
@@ -365,6 +366,7 @@ export type PostGroupBy = {
   image?: Maybe<Array<Maybe<PostConnectionImage>>>;
   published_at?: Maybe<Array<Maybe<PostConnectionPublished_At>>>;
   slug?: Maybe<Array<Maybe<PostConnectionSlug>>>;
+  show?: Maybe<Array<Maybe<PostConnectionShow>>>;
 };
 
 export type PostConnectionId = {
@@ -418,6 +420,12 @@ export type PostConnectionPublished_At = {
 export type PostConnectionSlug = {
    __typename?: 'PostConnectionSlug';
   key?: Maybe<Scalars['String']>;
+  connection?: Maybe<PostConnection>;
+};
+
+export type PostConnectionShow = {
+   __typename?: 'PostConnectionShow';
+  key?: Maybe<Scalars['Boolean']>;
   connection?: Maybe<PostConnection>;
 };
 
@@ -1119,6 +1127,7 @@ export type PostInput = {
   published_at: Scalars['Date'];
   categories?: Maybe<Array<Maybe<Scalars['ID']>>>;
   slug: Scalars['String'];
+  show: Scalars['Boolean'];
 };
 
 export type UpdatePostInput = {
@@ -1134,6 +1143,7 @@ export type EditPostInput = {
   published_at?: Maybe<Scalars['Date']>;
   categories?: Maybe<Array<Maybe<Scalars['ID']>>>;
   slug?: Maybe<Scalars['String']>;
+  show?: Maybe<Scalars['Boolean']>;
 };
 
 export type DeletePostInput = {
@@ -1344,7 +1354,7 @@ export type RepositoriesQuery = (
 
 export const PostsDocument = gql`
     query Posts {
-  posts(sort: "published_at:DESC") {
+  posts(sort: "published_at:DESC", where: {show: true}) {
     id
     title
     slug
