@@ -13,7 +13,6 @@ export default withApollo(function Post() {
 	const router = useRouter()
 	const { id } = router.query
 	const { data } = usePostQuery({ variables: { id: id as string } })
-	console.log(router)
 	const post = data?.post
 	const keywords = post?.categories?.map((category) => category?.name).join(',')
 	const url = `https://nicolastoulemont.dev${router.asPath}`
