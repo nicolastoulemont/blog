@@ -7,13 +7,19 @@ type Props = {
 	title?: string
 	description?: string
 	keywords?: string
+	meta?: {
+		id: string
+		slug: string
+		image: string
+	}
 }
 
 const Layout: React.FunctionComponent<Props> = ({
 	children,
 	title = 'Nicolas Toulemont - Full Stack Software Developer',
 	description = 'Technical content about web development, Typescript, GraphQL and React',
-	keywords = 'Typescript, GraphQL, Node, React'
+	keywords = 'Typescript, GraphQL, Node, React',
+	meta
 }) => {
 	return (
 		<>
@@ -29,6 +35,24 @@ const Layout: React.FunctionComponent<Props> = ({
 				<link href='/favicon-32x32.png' rel='icon' type='image/png' sizes='32x32' />
 				<link rel='apple-touch-icon' href='/apple-icon.png'></link>
 				<meta name='theme-color' content='#8e9193' />
+				<meta name='twitter:card' content={description} />
+				<meta name='twitter:site' content='@NicoToulemont' />
+				<meta name='twitter:creator' content='@NicoToulemont' />
+				<meta name='twitter:title' content={title} />
+				<meta name='twitter:description' content={description} />
+				{meta && (
+					<>
+						<meta
+							property='og:url'
+							content={`https://nicolastoulemont.dev/blog/${meta.id}/${meta.slug}`}
+						/>
+						<meta property='twitter:image' content={meta.image} />
+						<meta property='og:image' content={meta.image} />
+					</>
+				)}
+
+				<meta property='og:title' content={title} />
+				<meta property='og:description' content={description} />
 			</Head>
 			<style jsx global>
 				{`
