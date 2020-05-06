@@ -45,13 +45,13 @@
 		"whiteSpace": "normal"
 	},
 	"comment": {
-		"color": "rgb(106, 153, 85)"
+		"color": "#6a9955"
 	},
 	"block-comment": {
-		"color": "rgb(106, 153, 85)"
+		"color": "#6a9955"
 	},
 	"prolog": {
-		"color": "rgb(0, 0, 128)"
+		"color": "#000080"
 	},
 	"doctype": {
 		"color": "#999"
@@ -60,46 +60,46 @@
 		"color": "#999"
 	},
 	"punctuation": {
-		"color": "rgb(212, 212, 212)"
+		"color": "#d4d4d4"
 	},
 	"tag": {
-		"color": "rgb(78, 201, 176)"
+		"color": "#4ec9b0"
 	},
 	"attr-name": {
-		"color": "rgb(156, 220, 254)"
+		"color": "#9cdcfe"
 	},
 	"namespace": {
 		"color": "#e2777a"
 	},
 	"deleted": {
-		"color": "rgb(86, 156, 214)"
+		"color": "#569cd6"
 	},
 	"function-name": {
 		"color": "#6196cc"
 	},
 	"boolean": {
-		"color": "rgb(86, 156, 214)"
+		"color": "#569cd6"
 	},
 	"number": {
-		"color": "rgb(181, 206, 168)"
+		"color": "#b5cea8"
 	},
 	"function": {
-		"color": "rgb(220, 220, 170)"
+		"color": "#dcdcaa"
 	},
 	"property": {
 		"color": "#f8c555"
 	},
 	"class-name": {
-		"color": "rgb(78, 201, 176)"
+		"color": "#4ec9b0"
 	},
 	"constant": {
-		"color": "rgb(100, 102, 149)"
+		"color": "#646695"
 	},
 	"symbol": {
 		"color": "#f8c555"
 	},
 	"selector": {
-		"color": "rgb(215, 186, 125)"
+		"color": "#d7bb7d"
 	},
 	"important": {
 		"color": "#cc99cd",
@@ -109,28 +109,28 @@
 		"color": "#cc99cd"
 	},
 	"keyword": {
-		"color": "rgb(86, 156, 214)"
+		"color": "#569cd6"
 	},
 	"builtin": {
-		"color": "rgb(78, 201, 176)"
+		"color": "#4ec9b0"
 	},
 	"string": {
-		"color": "rgb(206, 145, 120)"
+		"color": "#ce9078"
 	},
 	"char": {
-		"color": "rgb(209, 105, 105)"
+		"color": "#d16969"
 	},
 	"attr-value": {
-		"color": "rgb(206, 145, 120)"
+		"color": "#ce9078"
 	},
 	"regex": {
-		"color": "rgb(82, 41, 41)"
+		"color": "#522929"
 	},
 	"variable": {
-		"color": "rgb(156, 220, 254)"
+		"color": "#9cdcfe"
 	},
 	"operator": {
-		"color": "rgb(212, 212, 212)"
+		"color": "#d4d4d4"
 	},
 	"entity": {
 		"color": "#67cdcc",
@@ -146,9 +146,9 @@
 		"fontStyle": "italic"
 	},
 	"inserted": {
-		"color": "rgb(181, 206, 168)"
+		"color": "#b5cea8"
 	},
 	"maybe-class-name": {
-		"color": "rgb(78, 201, 176)"
+		"color": "#4ec9b0"
 	}
 }
