@@ -72,7 +72,7 @@
 		"color": "#e2777a"
 	},
 	"deleted": {
-		"color": "rgb(206, 145, 120)"
+		"color": "rgb(86, 156, 214)"
 	},
 	"function-name": {
 		"color": "#6196cc"
@@ -112,7 +112,7 @@
 		"color": "rgb(86, 156, 214)"
 	},
 	"builtin": {
-		"color": "rgb(86, 156, 214)"
+		"color": "rgb(78, 201, 176)"
 	},
 	"string": {
 		"color": "rgb(206, 145, 120)"
@@ -147,5 +147,8 @@
 	},
 	"inserted": {
 		"color": "rgb(181, 206, 168)"
+	},
+	"maybe-class-name": {
+		"color": "rgb(78, 201, 176)"
 	}
 }
