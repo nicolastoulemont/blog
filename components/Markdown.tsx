@@ -2,11 +2,11 @@ import React from 'react'
 import { Box, useColorMode } from '@chakra-ui/core'
 import ReactMarkdown from 'react-markdown'
 import { Prism as SyntaxHighlighter } from 'react-syntax-highlighter'
-import { tomorrow } from 'react-syntax-highlighter/dist/cjs/styles/prism'
-
+// import { tomorrow } from 'react-syntax-highlighter/dist/cjs/styles/prism'
+import mdx from '@theme/mdx.json'
 function CodeBlock({ language, value }: any) {
 	return (
-		<SyntaxHighlighter language={language} style={tomorrow}>
+		<SyntaxHighlighter language={language} style={mdx}>
 			{value}
 		</SyntaxHighlighter>
 	)
