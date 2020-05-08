@@ -1,5 +1,5 @@
 import React from 'react'
-import Layout from '@components/Layout'
+import { Layout } from '@components/Layout'
 import { Flex, Heading, Image, Box, Text, Tag, Link } from '@chakra-ui/core'
 import { withApollo } from 'lib/apollo'
 import { usePostQuery } from 'generated/graphql'

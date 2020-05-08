@@ -1,4 +1,4 @@
-import Layout from '@components/Layout'
+import { Layout } from '@components/Layout'
 import { withApollo } from 'lib/apollo'
 import { Intro } from 'layouts/root/Intro'
 import { Articles } from 'layouts/root/Articles'

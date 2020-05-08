@@ -14,7 +14,7 @@ type Props = {
 	}
 }
 
-const Layout: React.FunctionComponent<Props> = ({
+export const Layout: React.FunctionComponent<Props> = ({
 	children,
 	title = 'Nicolas Toulemont - Full Stack Software Developer',
 	description = 'Technical content about web development, Typescript, GraphQL and React',
@@ -92,5 +92,3 @@ const Layout: React.FunctionComponent<Props> = ({
 		</>
 	)
 }
-
-export default Layout

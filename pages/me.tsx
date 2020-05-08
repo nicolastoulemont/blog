@@ -1,4 +1,4 @@
-import Layout from '@components/Layout'
+import { Layout } from '@components/Layout'
 import { Bio } from 'layouts/me/Bio'
 import { Tools } from 'layouts/me/Tools'
 import { Me } from 'layouts/me/Me'
