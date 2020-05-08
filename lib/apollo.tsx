@@ -120,7 +120,7 @@ function initApolloClient(initialState = {}, cookie = '') {
 
 	// Reuse client on the client-side
 	if (!globalApolloClient) {
-		globalApolloClient = createApolloClient(initialState)
+		globalApolloClient = createApolloClient(initialState, cookie)
 	}
 
 	return globalApolloClient
