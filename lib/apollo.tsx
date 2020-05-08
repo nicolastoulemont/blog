@@ -23,7 +23,7 @@ export function withApollo(PageComponent: any, { ssr = true } = {}) {
 		apolloState,
 		...pageProps
 	}: {
-		apolloClient: any
+		apolloClient: ApolloClient<NormalizedCacheObject>
 		apolloState: any
 	}) => {
 		const client = apolloClient || initApolloClient(apolloState)
