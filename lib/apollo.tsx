@@ -2,11 +2,11 @@ import React from 'react'
 import Head from 'next/head'
 import { ApolloProvider } from '@apollo/react-hooks'
 import { ApolloClient } from 'apollo-client'
-import { InMemoryCache } from 'apollo-cache-inmemory'
+import { InMemoryCache, NormalizedCacheObject } from 'apollo-cache-inmemory'
 import { HttpLink } from 'apollo-link-http'
 import fetch from 'isomorphic-unfetch'
 
-let globalApolloClient: any = null
+let globalApolloClient: ApolloClient<NormalizedCacheObject> | null = null
 const isServer = typeof window === 'undefined'
 
 /**
@@ -130,14 +130,14 @@ function initApolloClient(initialState = {}, cookie = '') {
  * Creates and configures the ApolloClient
  * @param  {Object} [initialState={}]
  */
-function createApolloClient(initialState = {}, cookie?: any) {
+function createApolloClient(initialState = {}, cookie: string = '') {
 	// ADD COOKIE TO REQUEST
 	const enchancedFetch = (url: string, init: any) => {
 		return fetch(url, {
 			...init,
 			headers: {
 				...init.headers,
-				Cookie: cookie || ''
+				Cookie: cookie
 			}
 		}).then((response) => response)
 	}
