@@ -174,7 +174,7 @@ export type Category = {
   updated_at: Scalars['DateTime'];
   name: Scalars['String'];
   image?: Maybe<UploadFile>;
-  link: Scalars['String'];
+  link?: Maybe<Scalars['String']>;
   posts?: Maybe<Array<Maybe<Post>>>;
   repositories?: Maybe<Array<Maybe<Repository>>>;
 };
@@ -1101,7 +1101,7 @@ export type CategoryInput = {
   name: Scalars['String'];
   image?: Maybe<Scalars['ID']>;
   repositories?: Maybe<Array<Maybe<Scalars['ID']>>>;
-  link: Scalars['String'];
+  link?: Maybe<Scalars['String']>;
 };
 
 export type UpdateCategoryInput = {
