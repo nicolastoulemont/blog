@@ -14,7 +14,14 @@ export const Main: React.FunctionComponent = ({ children }) => {
 			}}
 		>
 			<Header />
-			<Box width='90%' minHeight='calc(100% - 104px)' maxWidth='850px' margin='0 auto' pb={8}>
+			<Box
+				width='90%'
+				minHeight='calc(100% - 104px)'
+				maxWidth='850px'
+				margin='0 auto'
+				pb={8}
+				boxSizing='border-box'
+			>
 				{children}
 			</Box>
 			<Footer />

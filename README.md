@@ -1,7 +1,7 @@
 # Personal Blog
 
 This project is a bare bone front end for a blog.
-It is heavily inspired by [Tania Rascia amazing blog](https://www.taniarascia.com/) but with a different stack.
+It is heavily inspired by [Tania Rascia amazing yet simple blog design](https://www.taniarascia.com/) but with a different stack.
 
 ## Features
 
