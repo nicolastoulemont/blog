@@ -30,7 +30,13 @@ export default withApollo(function Post() {
 				image: post?.image?.url as string
 			}}
 		>
-			<Flex align='flex-start' justify='space-between' width='100%' boxSizing='border-box'>
+			<Flex
+				align='flex-start'
+				justify='space-between'
+				width='100%'
+				boxSizing='border-box'
+				p={1}
+			>
 				<Box>
 					<Heading as='h1' fontSize={['md', '2xl']}>
 						{post?.title}
