@@ -35,24 +35,26 @@ export const Layout: React.FunctionComponent<Props> = ({
 				<link href='/favicon-32x32.png' rel='icon' type='image/png' sizes='32x32' />
 				<link rel='apple-touch-icon' href='/apple-icon.png'></link>
 				<meta name='theme-color' content='#8e9193' />
-				<meta name='twitter:card' content={description} />
+				{/* Twitter */}
+				<meta name='twitter:card' content='summary' />
 				<meta name='twitter:site' content='@NicoToulemont' />
 				<meta name='twitter:creator' content='@NicoToulemont' />
 				<meta name='twitter:title' content={title} />
 				<meta name='twitter:description' content={description} />
+				{meta && <meta name='twitter:image' content={meta.image} />}
+				{/* Open Graph */}
+				<meta property='og:title' content={title} />
+				<meta property='og:description' content={description} />
+				<meta property='og:site_name' content='nicolastoulemont.dev' />
 				{meta && (
 					<>
 						<meta
 							property='og:url'
 							content={`https://nicolastoulemont.dev/blog/${meta.id}/${meta.slug}`}
 						/>
-						<meta name='twitter:image' content={meta.image} />
 						<meta property='og:image' content={meta.image} />
 					</>
 				)}
-
-				<meta property='og:title' content={title} />
-				<meta property='og:description' content={description} />
 			</Head>
 			<style jsx global>
 				{`
