@@ -14,6 +14,7 @@ export const REPOSITORIES = gql`
 			}
 			categories {
 				name
+				link
 			}
 		}
 	}

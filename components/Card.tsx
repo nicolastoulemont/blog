@@ -1,8 +1,9 @@
 import React, { Fragment } from 'react'
-import { Flex, useColorMode, Image, Tag, PseudoBox } from '@chakra-ui/core'
-import Link from 'next/link'
+import { Flex, useColorMode, Image, Link, PseudoBox } from '@chakra-ui/core'
+import NextLink from 'next/link'
 import { shadow } from '@theme/colors'
 import { IconType } from 'react-icons/lib/cjs'
+import { TagWithHover } from './Tag'
 
 interface CardProps {
 	links?: Array<{ href: string; as?: string; text: string; external?: boolean; icon?: IconType }>
@@ -41,23 +42,21 @@ export function Card({ img, links }: CardProps) {
 					{links.map((link) => (
 						<Fragment key={link.text}>
 							{link.external ? (
-								<a
+								<Link
 									href={link.href}
 									target='blank'
-									style={{
-										display: 'flex',
-										alignItems: 'center',
-										justifyContent: 'center',
-										marginRight: '0.5rem'
-									}}
+									display='flex'
+									alignItems='center'
+									justifyContent='center'
+									mr={2}
 								>
-									<Tag>
+									<TagWithHover size='lg'>
 										{link.icon && <PseudoBox as={link.icon} mr={2} />}
 										{link.text}
-									</Tag>
-								</a>
+									</TagWithHover>
+								</Link>
 							) : (
-								<Link href={link.href} as={link.as}>
+								<NextLink href={link.href} as={link.as}>
 									<a
 										style={{
 											display: 'flex',
@@ -66,12 +65,12 @@ export function Card({ img, links }: CardProps) {
 											marginRight: '0.5rem'
 										}}
 									>
-										<Tag>
+										<TagWithHover size='lg'>
 											{link.icon && <PseudoBox as={link.icon} mr={2} />}
 											{link.text}
-										</Tag>
+										</TagWithHover>
 									</a>
-								</Link>
+								</NextLink>
 							)}
 						</Fragment>
 					))}

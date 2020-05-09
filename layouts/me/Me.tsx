@@ -1,6 +1,6 @@
 import React from 'react'
 import { Heading, List, ListItem, Image, Text } from '@chakra-ui/core'
-import { BlueLink } from '@components/BlueLink'
+import { BlueExternalLink } from '@components/BlueExternalLink'
 
 export function Me() {
 	return (
@@ -19,7 +19,7 @@ export function Me() {
 					/>
 					<Text>
 						Currently works full-time as a software engineer at
-						<BlueLink
+						<BlueExternalLink
 							href='https://www.linkedin.com/company/carians/about/'
 							text='Carians'
 						/>

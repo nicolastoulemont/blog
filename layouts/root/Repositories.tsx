@@ -1,7 +1,8 @@
 import React from 'react'
 import { useRepositoriesQuery } from 'generated/graphql'
-import { Flex, Image, Heading, Box, Text, Tag, PseudoBox, useColorMode } from '@chakra-ui/core'
+import { Flex, Image, Heading, Box, Text, PseudoBox, useColorMode } from '@chakra-ui/core'
 import { hoverColor } from '@theme/colors'
+import { Category } from '@components/Category'
 
 export function Repositories() {
 	const { colorMode } = useColorMode()
@@ -14,20 +15,25 @@ export function Repositories() {
 			</Heading>
 			{!data || (data?.repositories?.length === 0 && <Text>No posts yet</Text>)}
 			{data?.repositories?.map((repository) => (
-				<a href={repository?.repository_url} target='blank' key={repository?.id}>
-					<PseudoBox
-						display='flex'
-						alignItems='center'
-						justifyContent='space-between'
-						py={3}
-						px={4}
-						mb={4}
-						borderRadius='4px'
-						_hover={{
-							backgroundColor: hoverColor[colorMode]
-						}}
+				<PseudoBox
+					key={repository?.id}
+					display='flex'
+					alignItems='center'
+					justifyContent='space-between'
+					py={3}
+					px={4}
+					mb={4}
+					borderRadius='4px'
+					_hover={{
+						backgroundColor: hoverColor[colorMode]
+					}}
+				>
+					<a
+						href={repository?.repository_url}
+						target='blank'
+						style={{ display: 'flex', flex: '1' }}
 					>
-						<Flex align='center' justify='left'>
+						<Flex align='center' justify='left' width='100%'>
 							<Image
 								src={repository?.image?.url}
 								alt={repository?.image?.alternativeText as string}
@@ -41,15 +47,18 @@ export function Repositories() {
 							</Text>
 							<Text fontSize={['xs', 'sm']}>{repository?.description}</Text>
 						</Flex>
-						<Flex align='center' justify='right' display={['none', 'flex']}>
-							{repository?.categories?.map((category) => (
-								<Tag size='sm' ml={2} key={category?.name}>
-									{category?.name}
-								</Tag>
-							))}
-						</Flex>
-					</PseudoBox>
-				</a>
+					</a>
+
+					<Flex align='center' justify='right' display={['none', 'flex']}>
+						{repository?.categories?.map((category) => (
+							<Category
+								key={category?.name.concat('-repos')}
+								name={category?.name!}
+								link={category?.link!}
+							/>
+						))}
+					</Flex>
+				</PseudoBox>
 			))}
 		</Box>
 	)

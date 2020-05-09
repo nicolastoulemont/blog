@@ -174,6 +174,7 @@ export type Category = {
   updated_at: Scalars['DateTime'];
   name: Scalars['String'];
   image?: Maybe<UploadFile>;
+  link: Scalars['String'];
   posts?: Maybe<Array<Maybe<Post>>>;
   repositories?: Maybe<Array<Maybe<Repository>>>;
 };
@@ -226,7 +227,7 @@ export type UploadFileRelatedArgs = {
 };
 
 
-export type Morph = UsersPermissionsMe | UsersPermissionsMeRole | UsersPermissionsLoginPayload | ForgotPassword | Category | CategoryConnection | CategoryAggregator | CategoryGroupBy | CategoryConnectionId | CategoryConnectionCreated_At | CategoryConnectionUpdated_At | CategoryConnectionName | CategoryConnectionImage | CreateCategoryPayload | UpdateCategoryPayload | DeleteCategoryPayload | Post | PostConnection | PostAggregator | PostGroupBy | PostConnectionId | PostConnectionCreated_At | PostConnectionUpdated_At | PostConnectionTitle | PostConnectionDescription | PostConnectionContent | PostConnectionImage | PostConnectionPublished_At | PostConnectionSlug | PostConnectionShow | CreatePostPayload | UpdatePostPayload | DeletePostPayload | Repository | RepositoryConnection | RepositoryAggregator | RepositoryGroupBy | RepositoryConnectionId | RepositoryConnectionCreated_At | RepositoryConnectionUpdated_At | RepositoryConnectionName | RepositoryConnectionImage | RepositoryConnectionRepository_Url | RepositoryConnectionDescription | RepositoryConnectionPublished_At | CreateRepositoryPayload | UpdateRepositoryPayload | DeleteRepositoryPayload | UploadFile | UploadFileConnection | UploadFileAggregator | UploadFileAggregatorSum | UploadFileAggregatorAvg | UploadFileAggregatorMin | UploadFileAggregatorMax | UploadFileGroupBy | UploadFileConnectionId | UploadFileConnectionCreated_At | UploadFileConnectionUpdated_At | UploadFileConnectionName | UploadFileConnectionAlternativeText | UploadFileConnectionCaption | UploadFileConnectionWidth | UploadFileConnectionHeight | UploadFileConnectionFormats | UploadFileConnectionHash | UploadFileConnectionExt | UploadFileConnectionMime | UploadFileConnectionSize | UploadFileConnectionUrl | UploadFileConnectionPreviewUrl | UploadFileConnectionProvider | UploadFileConnectionProvider_Metadata | UsersPermissionsPermission | UsersPermissionsRole | UsersPermissionsRoleConnection | UsersPermissionsRoleAggregator | UsersPermissionsRoleGroupBy | UsersPermissionsRoleConnectionId | UsersPermissionsRoleConnectionName | UsersPermissionsRoleConnectionDescription | UsersPermissionsRoleConnectionType | CreateRolePayload | UpdateRolePayload | DeleteRolePayload | UsersPermissionsUser | UsersPermissionsUserConnection | UsersPermissionsUserAggregator | UsersPermissionsUserGroupBy | UsersPermissionsUserConnectionId | UsersPermissionsUserConnectionCreated_At | UsersPermissionsUserConnectionUpdated_At | UsersPermissionsUserConnectionUsername | UsersPermissionsUserConnectionEmail | UsersPermissionsUserConnectionProvider | UsersPermissionsUserConnectionConfirmed | UsersPermissionsUserConnectionBlocked | UsersPermissionsUserConnectionRole | CreateUserPayload | UpdateUserPayload | DeleteUserPayload;
+export type Morph = UsersPermissionsMe | UsersPermissionsMeRole | UsersPermissionsLoginPayload | ForgotPassword | Category | CategoryConnection | CategoryAggregator | CategoryGroupBy | CategoryConnectionId | CategoryConnectionCreated_At | CategoryConnectionUpdated_At | CategoryConnectionName | CategoryConnectionImage | CategoryConnectionLink | CreateCategoryPayload | UpdateCategoryPayload | DeleteCategoryPayload | Post | PostConnection | PostAggregator | PostGroupBy | PostConnectionId | PostConnectionCreated_At | PostConnectionUpdated_At | PostConnectionTitle | PostConnectionDescription | PostConnectionContent | PostConnectionImage | PostConnectionPublished_At | PostConnectionSlug | PostConnectionShow | CreatePostPayload | UpdatePostPayload | DeletePostPayload | Repository | RepositoryConnection | RepositoryAggregator | RepositoryGroupBy | RepositoryConnectionId | RepositoryConnectionCreated_At | RepositoryConnectionUpdated_At | RepositoryConnectionName | RepositoryConnectionImage | RepositoryConnectionRepository_Url | RepositoryConnectionDescription | RepositoryConnectionPublished_At | CreateRepositoryPayload | UpdateRepositoryPayload | DeleteRepositoryPayload | UploadFile | UploadFileConnection | UploadFileAggregator | UploadFileAggregatorSum | UploadFileAggregatorAvg | UploadFileAggregatorMin | UploadFileAggregatorMax | UploadFileGroupBy | UploadFileConnectionId | UploadFileConnectionCreated_At | UploadFileConnectionUpdated_At | UploadFileConnectionName | UploadFileConnectionAlternativeText | UploadFileConnectionCaption | UploadFileConnectionWidth | UploadFileConnectionHeight | UploadFileConnectionFormats | UploadFileConnectionHash | UploadFileConnectionExt | UploadFileConnectionMime | UploadFileConnectionSize | UploadFileConnectionUrl | UploadFileConnectionPreviewUrl | UploadFileConnectionProvider | UploadFileConnectionProvider_Metadata | UsersPermissionsPermission | UsersPermissionsRole | UsersPermissionsRoleConnection | UsersPermissionsRoleAggregator | UsersPermissionsRoleGroupBy | UsersPermissionsRoleConnectionId | UsersPermissionsRoleConnectionName | UsersPermissionsRoleConnectionDescription | UsersPermissionsRoleConnectionType | CreateRolePayload | UpdateRolePayload | DeleteRolePayload | UsersPermissionsUser | UsersPermissionsUserConnection | UsersPermissionsUserAggregator | UsersPermissionsUserGroupBy | UsersPermissionsUserConnectionId | UsersPermissionsUserConnectionCreated_At | UsersPermissionsUserConnectionUpdated_At | UsersPermissionsUserConnectionUsername | UsersPermissionsUserConnectionEmail | UsersPermissionsUserConnectionProvider | UsersPermissionsUserConnectionConfirmed | UsersPermissionsUserConnectionBlocked | UsersPermissionsUserConnectionRole | CreateUserPayload | UpdateUserPayload | DeleteUserPayload;
 
 export type UsersPermissionsMe = {
    __typename?: 'UsersPermissionsMe';
@@ -271,6 +272,7 @@ export type CategoryGroupBy = {
   updated_at?: Maybe<Array<Maybe<CategoryConnectionUpdated_At>>>;
   name?: Maybe<Array<Maybe<CategoryConnectionName>>>;
   image?: Maybe<Array<Maybe<CategoryConnectionImage>>>;
+  link?: Maybe<Array<Maybe<CategoryConnectionLink>>>;
 };
 
 export type CategoryConnectionId = {
@@ -300,6 +302,12 @@ export type CategoryConnectionName = {
 export type CategoryConnectionImage = {
    __typename?: 'CategoryConnectionImage';
   key?: Maybe<Scalars['ID']>;
+  connection?: Maybe<CategoryConnection>;
+};
+
+export type CategoryConnectionLink = {
+   __typename?: 'CategoryConnectionLink';
+  key?: Maybe<Scalars['String']>;
   connection?: Maybe<CategoryConnection>;
 };
 
@@ -1093,6 +1101,7 @@ export type CategoryInput = {
   name: Scalars['String'];
   image?: Maybe<Scalars['ID']>;
   repositories?: Maybe<Array<Maybe<Scalars['ID']>>>;
+  link: Scalars['String'];
 };
 
 export type UpdateCategoryInput = {
@@ -1109,6 +1118,7 @@ export type EditCategoryInput = {
   name?: Maybe<Scalars['String']>;
   image?: Maybe<Scalars['ID']>;
   repositories?: Maybe<Array<Maybe<Scalars['ID']>>>;
+  link?: Maybe<Scalars['String']>;
 };
 
 export type DeleteCategoryInput = {
@@ -1308,7 +1318,7 @@ export type PostsQuery = (
       & Pick<UploadFile, 'url' | 'alternativeText'>
     )>, categories?: Maybe<Array<Maybe<(
       { __typename?: 'Category' }
-      & Pick<Category, 'name'>
+      & Pick<Category, 'name' | 'link'>
     )>>> }
   )>>> }
 );
@@ -1328,7 +1338,7 @@ export type PostQuery = (
       & Pick<UploadFile, 'url'>
     )>, categories?: Maybe<Array<Maybe<(
       { __typename?: 'Category' }
-      & Pick<Category, 'name'>
+      & Pick<Category, 'name' | 'link'>
     )>>> }
   )> }
 );
@@ -1346,7 +1356,7 @@ export type RepositoriesQuery = (
       & Pick<UploadFile, 'url' | 'alternativeText'>
     )>, categories?: Maybe<Array<Maybe<(
       { __typename?: 'Category' }
-      & Pick<Category, 'name'>
+      & Pick<Category, 'name' | 'link'>
     )>>> }
   )>>> }
 );
@@ -1364,6 +1374,7 @@ export const PostsDocument = gql`
     }
     categories {
       name
+      link
     }
   }
 }
@@ -1407,6 +1418,7 @@ export const PostDocument = gql`
     }
     categories {
       name
+      link
     }
   }
 }
@@ -1451,6 +1463,7 @@ export const RepositoriesDocument = gql`
     }
     categories {
       name
+      link
     }
   }
 }

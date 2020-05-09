@@ -1,6 +1,6 @@
 import React from 'react'
 import { Layout } from '@components/Layout'
-import { Flex, Heading, Image, Box, Text, Tag, Link } from '@chakra-ui/core'
+import { Flex, Heading, Image, Box, Text, Link } from '@chakra-ui/core'
 import { withApollo } from 'lib/apollo'
 import { usePostQuery } from 'generated/graphql'
 import { format } from 'date-fns'
@@ -8,6 +8,7 @@ import { useRouter } from 'next/router'
 import { DATE_FORMAT } from 'utils/index'
 import NextLink from 'next/link'
 import { Markdown } from '@components/Markdown'
+import { Category } from '@components/Category'
 
 export default withApollo(function Post() {
 	const router = useRouter()
@@ -63,9 +64,11 @@ export default withApollo(function Post() {
 					</Flex>
 					<Flex align='center' justify='left' mt={[2, 4]}>
 						{post?.categories?.map((category) => (
-							<Tag size='sm' mr={2} key={category?.name}>
-								{category?.name}
-							</Tag>
+							<Category
+								name={category?.name!}
+								link={category?.link!}
+								key={category?.name}
+							/>
 						))}
 					</Flex>
 				</Box>

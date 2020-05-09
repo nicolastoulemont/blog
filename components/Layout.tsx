@@ -46,7 +46,7 @@ export const Layout: React.FunctionComponent<Props> = ({
 							property='og:url'
 							content={`https://nicolastoulemont.dev/blog/${meta.id}/${meta.slug}`}
 						/>
-						<meta property='twitter:image' content={meta.image} />
+						<meta name='twitter:image' content={meta.image} />
 						<meta property='og:image' content={meta.image} />
 					</>
 				)}

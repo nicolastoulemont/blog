@@ -12,6 +12,7 @@ export const POSTS = gql`
 			}
 			categories {
 				name
+				link
 			}
 		}
 	}
@@ -31,6 +32,7 @@ export const POST = gql`
 			}
 			categories {
 				name
+				link
 			}
 		}
 	}

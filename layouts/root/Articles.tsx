@@ -1,8 +1,9 @@
 import React from 'react'
 import { usePostsQuery } from 'generated/graphql'
 import Link from 'next/link'
-import { Flex, Image, Heading, Box, Text, Tag, PseudoBox, useColorMode } from '@chakra-ui/core'
+import { Flex, Image, Heading, Box, Text, PseudoBox, useColorMode } from '@chakra-ui/core'
 import { hoverColor } from '@theme/colors'
+import { Category } from '@components/Category'
 
 export function Articles() {
 	const { colorMode } = useColorMode()
@@ -15,25 +16,22 @@ export function Articles() {
 			</Heading>
 			{!data || (data?.posts?.length === 0 && <Text>No posts yet</Text>)}
 			{data?.posts?.map((post) => (
-				<Link
+				<PseudoBox
 					key={post?.id}
-					href='/blog/[id]/[slug]'
-					as={`/blog/${post?.id}/${post?.slug}`}
+					display='flex'
+					alignItems='center'
+					justifyContent='space-between'
+					py={3}
+					px={4}
+					mb={4}
+					borderRadius='4px'
+					_hover={{
+						backgroundColor: hoverColor[colorMode]
+					}}
 				>
-					<a>
-						<PseudoBox
-							display='flex'
-							alignItems='center'
-							justifyContent='space-between'
-							py={3}
-							px={4}
-							mb={4}
-							borderRadius='4px'
-							_hover={{
-								backgroundColor: hoverColor[colorMode]
-							}}
-						>
-							<Flex align='center' justify='left'>
+					<Link href='/blog/[id]/[slug]' as={`/blog/${post?.id}/${post?.slug}`}>
+						<a style={{ display: 'flex', flex: '1' }}>
+							<Flex align='center' justify='left' width='100%'>
 								<Image
 									src={post?.image?.url}
 									alt={post?.image?.alternativeText as string}
@@ -46,16 +44,19 @@ export function Articles() {
 									{post?.title}
 								</Text>
 							</Flex>
-							<Flex align='center' justify='right' display={['none', 'flex']}>
-								{post?.categories?.map((category) => (
-									<Tag size='sm' ml={2} key={category?.name.concat('-article')}>
-										{category?.name}
-									</Tag>
-								))}
-							</Flex>
-						</PseudoBox>
-					</a>
-				</Link>
+						</a>
+					</Link>
+
+					<Flex align='center' justify='right' display={['none', 'flex']}>
+						{post?.categories?.map((category) => (
+							<Category
+								key={category?.name.concat('-articles')}
+								name={category?.name!}
+								link={category?.link!}
+							/>
+						))}
+					</Flex>
+				</PseudoBox>
 			))}
 		</Box>
 	)
