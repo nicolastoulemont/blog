@@ -79,7 +79,12 @@ export default withApollo(function Post() {
 					</Flex>
 				</Box>
 
-				<Image src={post?.image?.url} width={['50px', '150px']} borderRadius='4px' />
+				<Image
+					src={post?.image?.url}
+					width='150px'
+					display={['none', 'block']}
+					borderRadius='4px'
+				/>
 			</Flex>
 			<Markdown content={post?.content} />
 		</Layout>
