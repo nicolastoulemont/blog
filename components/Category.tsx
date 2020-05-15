@@ -9,7 +9,7 @@ interface CategoryProps {
 
 export function Category({ name, link }: CategoryProps) {
 	return (
-		<Link href={link} ml={2} target='_blank'>
+		<Link href={link} ml={2} target='_blank' rel='noopener'>
 			<TagWithHover size='sm'>{name}</TagWithHover>
 		</Link>
 	)

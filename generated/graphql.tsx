@@ -1335,7 +1335,7 @@ export type PostQuery = (
     & Pick<Post, 'id' | 'title' | 'slug' | 'published_at' | 'description' | 'content'>
     & { image?: Maybe<(
       { __typename?: 'UploadFile' }
-      & Pick<UploadFile, 'url'>
+      & Pick<UploadFile, 'url' | 'alternativeText'>
     )>, categories?: Maybe<Array<Maybe<(
       { __typename?: 'Category' }
       & Pick<Category, 'name' | 'link'>
@@ -1415,6 +1415,7 @@ export const PostDocument = gql`
     content
     image {
       url
+      alternativeText
     }
     categories {
       name

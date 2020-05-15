@@ -8,7 +8,7 @@ interface BlueExternalLinkProps {
 
 export function BlueExternalLink({ href, text }: BlueExternalLinkProps) {
 	return (
-		<Link href={href} target='blank' mx={1} color='blue.400' fontWeight='500'>
+		<Link href={href} target='blank' rel='noopener' mx={1} color='blue.400' fontWeight='500'>
 			{text}
 		</Link>
 	)

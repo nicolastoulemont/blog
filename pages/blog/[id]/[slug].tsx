@@ -64,6 +64,7 @@ export default withApollo(function Post() {
 							color='blue.400'
 							fontWeight='600'
 							target='_blank'
+							rel='noopener'
 						>
 							Share
 						</Link>
@@ -81,6 +82,7 @@ export default withApollo(function Post() {
 
 				<Image
 					src={post?.image?.url}
+					alt={post?.image?.alternativeText || 'post_image'}
 					width='150px'
 					display={['none', 'block']}
 					borderRadius='4px'
