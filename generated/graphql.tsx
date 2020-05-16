@@ -34,6 +34,9 @@ export type Query = {
   repository?: Maybe<Repository>;
   repositories?: Maybe<Array<Maybe<Repository>>>;
   repositoriesConnection?: Maybe<RepositoryConnection>;
+  serie?: Maybe<Serie>;
+  series?: Maybe<Array<Maybe<Serie>>>;
+  seriesConnection?: Maybe<SerieConnection>;
   files?: Maybe<Array<Maybe<UploadFile>>>;
   filesConnection?: Maybe<UploadFileConnection>;
   role?: Maybe<UsersPermissionsRole>;
@@ -110,6 +113,27 @@ export type QueryRepositoriesConnectionArgs = {
 };
 
 
+export type QuerySerieArgs = {
+  id: Scalars['ID'];
+};
+
+
+export type QuerySeriesArgs = {
+  sort?: Maybe<Scalars['String']>;
+  limit?: Maybe<Scalars['Int']>;
+  start?: Maybe<Scalars['Int']>;
+  where?: Maybe<Scalars['JSON']>;
+};
+
+
+export type QuerySeriesConnectionArgs = {
+  sort?: Maybe<Scalars['String']>;
+  limit?: Maybe<Scalars['Int']>;
+  start?: Maybe<Scalars['Int']>;
+  where?: Maybe<Scalars['JSON']>;
+};
+
+
 export type QueryFilesArgs = {
   sort?: Maybe<Scalars['String']>;
   limit?: Maybe<Scalars['Int']>;
@@ -177,6 +201,7 @@ export type Category = {
   link?: Maybe<Scalars['String']>;
   posts?: Maybe<Array<Maybe<Post>>>;
   repositories?: Maybe<Array<Maybe<Repository>>>;
+  series?: Maybe<Array<Maybe<Serie>>>;
 };
 
 
@@ -189,6 +214,14 @@ export type CategoryPostsArgs = {
 
 
 export type CategoryRepositoriesArgs = {
+  sort?: Maybe<Scalars['String']>;
+  limit?: Maybe<Scalars['Int']>;
+  start?: Maybe<Scalars['Int']>;
+  where?: Maybe<Scalars['JSON']>;
+};
+
+
+export type CategorySeriesArgs = {
   sort?: Maybe<Scalars['String']>;
   limit?: Maybe<Scalars['Int']>;
   start?: Maybe<Scalars['Int']>;
@@ -227,7 +260,7 @@ export type UploadFileRelatedArgs = {
 };
 
 
-export type Morph = UsersPermissionsMe | UsersPermissionsMeRole | UsersPermissionsLoginPayload | ForgotPassword | Category | CategoryConnection | CategoryAggregator | CategoryGroupBy | CategoryConnectionId | CategoryConnectionCreated_At | CategoryConnectionUpdated_At | CategoryConnectionName | CategoryConnectionImage | CategoryConnectionLink | CreateCategoryPayload | UpdateCategoryPayload | DeleteCategoryPayload | Post | PostConnection | PostAggregator | PostGroupBy | PostConnectionId | PostConnectionCreated_At | PostConnectionUpdated_At | PostConnectionTitle | PostConnectionDescription | PostConnectionContent | PostConnectionImage | PostConnectionPublished_At | PostConnectionSlug | PostConnectionShow | CreatePostPayload | UpdatePostPayload | DeletePostPayload | Repository | RepositoryConnection | RepositoryAggregator | RepositoryGroupBy | RepositoryConnectionId | RepositoryConnectionCreated_At | RepositoryConnectionUpdated_At | RepositoryConnectionName | RepositoryConnectionImage | RepositoryConnectionRepository_Url | RepositoryConnectionDescription | RepositoryConnectionPublished_At | CreateRepositoryPayload | UpdateRepositoryPayload | DeleteRepositoryPayload | UploadFile | UploadFileConnection | UploadFileAggregator | UploadFileAggregatorSum | UploadFileAggregatorAvg | UploadFileAggregatorMin | UploadFileAggregatorMax | UploadFileGroupBy | UploadFileConnectionId | UploadFileConnectionCreated_At | UploadFileConnectionUpdated_At | UploadFileConnectionName | UploadFileConnectionAlternativeText | UploadFileConnectionCaption | UploadFileConnectionWidth | UploadFileConnectionHeight | UploadFileConnectionFormats | UploadFileConnectionHash | UploadFileConnectionExt | UploadFileConnectionMime | UploadFileConnectionSize | UploadFileConnectionUrl | UploadFileConnectionPreviewUrl | UploadFileConnectionProvider | UploadFileConnectionProvider_Metadata | UsersPermissionsPermission | UsersPermissionsRole | UsersPermissionsRoleConnection | UsersPermissionsRoleAggregator | UsersPermissionsRoleGroupBy | UsersPermissionsRoleConnectionId | UsersPermissionsRoleConnectionName | UsersPermissionsRoleConnectionDescription | UsersPermissionsRoleConnectionType | CreateRolePayload | UpdateRolePayload | DeleteRolePayload | UsersPermissionsUser | UsersPermissionsUserConnection | UsersPermissionsUserAggregator | UsersPermissionsUserGroupBy | UsersPermissionsUserConnectionId | UsersPermissionsUserConnectionCreated_At | UsersPermissionsUserConnectionUpdated_At | UsersPermissionsUserConnectionUsername | UsersPermissionsUserConnectionEmail | UsersPermissionsUserConnectionProvider | UsersPermissionsUserConnectionConfirmed | UsersPermissionsUserConnectionBlocked | UsersPermissionsUserConnectionRole | CreateUserPayload | UpdateUserPayload | DeleteUserPayload;
+export type Morph = UsersPermissionsMe | UsersPermissionsMeRole | UsersPermissionsLoginPayload | ForgotPassword | Category | CategoryConnection | CategoryAggregator | CategoryGroupBy | CategoryConnectionId | CategoryConnectionCreated_At | CategoryConnectionUpdated_At | CategoryConnectionName | CategoryConnectionImage | CategoryConnectionLink | CreateCategoryPayload | UpdateCategoryPayload | DeleteCategoryPayload | Post | PostConnection | PostAggregator | PostGroupBy | PostConnectionId | PostConnectionCreated_At | PostConnectionUpdated_At | PostConnectionTitle | PostConnectionDescription | PostConnectionContent | PostConnectionImage | PostConnectionPublished_At | PostConnectionSlug | PostConnectionShow | CreatePostPayload | UpdatePostPayload | DeletePostPayload | Repository | RepositoryConnection | RepositoryAggregator | RepositoryGroupBy | RepositoryConnectionId | RepositoryConnectionCreated_At | RepositoryConnectionUpdated_At | RepositoryConnectionName | RepositoryConnectionImage | RepositoryConnectionRepository_Url | RepositoryConnectionDescription | RepositoryConnectionPublished_At | CreateRepositoryPayload | UpdateRepositoryPayload | DeleteRepositoryPayload | Serie | SerieConnection | SerieAggregator | SerieGroupBy | SerieConnectionId | SerieConnectionCreated_At | SerieConnectionUpdated_At | SerieConnectionName | SerieConnectionShow | SerieConnectionPublished_At | SerieConnectionImage | SerieConnectionSlug | SerieConnectionDescription | CreateSeriePayload | UpdateSeriePayload | DeleteSeriePayload | UploadFile | UploadFileConnection | UploadFileAggregator | UploadFileAggregatorSum | UploadFileAggregatorAvg | UploadFileAggregatorMin | UploadFileAggregatorMax | UploadFileGroupBy | UploadFileConnectionId | UploadFileConnectionCreated_At | UploadFileConnectionUpdated_At | UploadFileConnectionName | UploadFileConnectionAlternativeText | UploadFileConnectionCaption | UploadFileConnectionWidth | UploadFileConnectionHeight | UploadFileConnectionFormats | UploadFileConnectionHash | UploadFileConnectionExt | UploadFileConnectionMime | UploadFileConnectionSize | UploadFileConnectionUrl | UploadFileConnectionPreviewUrl | UploadFileConnectionProvider | UploadFileConnectionProvider_Metadata | UsersPermissionsPermission | UsersPermissionsRole | UsersPermissionsRoleConnection | UsersPermissionsRoleAggregator | UsersPermissionsRoleGroupBy | UsersPermissionsRoleConnectionId | UsersPermissionsRoleConnectionName | UsersPermissionsRoleConnectionDescription | UsersPermissionsRoleConnectionType | CreateRolePayload | UpdateRolePayload | DeleteRolePayload | UsersPermissionsUser | UsersPermissionsUserConnection | UsersPermissionsUserAggregator | UsersPermissionsUserGroupBy | UsersPermissionsUserConnectionId | UsersPermissionsUserConnectionCreated_At | UsersPermissionsUserConnectionUpdated_At | UsersPermissionsUserConnectionUsername | UsersPermissionsUserConnectionEmail | UsersPermissionsUserConnectionProvider | UsersPermissionsUserConnectionConfirmed | UsersPermissionsUserConnectionBlocked | UsersPermissionsUserConnectionRole | CreateUserPayload | UpdateUserPayload | DeleteUserPayload;
 
 export type UsersPermissionsMe = {
    __typename?: 'UsersPermissionsMe';
@@ -345,6 +378,8 @@ export type Post = {
   slug: Scalars['String'];
   show: Scalars['Boolean'];
   categories?: Maybe<Array<Maybe<Category>>>;
+  repositories?: Maybe<Array<Maybe<Repository>>>;
+  series?: Maybe<Array<Maybe<Serie>>>;
 };
 
 
@@ -355,6 +390,101 @@ export type PostCategoriesArgs = {
   where?: Maybe<Scalars['JSON']>;
 };
 
+
+export type PostRepositoriesArgs = {
+  sort?: Maybe<Scalars['String']>;
+  limit?: Maybe<Scalars['Int']>;
+  start?: Maybe<Scalars['Int']>;
+  where?: Maybe<Scalars['JSON']>;
+};
+
+
+export type PostSeriesArgs = {
+  sort?: Maybe<Scalars['String']>;
+  limit?: Maybe<Scalars['Int']>;
+  start?: Maybe<Scalars['Int']>;
+  where?: Maybe<Scalars['JSON']>;
+};
+
+
+export type Repository = {
+   __typename?: 'Repository';
+  id: Scalars['ID'];
+  created_at: Scalars['DateTime'];
+  updated_at: Scalars['DateTime'];
+  name: Scalars['String'];
+  image?: Maybe<UploadFile>;
+  repository_url: Scalars['String'];
+  description: Scalars['String'];
+  published_at: Scalars['Date'];
+  categories?: Maybe<Array<Maybe<Category>>>;
+  posts?: Maybe<Array<Maybe<Post>>>;
+  series?: Maybe<Array<Maybe<Serie>>>;
+};
+
+
+export type RepositoryCategoriesArgs = {
+  sort?: Maybe<Scalars['String']>;
+  limit?: Maybe<Scalars['Int']>;
+  start?: Maybe<Scalars['Int']>;
+  where?: Maybe<Scalars['JSON']>;
+};
+
+
+export type RepositoryPostsArgs = {
+  sort?: Maybe<Scalars['String']>;
+  limit?: Maybe<Scalars['Int']>;
+  start?: Maybe<Scalars['Int']>;
+  where?: Maybe<Scalars['JSON']>;
+};
+
+
+export type RepositorySeriesArgs = {
+  sort?: Maybe<Scalars['String']>;
+  limit?: Maybe<Scalars['Int']>;
+  start?: Maybe<Scalars['Int']>;
+  where?: Maybe<Scalars['JSON']>;
+};
+
+export type Serie = {
+   __typename?: 'Serie';
+  id: Scalars['ID'];
+  created_at: Scalars['DateTime'];
+  updated_at: Scalars['DateTime'];
+  name: Scalars['String'];
+  show?: Maybe<Scalars['Boolean']>;
+  published_at: Scalars['Date'];
+  image?: Maybe<UploadFile>;
+  slug: Scalars['String'];
+  description: Scalars['String'];
+  posts?: Maybe<Array<Maybe<Post>>>;
+  categories?: Maybe<Array<Maybe<Category>>>;
+  repositories?: Maybe<Array<Maybe<Repository>>>;
+};
+
+
+export type SeriePostsArgs = {
+  sort?: Maybe<Scalars['String']>;
+  limit?: Maybe<Scalars['Int']>;
+  start?: Maybe<Scalars['Int']>;
+  where?: Maybe<Scalars['JSON']>;
+};
+
+
+export type SerieCategoriesArgs = {
+  sort?: Maybe<Scalars['String']>;
+  limit?: Maybe<Scalars['Int']>;
+  start?: Maybe<Scalars['Int']>;
+  where?: Maybe<Scalars['JSON']>;
+};
+
+
+export type SerieRepositoriesArgs = {
+  sort?: Maybe<Scalars['String']>;
+  limit?: Maybe<Scalars['Int']>;
+  start?: Maybe<Scalars['Int']>;
+  where?: Maybe<Scalars['JSON']>;
+};
 
 export type PostConnection = {
    __typename?: 'PostConnection';
@@ -458,27 +588,6 @@ export type DeletePostPayload = {
   post?: Maybe<Post>;
 };
 
-export type Repository = {
-   __typename?: 'Repository';
-  id: Scalars['ID'];
-  created_at: Scalars['DateTime'];
-  updated_at: Scalars['DateTime'];
-  name: Scalars['String'];
-  image?: Maybe<UploadFile>;
-  repository_url: Scalars['String'];
-  description: Scalars['String'];
-  published_at: Scalars['Date'];
-  categories?: Maybe<Array<Maybe<Category>>>;
-};
-
-
-export type RepositoryCategoriesArgs = {
-  sort?: Maybe<Scalars['String']>;
-  limit?: Maybe<Scalars['Int']>;
-  start?: Maybe<Scalars['Int']>;
-  where?: Maybe<Scalars['JSON']>;
-};
-
 export type RepositoryConnection = {
    __typename?: 'RepositoryConnection';
   values?: Maybe<Array<Maybe<Repository>>>;
@@ -565,6 +674,101 @@ export type UpdateRepositoryPayload = {
 export type DeleteRepositoryPayload = {
    __typename?: 'deleteRepositoryPayload';
   repository?: Maybe<Repository>;
+};
+
+export type SerieConnection = {
+   __typename?: 'SerieConnection';
+  values?: Maybe<Array<Maybe<Serie>>>;
+  groupBy?: Maybe<SerieGroupBy>;
+  aggregate?: Maybe<SerieAggregator>;
+};
+
+export type SerieGroupBy = {
+   __typename?: 'SerieGroupBy';
+  id?: Maybe<Array<Maybe<SerieConnectionId>>>;
+  created_at?: Maybe<Array<Maybe<SerieConnectionCreated_At>>>;
+  updated_at?: Maybe<Array<Maybe<SerieConnectionUpdated_At>>>;
+  name?: Maybe<Array<Maybe<SerieConnectionName>>>;
+  show?: Maybe<Array<Maybe<SerieConnectionShow>>>;
+  published_at?: Maybe<Array<Maybe<SerieConnectionPublished_At>>>;
+  image?: Maybe<Array<Maybe<SerieConnectionImage>>>;
+  slug?: Maybe<Array<Maybe<SerieConnectionSlug>>>;
+  description?: Maybe<Array<Maybe<SerieConnectionDescription>>>;
+};
+
+export type SerieConnectionId = {
+   __typename?: 'SerieConnectionId';
+  key?: Maybe<Scalars['ID']>;
+  connection?: Maybe<SerieConnection>;
+};
+
+export type SerieConnectionCreated_At = {
+   __typename?: 'SerieConnectionCreated_at';
+  key?: Maybe<Scalars['DateTime']>;
+  connection?: Maybe<SerieConnection>;
+};
+
+export type SerieConnectionUpdated_At = {
+   __typename?: 'SerieConnectionUpdated_at';
+  key?: Maybe<Scalars['DateTime']>;
+  connection?: Maybe<SerieConnection>;
+};
+
+export type SerieConnectionName = {
+   __typename?: 'SerieConnectionName';
+  key?: Maybe<Scalars['String']>;
+  connection?: Maybe<SerieConnection>;
+};
+
+export type SerieConnectionShow = {
+   __typename?: 'SerieConnectionShow';
+  key?: Maybe<Scalars['Boolean']>;
+  connection?: Maybe<SerieConnection>;
+};
+
+export type SerieConnectionPublished_At = {
+   __typename?: 'SerieConnectionPublished_at';
+  key?: Maybe<Scalars['ID']>;
+  connection?: Maybe<SerieConnection>;
+};
+
+export type SerieConnectionImage = {
+   __typename?: 'SerieConnectionImage';
+  key?: Maybe<Scalars['ID']>;
+  connection?: Maybe<SerieConnection>;
+};
+
+export type SerieConnectionSlug = {
+   __typename?: 'SerieConnectionSlug';
+  key?: Maybe<Scalars['String']>;
+  connection?: Maybe<SerieConnection>;
+};
+
+export type SerieConnectionDescription = {
+   __typename?: 'SerieConnectionDescription';
+  key?: Maybe<Scalars['String']>;
+  connection?: Maybe<SerieConnection>;
+};
+
+export type SerieAggregator = {
+   __typename?: 'SerieAggregator';
+  count?: Maybe<Scalars['Int']>;
+  totalCount?: Maybe<Scalars['Int']>;
+};
+
+export type CreateSeriePayload = {
+   __typename?: 'createSeriePayload';
+  serie?: Maybe<Serie>;
+};
+
+export type UpdateSeriePayload = {
+   __typename?: 'updateSeriePayload';
+  serie?: Maybe<Serie>;
+};
+
+export type DeleteSeriePayload = {
+   __typename?: 'deleteSeriePayload';
+  serie?: Maybe<Serie>;
 };
 
 export type UploadFileConnection = {
@@ -951,6 +1155,9 @@ export type Mutation = {
   createRepository?: Maybe<CreateRepositoryPayload>;
   updateRepository?: Maybe<UpdateRepositoryPayload>;
   deleteRepository?: Maybe<DeleteRepositoryPayload>;
+  createSerie?: Maybe<CreateSeriePayload>;
+  updateSerie?: Maybe<UpdateSeriePayload>;
+  deleteSerie?: Maybe<DeleteSeriePayload>;
   /** Create a new role */
   createRole?: Maybe<CreateRolePayload>;
   /** Update an existing role */
@@ -1015,6 +1222,21 @@ export type MutationUpdateRepositoryArgs = {
 
 export type MutationDeleteRepositoryArgs = {
   input?: Maybe<DeleteRepositoryInput>;
+};
+
+
+export type MutationCreateSerieArgs = {
+  input?: Maybe<CreateSerieInput>;
+};
+
+
+export type MutationUpdateSerieArgs = {
+  input?: Maybe<UpdateSerieInput>;
+};
+
+
+export type MutationDeleteSerieArgs = {
+  input?: Maybe<DeleteSerieInput>;
 };
 
 
@@ -1102,6 +1324,7 @@ export type CategoryInput = {
   image?: Maybe<Scalars['ID']>;
   repositories?: Maybe<Array<Maybe<Scalars['ID']>>>;
   link?: Maybe<Scalars['String']>;
+  series?: Maybe<Array<Maybe<Scalars['ID']>>>;
 };
 
 export type UpdateCategoryInput = {
@@ -1119,6 +1342,7 @@ export type EditCategoryInput = {
   image?: Maybe<Scalars['ID']>;
   repositories?: Maybe<Array<Maybe<Scalars['ID']>>>;
   link?: Maybe<Scalars['String']>;
+  series?: Maybe<Array<Maybe<Scalars['ID']>>>;
 };
 
 export type DeleteCategoryInput = {
@@ -1138,6 +1362,8 @@ export type PostInput = {
   categories?: Maybe<Array<Maybe<Scalars['ID']>>>;
   slug: Scalars['String'];
   show: Scalars['Boolean'];
+  repositories?: Maybe<Array<Maybe<Scalars['ID']>>>;
+  series?: Maybe<Array<Maybe<Scalars['ID']>>>;
 };
 
 export type UpdatePostInput = {
@@ -1154,6 +1380,8 @@ export type EditPostInput = {
   categories?: Maybe<Array<Maybe<Scalars['ID']>>>;
   slug?: Maybe<Scalars['String']>;
   show?: Maybe<Scalars['Boolean']>;
+  repositories?: Maybe<Array<Maybe<Scalars['ID']>>>;
+  series?: Maybe<Array<Maybe<Scalars['ID']>>>;
 };
 
 export type DeletePostInput = {
@@ -1171,6 +1399,8 @@ export type RepositoryInput = {
   description: Scalars['String'];
   categories?: Maybe<Array<Maybe<Scalars['ID']>>>;
   published_at: Scalars['Date'];
+  posts?: Maybe<Array<Maybe<Scalars['ID']>>>;
+  series?: Maybe<Array<Maybe<Scalars['ID']>>>;
 };
 
 export type UpdateRepositoryInput = {
@@ -1185,9 +1415,48 @@ export type EditRepositoryInput = {
   description?: Maybe<Scalars['String']>;
   categories?: Maybe<Array<Maybe<Scalars['ID']>>>;
   published_at?: Maybe<Scalars['Date']>;
+  posts?: Maybe<Array<Maybe<Scalars['ID']>>>;
+  series?: Maybe<Array<Maybe<Scalars['ID']>>>;
 };
 
 export type DeleteRepositoryInput = {
+  where?: Maybe<InputId>;
+};
+
+export type CreateSerieInput = {
+  data?: Maybe<SerieInput>;
+};
+
+export type SerieInput = {
+  name: Scalars['String'];
+  posts?: Maybe<Array<Maybe<Scalars['ID']>>>;
+  show?: Maybe<Scalars['Boolean']>;
+  categories?: Maybe<Array<Maybe<Scalars['ID']>>>;
+  repositories?: Maybe<Array<Maybe<Scalars['ID']>>>;
+  published_at: Scalars['Date'];
+  image?: Maybe<Scalars['ID']>;
+  slug: Scalars['String'];
+  description: Scalars['String'];
+};
+
+export type UpdateSerieInput = {
+  where?: Maybe<InputId>;
+  data?: Maybe<EditSerieInput>;
+};
+
+export type EditSerieInput = {
+  name?: Maybe<Scalars['String']>;
+  posts?: Maybe<Array<Maybe<Scalars['ID']>>>;
+  show?: Maybe<Scalars['Boolean']>;
+  categories?: Maybe<Array<Maybe<Scalars['ID']>>>;
+  repositories?: Maybe<Array<Maybe<Scalars['ID']>>>;
+  published_at?: Maybe<Scalars['Date']>;
+  image?: Maybe<Scalars['ID']>;
+  slug?: Maybe<Scalars['String']>;
+  description?: Maybe<Scalars['String']>;
+};
+
+export type DeleteSerieInput = {
   where?: Maybe<InputId>;
 };
 
@@ -1361,6 +1630,61 @@ export type RepositoriesQuery = (
   )>>> }
 );
 
+export type SeriesQueryVariables = {};
+
+
+export type SeriesQuery = (
+  { __typename?: 'Query' }
+  & { series?: Maybe<Array<Maybe<(
+    { __typename?: 'Serie' }
+    & Pick<Serie, 'id' | 'name' | 'slug'>
+    & { image?: Maybe<(
+      { __typename?: 'UploadFile' }
+      & Pick<UploadFile, 'url' | 'alternativeText'>
+    )>, categories?: Maybe<Array<Maybe<(
+      { __typename?: 'Category' }
+      & Pick<Category, 'name' | 'link'>
+    )>>>, posts?: Maybe<Array<Maybe<(
+      { __typename?: 'Post' }
+      & Pick<Post, 'title' | 'slug'>
+    )>>> }
+  )>>> }
+);
+
+export type SerieQueryVariables = {
+  id: Scalars['ID'];
+};
+
+
+export type SerieQuery = (
+  { __typename?: 'Query' }
+  & { serie?: Maybe<(
+    { __typename?: 'Serie' }
+    & Pick<Serie, 'id' | 'name' | 'description' | 'slug' | 'published_at'>
+    & { image?: Maybe<(
+      { __typename?: 'UploadFile' }
+      & Pick<UploadFile, 'url' | 'alternativeText'>
+    )>, categories?: Maybe<Array<Maybe<(
+      { __typename?: 'Category' }
+      & Pick<Category, 'name' | 'link'>
+    )>>>, posts?: Maybe<Array<Maybe<(
+      { __typename?: 'Post' }
+      & Pick<Post, 'title' | 'slug'>
+      & { image?: Maybe<(
+        { __typename?: 'UploadFile' }
+        & Pick<UploadFile, 'url' | 'alternativeText'>
+      )> }
+    )>>>, repositories?: Maybe<Array<Maybe<(
+      { __typename?: 'Repository' }
+      & Pick<Repository, 'id' | 'name' | 'description' | 'repository_url' | 'published_at'>
+      & { image?: Maybe<(
+        { __typename?: 'UploadFile' }
+        & Pick<UploadFile, 'url' | 'alternativeText'>
+      )> }
+    )>>> }
+  )> }
+);
+
 
 export const PostsDocument = gql`
     query Posts {
@@ -1494,3 +1818,113 @@ export function useRepositoriesLazyQuery(baseOptions?: ApolloReactHooks.LazyQuer
 export type RepositoriesQueryHookResult = ReturnType<typeof useRepositoriesQuery>;
 export type RepositoriesLazyQueryHookResult = ReturnType<typeof useRepositoriesLazyQuery>;
 export type RepositoriesQueryResult = ApolloReactCommon.QueryResult<RepositoriesQuery, RepositoriesQueryVariables>;
+export const SeriesDocument = gql`
+    query Series {
+  series(sort: "published_at:DESC", where: {show: true}) {
+    id
+    name
+    slug
+    image {
+      url
+      alternativeText
+    }
+    categories {
+      name
+      link
+    }
+    posts {
+      title
+      slug
+    }
+  }
+}
+    `;
+
+/**
+ * __useSeriesQuery__
+ *
+ * To run a query within a React component, call `useSeriesQuery` and pass it any options that fit your needs.
+ * When your component renders, `useSeriesQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useSeriesQuery({
+ *   variables: {
+ *   },
+ * });
+ */
+export function useSeriesQuery(baseOptions?: ApolloReactHooks.QueryHookOptions<SeriesQuery, SeriesQueryVariables>) {
+        return ApolloReactHooks.useQuery<SeriesQuery, SeriesQueryVariables>(SeriesDocument, baseOptions);
+      }
+export function useSeriesLazyQuery(baseOptions?: ApolloReactHooks.LazyQueryHookOptions<SeriesQuery, SeriesQueryVariables>) {
+          return ApolloReactHooks.useLazyQuery<SeriesQuery, SeriesQueryVariables>(SeriesDocument, baseOptions);
+        }
+export type SeriesQueryHookResult = ReturnType<typeof useSeriesQuery>;
+export type SeriesLazyQueryHookResult = ReturnType<typeof useSeriesLazyQuery>;
+export type SeriesQueryResult = ApolloReactCommon.QueryResult<SeriesQuery, SeriesQueryVariables>;
+export const SerieDocument = gql`
+    query Serie($id: ID!) {
+  serie(id: $id) {
+    id
+    name
+    description
+    slug
+    published_at
+    image {
+      url
+      alternativeText
+    }
+    categories {
+      name
+      link
+    }
+    posts {
+      title
+      slug
+      image {
+        url
+        alternativeText
+      }
+    }
+    repositories {
+      id
+      name
+      description
+      repository_url
+      published_at
+      image {
+        url
+        alternativeText
+      }
+    }
+  }
+}
+    `;
+
+/**
+ * __useSerieQuery__
+ *
+ * To run a query within a React component, call `useSerieQuery` and pass it any options that fit your needs.
+ * When your component renders, `useSerieQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useSerieQuery({
+ *   variables: {
+ *      id: // value for 'id'
+ *   },
+ * });
+ */
+export function useSerieQuery(baseOptions?: ApolloReactHooks.QueryHookOptions<SerieQuery, SerieQueryVariables>) {
+        return ApolloReactHooks.useQuery<SerieQuery, SerieQueryVariables>(SerieDocument, baseOptions);
+      }
+export function useSerieLazyQuery(baseOptions?: ApolloReactHooks.LazyQueryHookOptions<SerieQuery, SerieQueryVariables>) {
+          return ApolloReactHooks.useLazyQuery<SerieQuery, SerieQueryVariables>(SerieDocument, baseOptions);
+        }
+export type SerieQueryHookResult = ReturnType<typeof useSerieQuery>;
+export type SerieLazyQueryHookResult = ReturnType<typeof useSerieLazyQuery>;
+export type SerieQueryResult = ApolloReactCommon.QueryResult<SerieQuery, SerieQueryVariables>;
