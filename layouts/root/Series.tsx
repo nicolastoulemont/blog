@@ -6,6 +6,10 @@ import ListItem from '@components/ListItem'
 export function Series() {
 	const { data } = useSeriesQuery()
 
+	if (data?.series?.length === 0) {
+		return <div />
+	}
+
 	return (
 		<Box mt={8} maxHeight='500px' overflowY='auto'>
 			<Heading as='h2' size='lg' mb={8} textAlign={['center', 'left']}>
