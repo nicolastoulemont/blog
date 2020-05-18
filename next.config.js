@@ -9,7 +9,8 @@ const settings = {
 		return config
 	},
 	env: {
-		API_URL: 'https://nt-blog-cms.herokuapp.com'
+		API_URL: 'https://nt-blog-cms.herokuapp.com',
+		GTAG_ID: 'UA-166835142-1'
 	},
 	pwa: {
 		dest: 'public'

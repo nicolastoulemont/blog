@@ -55,6 +55,24 @@ export const Layout: React.FunctionComponent<Props> = ({
 						<meta property='og:image' content={meta.image} />
 					</>
 				)}
+				{process.env.NODE_ENV === 'production' && (
+					<>
+						<script
+							async
+							src={`https://www.googletagmanager.com/gtag/js?id=${process.env.GTAG_ID}`}
+						></script>
+						<script
+							dangerouslySetInnerHTML={{
+								__html: `
+								window.dataLayer = window.dataLayer || [];
+								function gtag(){dataLayer.push(arguments);}
+								gtag('js', new Date());
+
+								gtag('config', '${process.env.GTAG_ID}');`
+							}}
+						/>
+					</>
+				)}
 			</Head>
 			<style jsx global>
 				{`
