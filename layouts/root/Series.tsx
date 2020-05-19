@@ -5,7 +5,7 @@ import ListItem from '@components/ListItem'
 
 export function Series() {
 	const { data } = useSeriesQuery()
-
+	console.log(data)
 	if (!data || !data.series || data?.series?.length === 0) {
 		return <div />
 	}
