@@ -39,6 +39,7 @@ export const SERIE = gql`
 				link
 			}
 			posts {
+				id
 				title
 				slug
 				image {
