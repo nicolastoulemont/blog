@@ -1608,6 +1608,13 @@ export type PostQuery = (
     )>, categories?: Maybe<Array<Maybe<(
       { __typename?: 'Category' }
       & Pick<Category, 'name' | 'link'>
+    )>>>, series?: Maybe<Array<Maybe<(
+      { __typename?: 'Serie' }
+      & Pick<Serie, 'id' | 'slug' | 'name' | 'description'>
+      & { posts?: Maybe<Array<Maybe<(
+        { __typename?: 'Post' }
+        & Pick<Post, 'id' | 'title' | 'slug'>
+      )>>> }
     )>>> }
   )> }
 );
@@ -1744,6 +1751,17 @@ export const PostDocument = gql`
     categories {
       name
       link
+    }
+    series {
+      id
+      slug
+      name
+      description
+      posts {
+        id
+        title
+        slug
+      }
     }
   }
 }

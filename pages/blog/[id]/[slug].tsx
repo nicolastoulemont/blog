@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import { Layout } from '@components/Layout'
 import { Flex, Heading, Image, Box, Text, Link } from '@chakra-ui/core'
 import { withApollo } from 'lib/apollo'
@@ -9,8 +9,18 @@ import { DATE_FORMAT } from 'utils/index'
 import NextLink from 'next/link'
 import { Markdown } from '@components/Markdown'
 import { Category } from '@components/Category'
+import { SerieItem } from '@components/SerieItem'
+
+interface Serie {
+	id: string
+	description: string
+	slug: string
+	name: string
+	posts: Array<{ id: string; slug: string; title: string }>
+}
 
 export default withApollo(function Post() {
+	const [series, setSeries] = useState<Array<Serie>>([])
 	const router = useRouter()
 	const { id } = router.query
 	const { data } = usePostQuery({ variables: { id: id as string } })
@@ -18,6 +28,18 @@ export default withApollo(function Post() {
 	const keywords = post?.categories?.map((category) => category?.name).join(',')
 	const url = `https://nicolastoulemont.dev${router.asPath}`
 	const twitterLink = `https://twitter.com/intent/tweet?text=${post?.title}&url=${url}&via=NicoToulemont&hash=${keywords}`
+
+	useEffect(() => {
+		if (post?.series && post?.series?.length > 0) {
+			const seriesWithOtherPosts = post.series.reduce((arr, serie) => {
+				const otherPosts = serie?.posts?.filter((p) => p?.title !== post.title) ?? []
+				// @ts-ignore
+				otherPosts.length > 0 && arr.push({ ...serie, posts: otherPosts })
+				return arr
+			}, [])
+			setSeries(seriesWithOtherPosts)
+		}
+	}, [post])
 
 	return (
 		<Layout
@@ -88,7 +110,27 @@ export default withApollo(function Post() {
 					borderRadius='4px'
 				/>
 			</Flex>
+			{series && series.length > 0 && (
+				<>
+					<Heading as='h4' fontSize='sm' fontStyle='italic' mb='2'>
+						Related
+					</Heading>
+					{series.map((serie) => (
+						<SerieItem serie={serie} key={serie.id} />
+					))}
+				</>
+			)}
 			<Markdown content={post?.content} />
+			{series && series.length > 0 && (
+				<>
+					<Heading as='h4' fontSize='sm' fontStyle='italic' mb='2'>
+						Related
+					</Heading>
+					{series.map((serie) => (
+						<SerieItem serie={serie} key={serie.id} />
+					))}
+				</>
+			)}
 		</Layout>
 	)
 })

@@ -35,6 +35,17 @@ export const POST = gql`
 				name
 				link
 			}
+			series {
+				id
+				slug
+				name
+				description
+				posts {
+					id
+					title
+					slug
+				}
+			}
 		}
 	}
 `
