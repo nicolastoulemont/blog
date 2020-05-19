@@ -18,7 +18,7 @@ export default withApollo(function Serie() {
 	const keywords = serie?.categories?.map((category) => category?.name).join(',')
 	const url = `https://nicolastoulemont.dev${router.asPath}`
 	const twitterLink = `https://twitter.com/intent/tweet?text=${serie?.name}&url=${url}&via=NicoToulemont&hash=${keywords}`
-
+	console.log(serie)
 	return (
 		<Layout
 			title={serie?.name}

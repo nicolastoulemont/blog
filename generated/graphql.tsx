@@ -1669,7 +1669,7 @@ export type SerieQuery = (
       & Pick<Category, 'name' | 'link'>
     )>>>, posts?: Maybe<Array<Maybe<(
       { __typename?: 'Post' }
-      & Pick<Post, 'title' | 'slug'>
+      & Pick<Post, 'id' | 'title' | 'slug'>
       & { image?: Maybe<(
         { __typename?: 'UploadFile' }
         & Pick<UploadFile, 'url' | 'alternativeText'>
@@ -1881,6 +1881,7 @@ export const SerieDocument = gql`
       link
     }
     posts {
+      id
       title
       slug
       image {
