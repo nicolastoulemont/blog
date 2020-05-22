@@ -112,7 +112,7 @@ export default withApollo(function Post() {
 			</Flex>
 			{series && series.length > 0 && (
 				<>
-					<Heading as='h4' fontSize='sm' fontStyle='italic' mb='2'>
+					<Heading as='h4' fontSize='sm' fontStyle='italic' my='4'>
 						Related
 					</Heading>
 					{series.map((serie) => (
@@ -123,7 +123,7 @@ export default withApollo(function Post() {
 			<Markdown content={post?.content} />
 			{series && series.length > 0 && (
 				<>
-					<Heading as='h4' fontSize='sm' fontStyle='italic' mb='2'>
+					<Heading as='h4' fontSize='sm' fontStyle='italic' my='4'>
 						Related
 					</Heading>
 					{series.map((serie) => (

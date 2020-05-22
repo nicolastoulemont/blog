@@ -130,6 +130,7 @@ export function Markdown({ content }: MarkdownProps) {
 
 					.markdown-body img {
 						border-style: none;
+						border-radius: 4px;
 						margin: 0 auto;
 					}
 
