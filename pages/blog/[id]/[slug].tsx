@@ -10,14 +10,7 @@ import NextLink from 'next/link'
 import { Markdown } from '@components/Markdown'
 import { Category } from '@components/Category'
 import { SerieItem } from '@components/SerieItem'
-
-interface Serie {
-	id: string
-	description: string
-	slug: string
-	name: string
-	posts: Array<{ id: string; slug: string; title: string }>
-}
+import { Serie } from 'utils/types'
 
 export default withApollo(function Post() {
 	const [series, setSeries] = useState<Array<Serie>>([])

@@ -1,15 +1,8 @@
 import React from 'react'
-import { Text, List, ListItem, Box, useColorMode } from '@chakra-ui/core'
+import { Text, List, ListItem, Box, useColorMode, Image } from '@chakra-ui/core'
 import NextLink from 'next/link'
 import { hoverColor } from '@theme/colors'
-
-interface Serie {
-	id: string
-	description: string
-	slug: string
-	name: string
-	posts: Array<{ id: string; slug: string; title: string }>
-}
+import { Serie } from 'utils/types'
 
 export function SerieItem({ serie }: { serie: Serie }) {
 	const { colorMode } = useColorMode()
@@ -17,7 +10,15 @@ export function SerieItem({ serie }: { serie: Serie }) {
 	return (
 		<Box p='2' borderRadius='4px' border='1px' borderColor={hoverColor[colorMode]}>
 			<NextLink href='/serie/[id]/[slug]' as={`/serie/${serie.id}/${serie.slug}`}>
-				<a>
+				<a style={{ display: 'flex', alignItems: 'center', justifyContent: 'left' }}>
+					<Image
+						src={serie.image.url}
+						alt={serie.image.alternativeText as string}
+						borderRadius='4px'
+						alignSelf='center'
+						width='15px'
+						mr={2}
+					/>
 					<Text as='h4' fontSize='sm'>
 						{serie.name}
 					</Text>
@@ -34,12 +35,23 @@ export function SerieItem({ serie }: { serie: Serie }) {
 							<ListItem
 								fontSize='xs'
 								backgroundColor={hoverColor[colorMode]}
+								display='flex'
+								alignItems='center'
+								justifyContent='left'
 								_hover={{
 									backgroundColor: colorMode === 'light' ? 'gray.100' : null
 								}}
 								p='2'
 								borderRadius='4px'
 							>
+								<Image
+									src={post.image.url}
+									alt={post.image.alternativeText as string}
+									borderRadius='4px'
+									alignSelf='center'
+									width='15px'
+									mr={2}
+								/>
 								{post.title}
 							</ListItem>
 						</a>

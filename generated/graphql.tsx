@@ -1611,9 +1611,16 @@ export type PostQuery = (
     )>>>, series?: Maybe<Array<Maybe<(
       { __typename?: 'Serie' }
       & Pick<Serie, 'id' | 'slug' | 'name' | 'description'>
-      & { posts?: Maybe<Array<Maybe<(
+      & { image?: Maybe<(
+        { __typename?: 'UploadFile' }
+        & Pick<UploadFile, 'url' | 'alternativeText'>
+      )>, posts?: Maybe<Array<Maybe<(
         { __typename?: 'Post' }
         & Pick<Post, 'id' | 'title' | 'slug'>
+        & { image?: Maybe<(
+          { __typename?: 'UploadFile' }
+          & Pick<UploadFile, 'url' | 'alternativeText'>
+        )> }
       )>>> }
     )>>> }
   )> }
@@ -1757,10 +1764,18 @@ export const PostDocument = gql`
       slug
       name
       description
+      image {
+        url
+        alternativeText
+      }
       posts {
         id
         title
         slug
+        image {
+          url
+          alternativeText
+        }
       }
     }
   }

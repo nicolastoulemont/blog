@@ -40,10 +40,18 @@ export const POST = gql`
 				slug
 				name
 				description
+				image {
+					url
+					alternativeText
+				}
 				posts {
 					id
 					title
 					slug
+					image {
+						url
+						alternativeText
+					}
 				}
 			}
 		}
