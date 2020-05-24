@@ -18,7 +18,15 @@ export default withApollo(function Post() {
 	const router = useRouter()
 	const { id } = router.query
 	const { data } = usePostQuery({ variables: { id: id as string } })
+
 	const post = data?.post
+
+	useEffect(() => {
+		if (data && !data.post) {
+			router.push('/')
+		}
+	}, [data])
+
 	const keywords = post?.categories?.map((category) => category?.name).join(',')
 	const url = `https://nicolastoulemont.dev${router.asPath}`
 	const twitterLink = `https://twitter.com/intent/tweet?text=${post?.title}&url=${url}&via=NicoToulemont&hash=${keywords}`
