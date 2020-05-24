@@ -35,6 +35,16 @@ export const POST = gql`
 				name
 				link
 			}
+			repositories {
+				id
+				name
+				description
+				repository_url
+				image {
+					url
+					alternativeText
+				}
+			}
 			series {
 				id
 				slug

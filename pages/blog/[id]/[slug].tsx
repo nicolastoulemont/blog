@@ -11,6 +11,7 @@ import { Markdown } from '@components/Markdown'
 import { Category } from '@components/Category'
 import { SerieItem } from '@components/SerieItem'
 import { Serie } from 'utils/types'
+import ListItem from '@components/ListItem'
 
 export default withApollo(function Post() {
 	const [series, setSeries] = useState<Array<Serie>>([])
@@ -106,7 +107,7 @@ export default withApollo(function Post() {
 			{series && series.length > 0 && (
 				<>
 					<Heading as='h4' fontSize='sm' fontStyle='italic' my='4'>
-						Related
+						Part of
 					</Heading>
 					{series.map((serie) => (
 						<SerieItem serie={serie} key={serie.id} />
@@ -117,10 +118,20 @@ export default withApollo(function Post() {
 			{series && series.length > 0 && (
 				<>
 					<Heading as='h4' fontSize='sm' fontStyle='italic' my='4'>
-						Related
+						Part of
 					</Heading>
 					{series.map((serie) => (
 						<SerieItem serie={serie} key={serie.id} />
+					))}
+				</>
+			)}
+			{post?.repositories && post.repositories.length > 0 && (
+				<>
+					<Heading as='h4' fontSize='sm' fontStyle='italic' my='4'>
+						{post.repositories.length > 1 ? 'Repositories' : 'Repository'}
+					</Heading>
+					{post.repositories.map((repository) => (
+						<ListItem {...(repository as any)} key={repository?.id} />
 					))}
 				</>
 			)}
