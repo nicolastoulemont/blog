@@ -11,7 +11,7 @@ export function Series() {
 
 	return (
 		<Box mt={8} maxHeight='500px' overflowY='auto'>
-			<Heading as='h2' size='lg' mb={8} textAlign={['center', 'left']}>
+			<Heading as='h2' size='lg' mb={[4, 8]} textAlign='left' fontWeight='600'>
 				Series
 			</Heading>
 			{data?.series?.map((serie) => (

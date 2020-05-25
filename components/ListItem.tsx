@@ -1,8 +1,8 @@
 import React from 'react'
-import { PseudoBox, useColorMode, Flex, Image, Text } from '@chakra-ui/core'
+import { PseudoBox, useColorMode, Flex, Image, Text, Link } from '@chakra-ui/core'
 import { hoverColor } from '@theme/colors'
 import { Category } from './Category'
-import Link from 'next/link'
+import NextLink from 'next/link'
 
 interface Image {
 	url: string
@@ -35,11 +35,11 @@ interface PostOrSerieInfos {
 
 function SerieOrPostInfos({ id, slug, image, title, name }: PostOrSerieInfos) {
 	return (
-		<Link
+		<NextLink
 			href={`/${title ? 'blog' : 'serie'}/[id]/[slug]`}
 			as={`/${title ? 'blog' : 'serie'}/${id}/${slug}`}
 		>
-			<a style={{ display: 'flex', flex: '1' }}>
+			<Link display='flex' flex={1}>
 				<Flex align='center' justify='left' width='100%'>
 					<Image
 						src={image?.url}
@@ -59,8 +59,8 @@ function SerieOrPostInfos({ id, slug, image, title, name }: PostOrSerieInfos) {
 						</Text>
 					) : null}
 				</Flex>
-			</a>
-		</Link>
+			</Link>
+		</NextLink>
 	)
 }
 
@@ -73,12 +73,7 @@ interface RepoInfosProps {
 
 function RepoInfos({ repository_url, image, name, description }: RepoInfosProps) {
 	return (
-		<a
-			href={repository_url}
-			target='blank'
-			rel='noopener'
-			style={{ display: 'flex', flex: '1' }}
-		>
+		<Link href={repository_url} isExternal={true} rel='noopener' display='flex' flex={1}>
 			<Flex align='center' justify='left' width='100%'>
 				<Image
 					src={image?.url}
@@ -93,7 +88,7 @@ function RepoInfos({ repository_url, image, name, description }: RepoInfosProps)
 				</Text>
 				<Text fontSize={['xs', 'sm']}>{description}</Text>
 			</Flex>
-		</a>
+		</Link>
 	)
 }
 
@@ -115,9 +110,9 @@ export default function ListItem({
 			display='flex'
 			alignItems='center'
 			justifyContent='space-between'
-			py={3}
-			px={4}
-			mb={4}
+			py={[1, 3]}
+			px={[2, 4]}
+			mb={[2, 4]}
 			borderRadius='4px'
 			_hover={{
 				backgroundColor: hoverColor[colorMode]

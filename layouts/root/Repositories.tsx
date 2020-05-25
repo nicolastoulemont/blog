@@ -8,7 +8,7 @@ export function Repositories() {
 
 	return (
 		<Box mt={8} maxHeight='500px' overflowY='auto'>
-			<Heading as='h2' size='lg' mb={8} textAlign={['center', 'left']}>
+			<Heading as='h2' size='lg' mb={[4, 8]} textAlign='left' fontWeight='600'>
 				Open Source Projects
 			</Heading>
 			{!data || (data?.repositories?.length === 0 && <Text>No repositories yet</Text>)}

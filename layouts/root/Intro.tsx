@@ -13,14 +13,14 @@ export function Intro() {
 			pt={8}
 		>
 			<Flex direction='column' justify='center' mr={[0, 8]} mt={[8, 0]}>
-				<Flex align='center' justify={['center', 'left']} mb={4}>
+				<Flex align='center' justify='left' mb={4}>
 					<Heading as='h1' size='2xl' fontWeight={600}>
 						Hey I'm Nicolas !
 					</Heading>
 					<PseudoBox as={GiHand} color='yellow.300' fontSize={30} ml={2} />
 				</Flex>
 
-				<Text fontSize='xl' textAlign={['center', 'left']}>
+				<Text fontSize='xl' textAlign='left'>
 					I'm a full stack software developer using Typescript, Node, React and GraphQL.
 				</Text>
 			</Flex>

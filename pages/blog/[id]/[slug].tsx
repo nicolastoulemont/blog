@@ -62,22 +62,22 @@ export default withApollo(function Post() {
 				p={1}
 			>
 				<Box>
-					<Heading as='h1' fontSize={['md', '2xl']}>
+					<Heading as='h1' fontSize={['xl', '2xl']} fontWeight='600'>
 						{post?.title}
 					</Heading>
 					<Flex align='center' justify='left' mt={[2, 4]}>
 						<NextLink href='/me'>
-							<a>
+							<Link display={['none', 'block']}>
 								<Image
 									src='/img/personal_picture.jpg'
 									alt='author_picture'
 									borderRadius='50%'
 									width='35px'
 								/>
-							</a>
+							</Link>
 						</NextLink>
 						{post?.published_at && (
-							<Text ml={4} fontSize='xs'>
+							<Text ml={[0, 4]} fontSize='xs'>
 								{format(new Date(post?.published_at), DATE_FORMAT)}
 							</Text>
 						)}
@@ -99,6 +99,7 @@ export default withApollo(function Post() {
 								name={category?.name!}
 								link={category?.link!}
 								key={category?.name}
+								margin='right'
 							/>
 						))}
 					</Flex>
@@ -114,7 +115,7 @@ export default withApollo(function Post() {
 			</Flex>
 			{series && series.length > 0 && (
 				<>
-					<Heading as='h4' fontSize='sm' fontStyle='italic' my='4'>
+					<Heading as='h4' fontSize='sm' fontStyle='italic' my='4' fontWeight='600'>
 						Part of
 					</Heading>
 					{series.map((serie) => (
@@ -125,7 +126,7 @@ export default withApollo(function Post() {
 			<Markdown content={post?.content} />
 			{series && series.length > 0 && (
 				<>
-					<Heading as='h4' fontSize='sm' fontStyle='italic' my='4'>
+					<Heading as='h4' fontSize='sm' fontStyle='italic' my='4' fontWeight='600'>
 						Part of
 					</Heading>
 					{series.map((serie) => (
@@ -135,7 +136,7 @@ export default withApollo(function Post() {
 			)}
 			{post?.repositories && post.repositories.length > 0 && (
 				<>
-					<Heading as='h4' fontSize='sm' fontStyle='italic' my='4'>
+					<Heading as='h4' fontSize='sm' fontStyle='italic' my='4' fontWeight='600'>
 						{post.repositories.length > 1 ? 'Repositories' : 'Repository'}
 					</Heading>
 					{post.repositories.map((repository) => (

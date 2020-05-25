@@ -5,11 +5,18 @@ import { TagWithHover } from './Tag'
 interface CategoryProps {
 	name: string
 	link: string
+	margin?: 'left' | 'right'
 }
 
-export function Category({ name, link }: CategoryProps) {
+export function Category({ name, link, margin = 'left' }: CategoryProps) {
 	return (
-		<Link href={link} ml={2} target='_blank' rel='noopener'>
+		<Link
+			href={link}
+			ml={margin === 'left' ? 2 : 0}
+			mr={margin === 'right' ? 2 : 0}
+			isExternal={true}
+			rel='noopener'
+		>
 			<TagWithHover size='sm'>{name}</TagWithHover>
 		</Link>
 	)

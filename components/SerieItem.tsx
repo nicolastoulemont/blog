@@ -1,5 +1,5 @@
 import React from 'react'
-import { Text, List, ListItem, Box, useColorMode, Image } from '@chakra-ui/core'
+import { Text, List, ListItem, Box, useColorMode, Image, Link } from '@chakra-ui/core'
 import NextLink from 'next/link'
 import { hoverColor } from '@theme/colors'
 import { Serie } from 'utils/types'
@@ -31,7 +31,7 @@ export function SerieItem({ serie }: { serie: Serie }) {
 						href='/blog/[id]/[slug]'
 						as={`/blog/${post.id}/${post.slug}`}
 					>
-						<a>
+						<Link>
 							<ListItem
 								fontSize='xs'
 								backgroundColor={hoverColor[colorMode]}
@@ -54,7 +54,7 @@ export function SerieItem({ serie }: { serie: Serie }) {
 								/>
 								{post.title}
 							</ListItem>
-						</a>
+						</Link>
 					</NextLink>
 				))}
 			</List>

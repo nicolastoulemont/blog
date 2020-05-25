@@ -8,7 +8,7 @@ export function Articles() {
 
 	return (
 		<Box mt={8} maxHeight='500px' overflowY='auto'>
-			<Heading as='h2' size='lg' mb={8} textAlign={['center', 'left']}>
+			<Heading as='h2' size='lg' mb={[4, 8]} textAlign='left' fontWeight='600'>
 				Latest Articles
 			</Heading>
 			{!data || (data?.posts?.length === 0 && <Text>No posts yet</Text>)}
