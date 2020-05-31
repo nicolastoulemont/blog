@@ -1785,7 +1785,7 @@ export const PostDocument = gql`
         url
         alternativeText
       }
-      posts {
+      posts(where: {show: true}) {
         id
         title
         slug
