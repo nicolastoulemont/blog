@@ -31,7 +31,7 @@ export function SerieItem({ serie }: { serie: Serie }) {
 						href='/blog/[id]/[slug]'
 						as={`/blog/${post.id}/${post.slug}`}
 					>
-						<Link>
+						<Link my={2}>
 							<ListItem
 								fontSize='xs'
 								backgroundColor={hoverColor[colorMode]}

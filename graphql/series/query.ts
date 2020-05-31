@@ -38,7 +38,7 @@ export const SERIE = gql`
 				name
 				link
 			}
-			posts {
+			posts(where: { show: true }) {
 				id
 				title
 				slug

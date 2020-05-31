@@ -1930,7 +1930,7 @@ export const SerieDocument = gql`
       name
       link
     }
-    posts {
+    posts(where: {show: true}) {
       id
       title
       slug
