@@ -4,9 +4,14 @@ import { color } from '@theme/colors'
 
 interface TagProps {
 	size?: 'lg' | 'md' | 'sm'
+	fontSize?: Array<string>
 }
 
-export const TagWithHover: React.FunctionComponent<TagProps> = ({ size = 'md', children }) => {
+export const TagWithHover: React.FunctionComponent<TagProps> = ({
+	size = 'md',
+	fontSize = ['10px', '12px'],
+	children
+}) => {
 	const { colorMode } = useColorMode()
 
 	const bg = {
@@ -15,7 +20,11 @@ export const TagWithHover: React.FunctionComponent<TagProps> = ({ size = 'md', c
 	}
 
 	return (
-		<Tag size={size} _hover={{ backgroundColor: bg[colorMode], color: color[colorMode] }}>
+		<Tag
+			size={size}
+			fontSize={fontSize}
+			_hover={{ backgroundColor: bg[colorMode], color: color[colorMode] }}
+		>
 			{children}
 		</Tag>
 	)

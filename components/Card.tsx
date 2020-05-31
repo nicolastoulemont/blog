@@ -50,7 +50,7 @@ export function Card({ img, links }: CardProps) {
 									justifyContent='center'
 									mr={2}
 								>
-									<TagWithHover size='lg'>
+									<TagWithHover size='lg' fontSize={['12px', '14px']}>
 										{link.icon && <PseudoBox as={link.icon} mr={2} />}
 										{link.text}
 									</TagWithHover>
@@ -65,7 +65,7 @@ export function Card({ img, links }: CardProps) {
 											marginRight: '0.5rem'
 										}}
 									>
-										<TagWithHover size='lg'>
+										<TagWithHover size='lg' fontSize={['12px', '14px']}>
 											{link.icon && <PseudoBox as={link.icon} mr={2} />}
 											{link.text}
 										</TagWithHover>

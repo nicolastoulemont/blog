@@ -1,17 +1,18 @@
 import React, { useEffect, useState } from 'react'
 import { Layout } from '@components/Layout'
-import { Flex, Heading, Image, Box, Text, Link } from '@chakra-ui/core'
+import { Flex, Heading, Image, Box, Text, Link, PseudoBox } from '@chakra-ui/core'
 import { withApollo } from 'lib/apollo'
 import { usePostQuery } from 'generated/graphql'
 import { format } from 'date-fns'
 import { useRouter } from 'next/router'
 import { DATE_FORMAT } from 'utils/index'
 import NextLink from 'next/link'
+import ListItem from '@components/ListItem'
 import { Markdown } from '@components/Markdown'
 import { Category } from '@components/Category'
 import { SerieItem } from '@components/SerieItem'
 import { Serie } from 'utils/types'
-import ListItem from '@components/ListItem'
+import { IoMdTime } from 'react-icons/io'
 
 export default withApollo(function Post() {
 	const [series, setSeries] = useState<Array<Serie>>([])
@@ -62,25 +63,20 @@ export default withApollo(function Post() {
 				p={1}
 			>
 				<Box>
-					<Heading as='h1' fontSize={['xl', '2xl']} fontWeight='600'>
+					<Heading as='h1' fontSize={'2xl'} fontWeight='600'>
 						{post?.title}
 					</Heading>
-					<Flex align='center' justify='left' mt={[2, 4]}>
-						<NextLink href='/me'>
-							<Link display={['none', 'block']}>
-								<Image
-									src='/img/personal_picture.jpg'
-									alt='author_picture'
-									borderRadius='50%'
-									width='35px'
-								/>
-							</Link>
-						</NextLink>
+					<Flex align='flex-start' justify='left' mt={[2, 4]}>
 						{post?.published_at && (
-							<Text ml={[0, 4]} fontSize='xs'>
+							<Text fontSize='xs'>
 								{format(new Date(post?.published_at), DATE_FORMAT)}
 							</Text>
 						)}
+						<Flex fontSize='12px' align='center' justify='left' ml={2}>
+							<PseudoBox as={IoMdTime} mr={1} />
+							{post?.content && Math.round(post.content.trim().length / 1500)} min
+						</Flex>
+
 						<Link
 							href={twitterLink}
 							ml={2}
@@ -115,7 +111,7 @@ export default withApollo(function Post() {
 			</Flex>
 			{series && series.length > 0 && (
 				<>
-					<Heading as='h4' fontSize='sm' fontStyle='italic' my='4' fontWeight='600'>
+					<Heading as='h4' fontSize='sm' fontStyle='italic' my='2' fontWeight='600'>
 						Part of
 					</Heading>
 					{series.map((serie) => (
@@ -126,7 +122,7 @@ export default withApollo(function Post() {
 			<Markdown content={post?.content} />
 			{series && series.length > 0 && (
 				<>
-					<Heading as='h4' fontSize='sm' fontStyle='italic' my='4' fontWeight='600'>
+					<Heading as='h4' fontSize='sm' fontStyle='italic' my='2' fontWeight='600'>
 						Part of
 					</Heading>
 					{series.map((serie) => (
@@ -136,7 +132,7 @@ export default withApollo(function Post() {
 			)}
 			{post?.repositories && post.repositories.length > 0 && (
 				<>
-					<Heading as='h4' fontSize='sm' fontStyle='italic' my='4' fontWeight='600'>
+					<Heading as='h4' fontSize='sm' fontStyle='italic' my='2' fontWeight='600'>
 						{post.repositories.length > 1 ? 'Repositories' : 'Repository'}
 					</Heading>
 					{post.repositories.map((repository) => (
