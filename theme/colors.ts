@@ -14,8 +14,13 @@ export const color = {
 }
 
 export const shadow = {
-	light: '0.5rem 1.25rem 1.75rem 0 rgba(100,110,140,.4)',
-	dark: '0.5rem 1.25rem 1.75rem 0 rgba(38,39,43,.4)'
+	light: '0rem 1.25rem 1.75rem 0 rgba(100,110,140,.4)',
+	dark: '0rem 1.25rem 1.75rem 0 rgba(38,39,43,.4)'
+}
+
+export const shadowHover = {
+	light: '0rem 1.8rem 2rem 0 rgba(100,110,140,.4)',
+	dark: '0rem 1.8rem 2rem 0 rgba(38,39,43,.4)'
 }
 
 export const select = {

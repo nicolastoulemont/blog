@@ -1,9 +1,9 @@
 import React, { Fragment } from 'react'
 import { Flex, useColorMode, Image, Link, PseudoBox } from '@chakra-ui/core'
-import NextLink from 'next/link'
-import { shadow } from '@theme/colors'
+import { shadow, shadowHover } from '@theme/colors'
 import { IconType } from 'react-icons/lib/cjs'
 import { TagWithHover } from './Tag'
+import NextLink from 'next/link'
 
 interface CardProps {
 	links?: Array<{ href: string; as?: string; text: string; external?: boolean; icon?: IconType }>
@@ -18,14 +18,18 @@ export function Card({ img, links }: CardProps) {
 	const { colorMode } = useColorMode()
 
 	return (
-		<Flex
+		<PseudoBox
 			p={10}
 			height='100%'
 			borderRadius='4px'
-			direction='column'
-			align='flex-start'
-			justify='center'
+			display='flex'
+			flexDirection='column'
+			alignItems='flex-start'
+			justifyContent='center'
 			boxShadow={shadow[colorMode]}
+			_hover={{
+				boxShadow: shadowHover[colorMode]
+			}}
 		>
 			{img && (
 				<Image
@@ -76,6 +80,6 @@ export function Card({ img, links }: CardProps) {
 					))}
 				</Flex>
 			)}
-		</Flex>
+		</PseudoBox>
 	)
 }

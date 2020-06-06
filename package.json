@@ -1,5 +1,5 @@
 {
-	"name": "with-typescript",
+	"name": "nicolastoulemont-blog",
 	"version": "1.0.0",
 	"scripts": {
 		"dev": "next",
@@ -20,6 +20,7 @@
 		"apollo-link-http": "^1.5.17",
 		"date-fns": "^2.11.0",
 		"emotion-theming": "^10.0.27",
+		"framer-motion": "^1.11.0",
 		"graphql": "^15.0.0",
 		"graphql-tag": "^2.10.3",
 		"isomorphic-unfetch": "3.0.0",
@@ -41,7 +42,7 @@
 		"@types/react": "^16.9.16",
 		"@types/react-dom": "^16.9.4",
 		"@types/react-syntax-highlighter": "^11.0.4",
-		"typescript": "3.8.3"
+		"typescript": "3.9.5"
 	},
 	"license": "ISC"
 }

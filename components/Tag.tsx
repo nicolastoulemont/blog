@@ -23,7 +23,10 @@ export const TagWithHover: React.FunctionComponent<TagProps> = ({
 		<Tag
 			size={size}
 			fontSize={fontSize}
-			_hover={{ backgroundColor: bg[colorMode], color: color[colorMode] }}
+			_hover={{
+				backgroundColor: bg[colorMode],
+				color: color[colorMode]
+			}}
 		>
 			{children}
 		</Tag>

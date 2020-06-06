@@ -1,8 +1,11 @@
 import React from 'react'
 import { Flex, Heading, PseudoBox, Text } from '@chakra-ui/core'
 import { Card } from '@components/Card'
+import { motion } from 'framer-motion'
 import { GiHand } from 'react-icons/gi'
 import { FaGithub, FaTwitter } from 'react-icons/fa'
+
+const MotionPseudoBox = motion.custom(PseudoBox)
 
 export function Intro() {
 	return (
@@ -17,7 +20,15 @@ export function Intro() {
 					<Heading as='h1' size='2xl' fontWeight={600}>
 						Hey I'm Nicolas !
 					</Heading>
-					<PseudoBox as={GiHand} color='yellow.300' fontSize={30} ml={2} />
+					<MotionPseudoBox
+						color='yellow.300'
+						fontSize={40}
+						ml={2}
+						whileHover={{ rotate: [30, 0, 30, 0] }}
+						_hover={{ cursor: 'pointer' }}
+					>
+						<GiHand />
+					</MotionPseudoBox>
 				</Flex>
 
 				<Text fontSize='xl' textAlign='left'>
