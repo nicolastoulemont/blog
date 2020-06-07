@@ -115,6 +115,7 @@ export default function ListItem({
 			mb={[2, 4]}
 			borderRadius='4px'
 			_hover={{
+				transition: 'background-color 0.15s ease-in',
 				backgroundColor: hoverColor[colorMode]
 			}}
 		>

@@ -39,7 +39,8 @@ export function SerieItem({ serie }: { serie: Serie }) {
 								alignItems='center'
 								justifyContent='left'
 								_hover={{
-									backgroundColor: colorMode === 'light' ? 'gray.100' : null
+									transition: 'background-color 0.15s ease-in',
+									backgroundColor: colorMode === 'light' ? 'gray.200' : null
 								}}
 								p='2'
 								my={2}

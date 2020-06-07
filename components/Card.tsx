@@ -28,6 +28,7 @@ export function Card({ img, links }: CardProps) {
 			justifyContent='center'
 			boxShadow={shadow[colorMode]}
 			_hover={{
+				transition: 'box-shadow 0.25s ease-in',
 				boxShadow: shadowHover[colorMode]
 			}}
 		>

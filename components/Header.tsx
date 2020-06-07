@@ -68,7 +68,11 @@ export function Header() {
 				<Flex align='center'>
 					<NextLink href='/me'>
 						<Link
-							_hover={{ bg: hoverColor[colorMode], color: color[colorMode] }}
+							_hover={{
+								transition: 'background-color 0.15s ease-in',
+								backgroundColor: hoverColor[colorMode],
+								color: color[colorMode]
+							}}
 							py={2}
 							px={3}
 							borderRadius='10px'

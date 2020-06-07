@@ -24,6 +24,7 @@ export const TagWithHover: React.FunctionComponent<TagProps> = ({
 			size={size}
 			fontSize={fontSize}
 			_hover={{
+				transition: 'background-color 0.15s ease-in',
 				backgroundColor: bg[colorMode],
 				color: color[colorMode]
 			}}
