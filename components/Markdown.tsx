@@ -674,7 +674,7 @@ export function Markdown({ content }: MarkdownProps) {
 					.markdown-body table,
 					.markdown-body ul {
 						margin-top: 0;
-						margin-bottom: 16px;
+						margin-bottom: 32px;
 					}
 
 					.markdown-body hr {
