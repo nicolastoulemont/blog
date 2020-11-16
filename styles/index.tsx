@@ -34,6 +34,7 @@ import {
 	Image,
 	Kbd,
 	Link,
+	OrderedList,
 	UnorderedList,
 	List,
 	ListItem,
@@ -78,6 +79,7 @@ export const MDXComponents = {
 			fallbackSrc={props.src}
 		/>
 	),
+	ol: (props) => <OrderedList {...props}>{props.children}</OrderedList>,
 	ul: (props) => <UnorderedList {...props}>{props.children}</UnorderedList>,
 	li: (props) => <ListItem my={3} {...props} />,
 	Accordion,

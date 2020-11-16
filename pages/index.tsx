@@ -18,7 +18,8 @@ export default function HomePage() {
 			<Header />
 			<Box
 				as='main'
-				width='90%'
+				width='100%'
+				px={{ base: 3, sm: 0 }}
 				minHeight='100%'
 				maxWidth='1000px'
 				margin='0 auto'
