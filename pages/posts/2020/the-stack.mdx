@@ -1,9 +1,15 @@
 ---
-title: The stack
-description: Introduction and implementation of a stack in typescript
+title: 'The Stack'
+layout: PageLayout
 ---
 
-In this post we will discuss and implement a data structure known as a Stack.
+import { Tag } from '@chakra-ui/react'
+
+# The Stack
+
+<Flex width='100%' align='center' justify='space-between'>
+	Nicolas Toulemont - May 19th 2020 <Tag colorScheme='cyan'>Data Structure</Tag>
+</Flex>
 
 ## What is a Stack ?
 
@@ -15,7 +21,7 @@ It has two core operations :
 
 The Stack also has what is commonly called a "Top" and a "Bottom" :
 
-![basic_stack_operations](https://nt-blog-dev.s3.eu-west-3.amazonaws.com/basic-stack-operations_9ad51a4590.jpeg)
+![basic_stack_operations](/img/basic-stack-operations.jpeg)
 
 Both the push and pop operations only happen at the "Top" of the Stack _(unless the stack length is one, in which case the Top and Bottom are the same)_.
 

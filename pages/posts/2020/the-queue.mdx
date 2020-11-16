@@ -1,9 +1,15 @@
 ---
-title: The Queue
-description: Introduction and implementation of a queue in typescript
+title: 'The Queue'
+layout: PageLayout
 ---
 
-In this post we will discuss and implement a data structure known as a Queue.
+import { Tag } from '@chakra-ui/react'
+
+# The Queue
+
+<Flex width='100%' align='center' justify='space-between'>
+	Nicolas Toulemont - May 24th 2020 <Tag colorScheme='cyan'>Data Structure</Tag>
+</Flex>
 
 ## What is a Queue ?
 
@@ -15,17 +21,17 @@ It has two core operations :
 
 The queue has a "Front" and a "Back". We enqueue elements at the back of the queue and dequeue elements at the front of the queue :
 
-![simple-queue](https://nt-blog-dev.s3.eu-west-3.amazonaws.com/simple-queue_7427f6e61d.png)
+![simple-queue](/img/simple-queue.png)
 
 A Queue can have different purpose and therefore different implementations, for example :
 
 -   Priority Queue where the insertion index of the element is based on its priority or up to the dequeuing process (for unsorted queues). In such case the queue would always dequeue the item with the highest or lowest (depending of the sorting implementation) priority.
 
-![unsorted-priority-queue](https://nt-blog-dev.s3.eu-west-3.amazonaws.com/unsorted-priority-queue_db30b8ae48.png)
+![unsorted-priority-queue](/img/unsorted-priority-queue.png)
 
 -   Circular Queue, where the front of the queue points back to the back of the queue, making it circular _(such queues must have a specific length)_.
 
-![circular-queue](https://nt-blog-dev.s3.eu-west-3.amazonaws.com/circular-queue_5aa1e734cb.jpeg)
+![circular-queue](/img/circular-queue.jpg)
 
 In this post we will implement both a simple queue and then a priorty queue.
 
@@ -135,7 +141,7 @@ reverse(queue: Queue<T>): Queue<T> {
 
 One of the challenges of implementing a Priority Queue is handling the queue sorting because an unsorted priority queue would required additional operations to ensure the dequeuing of the highest priority element of the queue and therefore be slower. In this implementation we will enforce the queue sorting during the enqueuing of elements.
 
-![sorted-priority-queue](https://nt-blog-dev.s3.eu-west-3.amazonaws.com/sorted-priority-queue_be59e1bcd6.png)
+![sorted-priority-queue](/img/sorted-priority-queue.png)
 
 ### Basic methods
 
