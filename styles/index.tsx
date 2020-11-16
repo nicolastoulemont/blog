@@ -68,7 +68,16 @@ export const MDXComponents = {
 	h4: (props) => <Heading as='h4' {...props} />,
 	p: (props) => <Text as='p' {...props} />,
 	a: (props) => <Link as='a' {...props} />,
-	img: (props) => <Image rounded='md' margin='0 auto' my={3} {...props} />,
+	img: (props) => (
+		<Image
+			rounded='md'
+			margin='0 auto'
+			my={3}
+			{...props}
+			src={props.src}
+			fallbackSrc={props.src}
+		/>
+	),
 	ul: (props) => <UnorderedList {...props}>{props.children}</UnorderedList>,
 	li: (props) => <ListItem my={3} {...props} />,
 	Accordion,
