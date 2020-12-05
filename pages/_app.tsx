@@ -20,6 +20,7 @@ export default function App({ Component, pageProps }) {
 			<ChakraProvider>
 				<MDXWithChakraProvider>
 					<DefaultSeo
+						description='Web development content about React, Typescript, GraphQL, Node'
 						openGraph={{
 							type: 'website',
 							locale: 'en-US',

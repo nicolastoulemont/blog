@@ -9,6 +9,17 @@ interface PostMetaData {
 
 export const postsList: Array<PostMetaData> = [
 	{
+		title: 'The hashtable',
+		date: '5th December 2020',
+		url: '/posts/2020/the-hashtable',
+		snippet: 'Implementation of a hashtable in Typescript',
+		imagePath: '/img/thumbnail-hashtable.png',
+		badges: [
+			{ text: 'Data structures', color: 'cyan' },
+			{ text: 'Typescript', color: 'blue' }
+		]
+	},
+	{
 		title: 'The linked list',
 		date: '31 May 2020',
 		url: '/posts/2020/the-linked-list',

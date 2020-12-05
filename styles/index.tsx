@@ -67,8 +67,17 @@ export const MDXComponents = {
 	h2: (props) => <Heading as='h2' my={8} size='xl' {...props} />,
 	h3: (props) => <Heading as='h3' my={6} size='lg' {...props} />,
 	h4: (props) => <Heading as='h4' {...props} />,
-	p: (props) => <Text as='p' {...props} />,
-	a: (props) => <Link as='a' {...props} />,
+	p: (props) => <Text as='p' my={1} {...props} />,
+	a: (props) => (
+		<Link
+			as='a'
+			color='blue.500'
+			fontWeight={600}
+			textDecoration='underline'
+			{...props}
+			isExternal={true}
+		/>
+	),
 	img: (props) => (
 		<Image
 			rounded='md'
@@ -79,8 +88,16 @@ export const MDXComponents = {
 			fallbackSrc={props.src}
 		/>
 	),
-	ol: (props) => <OrderedList {...props}>{props.children}</OrderedList>,
-	ul: (props) => <UnorderedList {...props}>{props.children}</UnorderedList>,
+	ol: (props) => (
+		<OrderedList px={2} {...props}>
+			{props.children}
+		</OrderedList>
+	),
+	ul: (props) => (
+		<UnorderedList px={2} {...props}>
+			{props.children}
+		</UnorderedList>
+	),
 	li: (props) => <ListItem my={3} {...props} />,
 	Accordion,
 	Alert,

@@ -1,5 +1,5 @@
 import React from 'react'
-import { Flex, Heading, Box, Text, Image, Link, Tag } from '@chakra-ui/react'
+import { Flex, Heading, Box, Text, Image, Tag, chakra } from '@chakra-ui/react'
 import { Card, Header } from 'components'
 import { motion } from 'framer-motion'
 import { GiHand } from 'react-icons/gi'
@@ -8,8 +8,8 @@ import { NextSeo } from 'next-seo'
 import { postsList } from 'data/lists'
 import NextLink from 'next/link'
 
-const MotionBox = motion.custom(Box)
-const MotionLink = motion.custom(Link)
+const MotionBox = chakra(motion.div)
+const MotionLink = chakra(motion.a)
 
 export default function HomePage() {
 	return (
@@ -19,7 +19,7 @@ export default function HomePage() {
 			<Box
 				as='main'
 				width='100%'
-				px={{ base: 3, sm: 0 }}
+				px={3}
 				minHeight='100%'
 				maxWidth='1000px'
 				margin='0 auto'
@@ -87,8 +87,6 @@ export default function HomePage() {
 							<MotionLink
 								width='98.5%'
 								margin='0 auto'
-								border='1px solid'
-								borderColor='gray.300'
 								boxShadow='rgba(0, 0, 0, 0.12) 0px 3px 8px'
 								rounded='md'
 								initial={{ opacity: 0 }}
