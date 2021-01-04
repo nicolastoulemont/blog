@@ -125,11 +125,13 @@ export default function HomePage() {
 										</Flex>
 										<Text>{post.snippet}</Text>
 									</Box>
-									<Box
+									<Flex
 										width={{ base: '300px', sm: '100px', md: '140px' }}
 										mx={{ base: 'auto', sm: 0 }}
 										mb={{ base: 3, sm: 0 }}
 										rounded='md'
+										align='center'
+										justify='center'
 									>
 										<NextImage
 											width={post.imageWidth}
@@ -137,7 +139,7 @@ export default function HomePage() {
 											src={post.imagePath}
 											priority
 										/>
-									</Box>
+									</Flex>
 								</Flex>
 							</MotionLink>
 						</NextLink>
