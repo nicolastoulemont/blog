@@ -4,6 +4,8 @@ interface PostMetaData {
 	url: string
 	snippet: string
 	imagePath: string
+	imageWidth: string
+	imageHeight: string
 	badges: Array<{ text: string; color: string }>
 }
 
@@ -14,6 +16,8 @@ export const postsList: Array<PostMetaData> = [
 		url: '/posts/2020/the-hashtable',
 		snippet: 'Implementation of a hashtable in Typescript',
 		imagePath: '/img/thumbnail-hashtable.png',
+		imageWidth: '1100',
+		imageHeight: '375',
 		badges: [
 			{ text: 'Data structures', color: 'cyan' },
 			{ text: 'Typescript', color: 'blue' }
@@ -25,6 +29,8 @@ export const postsList: Array<PostMetaData> = [
 		url: '/posts/2020/the-linked-list',
 		snippet: 'Implementation of a linked list in Typescript',
 		imagePath: '/img/thumbnail-linked-list.png',
+		imageWidth: '230',
+		imageHeight: '100',
 		badges: [
 			{ text: 'Data structures', color: 'cyan' },
 			{ text: 'Typescript', color: 'blue' }
@@ -36,6 +42,8 @@ export const postsList: Array<PostMetaData> = [
 		url: '/posts/2020/the-queue',
 		snippet: 'Implementation of a queue and priority queue in Typescript',
 		imagePath: '/img/thumbnail-queue.png',
+		imageWidth: '224',
+		imageHeight: '173',
 		badges: [
 			{ text: 'Data structures', color: 'cyan' },
 			{ text: 'Typescript', color: 'blue' }
@@ -47,6 +55,8 @@ export const postsList: Array<PostMetaData> = [
 		url: '/posts/2020/the-stack',
 		snippet: 'Implementation of a stack in Typescript',
 		imagePath: '/img/thumbnail-stack.jpeg',
+		imageWidth: '216',
+		imageHeight: '187',
 		badges: [
 			{ text: 'Data structures', color: 'cyan' },
 			{ text: 'Typescript', color: 'blue' }

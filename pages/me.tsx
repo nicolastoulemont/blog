@@ -72,7 +72,14 @@ export default function Me() {
 						<Text>Has a degree in International Relations and European Union law</Text>
 					</ListItem>
 					<ListItem display='flex' alignItems='center' justifyContent='left'>
-						<Image src='/img/tent.png' alt='tent' width='20px' minWidth='20px' mr={4} />
+						<Image
+							src='/img/tent.png'
+							fallbackSrc='/img/tent.png'
+							alt='tent'
+							width='20px'
+							minWidth='20px'
+							mr={4}
+						/>
 						<Text>
 							Enjoy traveling and went on a year long solo-backpacking trip accross
 							the world
@@ -81,6 +88,7 @@ export default function Me() {
 					<ListItem display='flex' alignItems='center' justifyContent='left'>
 						<Image
 							src='/img/architecture-and-city.png'
+							fallbackSrc='/img/architecture-and-city.png'
 							alt='city'
 							width='20px'
 							minWidth='20px'

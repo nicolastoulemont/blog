@@ -1,5 +1,5 @@
 import React from 'react'
-import { Flex, Heading, Box, Text, Image, Tag, chakra } from '@chakra-ui/react'
+import { Flex, Heading, Box, Text, Tag, chakra } from '@chakra-ui/react'
 import { Card, Header } from 'components'
 import { motion } from 'framer-motion'
 import { GiHand } from 'react-icons/gi'
@@ -7,6 +7,7 @@ import { FaGithub, FaTwitter } from 'react-icons/fa'
 import { NextSeo } from 'next-seo'
 import { postsList } from 'data/lists'
 import NextLink from 'next/link'
+import NextImage from 'next/image'
 
 const MotionBox = chakra(motion.div)
 const MotionLink = chakra(motion.a)
@@ -85,11 +86,10 @@ export default function HomePage() {
 					{postsList.map((post) => (
 						<NextLink href={post.url} passHref key={post.url}>
 							<MotionLink
-								width='98.5%'
-								margin='0 auto'
+								width='100%'
 								boxShadow='rgba(0, 0, 0, 0.12) 0px 3px 8px'
 								rounded='md'
-								initial={{ opacity: 0 }}
+								initial={{ opacity: 0.5 }}
 								animate={{ opacity: 1 }}
 								whileHover={{ scale: 1.01 }}
 								whileTap={{ scale: 0.99 }}
@@ -125,14 +125,19 @@ export default function HomePage() {
 										</Flex>
 										<Text>{post.snippet}</Text>
 									</Box>
-									<Image
-										width={{ base: '80%', sm: '20%', md: '15%' }}
+									<Box
+										width={{ base: '300px', sm: '100px', md: '140px' }}
 										mx={{ base: 'auto', sm: 0 }}
 										mb={{ base: 3, sm: 0 }}
-										src={post.imagePath}
-										fallbackSrc={post.imagePath}
 										rounded='md'
-									/>
+									>
+										<NextImage
+											width={post.imageWidth}
+											height={post.imageHeight}
+											src={post.imagePath}
+											priority
+										/>
+									</Box>
 								</Flex>
 							</MotionLink>
 						</NextLink>
