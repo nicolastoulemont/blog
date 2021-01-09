@@ -1,7 +1,7 @@
 import React from 'react'
 import { Flex, Heading, Box, Text, Tag, chakra } from '@chakra-ui/react'
 import { Card, Header } from 'components'
-import { motion } from 'framer-motion'
+import { motion, AnimatePresence } from 'framer-motion'
 import { GiHand } from 'react-icons/gi'
 import { FaGithub, FaTwitter } from 'react-icons/fa'
 import { NextSeo } from 'next-seo'
@@ -83,67 +83,70 @@ export default function HomePage() {
 				</Flex>
 				<Flex width='100%' flexDir='column' align='flex-start' justify='flex-start' my={6}>
 					<Heading as='h2'>Latest articles</Heading>
-					{postsList.map((post) => (
-						<NextLink href={post.url} passHref key={post.url}>
-							<MotionLink
-								width='100%'
-								boxShadow='rgba(0, 0, 0, 0.12) 0px 3px 8px'
-								rounded='md'
-								initial={{ opacity: 0.5 }}
-								animate={{ opacity: 1 }}
-								whileHover={{ scale: 1.01 }}
-								whileTap={{ scale: 0.99 }}
-								p={6}
-								my={3}
-							>
-								<Flex
+					<AnimatePresence>
+						{postsList.map((post) => (
+							<NextLink href={post.url} passHref key={post.url}>
+								<MotionLink
+									layout
 									width='100%'
-									flexDir={{ base: 'column-reverse', sm: 'row' }}
-									align={{ base: 'center', sm: 'flex-start' }}
-									justify={{ base: 'center', sm: 'space-between' }}
+									boxShadow='rgba(0, 0, 0, 0.12) 0px 3px 8px'
+									rounded='md'
+									initial={{ opacity: 0.5 }}
+									animate={{ opacity: 1 }}
+									whileHover={{ scale: 1.01 }}
+									whileTap={{ scale: 0.99 }}
+									p={6}
+									my={3}
 								>
-									<Box width={{ base: '100%', sm: '75%' }}>
-										<Heading as='h3' size='lg'>
-											{post.title}
-										</Heading>
-										<Flex width='100%' mt={3} mb={6}>
-											<Text color='gray.500'>{post.date}</Text>
-											{post.badges.map((badge) => (
-												<Tag
-													ml={2}
-													display='flex'
-													alignItems='center'
-													justifyContent='center'
-													colorScheme={badge.color}
-													borderRadius='4px'
-													size='sm'
-													key={badge.text}
-												>
-													{badge.text}
-												</Tag>
-											))}
-										</Flex>
-										<Text>{post.snippet}</Text>
-									</Box>
 									<Flex
-										width={{ base: '300px', sm: '100px', md: '140px' }}
-										mx={{ base: 'auto', sm: 0 }}
-										mb={{ base: 3, sm: 0 }}
-										rounded='md'
-										align='center'
-										justify='center'
+										width='100%'
+										flexDir={{ base: 'column-reverse', sm: 'row' }}
+										align={{ base: 'center', sm: 'flex-start' }}
+										justify={{ base: 'center', sm: 'space-between' }}
 									>
-										<NextImage
-											width={post.imageWidth}
-											height={post.imageHeight}
-											src={post.imagePath}
-											priority
-										/>
+										<Box width={{ base: '100%', sm: '75%' }}>
+											<Heading as='h3' size='lg'>
+												{post.title}
+											</Heading>
+											<Flex width='100%' mt={3} mb={6}>
+												<Text color='gray.500'>{post.date}</Text>
+												{post.badges.map((badge) => (
+													<Tag
+														ml={2}
+														display='flex'
+														alignItems='center'
+														justifyContent='center'
+														colorScheme={badge.color}
+														borderRadius='4px'
+														size='sm'
+														key={badge.text}
+													>
+														{badge.text}
+													</Tag>
+												))}
+											</Flex>
+											<Text>{post.snippet}</Text>
+										</Box>
+										<Flex
+											width={{ base: '300px', sm: '100px', md: '140px' }}
+											mx={{ base: 'auto', sm: 0 }}
+											mb={{ base: 3, sm: 0 }}
+											rounded='md'
+											align='center'
+											justify='center'
+										>
+											<NextImage
+												width={post.imageWidth}
+												height={post.imageHeight}
+												src={post.imagePath}
+												priority
+											/>
+										</Flex>
 									</Flex>
-								</Flex>
-							</MotionLink>
-						</NextLink>
-					))}
+								</MotionLink>
+							</NextLink>
+						))}
+					</AnimatePresence>
 				</Flex>
 			</Box>
 		</>

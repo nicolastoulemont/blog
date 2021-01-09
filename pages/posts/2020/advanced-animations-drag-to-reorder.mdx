@@ -1,0 +1,283 @@
+---
+title: 'Advanced animations : Drag to reorder'
+description: 'Learning advanced web animations with Framer Motion and React in order to pêrform drag to reorder operations with fluid animation'
+layout: PageLayout
+---
+
+import { Tag } from '@chakra-ui/react'
+import { DragToReOrder } from 'components'
+
+# Animations : Drag to reorder
+
+<Flex
+	width='100%'
+	align='center'
+	justify={{ base: 'center', sm: 'space-between' }}
+	flexDirection={{ base: 'column', sm: 'row' }}
+>
+	Nicolas Toulemont - Jan 9th 2021{' '}
+	<Flex align='center' justify='center'>
+		<Tag colorScheme='orange' mt={{ base: 2, sm: 0 }}>
+			Animations
+		</Tag>
+		<Tag colorScheme='red' mt={{ base: 2, sm: 0 }} ml={2}>
+			React
+		</Tag>
+	</Flex>
+</Flex>
+
+## Why learning drag to reorder animations and operations ?
+
+The Drag to reorder pattern is the de facto standard for list ordering in the modern web. Within the React ecosystem the Drag and drop pattern has inspired a few major librairies to help its scalability and the handling of complex implementations while maintening state of the art rendering performances. The main librairies at the moment are:
+
+-   [react-beautiful-dnd](https://github.com/atlassian/react-beautiful-dnd) by [Atlassian](https://www.atlassian.com/)
+-   [react-dnd](https://github.com/react-dnd/react-dnd/) by an [open source collective of 6 people](https://github.com/orgs/react-dnd/people) including one of the React core team [Dan Abramov](https://github.com/gaearon)
+-   [react-draggable](https://github.com/STRML/react-draggable) by [Samuel Reed](https://github.com/STRML).
+
+If I were to build a web product heavily centered on drag and drop operations I would use one theses specialized librairies with good documentation and state of the art implementation (plus edge cases already handled) over a personal implementation.
+
+Nevertheless, in the following post we will implement drag to reorder operations with [Framer Motion](https://www.framer.com/motion/), one of the main general purpose React animations librairies to better understand how to it works.
+This post will based on a [code sandbox example](https://codesandbox.io/s/framer-motion-2-drag-to-reorder-fc4rt) made by the fantastic [Matt Perry](https://twitter.com/mattgperry) from Framer Motion.
+
+If at this point you ask yourself why using Framer Motion ? My answser would be that with React allowing us to build UI in a declarative way, it make sense to also use a declarative way to handle animation which is what framer motion allow us to do.
+For a more complete argument about why using Framer Motion is a good idea, [this article](https://blog.logrocket.com/another-react-animation-library-heres-why-you-should-use-framer-motion/) give a more comprehensive answer.
+
+Moving on to the subject at hand:
+
+The end result of what we will build will look like this:
+
+<DragToReOrder />
+
+The code is available [on Github](https://github.com/nicolastoulemont/animations-gestures/blob/main/pages/drag-and-reorder.tsx).
+
+Our study will focus on:
+
+-   The whileHover and whileTap animation card scale up / down
+-   The onDrag fundamentals of Framer Motion drag animations
+-   The layout props usage in Framer Motion
+-   The reordering logic
+
+### The whileHover and whileTap card animation
+
+Framer Motion provide a [comprehensive gesture recognition system for the web](https://www.framer.com/api/motion/gestures/) which include very powerful helpers for handling [hover](https://www.framer.com/api/motion/gestures/#hover) and [tap](https://www.framer.com/api/motion/gestures/#tap) and other events.
+
+This gesture API allow us to declaratively specify which css properties we want to apply to the component for each targetted state, in our case: hover and tap.
+
+```typescript
+import { motion } from 'framer-motion'
+
+function Item() {
+	return (
+		<motion.div
+			whileHover={{ scale: 1.03, cursor: 'grab' }}
+			whileTap={{ scale: 1.12, cursor: 'grabbing' }}
+		/>
+	)
+}
+```
+
+And then, with only this two properties added to our component, it will scale a little bit on hover and scale a bit more on tap.
+
+### The onDrag fundamentals of Framer Motion drag animations
+
+In same way that Framer Motion provide powerful helpers for the hover and tap state, it does the same for the [drag](https://www.framer.com/api/motion/gestures/#drag) gesture state.
+
+```typescript
+import { useState } from 'react'
+import { motion } from 'framer-motion'
+
+const onTop = { zIndex: 3 }
+const flat = {
+	zIndex: 1,
+	transition: { delay: 0.3 }
+}
+
+function Item() {
+	const [isDragging, setIsDragging] = useState(false)
+
+	return (
+		<motion.li initial={false} animate={isDragging ? onTop : flat}>
+			<motion.div
+				whileHover={{ scale: 1.03, cursor: 'grab' }}
+				whileTap={{ scale: 1.12, cursor: 'grabbing' }}
+				layout
+				drag='y'
+				onDragStart={() => setIsDragging(true)}
+				onDragEnd={() => {
+					setIsDragging(false)
+					updateServerSideData()
+				}}
+				onViewportBoxUpdate={(_viewportBox, delta) => {
+					isDragging && moveItem(index, delta.y.translate)
+				}}
+			/>
+		</motion.li>
+	)
+}
+```
+
+The `drag` property enable dragging for the element. It can be either set to a boolean or to either "x" or "y" to enable axis only dragging. In out case, we set it to "y" as we want to drag items up and down.
+
+Since we also aim to use our draggable component for layout animations (ordering and reordering items), we also need to add the `layout` property.
+
+This layout property will apply the [drag gesture to the component's viewport box instead of its x/y transforms](https://www.framer.com/api/motion/gestures/#drag-&-layout-animations) and this is why use the [onViewportBoxUpdate](https://www.framer.com/api/motion/component#layoutprops.onviewportboxupdate) function to handle movement tracking over onDrag native events ([MouseEvent](https://developer.mozilla.org/en-US/docs/Web/API/MouseEvent) | [TouchEvent](https://developer.mozilla.org/en-US/docs/Web/API/TouchEvent) | [PointerEvent](https://developer.mozilla.org/en-US/docs/Web/API/PointerEvent)) which will give us x / y values.
+Instead the `onViewportBoxUpdate` gives us a [delta (BoxDelta)](https://github.com/framer/motion/blob/cfd5098a44f97384d855bb269a23a5fba75ae4f9/src/types/geometry.ts) that will used to figure out if the dragged items is going up or down within the moveItem function.
+
+We will also use the [onDragStart](https://www.framer.com/api/motion/gestures/#draghandlers.ondragstart) and [onDragEnd](https://www.framer.com/api/motion/gestures/#draghandlers.ondragend) event handlers to control the isDragging component state which controle the `<li>` zIndex which will determined if the dragged item to be over the non dragged ones and if the item should be moved.
+
+### The layout props usage in Framer Motion
+
+The [layout property](https://www.framer.com/api/motion/component#layoutprops.layout) allow the component it is passed to automatically animate to its new position when its layout changes.
+The underlining mechanism uses css [transform properties](https://developer.mozilla.org/en-US/docs/Web/CSS/transform) to perform the animations.
+
+By only changing the coordinate space of the CSS [visual formatting model](https://developer.mozilla.org/en-US/docs/Web/CSS/Visual_formatting_model) instead of the actual position of the element in the DOM it has amazing performances versus actually moving the element in the DOM which would trigger the need for the browser to recalculate nearby elements margin and padding.
+
+Using this layout property, when the items array get reordered and the dragged items gets dropped, the items will automatically animate smoothly to its new position.
+
+### The reordering logic
+
+The reordering logic is composed of two main parts :
+
+-   A positions registry containing all of the list item positions and a function to update this registry (the setPositions function).
+-   A moveItem function which will find the correct index in the list items array for the dragged items based on its position and the positions of the other items in the list.
+
+Both of these parts are declared in the DragAndReOrder container component and are passed down as props to the list items.
+
+While the findIndex logic function is interesting in itself, in the context of a study of the animation side it is an implementation details and won't be explained but you can find it below.
+
+```typescript
+import { Box, Heading, Text, Image, chakra, UnorderedList, Button, Flex } from '@chakra-ui/react'
+import { useState, useRef, useEffect } from 'react'
+import { motion } from 'framer-motion'
+import { clamp, distance } from 'popmotion'
+import move from 'array-move'
+
+export interface Position {
+	top: number
+	height: number
+}
+
+const buffer = 80
+
+export const findIndex = (i, yOffset, positions) => {
+	let target = i
+	const { top, height } = positions[i]
+	const bottom = top + height
+
+	// If moving down
+	if (yOffset > 0) {
+		const nextItem = positions[i + 1]
+		if (nextItem === undefined) return i
+
+		const swapOffset = distance(bottom, nextItem.top + nextItem.height / 2) + buffer
+		if (yOffset > swapOffset) target = i + 1
+
+		// If moving up
+	} else if (yOffset < 0) {
+		const prevItem = positions[i - 1]
+		if (prevItem === undefined) return i
+
+		const prevBottom = prevItem.top + prevItem.height
+		const swapOffset = distance(top, prevBottom - prevItem.height / 2) + buffer
+		if (yOffset < -swapOffset) target = i - 1
+	}
+
+	return clamp(0, positions.length, target)
+}
+
+export default function DragAndReOrder() {
+	const [todos, setTodos] = useState<Array<Todo>>(INITIAL_TODOS)
+
+	const positions = useRef<Array<Position>>([]).current
+	const setPositions = (i: number, offset: Position) => (positions[i] = offset)
+
+	const moveItem = (i, dragOffset) => {
+		const targetIndex = findIndex(i, dragOffset, positions)
+		if (targetIndex !== i) setTodos(move(todos, i, targetIndex))
+	}
+
+	return (
+		<UnorderedList
+			ml={{ base: 6, md: 'auto' }}
+			mr={{ base: 6, md: 'auto' }}
+			maxW={{ base: '100%', md: '50%' }}
+			listStyleType='none'
+			py={3}
+		>
+			{todos?.map((todo, index) => (
+				<TodoItem
+					todo={todo}
+					key={todo.id}
+					index={index}
+					setPositions={setPositions}
+					moveItem={moveItem}
+				/>
+			))}
+		</UnorderedList>
+	)
+}
+
+const colorsReg = ['purple.300', 'red.300', 'cyan.300', 'yellow.300']
+
+type TodoItemProps = {
+	todo: Todo
+	index: number
+	setPositions: (i: number, offset: Position) => Position
+}
+
+const onTop = { zIndex: 3 }
+const flat = {
+	zIndex: 1,
+	transition: { delay: 0.3 }
+}
+
+function TodoItem({ todo, index, setPositions, moveItem, updateServerSideData }: TodoItemProps) {
+	const [isDragging, setIsDragging] = useState(false)
+	const ref = useRef(null)
+
+	useEffect(() => {
+		setPositions(index, {
+			height: ref.current.offsetHeight,
+			top: ref.current.offsetTop
+		})
+	})
+
+	return (
+		<motion.li p={0} initial={false} animate={isDragging ? onTop : flat}>
+			<motion.div
+				layout
+				p={3}
+				my={2}
+				ref={ref}
+				display='flex'
+				alignItems='flex-start'
+				justifyContent='space-between'
+				bgColor={colorsReg[todo.id]}
+				borderRadius='10px'
+				whileHover={{ scale: 1.03, cursor: 'grab' }}
+				whileTap={{ scale: 1.12, cursor: 'grabbing' }}
+				drag='y'
+				onDragStart={() => setIsDragging(true)}
+				onDragEnd={() => {
+					setIsDragging(false)
+					updateServerSideData()
+				}}
+				onViewportBoxUpdate={(_viewportBox, delta) => {
+					isDragging && moveItem(index, delta.y.translate)
+				}}
+			>
+				<Box>
+					<Heading size='sm'>{todo.title}</Heading>
+					<Text>{todo.description}</Text>
+				</Box>
+				<Image
+					src={todo.userAvatarUrl}
+					fallbackSrc={todo.userAvatarUrl}
+					borderRadius='13px'
+					width='60px'
+				/>
+			</motion.div>
+		</motion.li>
+	)
+}
+```

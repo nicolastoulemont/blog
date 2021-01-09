@@ -67,7 +67,7 @@ export const MDXComponents = {
 	h2: (props) => <Heading as='h2' my={8} size='xl' {...props} />,
 	h3: (props) => <Heading as='h3' my={6} size='lg' {...props} />,
 	h4: (props) => <Heading as='h4' {...props} />,
-	p: (props) => <Text as='p' my={1} {...props} />,
+	p: (props) => <Text as='p' my={{ base: 6, md: 3 }} {...props} />,
 	a: (props) => (
 		<Link
 			as='a'

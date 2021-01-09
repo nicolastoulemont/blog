@@ -11,6 +11,20 @@ interface PostMetaData {
 
 export const postsList: Array<PostMetaData> = [
 	{
+		title: 'Drag to reorder animations',
+		date: '9th January 2021',
+		url: '/posts/2020/advanced-animations-drag-to-reorder',
+		snippet:
+			'Leaning how drag to reorder web animations can be performed with Framer motion and React',
+		imagePath: '/img/thumbnail-drag-reorder.png',
+		imageWidth: '549',
+		imageHeight: '474',
+		badges: [
+			{ text: 'Animations', color: 'orange' },
+			{ text: 'React', color: 'red' }
+		]
+	},
+	{
 		title: 'The hashtable',
 		date: '5th December 2020',
 		url: '/posts/2020/the-hashtable',
