@@ -1,13 +1,13 @@
 import React from 'react'
-import { Flex, Image, Link, Box, Tag, TagLeftIcon } from '@chakra-ui/react'
+import { Flex, Link, Box, Tag, TagLeftIcon } from '@chakra-ui/react'
 import { IconType } from 'react-icons/lib/cjs'
+import NextImage from 'next/image'
 
 interface CardProps {
 	links?: Array<{ href: string; as?: string; text: string; external?: boolean; icon?: IconType }>
 	img?: {
 		src: string
 		alt: string
-		width: string
 	}
 }
 
@@ -16,7 +16,7 @@ export function Card({ img, links }: CardProps) {
 		<Box
 			p={10}
 			height='100%'
-			borderRadius='4px'
+			rounded='md'
 			display='flex'
 			flexDirection='column'
 			alignItems='flex-start'
@@ -28,15 +28,23 @@ export function Card({ img, links }: CardProps) {
 			}}
 		>
 			{img && (
-				<Image
-					src={img.src}
-					fallbackSrc={img.src}
-					alt={img.alt}
-					borderRadius='50%'
-					alignSelf='center'
-					width={img.width}
-					mb={8}
-				/>
+				<Flex alignSelf='center' mb={8}>
+					<NextImage
+						src={img.src}
+						width={200}
+						height={200}
+						priority
+						alt={img.alt}
+						className='avatar'
+					/>
+					<style>
+						{`
+							.avatar {
+								border-radius:50%;
+							}
+						`}
+					</style>
+				</Flex>
 			)}
 			{links && (
 				<Flex align='center' width='100%' maxWidth='100%' justify='space-between'>
@@ -44,8 +52,7 @@ export function Card({ img, links }: CardProps) {
 						<Link
 							key={link.text}
 							href={link.href}
-							target='blank'
-							rel='noreferrer'
+							isExternal
 							display='flex'
 							alignItems='center'
 							justifyContent='center'

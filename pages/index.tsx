@@ -15,7 +15,7 @@ const MotionLink = chakra(motion.a)
 export default function HomePage() {
 	return (
 		<>
-			<NextSeo title='Nicolas Toulemont' />
+			<NextSeo title="Nicolas Toulemont's blog" />
 			<Header />
 			<Box
 				as='main'
@@ -62,8 +62,7 @@ export default function HomePage() {
 					<Card
 						img={{
 							src: '/img/personal_picture.jpg',
-							alt: 'blog_author',
-							width: '200px'
+							alt: 'blog author'
 						}}
 						links={[
 							{
@@ -109,7 +108,7 @@ export default function HomePage() {
 												{post.title}
 											</Heading>
 											<Flex width='100%' mt={3} mb={6}>
-												<Text color='gray.500'>{post.date}</Text>
+												<Text color='gray.700'>{post.date}</Text>
 												{post.badges.map((badge) => (
 													<Tag
 														ml={2}
@@ -140,6 +139,7 @@ export default function HomePage() {
 												height={post.imageHeight}
 												src={post.imagePath}
 												priority
+												alt={post.imageAlt}
 											/>
 										</Flex>
 									</Flex>
