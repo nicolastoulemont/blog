@@ -3,14 +3,48 @@ import { NextSeo } from 'next-seo'
 import { chakra } from '@chakra-ui/react'
 import { Header } from 'components'
 import { motion } from 'framer-motion'
+import Head from 'next/head'
+import { useRouter } from 'next/router'
+import { formatISO } from 'date-fns'
+
 const MotionBox = chakra(motion.div)
+
 export default function PageLayout({ children, frontMatter }) {
+	const domain = 'https://nicolastoulemont.dev'
+	const { description, date, cardImage, title } = frontMatter
+	const { asPath } = useRouter()
+	const canonical = asPath === '/' ? `${domain}` : `${domain}${asPath}`
+
 	return (
 		<>
-			<NextSeo {...frontMatter} openGraph={{ description: frontMatter.description }} />
+			<Head>
+				{cardImage && (
+					<>
+						<meta content={`${domain}${cardImage}`} property='og:image' />
+						<meta content={description} property='og:image:alt' />
+					</>
+				)}
+				{date && (
+					<>
+						<meta content='article' property='og:type' />
+						<meta
+							content={formatISO(new Date(date))}
+							property='article:published_time'
+						/>
+					</>
+				)}
+			</Head>
+			<NextSeo
+				title={title}
+				openGraph={{
+					description,
+					url: canonical,
+					title: title
+				}}
+				canonical={canonical}
+			/>
 			<Header />
 			<MotionBox
-				// @ts-ignore
 				as='main'
 				width='100%'
 				px={3}

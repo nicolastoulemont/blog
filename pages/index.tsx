@@ -40,7 +40,7 @@ export default function HomePage() {
 							mb={4}
 							mt={{ base: 4, md: 0 }}
 						>
-							<Heading as='h1' size='2xl' fontWeight={600}>
+							<Heading as='h1' size='2xl' fontWeight='bold'>
 								Hey I'm Nicolas !
 							</Heading>
 							<MotionBox

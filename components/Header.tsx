@@ -16,7 +16,14 @@ export function Header() {
 				backgroundColor='white'
 				zIndex={999}
 			>
-				<Flex as='nav' align='center' justify='space-between' width='90%' maxWidth='1000px'>
+				<Flex
+					as='nav'
+					align='center'
+					justify='space-between'
+					width='100%'
+					maxWidth='1000px'
+					px={3}
+				>
 					<NextLink href='/' passHref>
 						<Link
 							display='flex'
@@ -25,13 +32,11 @@ export function Header() {
 							_hover={{ textDecor: 'none' }}
 						>
 							<Image
-								src='/icons/icon-96x96.png'
-								fallbackSrc='/icons/icon-96x96.png'
-								alt='website_icon'
-								width='20px'
-								mr={4}
+								src='/img/site-logo.svg'
+								fallbackSrc='/img/site-logo.svg'
+								alt='website logo'
+								width='45px'
 							/>
-							Nicolas Toulemont
 						</Link>
 					</NextLink>
 
