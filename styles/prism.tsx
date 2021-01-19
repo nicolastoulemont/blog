@@ -35,6 +35,11 @@ const prismTheme = css`
 		font-size: 0.9rem;
 		border-radius: ${theme.radii.md};
 	}
+
+	code[class*='language-'] {
+		width: auto;
+		overflow-x: auto;
+	}
 	.token.important,
 	.token.bold {
 		font-weight: bold;

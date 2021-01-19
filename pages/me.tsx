@@ -1,9 +1,20 @@
 import React from 'react'
-import { Box, Heading, Image, List, ListItem, Text, Link } from '@chakra-ui/react'
+import {
+	Box,
+	Heading,
+	Image,
+	List,
+	ListItem,
+	Text,
+	Link,
+	useColorModeValue
+} from '@chakra-ui/react'
 import { Header } from 'components'
 import { NextSeo } from 'next-seo'
 
 export default function Me() {
+	const linkColor = useColorModeValue('blue.500', 'cyan.400')
+
 	return (
 		<>
 			<NextSeo title='About me - Nicolas Toulemont' />
@@ -52,7 +63,7 @@ export default function Me() {
 								target='_blank'
 								rel='noreferrer nofollow'
 								fontWeight={700}
-								color='blue.600'
+								color={linkColor}
 								textDecoration='underline'
 								ml={1}
 							>
@@ -115,7 +126,7 @@ export default function Me() {
 							target='_blank'
 							rel='noreferrer nofollow'
 							fontWeight={700}
-							color='blue.600'
+							color={linkColor}
 							textDecoration='underline'
 							ml={1}
 						>
@@ -136,7 +147,7 @@ export default function Me() {
 							target='_blank'
 							rel='noreferrer nofollow'
 							fontWeight={700}
-							color='blue.600'
+							color={linkColor}
 							textDecoration='underline'
 							ml={1}
 						>
@@ -157,7 +168,7 @@ export default function Me() {
 							target='_blank'
 							rel='noreferrer nofollow'
 							fontWeight={700}
-							color='blue.600'
+							color={linkColor}
 							textDecoration='underline'
 							ml={1}
 						>
@@ -178,7 +189,7 @@ export default function Me() {
 							target='_blank'
 							rel='noreferrer nofollow'
 							fontWeight={700}
-							color='blue.600'
+							color={linkColor}
 							textDecoration='underline'
 							ml={1}
 						>

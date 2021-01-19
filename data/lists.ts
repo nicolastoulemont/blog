@@ -14,7 +14,7 @@ export const postsList: Array<PostMetaData> = [
 	{
 		title: 'Drag to reorder animations',
 		date: '9th January 2021',
-		url: '/posts/2020/advanced-animations-drag-to-reorder',
+		url: '/posts/2021/advanced-animations-drag-to-reorder',
 		snippet:
 			'Leaning how drag to reorder web animations can be performed with Framer motion and React',
 		imagePath: '/img/thumbnail-drag-reorder.png',

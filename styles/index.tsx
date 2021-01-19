@@ -59,25 +59,33 @@ import {
 	Text,
 	Textarea,
 	Tooltip,
-	VisuallyHidden
+	VisuallyHidden,
+	useColorModeValue
 } from '@chakra-ui/react'
 
 export const MDXComponents = {
-	h1: (props) => <Heading as='h1' my={12} size='2xl' {...props} />,
-	h2: (props) => <Heading as='h2' my={8} size='xl' {...props} />,
+	h1: (props) => (
+		<Heading as='h1' my={12} size='2xl' textAlign={{ base: 'center', sm: 'left' }} {...props} />
+	),
+	h2: (props) => (
+		<Heading as='h2' my={8} size='xl' textAlign={{ base: 'center', sm: 'left' }} {...props} />
+	),
 	h3: (props) => <Heading as='h3' my={6} size='lg' {...props} />,
 	h4: (props) => <Heading as='h4' {...props} />,
 	p: (props) => <Text as='p' my={{ base: 6, md: 3 }} {...props} />,
-	a: (props) => (
-		<Link
-			as='a'
-			color='blue.500'
-			fontWeight={600}
-			textDecoration='underline'
-			{...props}
-			isExternal={true}
-		/>
-	),
+	a: (props) => {
+		const color = useColorModeValue('blue.500', 'cyan.400')
+		return (
+			<Link
+				as='a'
+				color={color}
+				fontWeight={600}
+				textDecoration='underline'
+				{...props}
+				isExternal={true}
+			/>
+		)
+	},
 	img: (props) => (
 		<Image
 			rounded='md'

@@ -1,5 +1,5 @@
 import React from 'react'
-import { Flex, Heading, Box, Text, Tag, chakra } from '@chakra-ui/react'
+import { Flex, Heading, Box, Text, Tag, chakra, useColorModeValue } from '@chakra-ui/react'
 import { Card, Header } from 'components'
 import { motion, AnimatePresence } from 'framer-motion'
 import { GiHand } from 'react-icons/gi'
@@ -84,71 +84,84 @@ export default function HomePage() {
 					<Heading as='h2'>Latest articles</Heading>
 					<AnimatePresence>
 						{postsList.map((post) => (
-							<NextLink href={post.url} passHref key={post.url}>
-								<MotionLink
-									layout
-									width='100%'
-									boxShadow='rgba(0, 0, 0, 0.12) 0px 3px 8px'
-									rounded='md'
-									initial={{ opacity: 0.5 }}
-									animate={{ opacity: 1 }}
-									whileHover={{ scale: 1.01 }}
-									whileTap={{ scale: 0.99 }}
-									p={6}
-									my={3}
-								>
-									<Flex
-										width='100%'
-										flexDir={{ base: 'column-reverse', sm: 'row' }}
-										align={{ base: 'center', sm: 'flex-start' }}
-										justify={{ base: 'center', sm: 'space-between' }}
-									>
-										<Box width={{ base: '100%', sm: '75%' }}>
-											<Heading as='h3' size='lg'>
-												{post.title}
-											</Heading>
-											<Flex width='100%' mt={3} mb={6}>
-												<Text color='gray.700'>{post.date}</Text>
-												{post.badges.map((badge) => (
-													<Tag
-														ml={2}
-														display='flex'
-														alignItems='center'
-														justifyContent='center'
-														colorScheme={badge.color}
-														borderRadius='4px'
-														size='sm'
-														key={badge.text}
-													>
-														{badge.text}
-													</Tag>
-												))}
-											</Flex>
-											<Text>{post.snippet}</Text>
-										</Box>
-										<Flex
-											width={{ base: '300px', sm: '100px', md: '140px' }}
-											mx={{ base: 'auto', sm: 0 }}
-											mb={{ base: 3, sm: 0 }}
-											rounded='md'
-											align='center'
-											justify='center'
-										>
-											<NextImage
-												width={post.imageWidth}
-												height={post.imageHeight}
-												src={post.imagePath}
-												priority
-												alt={post.imageAlt}
-											/>
-										</Flex>
-									</Flex>
-								</MotionLink>
-							</NextLink>
+							<Post key={post.url} post={post} />
 						))}
 					</AnimatePresence>
 				</Flex>
 			</Box>
 		</>
+	)
+}
+
+function Post({ post }) {
+	const dateColor = useColorModeValue('gray.700', 'gray.200')
+	const boxShadowColor = useColorModeValue(
+		'rgba(0, 0, 0, 0.12) 0px 3px 8px',
+		'rgba(0, 0, 0, 1) 0px 3px 8px'
+	)
+
+	return (
+		<NextLink href={post.url} passHref key={post.url}>
+			<MotionLink
+				layout
+				width='100%'
+				// boxShadow='rgba(0, 0, 0, 0.12) 0px 3px 8px'
+				boxShadow={boxShadowColor}
+				rounded='md'
+				initial={{ opacity: 0.5 }}
+				animate={{ opacity: 1 }}
+				whileHover={{ scale: 1.01 }}
+				whileTap={{ scale: 0.99 }}
+				p={6}
+				my={3}
+			>
+				<Flex
+					width='100%'
+					flexDir={{ base: 'column-reverse', sm: 'row' }}
+					align={{ base: 'center', sm: 'flex-start' }}
+					justify={{ base: 'center', sm: 'space-between' }}
+				>
+					<Box width={{ base: '100%', sm: '75%' }}>
+						<Heading as='h3' size='lg'>
+							{post.title}
+						</Heading>
+						<Flex width='100%' mt={3} mb={6}>
+							<Text color={dateColor}>{post.date}</Text>
+							{post.badges.map((badge) => (
+								<Tag
+									ml={2}
+									display='flex'
+									alignItems='center'
+									justifyContent='center'
+									colorScheme={badge.color}
+									borderRadius='4px'
+									size='sm'
+									key={badge.text}
+								>
+									{badge.text}
+								</Tag>
+							))}
+						</Flex>
+						<Text>{post.snippet}</Text>
+					</Box>
+					<Flex
+						width={{ base: '300px', sm: '100px', md: '140px' }}
+						mx={{ base: 'auto', sm: 0 }}
+						mb={{ base: 3, sm: 0 }}
+						rounded='md'
+						align='center'
+						justify='center'
+					>
+						<NextImage
+							width={post.imageWidth}
+							height={post.imageHeight}
+							src={post.imagePath}
+							priority
+							alt={post.imageAlt}
+						/>
+					</Flex>
+				</Flex>
+			</MotionLink>
+		</NextLink>
 	)
 }

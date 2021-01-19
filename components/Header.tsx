@@ -1,8 +1,14 @@
 import React from 'react'
-import { Flex, Image, Link } from '@chakra-ui/react'
+import { Flex, Image, Link, useColorModeValue } from '@chakra-ui/react'
 import NextLink from 'next/link'
 
 export function Header() {
+	const bgColor = useColorModeValue('white', '#1A212C')
+	const boxShadowColor = useColorModeValue(
+		'1px 2px 18px rgba(0,0,0,.1)',
+		'1px 2px 18px rgba(0,0,0,1)'
+	)
+
 	return (
 		<>
 			<Flex
@@ -10,11 +16,11 @@ export function Header() {
 				align='center'
 				justify='center'
 				width='100%'
-				boxShadow='1px 2px 18px rgba(0,0,0,.1)'
+				boxShadow={boxShadowColor}
 				top={0}
 				position='sticky'
-				backgroundColor='white'
 				zIndex={999}
+				bgColor={bgColor}
 			>
 				<Flex
 					as='nav'

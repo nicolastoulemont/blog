@@ -6,7 +6,7 @@ import { PrismGlobal } from 'styles/prism'
 import { DefaultSeo } from 'next-seo'
 import Head from 'next/head'
 import SeoConfig from 'next-seo.config'
-
+import { theme } from 'styles/theme'
 export default function App({ Component, pageProps }) {
 	return (
 		<>
@@ -22,7 +22,7 @@ export default function App({ Component, pageProps }) {
 				<meta name='theme-color' content='#ffffff' />
 			</Head>
 			<DefaultSeo {...SeoConfig} />
-			<ChakraProvider resetCSS={true}>
+			<ChakraProvider resetCSS={true} theme={theme}>
 				<MDXWithChakraProvider>
 					<Component {...pageProps} />
 					<GlobalStyles />
