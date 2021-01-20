@@ -105,7 +105,6 @@ function Post({ post }) {
 			<MotionLink
 				layout
 				width='100%'
-				// boxShadow='rgba(0, 0, 0, 0.12) 0px 3px 8px'
 				boxShadow={boxShadowColor}
 				rounded='md'
 				initial={{ opacity: 0.5 }}

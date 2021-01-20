@@ -1,8 +1,9 @@
 import React from 'react'
-import { Flex, Image, Link, useColorModeValue } from '@chakra-ui/react'
+import { Flex, Image, Link, useColorModeValue, useColorMode, IconButton } from '@chakra-ui/react'
 import NextLink from 'next/link'
-
+import { MoonIcon, SunIcon } from '@chakra-ui/icons'
 export function Header() {
+	const { colorMode, toggleColorMode } = useColorMode()
 	const bgColor = useColorModeValue('white', '#1A212C')
 	const boxShadowColor = useColorModeValue(
 		'1px 2px 18px rgba(0,0,0,.1)',
@@ -45,12 +46,20 @@ export function Header() {
 							/>
 						</Link>
 					</NextLink>
-
-					<NextLink href='/me' passHref>
-						<Link py={2} px={3} borderRadius='10px'>
-							About
-						</Link>
-					</NextLink>
+					<Flex align='center' justify='center'>
+						<NextLink href='/me' passHref>
+							<Link py={2} px={3} borderRadius='10px'>
+								About
+							</Link>
+						</NextLink>
+						<IconButton
+							ml={2}
+							bgColor='transparent'
+							aria-label='dark / light mode button'
+							onClick={toggleColorMode}
+							icon={colorMode === 'light' ? <MoonIcon /> : <SunIcon />}
+						/>
+					</Flex>
 				</Flex>
 			</Flex>
 		</>

@@ -1,5 +1,5 @@
 import React from 'react'
-import { Flex, Link, Box, Tag, TagLeftIcon, useColorModeValue, chakra } from '@chakra-ui/react'
+import { Flex, Link, Tag, TagLeftIcon, useColorModeValue, chakra } from '@chakra-ui/react'
 import { IconType } from 'react-icons/lib/cjs'
 import NextImage from 'next/image'
 import { motion } from 'framer-motion'

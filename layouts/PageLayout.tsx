@@ -9,6 +9,11 @@ import { formatISO } from 'date-fns'
 
 const MotionBox = chakra(motion.div)
 
+const variants = {
+	visible: { opacity: 1 },
+	hidden: { opacity: 0 }
+}
+
 export default function PageLayout({ children, frontMatter }) {
 	const domain = 'https://nicolastoulemont.dev'
 	const { description, date, cardImage, title } = frontMatter
@@ -53,8 +58,9 @@ export default function PageLayout({ children, frontMatter }) {
 				margin='0 auto'
 				pb={8}
 				boxSizing='border-box'
-				initial={{ opacity: 0 }}
-				animate={{ opacity: 1 }}
+				variants={variants}
+				initial='hidden'
+				animate='visible'
 			>
 				{children}
 			</MotionBox>

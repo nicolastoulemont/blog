@@ -11,6 +11,21 @@ interface PostMetaData {
 }
 
 export const postsList: Array<PostMetaData> = [
+	// {
+	// 	title: 'Full Stack Typescript - GraphQL: How to build an end-to-end type safe stack',
+	// 	date: '20th January 2021',
+	// 	url: '/posts/2021/full-stack-typescript-graphql-productivity-observability',
+	// 	snippet:
+	// 		'Exploring the how Typescript and GraphQL can be combined across a React / Node stack to give full stack observability, automatic documentation and productivity with automatic code generation',
+	// 	imagePath: '/img/thumbnail-ts-gql.png',
+	// 	imageAlt: 'Drag to reorder illustration',
+	// 	imageWidth: '229',
+	// 	imageHeight: '126',
+	// 	badges: [
+	// 		{ text: 'Typescript', color: 'blue' },
+	// 		{ text: 'GraphQL', color: 'pink' }
+	// 	]
+	// },
 	{
 		title: 'Drag to reorder animations',
 		date: '9th January 2021',
