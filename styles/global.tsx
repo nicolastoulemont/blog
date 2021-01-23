@@ -17,9 +17,8 @@ export default function GlobalStyles() {
 				}
 
 				main {
-					height: 100%;
+					min-height: 100%;
 					width: 100%;
-					overflow-y: auto;
 				}
 
 				nav {

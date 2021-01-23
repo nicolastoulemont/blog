@@ -1,0 +1,586 @@
+---
+date: '2021-01-18'
+cardImage: '/img/thumbnail-drag-reorder.png'
+title: 'Full Stack Typescript GraphQL - How to combine amazing productivity with full stack observability and security'
+description: 'Exploring the how Typescript and GraphQL can be combined accross a React / Node stack to give unparallel full stack observability, automatic documentation and a productivity boost with automatic code generation'
+layout: PageLayout
+---
+
+import { Tag } from '@chakra-ui/react'
+
+# Full Stack Typescript GraphQL - Automate the data layer
+
+<Flex
+	width='100%'
+	align='center'
+	justify={{ base: 'center', sm: 'space-between' }}
+	flexDirection={{ base: 'column', sm: 'row' }}
+>
+	Nicolas Toulemont - Jan 20th 2021{' '}
+	<Flex align='center' justify='center'>
+		<Tag colorScheme='blue' mt={{ base: 2, sm: 0 }}>
+			Typescript
+		</Tag>
+		<Tag colorScheme='pink' mt={{ base: 2, sm: 0 }} ml={2}>
+			GraphQL
+		</Tag>
+	</Flex>
+</Flex>
+
+Building a modern web application usually means building both an API and a client side application.
+Unless the project is built on a monorepo setup, the API and the Client are built and maintained in different repos and many times in differents languages / by differents teams.
+
+This separations of code, sometimes of languages and often of release schedule means that the Client side / API relation is really hard to test, observe and maintain, mainly because the stack's observability is only has good as the tests, the hand written documentation and human communication.
+
+[GraphQL](https://graphql.org/) gives us the opportunity to better handle the client side / API relation by enforcing a contract between the client and the API at runtime.
+It also gives us the opportunity to leverage [Typescript](https://www.typescriptlang.org/) and [automatic code generation tooling](https://graphql-code-generator.com/) to enforce this contract at compile time which provides many benefits :
+
+-   Less runtime validation errors in development and / or production.
+-   Give errors at compile time which facilitate debugging.
+-   Automatic types generation from the GraphQL schema ensuring their correctness.
+-   Project wide observability : if the code generation script execute successfully then we know the client side queries and mutations
+    are matching the GraphQL schema. This is very useful as the project grows in size and / or complexity and especially when different teams work on the client and the api.
+-   Productivity boost : When working with a React Client such as Apollo Client, Urql, GraphQL-Request or React-Query, it can automatically generated fully typed custom hooks for each query, mutation and subscription.
+-   And finally if using Typescript and custom typed react hooks, compile time errors when variables passed in the custom hooks don't match the Typescript types generated from the schema.
+
+Now this tooling doesn't prevent from doing tests on the Client and API but it reduces the need to tests Client and API relations.
+
+We will now explore how to use these tools together in a [React](https://reactjs.org/) and [NodeJS](https://nodejs.org/en/) application written in Typescript.
+We will also use the [NextJS React](https://nextjs.org/) framework for convenience (easy to setup, provide api routes in the same project).
+
+While explained with a full stack Typescript setup, which greatly leverage graphql for type generation on the back end as well, the following can be used with any back end language as long as the API emit a valid GraphQL schema consumable by the client side application.
+
+If, after this introduction, you want have a look at the repo for project we will build, click [here](https://github.com/nicolastoulemont/full-stack-ts-gql).
+
+### Project setup
+
+The project setup will be based of the [with-apollo](https://github.com/vercel/next.js/tree/canary/examples/with-apollo) example in the NextJS.
+
+It will use [Apollo Client](https://www.apollographql.com/docs/react/) on the front end, [Apollo Server](https://www.apollographql.com/docs/apollo-server/) as the server on the back end and the very good [nexus](https://nexusjs.org/) code-first graphql schema generation librairy.
+
+### Apollo server setup
+
+In a NextJS project, the endpoints are defined in the api folder can be deployed as serverless function when using AWS lambda or Vercel (or just be a regular endpoint when deploying on regular server).
+Therefore we will we use the serverless compatible [apollo-server-micro](https://www.npmjs.com/package/apollo-server-micro) implementation of Apollo server.
+
+Basically, in this very simple server setup, we provide the Apollo server with a schema that we will generate and specify the path of the graphql endpoint.
+The rest of the code is an implementation detail based on the [with apollo route and client nextJS example](https://github.com/vercel/next.js/blob/canary/examples/api-routes-apollo-server-and-client/pages/api/graphql.js).
+
+```typescript
+// in pages/api/graphql.ts
+
+import { ApolloServer } from 'apollo-server-micro'
+import { schema } from 'src/schema'
+export const config = {
+	api: {
+		bodyParser: false
+	}
+}
+
+const server = new ApolloServer({ schema })
+
+const handler = server.createHandler({
+	path: '/api/graphql'
+})
+
+export default handler
+```
+
+### Apollo client setup
+
+The apollo client setup is two fold :
+
+-   The client config
+-   The client context provider wrapping the entire front application (the components tree).
+
+In this nextjs app, it will be wrapping the entire app in the \_app.tsx file but in a CRA based project, it would be in the App.tsx file.
+
+#### The client config
+
+We set the client config to make http requests to the `/api/graphql` endpoint that we previously set up in the server.
+The apollo client is initialized outside of the functions calls to be re-used if already setup by the initializeApollo function.
+And finally we export a useApollo react hooks who will just return the initializeApollo function (and therefore the apollo client).
+
+```typescript
+// in lib/apolloClient.ts
+
+import { InMemoryCache, ApolloClient, HttpLink, NormalizedCacheObject } from '@apollo/client'
+
+let apolloClient: ApolloClient<NormalizedCacheObject>
+
+function createApolloClient() {
+	return new ApolloClient({
+		link: new HttpLink({
+			uri: '/api/graphql'
+		}),
+		cache: new InMemoryCache()
+	})
+}
+
+function initializeApollo() {
+	apolloClient = apolloClient ?? createApolloClient()
+	return apolloClient
+}
+
+export function useApollo() {
+	return initializeApollo()
+}
+```
+
+#### The client context provider
+
+In the \_app.tsx file we just wrap the top level component with the Apollo context provider that we provide with a apollo client return from the useApollo() hook.
+This step is necessary to be able to use apollo client hooks such as useQuery or useMutation in our components and in our pages (or routes for a CRA).
+
+```typescript
+// in /pages/_app.tsx
+
+import { ApolloProvider } from '@apollo/client'
+import { useApollo } from 'lib/apolloClient'
+
+function MyApp({ Component, pageProps }) {
+	const client = useApollo()
+
+	return (
+		<ApolloProvider client={client}>
+			<Component {...pageProps} />
+		</ApolloProvider>
+	)
+}
+
+export default MyApp
+```
+
+### Building a basic schema for the apollo server
+
+In our src folder we will build a small basic schema using the nexus librairy.
+
+```typescript
+// in src/schema.ts
+
+import { makeSchema } from 'nexus'
+import * as types from './typeDefs'
+import path from 'path'
+
+export const schema = makeSchema({
+	types,
+	outputs: {
+		schema: path.join(process.cwd(), 'src', 'schema.graphql'),
+		typegen: path.join(process.cwd(), 'src', 'nexus.ts')
+	}
+})
+```
+
+And some basics types describing a user and some queries
+
+```typescript
+// in src/typeDefs.ts
+
+import { idArg, nonNull, objectType, queryField } from 'nexus'
+
+const data = [
+	{ id: '1', username: 'Nicolas', email: 'nicolas@email.com', verified: true },
+	{ id: '2', username: 'David', email: 'david@email.com', verified: false },
+	{ id: '3', username: 'Matthieu', email: 'matthieu@email.com', verified: true }
+]
+
+export const Error = objectType({
+	name: 'Error',
+	definition(t) {
+		t.string('key')
+		t.string('message')
+	}
+})
+
+export const User = objectType({
+	name: 'User',
+	definition(t) {
+		t.id('id')
+		t.string('username')
+		t.string('email')
+		t.boolean('verified')
+	}
+})
+
+export const UserResponse = objectType({
+	name: 'UserResponse',
+	definition(t) {
+		t.field('user', { type: 'User' })
+		t.list.field('errors', { type: 'Error' })
+	}
+})
+
+export const UsersResponse = objectType({
+	name: 'UsersResponse',
+	definition(t) {
+		t.list.field('users', { type: 'User' })
+		t.list.field('errors', { type: 'Error' })
+	}
+})
+
+export const userById = queryField('userById', {
+	type: 'UserResponse',
+	args: {
+		id: nonNull(idArg())
+	},
+	async resolve(_, args) {
+		const user = data.find((user) => user.id === args.id)
+		if (!user) {
+			return {
+				errors: [
+					{ key: 'notFound', message: `No user matching the id: ${args.id} was found` }
+				]
+			}
+		}
+
+		return { user }
+	}
+})
+
+export const users = queryField('users', {
+	type: 'UsersResponse',
+	async resolve() {
+		return { users: data }
+	}
+})
+```
+
+This code will generate this GraphQL schema in the src/shema.graphql file :
+
+```typescript
+type Error {
+  key: String
+  message: String
+}
+
+type Query {
+  userById(id: ID!): UserResponse
+  users: UsersResponse
+}
+
+type User {
+  email: String
+  id: ID
+  username: String
+  verified: Boolean
+}
+
+type UserResponse {
+  errors: [Error]
+  user: User
+}
+
+type UsersResponse {
+  errors: [Error]
+  users: [User]
+}
+
+```
+
+If at this point, you are confused by the returning of errors in the response instead of throwing errors, I suggest reading the following articles :
+
+-   [Full Stack Error Handling with GraphQL and Apollo](https://www.apollographql.com/blog/full-stack-error-handling-with-graphql-apollo-5c12da407210/)
+-   [200 OK! Error Handling in GraphQL](https://sachee.medium.com/200-ok-error-handling-in-graphql-7ec869aec9bc)
+
+In many ways, graphql error handling is very much something open to interpretation on how to do it best.
+My point of view, at the moment, is in between these two approaches : I will return errors in the response when they will have added value for the client and only throw when have not (or not much).
+This also has the advantage of having type safe errors to work with in the front end as you can describe exactly how the errors will be sent back in the schema whereas throwing errors won't allow it.
+
+This is both for convenience and due to some issues in [Apollo client error handling these last few years](https://github.com/apollographql/apollo-client/issues?q=is%3Aissue+Unhandled+rejection).
+
+But my approach may not be the best pratice and may need to updated and you should figure out how you want to do it yourself by reading [ the apollo server Error handling docs](https://www.apollographql.com/docs/apollo-server/data/errors/), the [graphql spec](https://spec.graphql.org/June2018/#sec-Errors) and what the graphql community came up with.
+
+### Automatic code generation setup
+
+Now the automation part !
+
+We will now setup the code generation script and modules.
+
+First we need the following dependencies (versions may have changed since the writing of this article)
+
+```typescript
+// in package.json
+"dependencies": {
+	"@apollo/client": "^3.3.7",
+	"graphql": "^15.4.0",
+	"graphql-tag": "^2.11.0",
+	"nexus": "^1.0.0",
+	"react": "17.0.1",
+	"react-dom": "17.0.1"
+},
+"devDependencies": {
+	"@graphql-codegen/cli": "^1.20.0",
+	"@graphql-codegen/typescript": "^1.20.0",
+	"@graphql-codegen/typescript-operations": "^1.17.13",
+	"@graphql-codegen/typescript-react-apollo": "^2.2.1",
+	"@types/react": "^17.0.0",
+	"typescript": "^4.1.3"
+}
+```
+
+We then need to setup the [graphql-code-generator](https://graphql-code-generator.com/) for the three plugins that we will use :
+
+-   [Typescript](https://graphql-code-generator.com/docs/plugins/typescript)
+-   [Typescript-operations](https://graphql-code-generator.com/docs/plugins/typescript-operations)
+-   [Typescript-react-apollo](https://graphql-code-generator.com/docs/plugins/typescript-react-apollo)
+
+You can find their complete documentation in the links above if needed.
+We then need to write a codegen.yml config file at the root of the project.
+
+```typescript
+overwrite: true
+schema: "src/schema.graphql"
+documents: "graphql/**/*.ts"
+watch:
+  - "graphql/**/*.ts"
+generates:
+  gql-gen/index.tsx:
+    plugins:
+      - "typescript"
+      - "typescript-operations"
+      - "typescript-react-apollo"
+    config:
+      withHOC: false
+      withComponent: false
+      withHooks: true
+```
+
+And write the following script in package.json to run it:
+
+```typescript
+"scripts": {
+	"gen": "graphql-codegen --config codegen.yml"
+},
+```
+
+What this config and script will then do is the following :
+
+1. The script will watch for file changes in the graphql folder where all our graphql operations will be defined
+2. Because we set the graphql folder and all its typescript files as the [documents field](https://graphql-code-generator.com/docs/getting-started/documents-field) value it will try to :
+3. Generate an output file at the gql-gen/index.tsx path based on the given plugins and the given config where we specitfy what ouput we want (in our case only custom typed react hooks) and based on the given graphql schema (here at "src/schema.graphql").
+
+It is important to note that while here our schema is a locale graphql file, it can also be a remote graphql schema emitted by a running graphql server with introspection allowed ( in our project it would located at "http://localhost:3000/api/graphql")
+
+```typescript
+overwrite: true
+schema: "http://localhost:3000/api/graphql"
+...rest on the config
+```
+
+We now need to create at least one graphql operation. So we will create two simpe queries :
+
+```typescript
+// in graphql/user/queries.ts
+import gql from 'graphql-tag'
+
+export const GET_USER_BY_ID = gql`
+	query UserById($id: ID!) {
+		userById(id: $id) {
+			errors {
+				key
+				message
+			}
+			user {
+				id
+				username
+				email
+			}
+		}
+	}
+`
+
+export const GET_USERS = gql`
+	query Users {
+		users {
+			errors {
+				key
+				message
+			}
+			users {
+				id
+				username
+				email
+			}
+		}
+	}
+`
+```
+
+### Automatically generated and fully typed custom data fetching hooks
+
+And now we can run the script we wrote earlier by doing `yarn gen`.
+It will generated a file in `gql-gen/index.tsx` that will contains our custom fully typed hooks.
+
+Right now as the queries perfectly match the graphql schema the script will successfully execute and will print the following to the console :
+
+![successful code generation console log prints](/img/gql-code-gen-success-min.png)
+
+And now we can verify that we have our custom in the generated files where we have all our types and our custom hooks :
+
+```typescript
+// in gql-gen/index.tsx
+export const UserByIdDocument = gql`
+	query UserById($id: ID!) {
+		userById(id: $id) {
+			errors {
+				key
+				message
+			}
+			user {
+				id
+				username
+				email
+			}
+		}
+	}
+`
+
+/**
+ * __useUserByIdQuery__
+ *
+ * To run a query within a React component, call `useUserByIdQuery` and pass it any options that fit your needs.
+ * When your component renders, `useUserByIdQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useUserByIdQuery({
+ *   variables: {
+ *      id: // value for 'id'
+ *   },
+ * });
+ */
+export function useUserByIdQuery(
+	baseOptions: Apollo.QueryHookOptions<UserByIdQuery, UserByIdQueryVariables>
+) {
+	return Apollo.useQuery<UserByIdQuery, UserByIdQueryVariables>(UserByIdDocument, baseOptions)
+}
+export function useUserByIdLazyQuery(
+	baseOptions?: Apollo.LazyQueryHookOptions<UserByIdQuery, UserByIdQueryVariables>
+) {
+	return Apollo.useLazyQuery<UserByIdQuery, UserByIdQueryVariables>(UserByIdDocument, baseOptions)
+}
+export type UserByIdQueryHookResult = ReturnType<typeof useUserByIdQuery>
+export type UserByIdLazyQueryHookResult = ReturnType<typeof useUserByIdLazyQuery>
+export type UserByIdQueryResult = Apollo.QueryResult<UserByIdQuery, UserByIdQueryVariables>
+export const UsersDocument = gql`
+	query Users {
+		users {
+			errors {
+				key
+				message
+			}
+			users {
+				id
+				username
+				email
+			}
+		}
+	}
+`
+
+/**
+ * __useUsersQuery__
+ *
+ * To run a query within a React component, call `useUsersQuery` and pass it any options that fit your needs.
+ * When your component renders, `useUsersQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useUsersQuery({
+ *   variables: {
+ *   },
+ * });
+ */
+export function useUsersQuery(
+	baseOptions?: Apollo.QueryHookOptions<UsersQuery, UsersQueryVariables>
+) {
+	return Apollo.useQuery<UsersQuery, UsersQueryVariables>(UsersDocument, baseOptions)
+}
+export function useUsersLazyQuery(
+	baseOptions?: Apollo.LazyQueryHookOptions<UsersQuery, UsersQueryVariables>
+) {
+	return Apollo.useLazyQuery<UsersQuery, UsersQueryVariables>(UsersDocument, baseOptions)
+}
+export type UsersQueryHookResult = ReturnType<typeof useUsersQuery>
+export type UsersLazyQueryHookResult = ReturnType<typeof useUsersLazyQuery>
+export type UsersQueryResult = Apollo.QueryResult<UsersQuery, UsersQueryVariables>
+```
+
+And we can now simply use them in our React components this way :
+
+```typescript
+import { useUsersQuery } from 'gql-gen'
+import Head from 'next/head'
+
+export default function Home() {
+	const { data } = useUsersQuery()
+	return (
+		<>
+			<Head>
+				<title>Awesome custom hooks</title>
+				<link rel='icon' href='/favicon.ico' />
+			</Head>
+
+			<main>{JSON.stringify(data?.users?.users)}</main>
+		</>
+	)
+}
+```
+
+And we will also get some nice autocompletion and errors without having to manually write (and maintain) any Typescript types :
+
+![autocomplete from custom hook](/img/custom-hook-autocompletion-one-min.png)
+![autocomplete from custom hook](/img/custom-hook-autocompletion-two-min.png)
+
+But what if their is a mismatch between one of the queries and the graphql schema ?
+
+### Observability with early and relentless script errors on mismatches
+
+Let's imagine we made a typo in our graphql query like this one : missing the l of email.
+
+```typescript
+// in graphql/user/queries.ts
+import gql from 'graphql-tag'
+
+export const GET_USER_BY_ID = gql`
+	query UserById($id: ID!) {
+		userById(id: $id) {
+			errors {
+				key
+				message
+			}
+			user {
+				id
+				username
+				emai
+			}
+		}
+	}
+`
+```
+
+This would usually lead to a graphql validation error in development or in production if it's not catched before deployment.
+In our case, our script will error out and give us the following error in the console:
+
+![unsuccessfull code generation console log prints](/img/gql-code-gen-error-min.png)
+
+This will allow us to find and fix the bug without even having to switch back to our app and see that their is something wrong.
+
+After about two years of working with graphql projects, I find this to be the biggest advantage of this workflow.
+By erroring out early, relentlessly and with good errors on mismatches betweens graphql operations and the schema you gain so much observability over your project and productivity from early errors.
+You also gain a lot of confidence in your refactoring capabilities because you know you will get errors before even reaching the testing phase.
+
+Finally as a conclusion here the development script I run when working on this kind of project :
+
+```typescript
+"scripts": {
+		"dev": "concurrently \"next\" \"yarn gen\" ",
+		"gen": "graphql-codegen --config codegen.yml"
+	},
+```
+
+This way the graphql-code-generation is ran in parallel of the dev script and will run on every change in my graphql folder with having to launch both the dev script and the gen script separately.

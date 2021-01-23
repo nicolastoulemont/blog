@@ -56,8 +56,6 @@ export default function PageLayout({ children, frontMatter }) {
 				minHeight='100%'
 				maxWidth='1000px'
 				margin='0 auto'
-				pb={8}
-				boxSizing='border-box'
 				variants={variants}
 				initial='hidden'
 				animate='visible'

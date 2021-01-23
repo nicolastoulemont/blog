@@ -71,7 +71,7 @@ export const MDXComponents = {
 		<Heading as='h2' my={8} size='xl' textAlign={{ base: 'center', sm: 'left' }} {...props} />
 	),
 	h3: (props) => <Heading as='h3' my={6} size='lg' {...props} />,
-	h4: (props) => <Heading as='h4' {...props} />,
+	h4: (props) => <Heading as='h4' size='md' {...props} />,
 	p: (props) => <Text as='p' my={{ base: 6, md: 3 }} {...props} />,
 	a: (props) => {
 		const color = useColorModeValue('blue.500', 'cyan.400')

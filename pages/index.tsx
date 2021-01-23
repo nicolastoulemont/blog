@@ -21,7 +21,6 @@ export default function HomePage() {
 				as='main'
 				width='100%'
 				px={3}
-				minHeight='100%'
 				maxWidth='1000px'
 				margin='0 auto'
 				pb={8}
