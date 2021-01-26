@@ -98,6 +98,10 @@ function Post({ post }) {
 		'rgba(0, 0, 0, 0.12) 0px 3px 8px',
 		'rgba(0, 0, 0, 1) 0px 3px 8px'
 	)
+	const whileHoverboxShadowColor = useColorModeValue(
+		'rgba(0, 0, 0, 0.12) 0px 8px 12px',
+		'rgba(0, 0, 0, 1) 0px 8px 12px'
+	)
 
 	return (
 		<NextLink href={post.url} passHref key={post.url}>
@@ -108,8 +112,10 @@ function Post({ post }) {
 				rounded='md'
 				initial={{ opacity: 0.5 }}
 				animate={{ opacity: 1 }}
-				whileHover={{ scale: 1.01 }}
-				whileTap={{ scale: 0.99 }}
+				transition='box-shadow 0.3s ease-in-out'
+				_hover={{
+					boxShadow: whileHoverboxShadowColor
+				}}
 				p={6}
 				my={3}
 			>
