@@ -247,34 +247,33 @@ export const users = queryField('users', {
 
 This code will generate this GraphQL schema in the src/shema.graphql file :
 
-```typescript
+```graphql
 type Error {
-  key: String
-  message: String
+	key: String
+	message: String
 }
 
 type Query {
-  userById(id: ID!): UserResponse
-  users: UsersResponse
+	userById(id: ID!): UserResponse
+	users: UsersResponse
 }
 
 type User {
-  email: String
-  id: ID
-  username: String
-  verified: Boolean
+	email: String
+	id: ID
+	username: String
+	verified: Boolean
 }
 
 type UserResponse {
-  errors: [Error]
-  user: User
+	errors: [Error]
+	user: User
 }
 
 type UsersResponse {
-  errors: [Error]
-  users: [User]
+	errors: [Error]
+	users: [User]
 }
-
 ```
 
 If at this point, you are confused by the returning of errors in the response instead of throwing errors, I suggest reading the following articles :
@@ -327,22 +326,22 @@ We then need to setup the [graphql-code-generator](https://graphql-code-generato
 You can find their complete documentation in the links above if needed.
 We then need to write a codegen.yml config file at the root of the project.
 
-```typescript
+```yaml
 overwrite: true
-schema: "src/schema.graphql"
-documents: "graphql/**/*.ts"
+schema: 'src/schema.graphql'
+documents: 'graphql/**/*.ts'
 watch:
-  - "graphql/**/*.ts"
+    - 'graphql/**/*.ts'
 generates:
-  gql-gen/index.tsx:
-    plugins:
-      - "typescript"
-      - "typescript-operations"
-      - "typescript-react-apollo"
-    config:
-      withHOC: false
-      withComponent: false
-      withHooks: true
+    gql-gen/index.tsx:
+        plugins:
+            - 'typescript'
+            - 'typescript-operations'
+            - 'typescript-react-apollo'
+        config:
+            withHOC: false
+            withComponent: false
+            withHooks: true
 ```
 
 And write the following script in package.json to run it:
@@ -361,7 +360,7 @@ What this config and script will then do is the following :
 
 It is important to note that while here our schema is a locale graphql file, it can also be a remote graphql schema emitted by a running graphql server with introspection allowed ( in our project it would located at "http://localhost:3000/api/graphql")
 
-```typescript
+```yaml
 overwrite: true
 schema: "http://localhost:3000/api/graphql"
 ...rest on the config

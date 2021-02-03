@@ -1,8 +1,14 @@
 import React from 'react'
 import { css, Global } from '@emotion/react'
-import { theme } from '@chakra-ui/react'
+import { theme, useColorMode } from '@chakra-ui/react'
 
-const prismTheme = css`
+/* 
+Credits to francoisbest: https://twitter.com/fortysevenfx
+FROM https://francoisbest.com/
+CODE: https://github.com/franky47/francoisbest.com/blob/next/src/ui/prism.tsx
+*/
+
+const prismBaseTheme = css`
 	code {
 		white-space: pre;
 	}
@@ -34,11 +40,6 @@ const prismTheme = css`
 		min-width: 100%;
 		font-size: 0.9rem;
 		border-radius: ${theme.radii.md};
-	}
-
-	code[class*='language-'] {
-		width: auto;
-		overflow-x: auto;
 	}
 	.token.important,
 	.token.bold {
@@ -73,7 +74,10 @@ const prismTheme = css`
 			margin-top: 0;
 		}
 	}
+`
 
+export const prismLightTheme = css`
+	${prismBaseTheme}
 	:root {
 		--prism-text-color: ${theme.colors.gray[700]};
 	}
@@ -94,7 +98,7 @@ const prismTheme = css`
 	}
 	.token.string,
 	.token.attr-value {
-		color: ${theme.colors.purple[900]};
+		color: ${theme.colors.purple[700]};
 	}
 	.token.punctuation,
 	.token.operator {
@@ -139,6 +143,87 @@ const prismTheme = css`
 	}
 `
 
+export const prismDarkTheme = css`
+	${prismBaseTheme};
+	:root {
+		--prism-text-color: ${theme.colors.blue[300]};
+	}
+	pre {
+		background-color: #0f141ca1;
+		border: 1px solid ${theme.colors.gray[800]};
+		color: var(--prism-text-color);
+		box-shadow: inset 0 3px 4px 0 rgba(0, 0, 0, 0.2);
+	}
+	.token.comment,
+	.token.prolog,
+	.token.doctype,
+	.token.cdata {
+		color: ${theme.colors.gray[600]};
+		font-style: italic;
+	}
+	.token.string,
+	.token.attr-value {
+		color: ${theme.colors.orange[300]};
+	}
+	.token.punctuation,
+	.token.operator {
+		color: var(--prism-text-color);
+	}
+	.token.entity,
+	.token.url,
+	.token.symbol,
+	.token.number,
+	.token.variable,
+	.token.constant,
+	.token.property,
+	.token.regex,
+	.token.inserted {
+		color: ${theme.colors.cyan[500]};
+	}
+	.token.atrule,
+	.token.attr-name,
+	.language-autohotkey .token.selector {
+		color: ${theme.colors.red[500]};
+	}
+
+	.token.boolean {
+		color: ${theme.colors.blue[600]};
+	}
+
+	.token.keyword {
+		color: ${theme.colors.purple[300]};
+	}
+
+	.token.operator {
+		color: ${theme.colors.gray[300]};
+	}
+	.token.function,
+	.token.deleted,
+	.language-autohotkey .token.tag {
+		color: ${theme.colors.yellow[300]};
+	}
+	.token.tag,
+	.token.selector,
+	.language-autohotkey .token.keyword {
+		color: ${theme.colors.blue[400]};
+	}
+	.token.builtin,
+	.token.arrow.operator {
+		color: ${theme.colors.teal[400]};
+	}
+	.mdx-marker {
+		background-color: ${theme.colors.gray[900]};
+		box-shadow: inset 3px 0px 0 0px var(--colors-accent-300);
+	}
+	.remark-code-title {
+		background: ${theme.colors.gray[900]};
+		border-color: ${theme.colors.gray[800]};
+		color: ${theme.colors.gray[500]};
+		box-shadow: inset 0 3px 4px 0 rgba(0, 0, 0, 0.1);
+	}
+`
+
 export const PrismGlobal = () => {
-	return <Global styles={prismTheme} />
+	const { colorMode } = useColorMode()
+	return <Global styles={colorMode === 'light' ? prismLightTheme : prismDarkTheme} />
 }
