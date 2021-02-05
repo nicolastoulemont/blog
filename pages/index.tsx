@@ -2,7 +2,6 @@ import React from 'react'
 import { Flex, Heading, Box, Text, Tag, chakra, useColorModeValue } from '@chakra-ui/react'
 import { Card, Header } from 'components'
 import { motion, AnimatePresence } from 'framer-motion'
-import { FaGithub, FaTwitter } from 'react-icons/fa'
 import { NextSeo } from 'next-seo'
 import { postsList } from 'data/lists'
 import NextLink from 'next/link'
@@ -11,6 +10,9 @@ import NextImage from 'next/image'
 const MotionLink = chakra(motion.a)
 
 export default function HomePage() {
+	const focusColor = useColorModeValue('black', 'white')
+	const dateColor = useColorModeValue('gray.600', 'gray.400')
+
 	return (
 		<>
 			<NextSeo title="Nicolas Toulemont's blog" />
@@ -31,63 +33,52 @@ export default function HomePage() {
 					pt={8}
 				>
 					<Flex direction='column' justify='center' mr={[0, 8]} mt={[8, 0]}>
-						<Flex
-							align='center'
-							justify={{ base: 'center', md: 'left' }}
-							mb={4}
-							mt={{ base: 4, md: 0 }}
-						>
-							<Heading as='h1' size='2xl' fontWeight='bold'>
-								Hey I'm Nicolas !
-							</Heading>
-							<motion.div
-								style={{
-									marginBottom: '-20px',
-									marginRight: '-45px',
-									paddingBottom: '20px',
-									paddingRight: '45px',
-									display: 'inline-block',
-									fontSize: '2.5em',
-									marginLeft: '0.1em'
-								}}
-								animate={{ rotate: 20 }}
-								transition={{
-									yoyo: 2.5,
-									from: 0,
-									duration: 0.2,
-									ease: 'easeInOut',
-									type: 'tween'
-								}}
-							>
-								👋
-							</motion.div>
+						<Flex align='center' justify={{ base: 'center', md: 'left' }} mb={4}>
+							<Text as='h1' textAlign={{ base: 'center', md: 'left' }}>
+								<Box
+									as='span'
+									fontSize={{ base: '1.5em', md: '2em' }}
+									fontWeight='bold'
+									color={focusColor}
+								>
+									Hey I'm Nicolas !
+								</Box>
+								<motion.span
+									style={{
+										marginBottom: '-20px',
+										marginRight: '-45px',
+										paddingBottom: '20px',
+										paddingRight: '45px',
+										display: 'inline-block',
+										fontSize: '2.5em',
+										marginLeft: '0.1em'
+									}}
+									animate={{ rotate: 20 }}
+									transition={{
+										yoyo: 2.5,
+										from: 0,
+										duration: 0.2,
+										ease: 'easeInOut',
+										type: 'tween'
+									}}
+								>
+									👋
+								</motion.span>
+								<Box
+									as='span'
+									fontSize={{ base: '1.5em', md: '2em' }}
+									textAlign={{ base: 'center', md: 'left' }}
+									fontWeight='bold'
+									color={dateColor}
+									ml={3}
+								>
+									I'm a french full stack software developer using Typescript,
+									Node, React and GraphQL.
+								</Box>
+							</Text>
 						</Flex>
-
-						<Text fontSize='xl' textAlign={{ base: 'center', md: 'left' }}>
-							I'm a french full stack software developer using Typescript, Node, React
-							and GraphQL.
-						</Text>
 					</Flex>
-					<Card
-						img={{
-							src: '/img/personal_picture.jpg',
-							alt: 'blog author'
-						}}
-						links={[
-							{
-								text: 'Github',
-								href: 'https://github.com/nicolastoulemont',
-								external: true,
-								icon: FaGithub
-							},
-							{
-								text: 'Twitter',
-								href: 'https://twitter.com/NicoToulemont',
-								external: true,
-								icon: FaTwitter
-							}
-						]}
-					/>
+					<Card />
 				</Flex>
 				<Flex width='100%' flexDir='column' align='flex-start' justify='flex-start' my={6}>
 					<Heading as='h2'>Latest articles</Heading>
@@ -159,12 +150,13 @@ function Post({ post }) {
 						<Text>{post.snippet}</Text>
 					</Box>
 					<Flex
-						width={{ base: '300px', sm: '100px', md: '140px' }}
+						width={{ base: 'calc(100vw - 80px)', sm: '100px', md: '140px' }}
 						mx={{ base: 'auto', sm: 0 }}
 						mb={{ base: 3, sm: 0 }}
 						rounded='md'
 						align='center'
 						justify='center'
+						boxSizing='border-box'
 					>
 						<NextImage
 							width={post.imageWidth}
