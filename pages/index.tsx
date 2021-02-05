@@ -2,14 +2,12 @@ import React from 'react'
 import { Flex, Heading, Box, Text, Tag, chakra, useColorModeValue } from '@chakra-ui/react'
 import { Card, Header } from 'components'
 import { motion, AnimatePresence } from 'framer-motion'
-import { GiHand } from 'react-icons/gi'
 import { FaGithub, FaTwitter } from 'react-icons/fa'
 import { NextSeo } from 'next-seo'
 import { postsList } from 'data/lists'
 import NextLink from 'next/link'
 import NextImage from 'next/image'
 
-const MotionBox = chakra(motion.div)
 const MotionLink = chakra(motion.a)
 
 export default function HomePage() {
@@ -42,15 +40,27 @@ export default function HomePage() {
 							<Heading as='h1' size='2xl' fontWeight='bold'>
 								Hey I'm Nicolas !
 							</Heading>
-							<MotionBox
-								color='yellow.300'
-								fontSize={40}
-								ml={2}
-								whileHover={{ rotate: [30, 0, 30, 0], scale: 1.5 }}
-								_hover={{ cursor: 'pointer' }}
+							<motion.div
+								style={{
+									marginBottom: '-20px',
+									marginRight: '-45px',
+									paddingBottom: '20px',
+									paddingRight: '45px',
+									display: 'inline-block',
+									fontSize: '2.5em',
+									marginLeft: '0.1em'
+								}}
+								animate={{ rotate: 20 }}
+								transition={{
+									yoyo: 2.5,
+									from: 0,
+									duration: 0.2,
+									ease: 'easeInOut',
+									type: 'tween'
+								}}
 							>
-								<GiHand />
-							</MotionBox>
+								👋
+							</motion.div>
 						</Flex>
 
 						<Text fontSize='xl' textAlign={{ base: 'center', md: 'left' }}>
