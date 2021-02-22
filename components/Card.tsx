@@ -1,5 +1,5 @@
 import React from 'react'
-import { Flex, Icon, useColorModeValue, Box, chakra, Link, useColorMode } from '@chakra-ui/react'
+import { Flex, Icon, useColorModeValue, Box, Link, useColorMode } from '@chakra-ui/react'
 import { FiTwitter, FiGithub } from 'react-icons/fi'
 import NextImage from 'next/image'
 
@@ -34,10 +34,10 @@ export function Card() {
 				/>
 				<style>
 					{`
-							.avatar {
-								border-radius:50%;
-							}
-						`}
+						.avatar {
+							border-radius:50%;
+						}
+					`}
 				</style>
 			</Flex>
 

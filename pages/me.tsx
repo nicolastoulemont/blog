@@ -80,7 +80,9 @@ export default function Me() {
 							minWidth='20px'
 							mr={4}
 						/>
-						<Text>Has a degree in International Relations and European Union law</Text>
+						<Text>
+							Has a master's degree in International Relations and European Union law
+						</Text>
 					</ListItem>
 					<ListItem display='flex' alignItems='center' justifyContent='left'>
 						<Image

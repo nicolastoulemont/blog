@@ -6,8 +6,8 @@ export function Header() {
 	const { colorMode, toggleColorMode } = useColorMode()
 	const bgColor = useColorModeValue('white', '#1A212C')
 	const boxShadowColor = useColorModeValue(
-		'1px 2px 18px rgba(0,0,0,.1)',
-		'1px 2px 18px rgba(0,0,0,1)'
+		'rgba(0, 0, 0, 0.12) 0px 3px 8px',
+		'rgba(0, 0, 0, 1) 0px 3px 8px'
 	)
 
 	return (
