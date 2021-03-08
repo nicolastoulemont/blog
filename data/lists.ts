@@ -11,6 +11,21 @@ interface PostMetaData {
 }
 
 export const postsList: Array<PostMetaData> = [
+	// {
+	// 	title: 'How to build custom plugins for GraphQL Nexus.',
+	// 	date: '8th March 2021',
+	// 	url: '/posts/2021/nexus-gql-plugins',
+	// 	snippet:
+	// 		'Exploring how to build typesafe field level plugins to abstract logic with the graphql nexus framework.',
+	// 	imagePath: '/img/thumbnail-ts-nexus.png',
+	// 	imageAlt: 'GraphQL Nexus and Typescript',
+	// 	imageWidth: '388',
+	// 	imageHeight: '171',
+	// 	badges: [
+	// 		{ text: 'Typescript', color: 'blue' },
+	// 		{ text: 'GraphQL', color: 'pink' }
+	// 	]
+	// },
 	{
 		title: 'Full Stack Typescript - GraphQL: Automate the data layer',
 		date: '23th January 2021',
@@ -18,7 +33,7 @@ export const postsList: Array<PostMetaData> = [
 		snippet:
 			'Exploring how Typescript and GraphQL can be combined across a React / Node stack to give full stack observability, automatically generated documentation and a productivity boost with automatic code generation',
 		imagePath: '/img/thumbnail-ts-gql.png',
-		imageAlt: 'Drag to reorder illustration',
+		imageAlt: 'Typescript and graphql',
 		imageWidth: '229',
 		imageHeight: '126',
 		badges: [

@@ -4,11 +4,7 @@ module.exports = withMdxEnhanced({
 	layoutPath: 'layouts',
 	defaultLayout: true,
 	fileExtensions: ['mdx'],
-	remarkPlugins: [
-		require('remark-slug'),
-		require('remark-footnotes'),
-		require('remark-code-titles')
-	],
+	remarkPlugins: [require('remark-slug'), require('remark-code-titles')],
 	rehypePlugins: [require('mdx-prism')],
 	usesSrc: false,
 	extendFrontMatter: {
