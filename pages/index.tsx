@@ -43,27 +43,6 @@ export default function HomePage() {
 								>
 									Hey I'm Nicolas !
 								</Box>
-								<motion.span
-									style={{
-										marginBottom: '-20px',
-										marginRight: '-45px',
-										paddingBottom: '20px',
-										paddingRight: '45px',
-										display: 'inline-block',
-										fontSize: '2.5em',
-										marginLeft: '0.1em'
-									}}
-									animate={{ rotate: 20 }}
-									transition={{
-										yoyo: 2.5,
-										from: 0,
-										duration: 0.2,
-										ease: 'easeInOut',
-										type: 'tween'
-									}}
-								>
-									👋
-								</motion.span>
 								<Box
 									as='span'
 									fontSize={{ base: '1.5em', md: '2em' }}
