@@ -6,6 +6,7 @@ import { motion } from 'framer-motion'
 import Head from 'next/head'
 import { useRouter } from 'next/router'
 import { formatISO } from 'date-fns'
+import { PostMatterData } from 'scripts/generate-post-list'
 
 const MotionBox = chakra(motion.div)
 
@@ -16,20 +17,20 @@ const variants = {
 
 export default function PageLayout({ children, frontMatter }) {
 	const domain = 'https://nicolastoulemont.dev'
-	const { description, date, cardImage, title } = frontMatter
+	const { description, date, imagePath, title } = frontMatter as PostMatterData
 	const { asPath } = useRouter()
 	const canonical = asPath === '/' ? `${domain}` : `${domain}${asPath}`
 
 	return (
 		<>
 			<Head>
-				{cardImage && (
+				{imagePath && (
 					<>
-						<meta content={`${domain}${cardImage}`} property='og:image' />
+						<meta content={`${domain}${imagePath}`} property='og:image' />
 						<meta content={description} property='og:image:alt' />
 					</>
 				)}
-				{date && (
+				{date && date !== 'not_published' && (
 					<>
 						<meta content='article' property='og:type' />
 						<meta

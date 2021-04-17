@@ -3,13 +3,22 @@ import { Flex, Heading, Box, Text, Tag, chakra, useColorModeValue } from '@chakr
 import { Card, Header } from 'components'
 import { motion, AnimatePresence } from 'framer-motion'
 import { NextSeo } from 'next-seo'
-import { postsList } from 'data/lists'
 import NextLink from 'next/link'
 import NextImage from 'next/image'
-
+import { generatePublishedPostList, PostMetaData } from 'scripts/generate-post-list'
 const MotionLink = chakra(motion.a)
 
-export default function HomePage() {
+export async function getStaticProps() {
+	const publishedPosts = generatePublishedPostList()
+
+	return {
+		props: {
+			publishedPosts
+		}
+	}
+}
+
+export default function HomePage({ publishedPosts }: { publishedPosts: Array<PostMetaData> }) {
 	const focusColor = useColorModeValue('black', 'white')
 	const dateColor = useColorModeValue('gray.600', 'gray.400')
 
@@ -62,8 +71,8 @@ export default function HomePage() {
 				<Flex width='100%' flexDir='column' align='flex-start' justify='flex-start' my={6}>
 					<Heading as='h2'>Latest articles</Heading>
 					<AnimatePresence>
-						{postsList.map((post) => (
-							<Post key={post.url} post={post} />
+						{publishedPosts.map((post) => (
+							<Post key={post.slug} post={post} />
 						))}
 					</AnimatePresence>
 				</Flex>
@@ -72,7 +81,7 @@ export default function HomePage() {
 	)
 }
 
-function Post({ post }) {
+function Post({ post }: { post: PostMetaData }) {
 	const dateColor = useColorModeValue('gray.700', 'gray.200')
 	const boxShadowColor = useColorModeValue(
 		'rgba(0, 0, 0, 0.12) 0px 3px 8px',
@@ -84,7 +93,7 @@ function Post({ post }) {
 	)
 
 	return (
-		<NextLink href={post.url} passHref key={post.url}>
+		<NextLink href={post.slug} passHref key={post.slug}>
 			<MotionLink
 				layout
 				width='100%'
