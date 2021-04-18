@@ -1,6 +1,6 @@
 import React from 'react'
 import { Flex, Heading, Box, Text, Tag, chakra, useColorModeValue } from '@chakra-ui/react'
-import { Card, Header } from 'components'
+import { Header } from 'components'
 import { motion, AnimatePresence } from 'framer-motion'
 import { NextSeo } from 'next-seo'
 import NextLink from 'next/link'
@@ -35,39 +35,26 @@ export default function HomePage({ publishedPosts }: { publishedPosts: Array<Pos
 				pb={8}
 				boxSizing='border-box'
 			>
-				<Flex
-					flexDirection={{ base: 'column-reverse', md: 'row' }}
-					align='center'
-					justify={{ base: 'center', md: 'space-between' }}
-					pt={8}
+				<Heading
+					as='h1'
+					my={{ base: 6, md: 12 }}
+					size='2xl'
+					textAlign={{ base: 'center', md: 'left' }}
+					fontWeight='bold'
+					color={focusColor}
 				>
-					<Flex direction='column' justify='center' mr={[0, 8]} mt={[8, 0]}>
-						<Flex align='center' justify={{ base: 'center', md: 'left' }} mb={4}>
-							<Text as='h1' textAlign={{ base: 'center', md: 'left' }}>
-								<Box
-									as='span'
-									fontSize={{ base: '1.5em', md: '2em' }}
-									fontWeight='bold'
-									color={focusColor}
-								>
-									Hey I'm Nicolas !
-								</Box>
-								<Box
-									as='span'
-									fontSize={{ base: '1.5em', md: '2em' }}
-									textAlign={{ base: 'center', md: 'left' }}
-									fontWeight='bold'
-									color={dateColor}
-									ml={3}
-								>
-									I'm a french full stack software developer using Typescript,
-									Node, React and GraphQL.
-								</Box>
-							</Text>
-						</Flex>
-					</Flex>
-					<Card />
-				</Flex>
+					Hi, I'm Nicolas Toulemont
+				</Heading>
+				<Text
+					fontSize={{ base: '1.5rem', md: '2rem' }}
+					textAlign={{ base: 'center', md: 'left' }}
+					fontWeight='bold'
+					color={dateColor}
+					mb={{ base: 9, md: 12 }}
+				>
+					I'm a french full stack software developer using Typescript, Node, React and
+					GraphQL.
+				</Text>
 				<Flex width='100%' flexDir='column' align='flex-start' justify='flex-start' my={6}>
 					<Heading as='h2'>Latest articles</Heading>
 					<AnimatePresence>

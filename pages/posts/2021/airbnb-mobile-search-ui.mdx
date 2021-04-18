@@ -1,0 +1,49 @@
+---
+date: 'not_published'
+cardImage: '/img/thumbnail-ts-nexus.png'
+title: 'How to build Airbnb mobile search results UI'
+snippet: 'Exploring how Airbnb uses drag and scrolls events to build an app like UX'
+description: 'Exploring how Airbnb uses drag animations and scroll snapping to build an app like UX'
+imagePath: '/img/thumbnail-ts-nexus.png'
+imageAlt: 'Airbnb mobile search result UI'
+imageWidth: '388'
+imageHeight: '171'
+badges: [
+	{ text: 'Typescript', color: 'blue' },
+	{ text: 'React', color: 'red' }
+]
+layout: PageLayout
+---
+
+import { Tag, Box } from '@chakra-ui/react'
+import { AirbnbMobile } from 'components'
+
+# How to build Airbnb mobile search results UI
+
+<Flex
+	width='100%'
+	align='center'
+	justify={{ base: 'center', sm: 'space-between' }}
+	flexDirection={{ base: 'column', sm: 'row' }}
+>
+	Nicolas Toulemont - March 8th 2021{' '}
+	<Flex align='center' justify='center'>
+		<Tag colorScheme='blue' mt={{ base: 2, sm: 0 }}>
+			Typescript
+		</Tag>
+		<Tag colorScheme='pink' mt={{ base: 2, sm: 0 }} ml={2}>
+			React
+		</Tag>
+	</Flex>
+</Flex>
+
+<Box
+	width={{ base: '100%', md: '50%' }}
+	maxW={{ base: 'none', md: '375px' }}
+	mx='auto'
+	boxSizing='border-box'
+	borderRadius='25px'
+	my={6}
+>
+	<AirbnbMobile />
+</Box>
