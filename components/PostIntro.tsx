@@ -21,7 +21,12 @@ export function PostIntro({ date, tags }: PostIntroProps) {
 			Nicolas Toulemont - {date}
 			<Flex align='center' justify='center'>
 				{tags.map((tag, index) => (
-					<Tag colorScheme={tag.color} mt={{ base: 2, sm: 0 }} ml={index === 0 ? 0 : 2}>
+					<Tag
+						key={tag.name}
+						colorScheme={tag.color}
+						mt={{ base: 2, sm: 0 }}
+						ml={index === 0 ? 0 : 2}
+					>
 						{tag.name}
 					</Tag>
 				))}
