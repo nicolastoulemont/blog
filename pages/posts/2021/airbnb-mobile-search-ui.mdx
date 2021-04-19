@@ -17,25 +17,17 @@ layout: PageLayout
 
 import { Tag, Box } from '@chakra-ui/react'
 import { AirbnbMobile } from 'components'
+import { PostIntro } from 'components'
 
 # How to build Airbnb mobile search results UI
 
-<Flex
-	width='100%'
-	align='center'
-	justify={{ base: 'center', sm: 'space-between' }}
-	flexDirection={{ base: 'column', sm: 'row' }}
->
-	Nicolas Toulemont - March 8th 2021{' '}
-	<Flex align='center' justify='center'>
-		<Tag colorScheme='blue' mt={{ base: 2, sm: 0 }}>
-			Typescript
-		</Tag>
-		<Tag colorScheme='pink' mt={{ base: 2, sm: 0 }} ml={2}>
-			React
-		</Tag>
-	</Flex>
-</Flex>
+<PostIntro
+	date='Apr 19th 2021'
+	tags={[
+		{ name: 'Typescript', color: 'blue' },
+		{ name: 'React', color: 'red' }
+	]}
+/>
 
 <Box
 	width={{ base: '100%', md: '50%' }}

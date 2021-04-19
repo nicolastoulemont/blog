@@ -16,25 +16,17 @@ layout: PageLayout
 
 import { Tag } from '@chakra-ui/react'
 import { DragToReOrder } from 'components'
+import { PostIntro } from 'components'
 
 # Animations : Drag to reorder
 
-<Flex
-	width='100%'
-	align='center'
-	justify={{ base: 'center', sm: 'space-between' }}
-	flexDirection={{ base: 'column', sm: 'row' }}
->
-	Nicolas Toulemont - Jan 9th 2021{' '}
-	<Flex align='center' justify='center'>
-		<Tag colorScheme='orange' mt={{ base: 2, sm: 0 }}>
-			Animations
-		</Tag>
-		<Tag colorScheme='red' mt={{ base: 2, sm: 0 }} ml={2}>
-			React
-		</Tag>
-	</Flex>
-</Flex>
+<PostIntro
+	date='Jan 9th 2021'
+	tags={[
+		{ name: 'Animations', color: 'orange' },
+		{ name: 'React', color: 'red' }
+	]}
+/>
 
 ## Why learning drag to reorder animations and operations ?
 
