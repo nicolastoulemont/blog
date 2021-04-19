@@ -122,16 +122,26 @@ export function AirbnbMobile() {
 		prevScrollVal = st <= 0 ? 0 : st
 	}
 
-	useEvent(
-		'scroll',
-		throttle(500, true, handleVerticalContainerScroll),
-		document.getElementById('verticalContainer')
-	)
-	useEvent(
-		'mousewheel',
-		throttle(500, true, handleVerticalContainerScroll),
-		document.getElementById('verticalContainer')
-	)
+	// useEvent(
+	// 	'scroll',
+	// 	throttle(500, true, handleVerticalContainerScroll),
+	// 	document.getElementById('verticalContainer')
+	// )
+	// useEvent(
+	// 	'mousewheel',
+	// 	throttle(500, true, handleVerticalContainerScroll),
+	// 	document.getElementById('verticalContainer')
+	// )
+	// useEvent(
+	// 	'wheel',
+	// 	throttle(500, true, handleVerticalContainerScroll),
+	// 	document.getElementById('verticalContainer')
+	// )
+	// useEvent(
+	// 	'touchstart',
+	// 	throttle(500, true, handleVerticalContainerScroll),
+	// 	document.getElementById('verticalContainer')
+	// )
 
 	function handleShowMapFromProfilesList() {
 		// Reset scroll so that the next time verticalContainer is open,
@@ -303,35 +313,51 @@ export function AirbnbMobile() {
 					_hover={{ cursor: 'grab' }}
 					whileTap={{ cursor: 'grabbing' }}
 					aria-describedby='Profile list'
-					drag='y'
-					onDrag={(_, info) => {
-						if (!hasInteracted.current) {
-							hasInteracted.current = true
-						}
+					// drag='y'
+					// onDrag={(_, info) => {
+					// 	if (!hasInteracted.current) {
+					// 		hasInteracted.current = true
+					// 	}
 
-						y.set(startOffset + info.offset.y)
-					}}
-					onDragEnd={(_, info) => setStartOffset(startOffset + info.offset.y)}
-					dragConstraints={{ bottom: 0, top: 0 }}
-					dragElastic={false}
-					dragMomentum={false}
+					// 	y.set(startOffset + info.offset.y)
+					// }}
+					// onDragEnd={(_, info) => setStartOffset(startOffset + info.offset.y)}
+					// dragConstraints={{ bottom: 0, top: 0 }}
+					// dragElastic={false}
+					// dragMomentum={false}
 					style={{ height, transition: 'height 0.1s ease-in-out' }}
 				>
-					<Flex
+					<MotionBox
 						width='100%'
-						align='center'
-						justify='center'
+						display='flex'
+						alignItems='center'
+						justifyContent='center'
 						flexDir='column'
 						_hover={{ cursor: 'drag' }}
 						mb={9}
+						role='button'
+						whileTap={{ cursor: 'grabbing' }}
+						aria-describedby='Profile list'
+						drag='y'
+						onDrag={(_, info) => {
+							if (!hasInteracted.current) {
+								hasInteracted.current = true
+							}
+
+							y.set(startOffset + info.offset.y)
+						}}
+						onDragEnd={(_, info) => setStartOffset(startOffset + info.offset.y)}
+						dragConstraints={{ bottom: 0, top: 0 }}
+						dragElastic={false}
+						dragMomentum={false}
 					>
 						<Box height='5px' width='50px' bgColor='gray.400' borderRadius='9999px' />
 						<Flex width='100%' align='center' justify='space-between'>
 							<Heading as='h3' size='sm' color='blackAlpha.800'>
-								{data.length} results
+								More than {data.length} results
 							</Heading>
 						</Flex>
-					</Flex>
+					</MotionBox>
 
 					{data.map((profile) => (
 						<ProfileCardVertical key={`${profile.id}-vertical`} profile={profile} />
