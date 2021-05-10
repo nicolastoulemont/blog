@@ -44,6 +44,7 @@ export default function PageLayout({ children, frontMatter }) {
 				title={title}
 				description={description}
 				openGraph={{
+					type: 'article',
 					description,
 					url: canonical,
 					title: title
