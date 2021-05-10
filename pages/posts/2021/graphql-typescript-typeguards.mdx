@@ -1,0 +1,478 @@
+---
+date: '2021-05-10'
+cardImage: '/img/thumbnail-ts-gql.png'
+title: 'GraphQL Typeguards'
+snippet: 'Exploring a few helpful graphql focus typeguards such as isType, isEither, isNot, isTypeInTuple'
+description: 'Exploring a few helpful graphql focus typeguards such as isType, isEither, isNot, isTypeInTuple'
+imagePath: '/img/thumbnail-ts-gql.png'
+imageAlt: 'GraphQL and Typescript'
+imageWidth: '229'
+imageHeight: '126'
+badges: [
+	{ text: 'Typescript', color: 'blue' },
+	{ text: 'GraphQL', color: 'pink' }
+]
+layout: PageLayout
+---
+
+import { Tag } from '@chakra-ui/react'
+import { PostIntro } from 'components'
+
+# GraphQL Typeguards
+
+<PostIntro
+	date='May 10th 2021'
+	tags={[
+		{ name: 'Typescript', color: 'blue' },
+		{ name: 'GraphQL', color: 'pink' }
+	]}
+/>
+
+When working with GraphQL, one will sometimes need to assert the type of the response.
+Sometimes it is because of the response is a union type, sometimes because the response is a nullable result.
+This usually forces the developer into asserting the response type quite often which can cause a bit of noise. To handle these assertions we will have a look at a few helpul typeguards functions:
+isType, isEither, isNot, isTypeInTuple.
+
+## Simple case
+
+For example, when asserting the result of the following mutation response, the developer will need to handle three differents cases: an ActiveUser, a UserAuthenticationError and a InvalidArgumentsError.
+
+```graphql
+mutation CreateUser($name: String!, $email: String!) {
+	createUser(name: $name, email: $email) {
+		... on ActiveUser {
+			id
+			name
+			status
+			email
+		}
+		... on UserAuthenticationError {
+			code
+			message
+		}
+		... on InvalidArgumentsError {
+			code
+			message
+			invalidArguments {
+				key
+				message
+			}
+		}
+	}
+}
+```
+
+It could look like something like this:
+
+```typescript
+const initialUserState = {
+	name: '',
+	email: ''
+}
+
+function UserForm() {
+	const [{ name, email }, setState] = useState(initialUserState)
+	const [errors, setErrors] = useState({})
+
+	const [saveUser] = useCreateUserMutation({
+		variables: {
+			name,
+			email
+		}
+	})
+
+	async function handleSubmit(event) {
+		event.preventDefault()
+		const { data } = await saveUser()
+		switch (data.createUser.__typename) {
+			case 'ActiveUser':
+				setState(initialUserState)
+				setErrors({})
+			case 'UserAuthenticationError':
+				// Display missing authentication alert / toast
+			case 'InvalidArgumentsError':
+				setErrors(toErrorRecord(data.createUser.invalidArguments))
+			default:
+				break
+		}
+	}
+	return (
+		//... Form JSX
+	)
+}
+```
+
+And for that simple use case, it would be fine. But what if we also want to update our client side apollo client cache to include the newly created user into it ?
+Then our handleSubmit function would look this:
+
+```typescript
+async function handleSubmit(event) {
+	event.preventDefault()
+	const { data } = await saveUser({
+		update: (cache, { data: { createUser } }) => {
+			const existingUsers = cache.readQuery<UsersQuery>({ query: GET_USERS })
+			if (data.createUser.__typename === 'ActiveUser') {
+				cache.writeQuery({
+					query: GET_USERS,
+					data: {
+						users: [...existingUsers.users, createUser]
+					}
+				})
+			}
+		}
+	})
+	switch (data.createUser.__typename) {
+		case 'ActiveUser':
+			setState(initialUserState)
+			setErrors({})
+		case 'UserAuthenticationError':
+		// Display missing authentication alert / toast
+		case 'InvalidArgumentsError':
+			setErrors(toErrorRecord(data.createUser.invalidArguments))
+		default:
+			break
+	}
+}
+```
+
+And that would fine too, but we are starting to have multiple .\_\_typename assertion. And this can get out of hand quite quickly. That is when a utility type-guard function can come in.
+Let's make a simple isType typeguard base on the \_\_typename property:
+
+### isType
+
+```typescript
+type GraphQLResult = { __typename: string }
+type ValueOfTypename<T extends GraphQLResult> = T['__typename']
+
+function isType<Result extends GraphQLResult, Typename extends ValueOfTypename<Result>>(
+	result: Result,
+	typename: Typename
+): result is Extract<Result, { __typename: Typename }> {
+	return result?.__typename === typename
+}
+```
+
+With this typeguard we use the Typescript [Extract](https://www.typescriptlang.org/docs/handbook/utility-types.html#extracttype-union) utility type with the `is` expression
+to tell the Typescript compiler which type our result is.
+
+And now our submit function would look this :
+
+```typescript
+async function handleSubmit(event) {
+	event.preventDefault()
+	const { data } = await saveUser({
+		update: (cache, { data: { createUser } }) => {
+			const existingUsers = cache.readQuery<UsersQuery>({ query: GET_USERS })
+			if (isType(createUser, 'ActiveUser')) {
+				cache.writeQuery({
+					query: GET_USERS,
+					data: {
+						users: [...existingUsers.users, createUser]
+					}
+				})
+			}
+		}
+	})
+	if (isType(data?.createUser, 'ActiveUser')) {
+		setState(initialUserState)
+		setErrors({})
+	} else if (isType(data?.createUser, 'UserAuthenticationError')) {
+		// Display missing authentication alert / toast
+	} else if (isType(data?.createUser, 'InvalidArgumentsError')) {
+		setErrors(toErrorRecord(data.createUser.invalidArguments))
+	}
+}
+```
+
+That a bit better, we get some type safety, the typename parameter of the isType has some nice autocomplete and the logic is easily readable and explicite.
+
+Admittedly this isn't a major improvement, but the isType function can be composed is many different ways to handle more complexe cases.
+
+## More complexe cases
+
+Now, let's say that our GET_USERS query is the following:
+
+```graphql
+query Users {
+	users {
+		... on ActiveUser {
+			id
+			name
+			status
+			email
+			posts {
+				id
+				title
+			}
+		}
+		... on DeletedUser {
+			id
+			name
+			status
+			deletedAt
+		}
+		... on BannedUser {
+			id
+			name
+			status
+			banReason
+		}
+	}
+}
+```
+
+Whose return type is:
+
+```graphql
+union UserResult =
+	  ActiveUser
+	| BannedUser
+	| DeletedUser
+	| InvalidArgumentsError
+	| UserAuthenticationError
+```
+
+And that we want to be able to change the status of the users and then update our cache accordingly so that it reflect the updated status of the user.
+We would have a mutation like this:
+
+```graphql
+mutation ChangeUserStatus($status: UserStatus!, $id: Int!) {
+	changeUserStatus(status: $status, id: $id) {
+		... on ActiveUser {
+			id
+			name
+			status
+			email
+			posts {
+				id
+				title
+			}
+		}
+		... on DeletedUser {
+			id
+			name
+			status
+			deletedAt
+		}
+		... on BannedUser {
+			id
+			name
+			status
+			banReason
+		}
+		... on UserAuthenticationError {
+			code
+			message
+		}
+		... on InvalidArgumentsError {
+			code
+			message
+			invalidArguments {
+				key
+				message
+			}
+		}
+	}
+}
+```
+
+Now to implement this mutation and update the cache based on the response type we will have something like this:
+
+```typescript
+const [changeUserStatus] = useChangeUserStatusMutation({
+	update: (cache, { data: { changeUserStatus } }) => {
+		const existingUsers = cache.readQuery<UsersQuery>({ query: GET_USERS })
+		const filteredUsers = existingUsers.users.filter(
+			(user) =>
+				(user.__typename === 'ActiveUser' ||
+					user.__typename === 'DeletedUser' ||
+					user.__typename === 'BannedUser') &&
+				(changeUserStatus.__typename === 'ActiveUser' ||
+					changeUserStatus.__typename === 'DeletedUser' ||
+					changeUserStatus.__typename === 'BannedUser') &&
+				user.id !== changeUserStatus.id
+		)
+
+		cache.writeQuery({
+			query: GET_USERS,
+			data: {
+				users: [...filteredUsers, changeUserStatus]
+			}
+		})
+	}
+})
+```
+
+Now that is quite a bit verbose. We could instead use our isType function reduce the noise a bit:
+
+```typescript
+const [changeUserStatus] = useChangeUserStatusMutation({
+	update: (cache, { data: { changeUserStatus } }) => {
+		const existingUsers = cache.readQuery<UsersQuery>({ query: GET_USERS })
+		const filteredUsers = existingUsers.users.filter(
+			(user) =>
+				(isType(user, 'ActiveUser') ||
+					isType(user, 'DeletedUser') ||
+					isType(user, 'BannedUser')) &&
+				(isType(changeUserStatus, 'ActiveUser') ||
+					isType(changeUserStatus, 'DeletedUser') ||
+					isType(changeUserStatus, 'BannedUser')) &&
+				user.id !== changeUserStatus.id
+		)
+
+		cache.writeQuery({
+			query: GET_USERS,
+			data: {
+				users: [...filteredUsers, changeUserStatus]
+			}
+		})
+	}
+})
+```
+
+But that is still not that good. Maybe we should try build a typeguard that help us figure out if the user and the mutation result are either an ActiveUser, a DeletedUser or a BannedUser.
+Or maybe we should have a function to exclude types to assert that the user and the mutation result are not an UserAuthenticationError or a InvalidArgumentsError.
+
+Let's start with the isEither function.
+
+### isEither
+
+```typescript
+type GraphQLResult = { __typename: string }
+type ValueOfTypename<T extends GraphQLResult> = T['__typename']
+
+function isEither<
+	Result extends GraphQLResult,
+	Typename extends ValueOfTypename<Result>,
+	PossibleTypes extends Array<Typename>
+>(
+	result: Result,
+	typenames: PossibleTypes
+): result is Extract<Result, { __typename: typeof typenames[number] }> {
+	const types = typenames?.filter((type) => isType(result, type))
+	return types ? types.length > 0 : false
+}
+```
+
+This isEither function works kind of the same as the isType function except that the runtime iterate on the given typenames.
+The type assertion is based on the `result is Extract<Result, { __typename: typeof typenames[number] }>` which assert that the result is one of any of the index values of the typenames array.
+
+And now our changeUserStatus mutation and cache update can be refactor like this:
+
+```typescript
+const [changeUserStatus] = useChangeUserStatusMutation({
+	update: (cache, { data: { changeUserStatus } }) => {
+		const existingUsers = cache.readQuery<UsersQuery>({ query: GET_USERS })
+		const filteredUsers = existingUsers.users.filter(
+			(user) =>
+				isEither(user, ['ActiveUser', 'BannedUser', 'DeletedUser']) &&
+				isEither(changeUserStatus, ['ActiveUser', 'BannedUser', 'DeletedUser']) &&
+				user.id !== changeUserStatus.id
+		)
+
+		cache.writeQuery({
+			query: GET_USERS,
+			data: {
+				users: [...filteredUsers, changeUserStatus]
+			}
+		})
+	}
+})
+```
+
+A bit better ! Now let's have a go at the isNot function.
+
+### isNot
+
+```typescript
+type GraphQLResult = { __typename: string }
+type ValueOfTypename<T extends GraphQLResult> = T['__typename']
+
+function isNot<
+	Result extends GraphQLResult,
+	Typename extends ValueOfTypename<Result>,
+	ExcludedTypes extends Array<Typename>
+>(
+	result: Result,
+	typenames: ExcludedTypes
+): result is Exclude<Result, { __typename: typeof typenames[number] }> {
+	const types = typenames?.filter((type) => isType(result, type))
+	return types ? types.length === 0 : false
+}
+```
+
+As you can see, the isNot function is pretty much the mirror of the isEither function.
+Instead of the Extract utility type, we use the [Exclude](https://www.typescriptlang.org/docs/handbook/utility-types.html#excludetype-excludedunion) one and the runtime validation is the opposite, checking for a types length of 0.
+
+```typescript
+const [changeUserStatus] = useChangeUserStatusMutation({
+	update: (cache, { data: { changeUserStatus } }) => {
+		const existingUsers = cache.readQuery<UsersQuery>({ query: GET_USERS })
+		const filteredUsers = existingUsers.users.filter(
+			(user) =>
+				isNot(user, ['UserAuthenticationError', 'InvalidArgumentsError']) &&
+				isNot(changeUserStatus, ['UserAuthenticationError', 'InvalidArgumentsError']) &&
+				user.id !== changeUserStatus.id
+		)
+
+		cache.writeQuery({
+			query: GET_USERS,
+			data: {
+				users: [...filteredUsers, changeUserStatus]
+			}
+		})
+	}
+})
+```
+
+Finally let's have a go at the isTypeInTuple function that will help us with filtering types from tuples.
+
+### isTypeInTuple
+
+Now let's imaging we have our same query but we want to render our ActiveUsers, DeletedUsers and BannedUsers in diffent lists.
+In order to do that we will need to filter our users into three different arrays.
+
+```typescript
+const { data, loading } = useUsersQuery()
+const activeUsers = useMemo(() => data?.users?.filter((user) => isType(user, 'ActiveUser')) ?? [], [
+	data
+])
+```
+
+One could think that the previous filtering is enough to get the correct users and at runtime and it is. But sadly Typescript doesn't understand that now activeUsers is an array ActiveUsers only.
+So we will get annoying and unwarranted type errors when consuming the activeUsers array.
+
+In order to handle that, we could need to cast the activeUsers array as `Array<ActiveUser>` but if we can avoid type casting, why not do it ? That's when the isTypeInTuple come in.
+
+```typescript
+type GraphQLResult = { __typename: string }
+type ValueOfTypename<T extends GraphQLResult> = T['__typename']
+
+export function isTypeInTuple<
+	ResultItem extends GraphQLResult,
+	Typename extends ValueOfTypename<ResultItem>
+>(
+	typename: Typename
+): (resultItem: ResultItem) => resultItem is Extract<ResultItem, { __typename: Typename }> {
+	return function (
+		resultItem: ResultItem
+	): resultItem is Extract<ResultItem, { __typename: Typename }> {
+		return isType(resultItem, typename)
+	}
+}
+```
+
+This function by returning a callback allow us to tell typescript that the call return is the given type.
+The way the type is asserted is similar to our other functions.But instead of only asserting our typeguard return type we assert the type of the callback itself:
+
+```typescript
+(resultItem: ResultItem) => resultItem is Extract<ResultItem, { __typename: Typename }>
+```
+
+This tell typescript what to expect from it. Now we can use it as follow:
+
+```typescript
+const activeUsers = useMemo(() => data?.users?.filter(isTypeInTuple('ActiveUser')) ?? [], [data])
+```
+
+And we will get the a correctly typed ActiveUser array.
