@@ -42,6 +42,7 @@ export default function PageLayout({ children, frontMatter }) {
 			</Head>
 			<NextSeo
 				title={title}
+				description={description}
 				openGraph={{
 					description,
 					url: canonical,
