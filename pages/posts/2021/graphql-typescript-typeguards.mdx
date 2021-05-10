@@ -221,7 +221,7 @@ query Users {
 }
 ```
 
-Whose return type is:
+Whose GraphQL return type is :
 
 ```graphql
 union UserResult =
@@ -475,4 +475,4 @@ This tell typescript what to expect from it. Now we can use it as follow:
 const activeUsers = useMemo(() => data?.users?.filter(isTypeInTuple('ActiveUser')) ?? [], [data])
 ```
 
-And we will get the a correctly typed ActiveUser array.
+And we will get a correctly typed ActiveUser array.
