@@ -355,7 +355,13 @@ function isEither<
 ```
 
 This isEither function works kind of the same as the isType function except that the runtime iterate on the given typenames.
-The type assertion is based on the `result is Extract<Result, { __typename: typeof typenames[number] }>` which assert that the result is one of any of the index values of the typenames array.
+The type assertion is based on:
+
+```typescript
+result is Extract<Result, { __typename: typeof typenames[number] }>
+```
+
+Which assert that the result is one of an union of any of the indexed values of the typenames array.
 
 And now our changeUserStatus mutation and cache update can be refactor like this:
 
@@ -434,9 +440,10 @@ In order to do that we will need to filter our users into three different arrays
 
 ```typescript
 const { data, loading } = useUsersQuery()
-const activeUsers = useMemo(() => data?.users?.filter((user) => isType(user, 'ActiveUser')) ?? [], [
-	data
-])
+const activeUsers = useMemo(
+	() => data?.users?.filter((user) => isType(user, 'ActiveUser')) ?? [],
+	[data]
+)
 ```
 
 One could think that the previous filtering is enough to get the correct users and at runtime and it is. But sadly Typescript doesn't understand that now activeUsers is an array ActiveUsers only.
