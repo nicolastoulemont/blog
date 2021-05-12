@@ -361,7 +361,7 @@ The type assertion is based on:
 result is Extract<Result, { __typename: typeof typenames[number] }>
 ```
 
-Which assert that the result is one of an union of any of the indexed values of the typenames array.
+Which assert that the result is one of an union of the indexed values of the typenames array.
 
 And now our changeUserStatus mutation and cache update can be refactor like this:
 
