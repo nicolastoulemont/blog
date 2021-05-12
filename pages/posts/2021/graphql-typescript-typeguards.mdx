@@ -30,12 +30,12 @@ import { PostIntro } from 'components'
 
 When working with GraphQL, one will sometimes need to assert the type of the response.
 Sometimes it is because of the response is a union type, sometimes because the response is a nullable result.
-This usually forces the developer into asserting the response type quite often which can cause a bit of noise. To handle these assertions we will have a look at a few helpul typeguards functions:
+This usually forces the developer into asserting the response type quite often which can cause a bit of noise. To handle these assertions we will have a look at a few helpful typeguards functions:
 isType, isEither, isNot, isTypeInTuple.
 
 ## Simple case
 
-For example, when asserting the result of the following mutation response, the developer will need to handle three differents cases: an ActiveUser, a UserAuthenticationError and a InvalidArgumentsError.
+For example, when asserting the result of the following mutation response, the developer will need to handle three different cases: an ActiveUser, a UserAuthenticationError and a InvalidArgumentsError.
 
 ```graphql
 mutation CreateUser($name: String!, $email: String!) {
@@ -483,3 +483,5 @@ const activeUsers = useMemo(() => data?.users?.filter(isTypeInTuple('ActiveUser'
 ```
 
 And we will get a correctly typed ActiveUser array.
+
+If you found this helpful and want to use these functions, I have packaged them in a npm package called [ts-gql-helpers](https://www.npmjs.com/package/ts-gql-helpers).
