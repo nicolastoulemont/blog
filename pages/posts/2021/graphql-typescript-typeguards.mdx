@@ -354,7 +354,7 @@ function isEither<
 }
 ```
 
-This isEither function works kind of the same as the isType function except that the runtime iterate on the given typenames.
+This isEither function simply composes the isType function while iterating on the given typenames.
 The type assertion is based on:
 
 ```typescript
