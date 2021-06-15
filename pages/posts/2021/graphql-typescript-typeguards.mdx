@@ -446,7 +446,7 @@ const activeUsers = useMemo(
 )
 ```
 
-One could think that the previous filtering is enough to get the correct users and at runtime and it is. But sadly Typescript doesn't understand that now activeUsers is an array ActiveUsers only.
+One could think that the previous filtering is enough to get the correct users and at runtime it is. But sadly Typescript doesn't understand that now activeUsers is an array ActiveUsers only.
 So we will get annoying and unwarranted type errors when consuming the activeUsers array.
 
 In order to handle that, we could need to cast the activeUsers array as `Array<ActiveUser>` but if we can avoid type casting, why not do it ? That's when the isTypeInTuple come in.

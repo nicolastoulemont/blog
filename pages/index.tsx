@@ -52,11 +52,11 @@ export default function HomePage({ publishedPosts }: { publishedPosts: Array<Pos
 					color={dateColor}
 					mb={{ base: 9, md: 12 }}
 				>
-					I'm a french full stack software developer using Typescript, Node, React and
-					GraphQL.
+					I'm a french full stack software developer. I mainly use and enjoy Typescript,
+					Node, React and GraphQL at the moment.
 				</Text>
 				<Flex width='100%' flexDir='column' align='flex-start' justify='flex-start' my={6}>
-					<Heading as='h2'>Latest articles</Heading>
+					<Heading as='h2'>Latest posts</Heading>
 					<AnimatePresence>
 						{publishedPosts.map((post) => (
 							<Post key={post.slug} post={post} />

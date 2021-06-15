@@ -96,12 +96,6 @@ export function Header() {
 						>
 							<Icon as={FiGithub} w='18px' h='18px' />
 						</Link>
-						<NextLink href='/me' passHref>
-							<Link py={2} mx={3} borderRadius='10px'>
-								About
-							</Link>
-						</NextLink>
-
 						<IconButton
 							ml={3}
 							borderRadius='9999px'
