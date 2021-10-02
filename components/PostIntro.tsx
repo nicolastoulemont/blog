@@ -1,15 +1,12 @@
-import { Flex, Tag, ThemeTypings } from '@chakra-ui/react'
+import { Flex, Tag } from '@chakra-ui/react'
 import React from 'react'
-
+import { Categories, CategoriesColorsRegistry } from '../styles/CategoriesColorsRegistry'
 interface PostIntroProps {
 	date: string
-	tags: Array<{
-		name: string
-		color: ThemeTypings['colorSchemes'] | (string & {})
-	}>
+	category: Categories | Array<Categories>
 }
 
-export function PostIntro({ date, tags }: PostIntroProps) {
+export function PostIntro({ date, category }: PostIntroProps) {
 	return (
 		<Flex
 			width='100%'
@@ -20,16 +17,22 @@ export function PostIntro({ date, tags }: PostIntroProps) {
 		>
 			Nicolas Toulemont - {date}
 			<Flex align='center' justify='center'>
-				{tags.map((tag, index) => (
-					<Tag
-						key={tag.name}
-						colorScheme={tag.color}
-						mt={{ base: 2, sm: 0 }}
-						ml={index === 0 ? 0 : 2}
-					>
-						{tag.name}
+				{Array.isArray(category) ? (
+					category.map((category, index) => (
+						<Tag
+							key={category}
+							colorScheme={CategoriesColorsRegistry[category]}
+							mt={{ base: 2, sm: 0 }}
+							ml={index === 0 ? 0 : 2}
+						>
+							{category}
+						</Tag>
+					))
+				) : (
+					<Tag colorScheme={CategoriesColorsRegistry[category]} mt={{ base: 2, sm: 0 }}>
+						{category}
 					</Tag>
-				))}
+				)}
 			</Flex>
 		</Flex>
 	)

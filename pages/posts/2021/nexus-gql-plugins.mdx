@@ -8,10 +8,7 @@ imagePath: '/img/thumbnail-ts-nexus.png'
 imageAlt: 'GraphQL Nexus and Typescript'
 imageWidth: '388'
 imageHeight: '171'
-badges: [
-	{ text: 'Typescript', color: 'blue' },
-	{ text: 'GraphQL', color: 'pink' }
-]
+category: 'GraphQL'
 layout: PageLayout
 ---
 
@@ -20,13 +17,7 @@ import { PostIntro } from 'components'
 
 # How to build custom plugins with GraphQL Nexus
 
-<PostIntro
-	date='Apr 19th 2021'
-	tags={[
-		{ name: 'Typescript', color: 'blue' },
-		{ name: 'GraphQL', color: 'pink' }
-	]}
-/>
+<PostIntro date='Apr 19th 2021' category='GraphQL' />
 
 Most, if not all, API layers end up needing some way to create, manage and execute some form of abstract logic during the request and response cycle.
 A very well known example are express middleware functions that can be used for a large number of services: authentication or rate limiting to name a few.

@@ -7,10 +7,7 @@ imagePath: '/img/thumbnail-ts-gql.png'
 imageAlt: 'Typescript and graphql'
 imageWidth: '229'
 imageHeight: '126'
-badges: [
-	{ text: 'Typescript', color: 'blue' },
-	{ text: 'GraphQL', color: 'pink' }
-]
+category: 'GraphQL'
 layout: PageLayout
 ---
 
@@ -19,13 +16,7 @@ import { PostIntro } from 'components'
 
 # Full Stack Typescript GraphQL - Automate the data layer
 
-<PostIntro
-	date='Jan 18th 2021'
-	tags={[
-		{ name: 'Typescript', color: 'blue' },
-		{ name: 'GraphQL', color: 'pink' }
-	]}
-/>
+<PostIntro date='Jan 18th 2021' category='GraphQL' />
 
 Building a modern web application usually means building both an API and a client side application.
 Unless the project is built on a monorepo setup, the API and the Client are built and maintained in different repos and many times in differents languages / by differents teams.

@@ -1,7 +1,7 @@
 import React from 'react'
 import { MDXProvider } from '@mdx-js/react'
-import { MDXComponents } from 'styles'
+import { MdxTokensMap } from 'styles'
 
 export function MDXWithChakraProvider({ children }) {
-	return <MDXProvider components={MDXComponents}>{children}</MDXProvider>
+	return <MDXProvider components={MdxTokensMap}>{children}</MDXProvider>
 }

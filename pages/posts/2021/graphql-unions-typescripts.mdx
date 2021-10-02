@@ -8,10 +8,7 @@ imagePath: '/img/thumbnail-ts-gql.png'
 imageAlt: 'GraphQL Nexus and Typescript'
 imageWidth: '388'
 imageHeight: '171'
-badges: [
-	{ text: 'Typescript', color: 'blue' },
-	{ text: 'GraphQL', color: 'pink' }
-]
+category: 'GraphQL'
 layout: PageLayout
 ---
 
@@ -20,13 +17,7 @@ import { PostIntro } from 'components'
 
 # Leveraging GraphQL Unions to express complexity in a declarative and typesafe way.
 
-<PostIntro
-	date='Apr 27th 2021'
-	tags={[
-		{ name: 'Typescript', color: 'blue' },
-		{ name: 'GraphQL', color: 'pink' }
-	]}
-/>
+<PostIntro date='Apr 27th 2021' category='GraphQL' />
 
 Building and maintaining large applications is, all in all, mostly about managing complexity in a way that make the project easy enough to understand, maintain and improve on.
 For a while, it was difficult to express complexity in the API -> client relation. One system would provide data and the other would consume it and each would need to
