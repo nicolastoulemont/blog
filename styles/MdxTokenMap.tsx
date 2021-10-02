@@ -63,7 +63,7 @@ import {
 	useColorModeValue
 } from '@chakra-ui/react'
 
-export const MDXComponents = {
+export const MdxTokensMap = {
 	h1: (props) => (
 		<Heading as='h1' my={12} size='2xl' textAlign={{ base: 'center', sm: 'left' }} {...props} />
 	),
