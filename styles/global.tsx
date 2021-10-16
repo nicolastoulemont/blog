@@ -28,6 +28,12 @@ export default function GlobalStyles() {
 					align-items: center;
 					justify-content: center;
 				}
+
+				h2,
+				h3,
+				h4 {
+					scroll-margin-top: 80px;
+				}
 			`}
 		</style>
 	)

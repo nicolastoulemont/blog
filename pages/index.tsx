@@ -7,8 +7,7 @@ import {
 	Input,
 	chakra,
 	useColorModeValue,
-	Divider,
-	Tag
+	Divider
 } from '@chakra-ui/react'
 import { Header } from 'components'
 import { motion, AnimatePresence } from 'framer-motion'
@@ -16,7 +15,6 @@ import { NextSeo } from 'next-seo'
 import NextLink from 'next/link'
 import NextImage from 'next/image'
 import { generatePublishedPostList, CategoryList } from 'scripts/generate-post-list'
-import { CategoriesColorsRegistry } from 'styles/CategoriesColorsRegistry'
 
 const MotionLink = chakra(motion.a)
 
