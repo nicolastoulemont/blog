@@ -1,9 +1,11 @@
+import { CategoriesColorsRegistry } from 'styles/CategoriesColorsRegistry'
 import { Flex, Tag } from '@chakra-ui/react'
 import React from 'react'
-import { Categories, CategoriesColorsRegistry } from '../styles/CategoriesColorsRegistry'
+import type { Category } from 'lib/mdx'
+
 interface PostIntroProps {
 	date: string
-	category: Categories | Array<Categories>
+	category: Category | Array<Category>
 }
 
 export function PostIntro({ date, category }: PostIntroProps) {

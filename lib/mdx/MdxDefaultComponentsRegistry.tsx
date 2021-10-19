@@ -1,4 +1,5 @@
-import { generateHeaderId } from '../utils/headerId'
+import { PostIntro } from 'components'
+import { generateHeaderId } from 'utils/headerId'
 import {
 	Heading,
 	Image,
@@ -10,7 +11,8 @@ import {
 	useColorModeValue
 } from '@chakra-ui/react'
 
-export const MdxTokensMap = {
+export const mdxDefaultComponentsRegistry = {
+	PostIntro,
 	h1: (props) => (
 		<Heading
 			id={generateHeaderId(props.children)}

@@ -1,22 +1,9 @@
 import React, { useState, useMemo } from 'react'
-import {
-	Flex,
-	Heading,
-	Box,
-	Text,
-	Input,
-	chakra,
-	useColorModeValue,
-	Divider
-} from '@chakra-ui/react'
-import { Header } from 'components'
-import { motion, AnimatePresence } from 'framer-motion'
+import { Header, Main, Category } from 'components'
+import { AnimatePresence } from 'framer-motion'
 import { NextSeo } from 'next-seo'
-import NextLink from 'next/link'
-import NextImage from 'next/image'
 import { generatePublishedPostList, CategoryList } from 'scripts/generate-post-list'
-
-const MotionLink = chakra(motion.a)
+import { Flex, Heading, Text, Input, useColorModeValue, Divider } from '@chakra-ui/react'
 
 export async function getStaticProps() {
 	const postByCategories = generatePublishedPostList()
@@ -60,15 +47,7 @@ export default function HomePage({ postByCategories }: { postByCategories: Array
 		<>
 			<NextSeo title="Nicolas Toulemont's blog" />
 			<Header />
-			<Box
-				as='main'
-				width='100%'
-				maxWidth='1000px'
-				margin='0 auto'
-				pb={8}
-				boxSizing='border-box'
-				px={{ base: 3, lg: 0 }}
-			>
+			<Main>
 				<Heading
 					as='h1'
 					mt={{ base: 6, md: 12 }}
@@ -110,88 +89,7 @@ export default function HomePage({ postByCategories }: { postByCategories: Array
 						)}
 					</AnimatePresence>
 				</Flex>
-			</Box>
+			</Main>
 		</>
-	)
-}
-
-function Category({ categoryList }: { categoryList: CategoryList }) {
-	return (
-		<>
-			<Heading mt={4} mb={2} as='h2' size='md'>
-				{categoryList.category}
-			</Heading>
-
-			{categoryList.posts.map((post) => (
-				<Post key={post.title} post={post} />
-			))}
-		</>
-	)
-}
-
-function Post({ post }: { post: CategoryList['posts'][number] }) {
-	const dateColor = useColorModeValue('gray.700', 'gray.200')
-	const boxShadowColor = useColorModeValue(
-		'rgba(0, 0, 0, 0.12) 0px 3px 8px',
-		'rgba(0, 0, 0, 1) 0px 3px 8px'
-	)
-	const whileHoverboxShadowColor = useColorModeValue(
-		'rgba(0, 0, 0, 0.12) 0px 8px 12px',
-		'rgba(0, 0, 0, 1) 0px 8px 12px'
-	)
-
-	return (
-		<NextLink href={post.slug} passHref key={post.slug}>
-			<MotionLink
-				layout
-				width='100%'
-				boxShadow={boxShadowColor}
-				rounded='md'
-				initial={{ opacity: 0.5 }}
-				animate={{ opacity: 1 }}
-				transition='box-shadow 0.3s ease-in-out'
-				_hover={{
-					boxShadow: whileHoverboxShadowColor
-				}}
-				p={6}
-				my={3}
-			>
-				<Flex
-					width='100%'
-					flexDir={{ base: 'column-reverse', sm: 'row' }}
-					align={{ base: 'center', sm: 'flex-start' }}
-					justify={{ base: 'center', sm: 'space-between' }}
-				>
-					<Box width={{ base: '100%', sm: '75%' }}>
-						<Heading as='h3' size='sm'>
-							{post.title}
-						</Heading>
-						<Flex width='100%' mt={1} mb={3}>
-							<Text color={dateColor} fontSize='sm'>
-								{post.date}
-							</Text>
-						</Flex>
-						<Text>{post.snippet}</Text>
-					</Box>
-					<Flex
-						width={{ base: 'calc(100vw - 80px)', sm: '100px', md: '140px' }}
-						mx={{ base: 'auto', sm: 0 }}
-						mb={{ base: 3, sm: 0 }}
-						rounded='md'
-						align='center'
-						justify='center'
-						boxSizing='border-box'
-					>
-						<NextImage
-							width={post.imageWidth}
-							height={post.imageHeight}
-							src={post.imagePath}
-							priority
-							alt={post.imageAlt}
-						/>
-					</Flex>
-				</Flex>
-			</MotionLink>
-		</NextLink>
 	)
 }

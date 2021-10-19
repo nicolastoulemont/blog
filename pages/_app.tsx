@@ -1,5 +1,4 @@
 import React from 'react'
-import { MDXWithChakraProvider } from '../components'
 import { ChakraProvider } from '@chakra-ui/react'
 import GlobalStyles from 'styles/global'
 import { PrismGlobal } from 'styles/prism'
@@ -23,11 +22,9 @@ export default function App({ Component, pageProps }) {
 			</Head>
 			<DefaultSeo {...SeoConfig} />
 			<ChakraProvider resetCSS={true} theme={theme}>
-				<MDXWithChakraProvider>
-					<Component {...pageProps} />
-					<GlobalStyles />
-					<PrismGlobal />
-				</MDXWithChakraProvider>
+				<Component {...pageProps} />
+				<GlobalStyles />
+				<PrismGlobal />
 			</ChakraProvider>
 		</>
 	)
