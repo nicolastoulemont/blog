@@ -115,7 +115,7 @@ export const getStaticProps = async ({ params }) => {
 	}
 
 	const headers = content.match(parseHeaders).map((header) => {
-		const content = header.replaceAll('#', '').trim()
+		const content = header.replace(/#/g, '').trim()
 		return {
 			id: generateHeaderId(content),
 			type: getType(header),
