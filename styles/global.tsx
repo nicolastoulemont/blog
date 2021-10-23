@@ -21,7 +21,7 @@ export default function GlobalStyles() {
 					width: 100%;
 				}
 
-				nav {
+				header > nav {
 					height: 60px;
 					width: 100%;
 					display: flex;
@@ -29,6 +29,7 @@ export default function GlobalStyles() {
 					justify-content: center;
 				}
 
+				h1,
 				h2,
 				h3,
 				h4 {

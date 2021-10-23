@@ -1,10 +1,10 @@
-import React from 'react'
+import React, { useMemo } from 'react'
 import path from 'path'
 import fs from 'fs'
 import { getFilesPath } from 'utils/files'
-import { useColorModeValue } from '@chakra-ui/react'
+import { generateHeaderId } from 'utils/headerId'
 import { NextSeo } from 'next-seo'
-import { Header, Main } from 'components'
+import { Header, Main, SideBarNav } from 'components'
 import Head from 'next/head'
 import { useRouter } from 'next/router'
 import { formatISO } from 'date-fns'
@@ -15,50 +15,30 @@ import { MDXRemote } from 'next-mdx-remote'
 import { serialize } from 'next-mdx-remote/serialize'
 import { POSTS_PATH, COMPONENTS_PATH, mdxDefaultComponentsRegistry } from 'lib/mdx'
 import type { PostMatterData } from 'lib/mdx'
+import { CategoriesColorsRegistry } from 'styles/CategoriesColorsRegistry'
 
-const headers = ['h2', 'h3', 'h4']
-const paddingLeftRegistry = {
-	h2: 0,
-	h3: 6,
-	h4: 12
-}
-const fontSizeRegistry = {
-	h2: 18,
-	h3: 16,
-	h4: 14
-}
-
-const marginYRegistry = {
-	h2: 2,
-	h3: 1
-}
-
-export default function PostPage({ source, frontMatter, pageSpecificComponentsNames }) {
+export default function PostPage({ headers, source, data, pageSpecificComponentsNames }) {
 	const domain = 'https://nicolastoulemont.dev'
-	const { description, date, imagePath, title } = frontMatter as PostMatterData
+	const { description, date, imagePath, title } = data as PostMatterData
 	const { asPath } = useRouter()
 	const canonical = asPath === '/' ? `${domain}` : `${domain}${asPath}`
 
-	// const headerNodes = source.filter((childNode) => headers.includes(childNode.props.mdxType))
-
-	const bgColor = useColorModeValue('white', '#1A212C')
-	const boxShadowColor = useColorModeValue(
-		'rgba(0, 0, 0, 0.12) 0px 3px 8px',
-		'rgba(0, 0, 0, 1) 0px 3px 8px'
-	)
-
-	const pageSpecificComponentRegistry = pageSpecificComponentsNames.reduce(
-		(acc, componentFileName) => {
-			acc[componentFileName] = dynamic(() =>
-				import(`../../../components/mdx/${componentFileName}`).then(
-					(mod) => mod[`${componentFileName}`]
+	const pageSpecificComponentRegistry = useMemo(
+		() =>
+			pageSpecificComponentsNames.reduce((acc, componentFileName) => {
+				acc[componentFileName] = dynamic(() =>
+					import(`../../../components/mdx/${componentFileName}`).then(
+						(mod) => mod[`${componentFileName}`]
+					)
 				)
-			)
-			return acc
-		},
-		{}
+				return acc
+			}, {}),
+		[]
 	)
-	const components = { ...mdxDefaultComponentsRegistry, ...pageSpecificComponentRegistry }
+	const components = useMemo(
+		() => ({ ...mdxDefaultComponentsRegistry, ...pageSpecificComponentRegistry }),
+		[pageSpecificComponentRegistry]
+	)
 
 	return (
 		<>
@@ -91,41 +71,24 @@ export default function PostPage({ source, frontMatter, pageSpecificComponentsNa
 				canonical={canonical}
 			/>
 			<Header />
-			{/* <MotionBox
-				pos='fixed'
-				top='30%'
-				maxW='250px'
-				right='5px'
-				display={{ base: 'none', xl: 'flex' }}
-				flexDir='column'
-				bgColor={bgColor}
-				boxShadow={boxShadowColor}
-				p={6}
-				borderRadius={8}
-			>
-				{headerNodes.map((node) => (
-					<NextLink href={`#${node.props.id}`} key={node.props.children}>
-						<Link
-							as='a'
-							pl={paddingLeftRegistry[node.props.mdxType]}
-							fontSize={fontSizeRegistry[node.props.mdxType]}
-							marginY={marginYRegistry[node.props.mdxType] || 0}
-						>
-							{node.props.children}
-						</Link>
-					</NextLink>
-				))}
-			</MotionBox> */}
 			<Main>
 				<MDXRemote {...source} components={components} />
 			</Main>
+			<SideBarNav
+				headers={headers}
+				hoverColor={
+					CategoriesColorsRegistry[
+						Array.isArray(data.category) ? data.category[0] : data.category
+					]
+				}
+			/>
 		</>
 	)
 }
 
 export const getStaticProps = async ({ params }) => {
-	const source = fs.readFileSync(path.join(POSTS_PATH, params.year, `${params.slug}.mdx`))
-	const { content, data } = matter(source)
+	const buffer = fs.readFileSync(path.join(POSTS_PATH, params.year, `${params.slug}.mdx`))
+	const { content, data } = matter(buffer)
 
 	const componentsFileNames = getFilesPath(COMPONENTS_PATH)
 		.map((path) => path.replace(/\.tsx?$/, ''))
@@ -135,18 +98,37 @@ export const getStaticProps = async ({ params }) => {
 		content.includes(`<${componentFileName}`)
 	)
 
-	const mdxSource = await serialize(content, {
+	const source = await serialize(content, {
 		mdxOptions: {
 			rehypePlugins: [mdxPrism]
 		},
 		scope: data
 	})
 
+	const parseHeaders = /(#|##|###|####) (.*$)/gim
+
+	function getType(header: string) {
+		if (header.startsWith('####')) return 'h4'
+		if (header.startsWith('###')) return 'h3'
+		if (header.startsWith('##')) return 'h2'
+		if (header.startsWith('#')) return 'h1'
+	}
+
+	const headers = content.match(parseHeaders).map((header) => {
+		const content = header.replaceAll('#', '').trim()
+		return {
+			id: generateHeaderId(content),
+			type: getType(header),
+			content
+		}
+	})
+
 	return {
 		props: {
-			source: mdxSource,
-			frontMatter: data,
-			pageSpecificComponentsNames
+			pageSpecificComponentsNames,
+			headers,
+			source,
+			data
 		}
 	}
 }

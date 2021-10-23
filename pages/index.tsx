@@ -1,9 +1,9 @@
 import React, { useState, useMemo } from 'react'
-import { Header, Main, Category } from 'components'
+import { Header, Category, Main } from 'components'
 import { AnimatePresence } from 'framer-motion'
 import { NextSeo } from 'next-seo'
 import { generatePublishedPostList, CategoryList } from 'scripts/generate-post-list'
-import { Flex, Heading, Text, Input, useColorModeValue, Divider } from '@chakra-ui/react'
+import { Flex, Heading, Text, Input, useColorModeValue, Divider, Box } from '@chakra-ui/react'
 
 export async function getStaticProps() {
 	const postByCategories = generatePublishedPostList()

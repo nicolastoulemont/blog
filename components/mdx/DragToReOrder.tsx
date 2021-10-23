@@ -137,6 +137,8 @@ function TodoItem({ todo, index, setPositions, moveItem }: TodoItemProps) {
 				onDragStart={() => setIsDragging(true)}
 				onDragEnd={() => setIsDragging(false)}
 				onViewportBoxUpdate={(_viewportBox, delta) => {
+					console.log(_viewportBox)
+					console.log(delta)
 					isDragging && moveItem(index, delta.y.translate)
 				}}
 			>
