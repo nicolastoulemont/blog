@@ -7,3 +7,4 @@ export * from './layouts/Post'
 // Mdx specifics
 export * from './mdx/DragToReOrder'
 export * from './mdx/PostIntro'
+export * from './mdx/Callout'
