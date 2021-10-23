@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useMemo } from 'react'
 import path from 'path'
 import fs from 'fs'
 import { getFilesPath } from 'utils/files'
@@ -33,9 +33,9 @@ const marginYRegistry = {
 	h3: 1
 }
 
-export default function PostPage({ source, frontMatter, pageSpecificComponentsNames }) {
+export default function PostPage({ source, data, pageSpecificComponentsNames }) {
 	const domain = 'https://nicolastoulemont.dev'
-	const { description, date, imagePath, title } = frontMatter as PostMatterData
+	const { description, date, imagePath, title } = data as PostMatterData
 	const { asPath } = useRouter()
 	const canonical = asPath === '/' ? `${domain}` : `${domain}${asPath}`
 
@@ -47,18 +47,22 @@ export default function PostPage({ source, frontMatter, pageSpecificComponentsNa
 		'rgba(0, 0, 0, 1) 0px 3px 8px'
 	)
 
-	const pageSpecificComponentRegistry = pageSpecificComponentsNames.reduce(
-		(acc, componentFileName) => {
-			acc[componentFileName] = dynamic(() =>
-				import(`../../../components/mdx/${componentFileName}`).then(
-					(mod) => mod[`${componentFileName}`]
+	const pageSpecificComponentRegistry = useMemo(
+		() =>
+			pageSpecificComponentsNames.reduce((acc, componentFileName) => {
+				acc[componentFileName] = dynamic(() =>
+					import(`../../../components/mdx/${componentFileName}`).then(
+						(mod) => mod[`${componentFileName}`]
+					)
 				)
-			)
-			return acc
-		},
-		{}
+				return acc
+			}, {}),
+		[]
 	)
-	const components = { ...mdxDefaultComponentsRegistry, ...pageSpecificComponentRegistry }
+	const components = useMemo(
+		() => ({ ...mdxDefaultComponentsRegistry, ...pageSpecificComponentRegistry }),
+		[pageSpecificComponentRegistry]
+	)
 
 	return (
 		<>
@@ -124,8 +128,8 @@ export default function PostPage({ source, frontMatter, pageSpecificComponentsNa
 }
 
 export const getStaticProps = async ({ params }) => {
-	const source = fs.readFileSync(path.join(POSTS_PATH, params.year, `${params.slug}.mdx`))
-	const { content, data } = matter(source)
+	const buffer = fs.readFileSync(path.join(POSTS_PATH, params.year, `${params.slug}.mdx`))
+	const { content, data } = matter(buffer)
 
 	const componentsFileNames = getFilesPath(COMPONENTS_PATH)
 		.map((path) => path.replace(/\.tsx?$/, ''))
@@ -135,17 +139,20 @@ export const getStaticProps = async ({ params }) => {
 		content.includes(`<${componentFileName}`)
 	)
 
-	const mdxSource = await serialize(content, {
+	const source = await serialize(content, {
 		mdxOptions: {
 			rehypePlugins: [mdxPrism]
 		},
 		scope: data
 	})
 
+	console.log(content)
+	console.log(source)
+
 	return {
 		props: {
-			source: mdxSource,
-			frontMatter: data,
+			source,
+			data,
 			pageSpecificComponentsNames
 		}
 	}
