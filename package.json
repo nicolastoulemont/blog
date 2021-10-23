@@ -20,7 +20,6 @@
 		"faker": "^5.5.3",
 		"framer-motion": "^4.1.17",
 		"gray-matter": "^4.0.3",
-		"mdx-bundler": "^6.0.2",
 		"mdx-prism": "^0.3.4",
 		"next": "^11.1.2",
 		"next-mdx-remote": "^3.0.6",

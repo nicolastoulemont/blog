@@ -1,3 +1,3 @@
 export function generateHeaderId(string) {
-	return new String(string).replace(/\s/g, '-')
+	return new String(string).toLowerCase().replace(/\s/g, '-')
 }
