@@ -1,5 +1,5 @@
 import { PostIntro } from 'components'
-import { generateHeaderId } from 'utils/headerId'
+import { generateHeadingId } from 'utils/headingId'
 import {
 	Heading,
 	Image,
@@ -15,7 +15,7 @@ export const mdxDefaultComponentsRegistry = {
 	PostIntro,
 	h1: (props) => (
 		<Heading
-			id={generateHeaderId(props.children)}
+			id={generateHeadingId(props.children)}
 			as='h1'
 			my={12}
 			size='2xl'
@@ -25,7 +25,7 @@ export const mdxDefaultComponentsRegistry = {
 	),
 	h2: (props) => (
 		<Heading
-			id={generateHeaderId(props.children)}
+			id={generateHeadingId(props.children)}
 			as='h2'
 			my={8}
 			size='xl'
@@ -34,9 +34,9 @@ export const mdxDefaultComponentsRegistry = {
 		/>
 	),
 	h3: (props) => (
-		<Heading id={generateHeaderId(props.children)} as='h3' my={6} size='lg' {...props} />
+		<Heading id={generateHeadingId(props.children)} as='h3' my={6} size='lg' {...props} />
 	),
-	h4: (props) => <Heading id={generateHeaderId(props.children)} as='h4' size='md' {...props} />,
+	h4: (props) => <Heading id={generateHeadingId(props.children)} as='h4' size='md' {...props} />,
 	p: (props) => <Text as='p' my={{ base: 6, md: 3 }} {...props} />,
 	a: (props) => {
 		const color = useColorModeValue('blue.500', 'cyan.400')

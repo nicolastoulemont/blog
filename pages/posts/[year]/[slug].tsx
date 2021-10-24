@@ -2,9 +2,9 @@ import React, { useMemo } from 'react'
 import path from 'path'
 import fs from 'fs'
 import { getFilesPath } from 'utils/files'
-import { generateHeaderId } from 'utils/headerId'
+import { generateHeadingId } from 'utils/headingId'
 import { NextSeo } from 'next-seo'
-import { Header, Main, SideBarNav } from 'components'
+import { Header, Main, TocDesktop } from 'components'
 import Head from 'next/head'
 import { useRouter } from 'next/router'
 import { formatISO } from 'date-fns'
@@ -17,7 +17,7 @@ import { POSTS_PATH, COMPONENTS_PATH, mdxDefaultComponentsRegistry } from 'lib/m
 import type { PostMatterData } from 'lib/mdx'
 import { CategoriesColorsRegistry } from 'styles/CategoriesColorsRegistry'
 
-export default function PostPage({ headers, source, data, pageSpecificComponentsNames }) {
+export default function PostPage({ headings, source, data, pageSpecificComponentsNames }) {
 	const domain = 'https://nicolastoulemont.dev'
 	const { description, date, imagePath, title } = data as PostMatterData
 	const { asPath } = useRouter()
@@ -74,9 +74,9 @@ export default function PostPage({ headers, source, data, pageSpecificComponents
 			<Main>
 				<MDXRemote {...source} components={components} />
 			</Main>
-			<SideBarNav
-				headers={headers}
-				hoverColor={
+			<TocDesktop
+				elements={headings}
+				activeColor={
 					CategoriesColorsRegistry[
 						Array.isArray(data.category) ? data.category[0] : data.category
 					]
@@ -105,20 +105,20 @@ export const getStaticProps = async ({ params }) => {
 		scope: data
 	})
 
-	const parseHeaders = /(#|##|###|####) (.*$)/gim
+	const parseHeadings = /(#|##|###|####) (.*$)/gim
 
-	function getType(header: string) {
-		if (header.startsWith('####')) return 'h4'
-		if (header.startsWith('###')) return 'h3'
-		if (header.startsWith('##')) return 'h2'
-		if (header.startsWith('#')) return 'h1'
+	function getType(heading: string) {
+		if (heading.startsWith('####')) return 'h4'
+		if (heading.startsWith('###')) return 'h3'
+		if (heading.startsWith('##')) return 'h2'
+		if (heading.startsWith('#')) return 'h1'
 	}
 
-	const headers = content.match(parseHeaders).map((header) => {
-		const content = header.replace(/#/g, '').trim()
+	const headings = content.match(parseHeadings).map((heading) => {
+		const content = heading.replace(/#/g, '').trim()
 		return {
-			id: generateHeaderId(content),
-			type: getType(header),
+			id: generateHeadingId(content),
+			type: getType(heading),
 			content
 		}
 	})
@@ -126,7 +126,7 @@ export const getStaticProps = async ({ params }) => {
 	return {
 		props: {
 			pageSpecificComponentsNames,
-			headers,
+			headings,
 			source,
 			data
 		}

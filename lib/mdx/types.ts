@@ -11,6 +11,7 @@ export interface PostMetaData {
 	imageWidth: string
 	imageHeight: string
 	category: Category | Array<Category>
+	translation?: string
 }
 
 export type PostMatterData = Pick<
@@ -24,4 +25,5 @@ export type PostMatterData = Pick<
 	| 'imageWidth'
 	| 'snippet'
 	| 'title'
+	| 'translation'
 >

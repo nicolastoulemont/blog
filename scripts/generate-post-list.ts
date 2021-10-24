@@ -19,12 +19,16 @@ export function generatePublishedPostList(): Array<CategoryList> {
 			const source = fs.readFileSync(filePath, 'utf8')
 			const { data } = matter(source) as unknown as { data: PostMatterData }
 
+			const slug = `/posts${filePath.split('posts')[1].replace('.mdx', '')}`
+
 			return {
 				...data,
-				slug: `/posts${filePath.split('posts')[1].replace('.mdx', '')}`
+				slug,
+				...(data.translation && { translationSlug: `${slug}-fr` })
 			}
 		})
 		.filter((post) => isValid(new Date(post.date)))
+		.filter((post) => !post.slug.endsWith('-fr'))
 
 	const publishedCategories = Array.from(
 		new Set(flatten(publishedPosts.map((p) => p.category)))

@@ -1,6 +1,9 @@
-import React from 'react'
+import React, { useState } from 'react'
+import type { ElementProps } from './types'
+import { spacing, fontSize } from './utils'
 import { motion } from 'framer-motion'
 import NextLink from 'next/link'
+import { FiMenu } from 'react-icons/fi'
 import {
 	chakra,
 	useColorModeValue,
@@ -9,41 +12,36 @@ import {
 	UnorderedList,
 	ListItem,
 	Box,
-	useMultiStyleConfig
+	useMultiStyleConfig,
+	IconButton
 } from '@chakra-ui/react'
 const MotionBox = chakra(motion.div)
 
-export const paddingLeftRegistry = {
-	h1: 0,
-	h2: 0,
-	h3: 2,
-	h4: 4
-} as const
-
-export const fontSizeRegistry = {
-	h1: 16,
-	h2: 16,
-	h3: 14,
-	h4: 13
-} as const
-
-export type HeaderProps = {
-	type: 'h2' | 'h3' | 'h4'
-	content: string
-	id: string
+interface MobileNavProps {
+	headers: Array<ElementProps>
+	tcolor?: string
 }
 
-interface SideBarNavProps {
-	headers: Array<HeaderProps>
-	hoverColor: string
-}
-
-export function SideBarNav({ headers, hoverColor }: SideBarNavProps) {
+export function TocMobile({ headers, tcolor }: MobileNavProps) {
+	const [showNav, setShowNav] = useState(false)
 	const titleColor = useColorModeValue('gray.600', 'white')
 	const linkColor = useColorModeValue('gray.700', 'white')
 	const {
 		container: { bg, color }
-	} = useMultiStyleConfig('Tag', { colorScheme: hoverColor })
+	} = useMultiStyleConfig('Tag', { colorScheme: tcolor })
+
+	if (!showNav) {
+		return (
+			<IconButton
+				colorScheme={tcolor}
+				icon={<FiMenu />}
+				aria-label='Menu'
+				pos='fixed'
+				bottom={70}
+				right='20px'
+			/>
+		)
+	}
 
 	return (
 		<MotionBox
@@ -52,7 +50,7 @@ export function SideBarNav({ headers, hoverColor }: SideBarNavProps) {
 			top={70}
 			right={0}
 			maxWidth='290px'
-			display={{ base: 'none', '2xl': 'flex' }}
+			display={{ base: 'flex', '2xl': 'none' }}
 			flexDir='column'
 			p={6}
 			borderRadius={8}
@@ -69,15 +67,11 @@ export function SideBarNav({ headers, hoverColor }: SideBarNavProps) {
 			<Box as='nav'>
 				<UnorderedList listStyleType='none' ml={0} spacing='2'>
 					{headers.map((header, index) => (
-						<ListItem
-							key={header.id}
-							ml={paddingLeftRegistry[header.type]}
-							display='flex'
-						>
+						<ListItem key={header.id} ml={spacing[header.type]} display='flex'>
 							<NextLink href={`#${header.id}`}>
 								<Link
 									as='a'
-									fontSize={fontSizeRegistry[header.type]}
+									fontSize={fontSize[header.type]}
 									fontWeight='medium'
 									color={linkColor}
 									borderRadius='md'
