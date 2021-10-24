@@ -9,7 +9,7 @@ const variants = {
 	hidden: { opacity: 0 }
 }
 
-export function Main({ children }) {
+export function PostContainer({ children }) {
 	return (
 		<MotionBox
 			as='main'

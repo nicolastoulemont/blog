@@ -1,6 +1,7 @@
 // Layouts
 export * from './layouts/Header'
-export * from './layouts/Main'
+export * from './layouts/containers/MainContainer'
+export * from './layouts/containers/PostContainer'
 export * from './layouts/Category'
 export * from './layouts/Post'
 export * from './layouts/ToC/Desktop'

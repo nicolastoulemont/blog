@@ -17,10 +17,11 @@ export function TocDesktop({ elements = [], activeColor }: TocProps) {
 			pos='fixed'
 			top={70}
 			right={0}
-			maxWidth='290px'
-			display={{ base: 'none', '2xl': 'flex' }}
+			maxWidth={{ lg: '280px', '2xl': '300px' }}
+			display={{ base: 'none', lg: 'flex' }}
 			flexDir='column'
 			p={6}
+			pr={{ lg: 3, '2xl': 6 }}
 			borderRadius={8}
 		>
 			<Text

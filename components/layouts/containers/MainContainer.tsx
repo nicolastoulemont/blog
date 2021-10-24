@@ -9,14 +9,14 @@ const variants = {
 	hidden: { opacity: 0 }
 }
 
-export function Main({ children }) {
+export function MainContainer({ children }) {
 	return (
 		<MotionBox
 			as='main'
 			width='100%'
 			minHeight='100%'
-			maxWidth={{ base: '100%', lg: 'calc(100% - 300px)', '2xl': '1000px' }}
-			margin={{ base: '0 auto', lg: '10', '2xl': '0 auto' }}
+			maxWidth='1000px'
+			margin='0 auto'
 			pb={8}
 			boxSizing='border-box'
 			px={{ base: 3, lg: 0 }}

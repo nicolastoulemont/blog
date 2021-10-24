@@ -4,7 +4,7 @@ import fs from 'fs'
 import { getFilesPath } from 'utils/files'
 import { generateHeadingId } from 'utils/headingId'
 import { NextSeo } from 'next-seo'
-import { Header, Main, TocDesktop } from 'components'
+import { Header, PostContainer, TocDesktop } from 'components'
 import Head from 'next/head'
 import { useRouter } from 'next/router'
 import { formatISO } from 'date-fns'
@@ -71,9 +71,9 @@ export default function PostPage({ headings, source, data, pageSpecificComponent
 				canonical={canonical}
 			/>
 			<Header />
-			<Main>
+			<PostContainer>
 				<MDXRemote {...source} components={components} />
-			</Main>
+			</PostContainer>
 			<TocDesktop
 				elements={headings}
 				activeColor={

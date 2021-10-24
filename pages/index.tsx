@@ -1,9 +1,9 @@
 import React, { useState, useMemo } from 'react'
-import { Header, Category, Main } from 'components'
+import { Header, Category, MainContainer } from 'components'
 import { AnimatePresence } from 'framer-motion'
 import { NextSeo } from 'next-seo'
 import { generatePublishedPostList, CategoryList } from 'scripts/generate-post-list'
-import { Flex, Heading, Text, Input, useColorModeValue, Divider, Box } from '@chakra-ui/react'
+import { Flex, Heading, Text, Input, useColorModeValue, Divider } from '@chakra-ui/react'
 
 export async function getStaticProps() {
 	const postByCategories = generatePublishedPostList()
@@ -47,7 +47,7 @@ export default function HomePage({ postByCategories }: { postByCategories: Array
 		<>
 			<NextSeo title="Nicolas Toulemont's blog" />
 			<Header />
-			<Main>
+			<MainContainer>
 				<Heading
 					as='h1'
 					mt={{ base: 6, md: 12 }}
@@ -89,7 +89,7 @@ export default function HomePage({ postByCategories }: { postByCategories: Array
 						)}
 					</AnimatePresence>
 				</Flex>
-			</Main>
+			</MainContainer>
 		</>
 	)
 }
