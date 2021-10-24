@@ -1,39 +1,35 @@
 import React, { ReactNode } from 'react'
-import { Flex, useColorModeValue, Icon, IconProps } from '@chakra-ui/react'
-import type { IconType } from 'react-icons'
+import { Flex, Icon, useMultiStyleConfig, TagProps } from '@chakra-ui/react'
+import * as FiIcons from 'react-icons/fi'
 
-export function CalloutIcon({ icon, color }: { icon: IconType; color?: IconProps['color'] }) {
-	return (
-		<Icon
-			mr={{ base: 0, sm: 3 }}
-			mb={{ base: 3, sm: 0 }}
-			mt={{ base: 0, sm: 1 }}
-			w={6}
-			h={6}
-			color={color}
-			as={icon}
-		/>
-	)
+const useVariants = (activeColorScheme: TagProps['colorScheme']) => {
+	const {
+		container: { bg, color }
+	} = useMultiStyleConfig('Tag', { colorScheme: activeColorScheme })
+	return {
+		bg,
+		color
+	}
 }
 
 interface CalloutProps {
 	children: ReactNode
-	variant?: 'blue' | 'orange' | 'yellow' | 'purple' | 'default'
+	icon?: keyof typeof FiIcons
+	variant?: TagProps['colorScheme']
 }
 
-export function Callout({ children, variant = 'default' }: CalloutProps) {
-	const variants = {
-		blue: useColorModeValue('blue.100', 'blue.700'),
-		orange: useColorModeValue('orange.100', 'orange.700'),
-		yellow: useColorModeValue('yellow.100', 'yellow.700'),
-		purple: useColorModeValue('purple.100', 'purple.700'),
-		default: undefined
-	}
+export function Callout({ children, variant = 'blue', icon }: CalloutProps) {
+	const { bg, color } = useVariants(variant)
+
+	const iconComponent = FiIcons[icon as any]
 
 	return (
 		<Flex
-			bgColor={variants[variant]}
-			p={6}
+			// @ts-expect-error
+			bgColor={bg}
+			// @ts-expect-error
+			color={color}
+			p={{ base: 3, sm: 6 }}
 			borderRadius='xl'
 			my={3}
 			flexDir={{ base: 'column', sm: 'row' }}
@@ -41,6 +37,19 @@ export function Callout({ children, variant = 'default' }: CalloutProps) {
 			justifyContent={{ base: 'center', sm: 'flex-start' }}
 			textAlign={{ base: 'center', sm: 'left' }}
 		>
+			{iconComponent && (
+				<Icon
+					mr={{ base: 0, sm: 3 }}
+					mb={{ base: 3, sm: 0 }}
+					mt={{ base: 0, sm: 1 }}
+					w={6}
+					h={6}
+					// @ts-expect-error
+					color={color}
+					as={iconComponent}
+				/>
+			)}
+
 			{children}
 		</Flex>
 	)
