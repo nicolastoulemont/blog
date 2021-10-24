@@ -15,6 +15,9 @@ export function generatePublishedPostList(): Array<CategoryList> {
 	const filesPath = getFilesPath(path.join(process.cwd(), 'posts'))
 
 	const publishedPosts = filesPath
+		// For now we only show english posts and only add small link to the
+		// translation on the card
+		.filter((filePath) => !filePath.includes('posts/fr/'))
 		.map((filePath) => {
 			const source = fs.readFileSync(filePath, 'utf8')
 			const { data } = matter(source) as unknown as { data: PostMatterData }
@@ -23,12 +26,11 @@ export function generatePublishedPostList(): Array<CategoryList> {
 
 			return {
 				...data,
-				slug,
-				...(data.translation && { translationSlug: `${slug}-fr` })
+				...(data.translation && { translationSlug: slug.replace(/\/en\//, '/fr/') }),
+				slug
 			}
 		})
 		.filter((post) => isValid(new Date(post.date)))
-		.filter((post) => !post.slug.endsWith('-fr'))
 
 	const publishedCategories = Array.from(
 		new Set(flatten(publishedPosts.map((p) => p.category)))

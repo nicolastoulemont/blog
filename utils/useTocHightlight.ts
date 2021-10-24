@@ -28,12 +28,14 @@ export function useTocHighlight({ elementIds, OFFSET_TOP = 90 }: useTocHighlight
 			let index = -1
 			while (index < elements.length - 1) {
 				const element = elements[index + 1]
-				const { top } = element.getBoundingClientRect()
+				if (element) {
+					const { top } = element.getBoundingClientRect()
 
-				if (top >= OFFSET_TOP) {
-					break
+					if (top >= OFFSET_TOP) {
+						break
+					}
+					index += 1
 				}
-				index += 1
 			}
 
 			setCurrentActiveIndex(Math.max(index, 0))

@@ -4,5 +4,6 @@ export const CategoriesColorsRegistry: Record<Category, TagProps['colorScheme']>
 	'Data Structures': 'cyan',
 	React: 'red',
 	Animations: 'orange',
-	GraphQL: 'pink'
+	GraphQL: 'pink',
+	Career: 'blue'
 }

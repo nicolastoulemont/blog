@@ -33,7 +33,7 @@ export function TocDesktop({ elements = [], activeColor }: TocProps) {
 			>
 				On this page
 			</Text>
-			<Box as='nav'>
+			<Box as='nav' maxHeight='80vh' overflowY='scroll'>
 				<UnorderedList listStyleType='none' ml={0} spacing='2'>
 					{elements.map((element, index) => (
 						<TocLink

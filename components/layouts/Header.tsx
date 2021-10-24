@@ -11,13 +11,15 @@ import {
 import NextLink from 'next/link'
 import { MoonIcon, SunIcon } from '@chakra-ui/icons'
 import { FiGithub, FiTwitter } from 'react-icons/fi'
-export function Header() {
+export function Header({ isPostPage }: { isPostPage?: boolean }) {
 	const { colorMode, toggleColorMode } = useColorMode()
 	const bgColor = useColorModeValue('white', '#1A212C')
 	const boxShadowColor = useColorModeValue(
 		'rgba(0, 0, 0, 0.12) 0px 3px 8px',
 		'rgba(0, 0, 0, 1) 0px 3px 8px'
 	)
+
+	const postPageMaxWith = { base: '100%', '2xl': '1000px' }
 
 	return (
 		<>
@@ -37,8 +39,8 @@ export function Header() {
 					align='center'
 					justify='space-between'
 					width='100%'
-					maxWidth='1000px'
-					px={3}
+					maxWidth={isPostPage ? postPageMaxWith : '1000px'}
+					px={isPostPage ? { base: 3, lg: 14, '2xl': 0 } : 3}
 				>
 					<NextLink href='/' passHref>
 						<Link

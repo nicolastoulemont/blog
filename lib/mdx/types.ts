@@ -1,4 +1,4 @@
-export type Category = 'Data Structures' | 'React' | 'Animations' | 'GraphQL'
+export type Category = 'Data Structures' | 'React' | 'Animations' | 'GraphQL' | 'Career'
 
 export interface PostMetaData {
 	title: string
@@ -12,6 +12,7 @@ export interface PostMetaData {
 	imageHeight: string
 	category: Category | Array<Category>
 	translation?: string
+	translationSlug?: string
 }
 
 export type PostMatterData = Pick<
@@ -26,4 +27,5 @@ export type PostMatterData = Pick<
 	| 'snippet'
 	| 'title'
 	| 'translation'
+	| 'translationSlug'
 >

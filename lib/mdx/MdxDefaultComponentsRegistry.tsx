@@ -14,24 +14,10 @@ import {
 export const mdxDefaultComponentsRegistry = {
 	PostIntro,
 	h1: (props) => (
-		<Heading
-			id={generateHeadingId(props.children)}
-			as='h1'
-			my={12}
-			size='2xl'
-			textAlign={{ base: 'center', sm: 'left' }}
-			{...props}
-		/>
+		<Heading id={generateHeadingId(props.children)} as='h1' my={12} size='2xl' {...props} />
 	),
 	h2: (props) => (
-		<Heading
-			id={generateHeadingId(props.children)}
-			as='h2'
-			my={8}
-			size='xl'
-			textAlign={{ base: 'center', sm: 'left' }}
-			{...props}
-		/>
+		<Heading id={generateHeadingId(props.children)} as='h2' my={8} size='xl' {...props} />
 	),
 	h3: (props) => (
 		<Heading id={generateHeadingId(props.children)} as='h3' my={6} size='lg' {...props} />

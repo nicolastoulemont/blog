@@ -27,7 +27,7 @@ export default function PostPage({ headings, source, data, pageSpecificComponent
 		() =>
 			pageSpecificComponentsNames.reduce((acc, componentFileName) => {
 				acc[componentFileName] = dynamic(() =>
-					import(`../../../components/mdx/${componentFileName}`).then(
+					import(`../../../../components/mdx/${componentFileName}`).then(
 						(mod) => mod[`${componentFileName}`]
 					)
 				)
@@ -70,7 +70,7 @@ export default function PostPage({ headings, source, data, pageSpecificComponent
 				}}
 				canonical={canonical}
 			/>
-			<Header />
+			<Header isPostPage />
 			<PostContainer>
 				<MDXRemote {...source} components={components} />
 			</PostContainer>
@@ -87,7 +87,9 @@ export default function PostPage({ headings, source, data, pageSpecificComponent
 }
 
 export const getStaticProps = async ({ params }) => {
-	const buffer = fs.readFileSync(path.join(POSTS_PATH, params.year, `${params.slug}.mdx`))
+	const buffer = fs.readFileSync(
+		path.join(POSTS_PATH, params.lang, params.year, `${params.slug}.mdx`)
+	)
 	const { content, data } = matter(buffer)
 
 	const componentsFileNames = getFilesPath(COMPONENTS_PATH)
