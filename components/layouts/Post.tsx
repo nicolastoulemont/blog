@@ -40,8 +40,8 @@ export function Post({ post }: { post: CategoryList['posts'][number] }) {
 					<Link
 						zIndex={3}
 						pos='absolute'
-						right='0'
-						top='-10px'
+						right='15px'
+						top='-15px'
 						width='30px'
 						height='auto'
 					>

@@ -40,7 +40,7 @@ export function Header({ isPostPage }: { isPostPage?: boolean }) {
 					justify='space-between'
 					width='100%'
 					maxWidth={isPostPage ? postPageMaxWith : '1000px'}
-					px={isPostPage ? { base: 3, lg: 14, '2xl': 0 } : 3}
+					px={isPostPage ? { base: 3, lg: 14, '2xl': 0 } : { base: 3, lg: 0 }}
 				>
 					<NextLink href='/' passHref>
 						<Link

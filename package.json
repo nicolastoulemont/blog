@@ -6,6 +6,7 @@
 	"private": true,
 	"scripts": {
 		"dev": "next dev",
+		"dev:watch": "next-remote-watch ./posts",
 		"build": "next build",
 		"start": "next start"
 	},
@@ -25,6 +26,7 @@
 		"mdx-prism": "^0.3.4",
 		"next": "^11.1.2",
 		"next-mdx-remote": "^3.0.6",
+		"next-remote-watch": "^1.0.0",
 		"next-seo": "^4.28.1",
 		"react": "17.0.2",
 		"react-dom": "17.0.2",
