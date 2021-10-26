@@ -1,3 +1,9 @@
 module.exports = {
-	swcMinify: true
+	swcMinify: true,
+	reactStrictMode: true,
+	experimental: {
+		esmExternals: false,
+		concurrentFeatures: true,
+		serverComponents: true
+	}
 }

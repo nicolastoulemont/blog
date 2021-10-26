@@ -49,6 +49,7 @@ export function Post({ post }: { post: CategoryList['posts'][number] }) {
 							src={`/img/flag_${post.translation}.svg`}
 							width='100%'
 							height='auto'
+							alt={post.translation}
 						/>
 					</Link>
 				</NextLink>
