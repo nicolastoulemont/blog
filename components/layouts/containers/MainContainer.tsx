@@ -19,7 +19,7 @@ export function MainContainer({ children }) {
 			margin='0 auto'
 			pb={8}
 			boxSizing='border-box'
-			px={{ base: 3, lg: 0 }}
+			px={{ base: 3, xl: 0 }}
 			variants={variants}
 			initial='hidden'
 			animate='visible'
