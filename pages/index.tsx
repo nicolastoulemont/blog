@@ -69,7 +69,14 @@ export default function HomePage({ postByCategories }: { postByCategories: Array
 					I'm a french full stack software developer. I mainly use and enjoy Typescript,
 					Node, React and GraphQL at the moment.
 				</Text>
-				<Flex width='100%' flexDir='column' align='flex-start' justify='flex-start' my={6}>
+				<Flex
+					width='100%'
+					flexDir='column'
+					align='flex-start'
+					justify='flex-start'
+					my={6}
+					as='section'
+				>
 					<Heading size='lg' mb={6}>
 						Posts
 					</Heading>

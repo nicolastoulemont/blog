@@ -60,6 +60,7 @@ export function Header({ isPostPage }: { isPostPage?: boolean }) {
 					<Flex align='center' justify='center'>
 						<Link
 							href='https://twitter.com/NicoToulemont'
+							aria-label='twitter profile'
 							isExternal
 							mx={3}
 							borderRadius='9999px'
@@ -80,6 +81,7 @@ export function Header({ isPostPage }: { isPostPage?: boolean }) {
 						</Link>
 						<Link
 							href='https://github.com/nicolastoulemont'
+							aria-label='github profile'
 							isExternal
 							mx={3}
 							borderRadius='9999px'

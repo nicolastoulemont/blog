@@ -12,7 +12,7 @@ const variants = {
 export function PostContainer({ children }) {
 	return (
 		<MotionBox
-			as='main'
+			as='article'
 			width='100%'
 			minHeight='100%'
 			maxWidth={{ base: '100%', lg: 'calc(100% - 300px)', '2xl': '1000px' }}
