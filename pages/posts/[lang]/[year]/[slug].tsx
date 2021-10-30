@@ -99,7 +99,6 @@ export const getStaticProps = async ({ params }) => {
 	const pageSpecificComponentsNames = componentsFileNames.filter((componentFileName) =>
 		content.includes(`<${componentFileName}`)
 	)
-
 	const source = await serialize(content, {
 		mdxOptions: {
 			rehypePlugins: [mdxPrism]
@@ -116,14 +115,15 @@ export const getStaticProps = async ({ params }) => {
 		if (heading.startsWith('#')) return 'h1'
 	}
 
-	const headings = content.match(parseHeadings).map((heading) => {
-		const content = heading.replace(/#/g, '').trim()
-		return {
-			id: generateHeadingId(content),
-			type: getType(heading),
-			content
-		}
-	})
+	const headings =
+		content.match(parseHeadings)?.map((heading) => {
+			const content = heading.replace(/#/g, '').trim()
+			return {
+				id: generateHeadingId(content),
+				type: getType(heading),
+				content
+			}
+		}) ?? []
 
 	return {
 		props: {

@@ -24,10 +24,7 @@ export const CodeTheme = css`
 	}
 	/* Code blocks */
 	pre {
-		padding-top: ${theme.space[4]};
-		padding-bottom: ${theme.space[4]};
-		padding-left: ${theme.space[4]};
-		padding-right: ${theme.space[4]};
+		padding: ${theme.space[4]};
 		margin: ${theme.space[6]} 0;
 		white-space: nowrap;
 		overflow: auto;
