@@ -1,14 +1,8 @@
 import React from 'react'
 import { css, Global } from '@emotion/react'
-import { theme, useColorMode } from '@chakra-ui/react'
+import { theme } from '@chakra-ui/react'
 
-/* 
-Credits to francoisbest: https://twitter.com/fortysevenfx
-FROM https://francoisbest.com/
-CODE: https://github.com/franky47/francoisbest.com/blob/next/src/ui/prism.tsx
-*/
-
-const prismBaseTheme = css`
+export const CodeTheme = css`
 	code {
 		white-space: pre;
 	}
@@ -74,82 +68,11 @@ const prismBaseTheme = css`
 			margin-top: 0;
 		}
 	}
-`
-
-export const prismLightTheme = css`
-	${prismBaseTheme}
-	:root {
-		--prism-text-color: ${theme.colors.gray[700]};
-	}
-	pre {
-		background-color: ${theme.colors.gray[50]};
-		border: 1px solid ${theme.colors.gray[200]};
-		color: var(--prism-text-color);
-	}
-	.token.comment,
-	.token.prolog,
-	.token.doctype,
-	.token.cdata {
-		color: ${theme.colors.gray[600]};
-		font-style: italic;
-	}
-	.token.namespace {
-		opacity: 0.7;
-	}
-	.token.string,
-	.token.attr-value {
-		color: ${theme.colors.purple[700]};
-	}
-	.token.punctuation,
-	.token.operator {
-		color: var(--prism-text-color);
-	}
-	.token.entity,
-	.token.url,
-	.token.symbol,
-	.token.number,
-	.token.boolean,
-	.token.variable,
-	.token.constant,
-	.token.property,
-	.token.regex,
-	.token.inserted {
-		color: ${theme.colors.cyan[600]};
-	}
-	.token.atrule,
-	.token.keyword,
-	.token.attr-name,
-	.language-autohotkey .token.selector {
-		color: ${theme.colors.red[600]};
-	}
-	.token.function,
-	.token.deleted,
-	.language-autohotkey .token.tag {
-		color: ${theme.colors.purple[700]};
-	}
-	.token.tag,
-	.token.selector,
-	.language-autohotkey .token.keyword {
-		color: ${theme.colors.blue[600]};
-	}
-	.mdx-marker {
-		background-color: ${theme.colors.gray[100]};
-		box-shadow: inset 3px 0px 0 0px var(--colors-accent-400);
-	}
-	.remark-code-title {
-		background: ${theme.colors.gray[100]};
-		border-color: ${theme.colors.gray[200]};
-		color: ${theme.colors.gray[700]};
-	}
-`
-
-export const prismDarkTheme = css`
-	${prismBaseTheme};
 	:root {
 		--prism-text-color: ${theme.colors.blue[300]};
 	}
 	pre {
-		background-color: #0f141ca1;
+		background-color: ${theme.colors.black};
 		border: 1px solid ${theme.colors.gray[800]};
 		color: var(--prism-text-color);
 		box-shadow: inset 0 3px 4px 0 rgba(0, 0, 0, 0.2);
@@ -223,7 +146,4 @@ export const prismDarkTheme = css`
 	}
 `
 
-export const PrismGlobal = () => {
-	const { colorMode } = useColorMode()
-	return <Global styles={colorMode === 'light' ? prismLightTheme : prismDarkTheme} />
-}
+export const PrismGlobal = () => <Global styles={CodeTheme} />

@@ -8,7 +8,8 @@ import {
 	UnorderedList,
 	ListItem,
 	Text,
-	useColorModeValue
+	useColorModeValue,
+	Code
 } from '@chakra-ui/react'
 
 export const mdxDefaultComponentsRegistry = {
