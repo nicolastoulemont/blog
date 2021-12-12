@@ -11,6 +11,7 @@
 		"start": "next start"
 	},
 	"dependencies": {
+		"@atomiks/mdx-pretty-code": "^0.0.2",
 		"@chakra-ui/icons": "^1.1.1",
 		"@chakra-ui/react": "^1.7.3",
 		"@emotion/react": "^11.7.0",
@@ -22,7 +23,6 @@
 		"faker": "^5.5.3",
 		"framer-motion": "^4.1.17",
 		"gray-matter": "^4.0.3",
-		"mdx-prism": "^0.3.4",
 		"next": "12.0.7",
 		"next-mdx-remote": "^3.0.8",
 		"next-remote-watch": "^1.0.0",
@@ -33,7 +33,9 @@
 		"react-icons": "^4.3.1",
 		"rehype": "^12.0.0",
 		"remark": "^14.0.2",
-		"sharp": "^0.29.3"
+		"sharp": "^0.29.3",
+		"shiki": "^0.9.15",
+		"unist-util-visit": "2"
 	},
 	"devDependencies": {
 		"@types/faker": "^5.5.9",

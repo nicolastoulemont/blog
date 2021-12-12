@@ -10,23 +10,14 @@ import { useRouter } from 'next/router'
 import { formatISO } from 'date-fns'
 import dynamic from 'next/dynamic'
 import matter from 'gray-matter'
-import mdxPrism from 'mdx-prism'
 import { MDXRemote } from 'next-mdx-remote'
 import { serialize } from 'next-mdx-remote/serialize'
-import {
-  POSTS_PATH,
-  COMPONENTS_PATH,
-  mdxDefaultComponentsRegistry,
-} from 'lib/mdx'
+import { POSTS_PATH, COMPONENTS_PATH, mdxDefaultComponentsRegistry, CodeStyles } from 'lib/mdx'
+import { syntaxHighLightPlugin } from 'syntaxHighlight'
 import type { PostMatterData } from 'lib/mdx'
 import { CategoriesColorsRegistry } from 'styles/CategoriesColorsRegistry'
 
-export default function PostPage({
-  headings,
-  source,
-  data,
-  pageSpecificComponentsNames,
-}) {
+export default function PostPage({ headings, source, data, pageSpecificComponentsNames }) {
   const domain = 'https://nicolastoulemont.dev'
   const { description, date, imagePath, title } = data as PostMatterData
   const { asPath } = useRouter()
@@ -36,9 +27,7 @@ export default function PostPage({
     () =>
       pageSpecificComponentsNames.reduce((acc, componentFileName) => {
         acc[componentFileName] = dynamic(() =>
-          import(`../../../../components/mdx/${componentFileName}`).then(
-            (mod) => mod[`${componentFileName}`]
-          )
+          import(`../../../../components/mdx/${componentFileName}`).then((mod) => mod[`${componentFileName}`])
         )
         return acc
       }, {}),
@@ -64,10 +53,7 @@ export default function PostPage({
         {date && date !== 'not_published' && (
           <>
             <meta content='article' property='og:type' />
-            <meta
-              content={formatISO(new Date(date))}
-              property='article:published_time'
-            />
+            <meta content={formatISO(new Date(date))} property='article:published_time' />
           </>
         )}
       </Head>
@@ -83,37 +69,32 @@ export default function PostPage({
         canonical={canonical}
       />
       <Header isPostPage />
+      <CodeStyles />
       <PostContainer>
         <MDXRemote {...source} components={components} />
       </PostContainer>
       <TocDesktop
         elements={headings}
-        activeColor={
-          CategoriesColorsRegistry[
-            Array.isArray(data.category) ? data.category[0] : data.category
-          ]
-        }
+        activeColor={CategoriesColorsRegistry[Array.isArray(data.category) ? data.category[0] : data.category]}
       />
     </>
   )
 }
 
 export const getStaticProps = async ({ params }) => {
-  const buffer = fs.readFileSync(
-    path.join(POSTS_PATH, params.lang, params.year, `${params.slug}.mdx`)
-  )
+  const buffer = fs.readFileSync(path.join(POSTS_PATH, params.lang, params.year, `${params.slug}.mdx`))
   const { content, data } = matter(buffer)
 
   const componentsFileNames = getFilesPath(COMPONENTS_PATH)
     .map((path) => path.replace(/\.tsx?$/, ''))
     .map((path) => `${path.split('mdx/')[1]}`)
 
-  const pageSpecificComponentsNames = componentsFileNames.filter(
-    (componentFileName) => content.includes(`<${componentFileName}`)
+  const pageSpecificComponentsNames = componentsFileNames.filter((componentFileName) =>
+    content.includes(`<${componentFileName}`)
   )
   const source = await serialize(content, {
     mdxOptions: {
-      rehypePlugins: [mdxPrism],
+      remarkPlugins: [syntaxHighLightPlugin],
     },
     scope: data,
   })
