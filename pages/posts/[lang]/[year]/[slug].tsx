@@ -77,6 +77,10 @@ export default function PostPage({ headings, source, data, pageSpecificComponent
         elements={headings}
         activeColor={CategoriesColorsRegistry[Array.isArray(data.category) ? data.category[0] : data.category]}
       />
+      {/* <TocMobile
+        elements={headings}
+        activeColor={CategoriesColorsRegistry[Array.isArray(data.category) ? data.category[0] : data.category]}
+      /> */}
     </>
   )
 }
