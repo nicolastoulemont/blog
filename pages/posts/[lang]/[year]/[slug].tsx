@@ -2,7 +2,7 @@ import React, { useMemo } from 'react'
 import path from 'path'
 import fs from 'fs'
 import { getFilesPath } from 'utils/files'
-import { generateHeadingId } from 'utils/headingId'
+import { generateHeadingId, getType } from 'utils/headingId'
 import { NextSeo } from 'next-seo'
 import { Header, PostContainer, TocDesktop } from 'components'
 import Head from 'next/head'
@@ -77,10 +77,6 @@ export default function PostPage({ headings, source, data, pageSpecificComponent
         elements={headings}
         activeColor={CategoriesColorsRegistry[Array.isArray(data.category) ? data.category[0] : data.category]}
       />
-      {/* <TocMobile
-        elements={headings}
-        activeColor={CategoriesColorsRegistry[Array.isArray(data.category) ? data.category[0] : data.category]}
-      /> */}
     </>
   )
 }
@@ -104,13 +100,6 @@ export const getStaticProps = async ({ params }) => {
   })
 
   const parseHeadings = /(#|##|###|####) (.*$)/gim
-
-  function getType(heading: string) {
-    if (heading.startsWith('####')) return 'h4'
-    if (heading.startsWith('###')) return 'h3'
-    if (heading.startsWith('##')) return 'h2'
-    if (heading.startsWith('#')) return 'h1'
-  }
 
   const headings =
     content.match(parseHeadings)?.map((heading) => {

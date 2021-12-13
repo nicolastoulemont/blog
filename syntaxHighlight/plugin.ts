@@ -1,4 +1,4 @@
-import { createRemarkPlugin } from '@atomiks/mdx-pretty-code'
+import { createRemarkPlugin } from '@nicolastoulemont/syntax-highlighter'
 import fs from 'fs'
 import path from 'path'
 
