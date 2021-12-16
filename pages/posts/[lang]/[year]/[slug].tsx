@@ -4,7 +4,7 @@ import fs from 'fs'
 import { getFilesPath } from 'utils/files'
 import { generateHeadingId, getType } from 'utils/headingId'
 import { NextSeo } from 'next-seo'
-import { Header, PostContainer, TocDesktop } from 'components'
+import { Header, PostContainer, TocDesktop, TocMobile } from 'components'
 import Head from 'next/head'
 import { useRouter } from 'next/router'
 import { formatISO } from 'date-fns'
@@ -41,6 +41,8 @@ export default function PostPage({ headings, source, data, pageSpecificComponent
     [pageSpecificComponentRegistry]
   )
 
+  const activeColor = CategoriesColorsRegistry[Array.isArray(data.category) ? data.category[0] : data.category]
+
   return (
     <>
       <Head>
@@ -73,10 +75,8 @@ export default function PostPage({ headings, source, data, pageSpecificComponent
       <PostContainer>
         <MDXRemote {...source} components={components} />
       </PostContainer>
-      <TocDesktop
-        elements={headings}
-        activeColor={CategoriesColorsRegistry[Array.isArray(data.category) ? data.category[0] : data.category]}
-      />
+      <TocDesktop elements={headings} activeColor={activeColor} />
+      <TocMobile elements={headings} activeColor={activeColor} />
     </>
   )
 }
