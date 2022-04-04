@@ -1,13 +1,11 @@
 import { extendTheme, ColorMode } from '@chakra-ui/react'
 
 type CustomConfig = {
-	initialColorMode: ColorMode
-	useSystemColorMode: boolean
+  initialColorMode: ColorMode
 }
 
 const config: CustomConfig = {
-	initialColorMode: 'dark',
-	useSystemColorMode: process.env.NODE_ENV === 'production'
+  initialColorMode: 'light',
 }
 
 export const theme = extendTheme({ config })
