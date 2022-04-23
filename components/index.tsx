@@ -8,6 +8,5 @@ export * from './layouts/ToC/Desktop'
 export * from './layouts/ToC/Mobile'
 
 // Mdx specifics
-export * from './mdx/DragToReOrder'
 export * from './mdx/PostIntro'
 export * from './mdx/Callout'
