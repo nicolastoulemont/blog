@@ -25,7 +25,7 @@ export function TocLink({ element, activeColor, isActive, isFirst, onClose = () 
           _hover={{ bg, color }}
           onClick={onClose}
         >
-          {isFirst ? 'Intro' : element.content}
+          {isFirst ? 'Top' : element.content}
         </Link>
       </NextLink>
     </ListItem>

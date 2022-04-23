@@ -99,7 +99,7 @@ export const getStaticProps = async ({ params }) => {
     scope: data,
   })
 
-  const parseHeadings = /(#|##|###|####) (.*$)/gim
+  const parseHeadings = /(#|##|###|####|#####|######) (.*$)/gim
 
   const headings =
     content.match(parseHeadings)?.map((heading) => {

@@ -7,7 +7,9 @@ export const mdxDefaultComponentsRegistry = {
   h1: (props) => <Heading id={generateHeadingId(props.children)} as='h1' my={12} size='2xl' {...props} />,
   h2: (props) => <Heading id={generateHeadingId(props.children)} as='h2' my={8} size='xl' {...props} />,
   h3: (props) => <Heading id={generateHeadingId(props.children)} as='h3' my={6} size='lg' {...props} />,
-  h4: (props) => <Heading id={generateHeadingId(props.children)} as='h4' size='md' {...props} />,
+  h4: (props) => <Heading id={generateHeadingId(props.children)} as='h4' my={3} size='md' {...props} />,
+  h5: (props) => <Heading id={generateHeadingId(props.children)} as='h5' my='6px' size='sm' {...props} />,
+  h6: (props) => <Heading id={generateHeadingId(props.children)} as='h6' my='4px' size='xs' {...props} />,
   p: (props) => <Text as='p' my={{ base: 6, md: 3 }} {...props} />,
   a: (props) => {
     const color = useColorModeValue('blue.500', 'cyan.400')
