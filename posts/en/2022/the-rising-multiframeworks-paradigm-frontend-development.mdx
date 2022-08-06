@@ -1,0 +1,82 @@
+---
+date: '2022-06-26'
+cardImage: '/img/cogs.png'
+title: 'The rise of multiframeworks paradigm in the frontend oss'
+snippet: 'There is a rising trend of library developed in a multiframework and / or a framework agnostic paradigm in the frontend. This post acknowledge it and try to explore what it means for the future of frontend development.'
+description: 'There is a rising trend of library developed in a multiframework and / or a framework agnostic paradigm in the frontend. This post acknowledge it and try to explore what it means for the future of frontend development.'
+imagePath: '/img/cogs.png'
+imageAlt: 'Cogs and coupling / decoupling'
+imageWidth: '256'
+imageHeight: '256'
+category: 'General'
+---
+
+import { Tag } from '@chakra-ui/react'
+import { PostIntro } from 'components'
+
+# The rise of multiframeworks paradigm in the frontend oss
+
+<PostIntro date='June 26th 2022' category='General' />
+
+Over the last 10 years, we've seen a lot of new general purpose UI libraries / frameworks being built:
+
+- Angular (2010)
+- React (2013)
+- Vuejs (2014)
+- Svelte (2016)
+- SolidJS (2021)
+
+Each one of these frameworks brought something new to the table but they are all at the core driven by the concept of UI components.
+The frontend ecosystem experimented a lot on this concept of component.
+For a while these explorations were tightly coupled with the underlying framework they were built for. For example:
+
+- React: [React Select](https://react-select.com/home), [React Datepicker](https://reactdatepicker.com/)
+- VueJS: [Vue Select](https://vue-select.org/), [Vue Datepicker](https://vue3datepicker.com/)
+
+A short while after the concept of [headless ui](https://www.merrickchristensen.com/articles/headless-user-interface-components/) appeared.
+A first this concept was very much applied within a framework specific context.
+It was much more about building framework specific components flexible enought to easily evolve over time rather than building cross-frameworks components.
+But it was a good reminder of the upsides of the separation of concerns in a UI building context. Something that, at the time was a bit forgotten about in favor tightly coupled components.
+
+In parallel, the handling of the state of the component went throught a few iterations and explorations, from basic state utilities built in the frameworks,
+to [observables](https://rxjs.dev/), [flux architecture implementation](https://redux.js.org/) and now [full blown state machines](https://xstate.js.org/), all built outside of the frameworks themselves.
+
+The combinaison of these two (headless ui and state handling outside of the UI framework) planted the seed for more decoupling to come in the frontend ecosystem.
+Now in 2022, we've seen quite a few "multiframeworks" and / or "framework agnostic" libraries and we are even starting to see a meta-framework go in that direction as well.
+
+## Decoupling at the library level
+
+### UI logic utility
+
+- Zag (React, VueJS, SolidJS)
+
+### UI kits
+
+- Chakra UI
+- Headless UI
+
+### Multiframeworks components
+
+Headless + Multiframework (React, Solid, Svelte, Vuejs)
+
+Tan stack
+
+- Query
+- Table
+- Virtual
+
+AG grid
+
+## Decoupling at the full stack meta framework level
+
+- Remix
+
+## What could this mean ?
+
+- More decoupling -> more reusability
+- Potential consolidation of the librarys around a few well supported multiframeworks libs
+- Not being multiframeworks may end up being a big "con" in the future of frontend development
+- May have some evolution in how we architect our frontend applications, maybe with a more "UI framework agnostic" architecture preference.
+- UI frameworks may have less to do as their role will be more focus on UI orchestrations:
+  - For example, using Remix make the developer write a lot less React code (less useEffect and others)
+  - This could mean the same of others frameworks
