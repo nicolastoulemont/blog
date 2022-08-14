@@ -1,5 +1,5 @@
 ---
-date: '2022-06-26'
+date: '2022-08-14'
 cardImage: '/img/cogs.png'
 title: 'The rise of multiframeworks paradigm in the frontend oss'
 snippet: 'There is a rising trend of library developed in a multiframework and / or a framework agnostic paradigm in the frontend. This post acknowledge it and try to explore what it means for the future of frontend development.'
@@ -16,61 +16,80 @@ import { PostIntro } from 'components'
 
 # The rise of multiframeworks paradigm in the frontend oss
 
-<PostIntro date='June 26th 2022' category='General' />
+<PostIntro date='August 14th 2022' category='General' />
 
-Over the last 10 years, we've seen a lot of new general purpose UI rendering libraries / frameworks being built:
+Over the last 12 years, we've seen a lot of new general purpose UI rendering libraries / frameworks being built:
 
 - Angular (2010)
 - React (2013)
 - Vuejs (2014)
 - Svelte (2016)
-- SolidJS (2021)
+- SolidJS (2021) (date of v1.0 release)
 
-Each one of these frameworks brought something new to the table but they are all at the core driven by the concept of UI components.
-The frontend ecosystem experimented a lot on this concept of component.
-Before them, most UI libraries were "Framework agnostic" as there were not much frameworks to go around.
-But during the rise in usage of those new frameworks, the frontend javascript ecosystem explorations were tightly coupled with the underlying framework they were built for. For example:
+Each one of these frameworks brought something new to the table but, they are all at the core driven by the concept of UI components.
+The frontend ecosystem experimented a lot on this concept of component, it was new because, before them, most UI libraries were "Framework agnostic" as there were not much UI rendering libraries / frameworks to go around.
+
+There were a lot of exploration being done, each UI rendering libraries / frameworks have their own ways of doing this and for a while, a lot of the frontend javascript ecosystem successfull explorations were tightly coupled with the underlying framework they were built for. For example:
 
 - React: [React Select](https://react-select.com/home), [React Datepicker](https://reactdatepicker.com/)
 - VueJS: [Vue Select](https://vue-select.org/), [Vue Datepicker](https://vue3datepicker.com/)
 
 ![tightly coupled](/img/tight-coupling-framework-lib.png)
 
-A short while after the concept of [headless ui](https://www.merrickchristensen.com/articles/headless-user-interface-components/) got some traction.
-A first this concept was very much applied within a framework specific context.
+A short while after, and maybe has a response to this tight coupling, the concept of [headless ui](https://www.merrickchristensen.com/articles/headless-user-interface-components/) got some traction.
+
+At first this concept was very much applied within a framework specific context.
 It was much more about building framework specific components flexible enought to easily evolve over time rather than building cross-frameworks libraries.
 But it was a good reminder of the upsides of the separation of concerns in a UI building context. Something that, at the time was a bit forgotten about in favor tightly coupled components.
 
-In parallel, the handling of the state of the component went throught a few iterations and explorations, from basic state utilities built in the frameworks,
-to [observables](https://rxjs.dev/), [flux architecture implementation](https://redux.js.org/) and now [full blown state machines](https://xstate.js.org/), all built mainly outside of the frameworks themselves.
+In parallel, the handling of the state of the component went throught a few iterations and explorations.
+Users felt the limitations of the basic state utilities built in the frameworks ([useState](https://reactjs.org/docs/hooks-reference.html#usestate), [vuejs state management](https://vuejs.org/guide/scaling-up/state-management.html)) particularly when it comes to handling "global" / "app" state for which the framework state utilities were not built to do (as they are focused on component state handling).
 
-The combinaison of these two (headless ui and state handling outside of the UI framework) planted the seed for more decoupling to come in the frontend ecosystem.
-Now in 2022, we've started to see quite a few "multiframeworks" libraries emerged and we are even starting to see a meta-framework go in that direction as well.
-Some of libraries (the whole Tan stack for example) and framework (remix) started coupled with one framework before going the multiframework route, some other went built from the start in a multiframework way (Zag).
-The most common pattern I've seen adopted to serve these multiframework is the [adapter pattern](https://en.wikipedia.org/wiki/Adapter_pattern).
+And the communities began to build solutions for these limitations, but with their core logic outside of rendering UI libraries, for example:
+
+- [observables](https://rxjs.dev/)
+- flux architecture implementations([redux](https://redux.js.org/), [zustand](https://github.com/pmndrs/zustand))
+- atomic state ([recoil](https://recoiljs.org/fr/), [jotai](https://jotai.org/))
+- proxies ([valtio](https://github.com/pmndrs/valtio))
+- [full blown state machines](https://xstate.js.org/)
+
+The combinaison of these two trends (headless ui and state handling outside of the UI framework) is the underlying force behind for more decoupling to come in the frontend ecosystem.
+
+In 2022, we've started to see quite a few "multiframeworks" libraries emerged and we are even starting to see a meta-framework go in that direction as well.
+Some of libraries (the whole Tan stack for example) and framework (remix) started coupled with one framework before going the multiframework route.
+Some other were built from the start with a multiframework goal (Zag) but it still came from the experience of building first for one framework (react) and then adding another one (vue) with Chakra UI.
+
+Design pattern wise, for these frontend libraries, the most common one I've seen adopted to serve these multiframework is, unsurprisingly, the [adapter pattern](https://en.wikipedia.org/wiki/Adapter_pattern).
 
 ![core-adapter-framework](/img/core-adapters-consumers.png)
 
-## Decoupling at the library level
+Now let's take a look at a few of these multiframework tools:
+
+## Multiframework at the library level
 
 ### UI logic utility
 
-[Zagjs](https://zagjs.com/) is a UI components library based on finite state machines. It was built by the creator of [Chakra-UI](https://chakra-ui.com/), a React based UI kit that later built a VueJS version as well.
+[Zagjs](https://zagjs.com/) is a UI components library based on finite state machines supporting React, Vue and SolidJS. It was built by the creator of [Chakra-UI](https://chakra-ui.com/), a React based UI kit that later built a VueJS version as well.
 Zagjs is a fairly new library (still in 0.X as of August 2022) was built with multiframework support in mind from the start and as a core philosophy in order to resolve the issue the maintainer faced building UI components for multiframework before.
 To quote them:
 
-<Callout>
+<Callout flexDir="column">
 With the rise of design systems and component-driven development, there's an endless re-implementation of common component patterns (Tabs, Menu, Modal, etc.) in multiple frameworks.
 
 Most of these implementations seem to be fairly similar in spirit, the differences being around the reactivity and effects systems for the framework (e.g. useState, useEffect in React.js). Framework specific solutions tend to grow in complexity over time and often become hard to understand, debug, improve or test.
 
 </Callout>
 
-- Zag (React, VueJS, SolidJS)
+Interestingly, Zag is the first library (of many I hope) I've seen to support SolidJS from the start, a testament to SolidJS progress in the frontend ecosystem, despite being a quite recent.
 
 ### UI kits
 
-- Chakra UI
+[Chakra UI](https://chakra-ui.com/) is a React based UI kit that later built a [Vue](https://vue.chakra-ui.com/) version as well.
+Interestingly, the source code from the two frameworks version is not shared ([React](https://github.com/chakra-ui/chakra-ui), [Vue](https://github.com/chakra-ui/chakra-ui-vue)).
+I would guess that this is mainly due to the history of the Chakra UI project, which first started as a React project and then later on, VueJS.
+
+I very much see [Zagjs](https://zagjs.com/) as the logical next step in the evolution of the Chakra UI project, solving, I assume, a lot of the pain points the Chakra UI community faced rebuilding their UI kit for Vue after initially being focused on React.
+
 - Headless UI
 
 ### Multiframeworks components
@@ -85,7 +104,7 @@ Tan stack
 
 AG grid
 
-## Decoupling at the full stack meta framework level
+## Multiframework at the full stack "meta framework" level
 
 - Remix
 
