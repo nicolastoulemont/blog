@@ -2,8 +2,8 @@
 date: '2022-08-14'
 cardImage: '/img/cogs.png'
 title: 'The rise of multiframeworks paradigm in the frontend oss'
-snippet: 'There is a rising trend of library developed in a multiframework and / or a framework agnostic paradigm in the frontend. This post acknowledge it and try to explore what it means for the future of frontend development.'
-description: 'There is a rising trend of library developed in a multiframework and / or a framework agnostic paradigm in the frontend. This post acknowledge it and try to explore what it means for the future of frontend development.'
+snippet: 'There is a rising trend of library developed with support to many UI frameworks in the frontend ecosystem. This post acknowledge it and try to explore what it means for the future of frontend development.'
+description: 'There is a rising trend of library developed with support to many UI frameworks in the frontend ecosystem. This post acknowledge it and try to explore what it means for the future of frontend development.'
 imagePath: '/img/cogs.png'
 imageAlt: 'Cogs and coupling / decoupling'
 imageWidth: '256'
@@ -18,21 +18,14 @@ import { PostIntro } from 'components'
 
 <PostIntro date='August 14th 2022' category='General' />
 
-Over the last 12 years, we've seen a lot of new general purpose UI rendering libraries / frameworks being built:
+After a few years of heavy innovation and diversification in the frontend library space, we may start to see the beginning of a consolidation phase.
 
-- Angular (2010)
-- React (2013)
-- Vuejs (2014)
-- Svelte (2016)
-- SolidJS (2021) (date of v1.0 release)
+## How we got here
 
-Each one of these frameworks brought something new to the table but, they are all at the core driven by the concept of UI components.
-The frontend ecosystem experimented a lot on this concept of component, it was new because, before them, most UI libraries were "Framework agnostic" as there were not much UI rendering libraries / frameworks to go around.
+Over the last 12 years, we've seen a lot of new general purpose UI rendering libraries / frameworks being built (Angular (2010), React (2013), Vuejs (2014), Svelte (2016), SolidJS (2021)).
 
-There were a lot of exploration being done, each UI rendering libraries / frameworks have their own ways of doing this and for a while, a lot of the frontend javascript ecosystem successfull explorations were tightly coupled with the underlying framework they were built for. For example:
-
-- React: [React Select](https://react-select.com/home), [React Datepicker](https://reactdatepicker.com/)
-- VueJS: [Vue Select](https://vue-select.org/), [Vue Datepicker](https://vue3datepicker.com/)
+The frontend ecosystem experimented a lot with each of these frameworks, re-inventing the wheel many times (how many framework specific routers, datepickers and selects/multi-selects were built in the last 12 years?).
+For some time, tight coupling between UI frameworks and their surrounding ecosystem became the norm.
 
 ![tightly coupled](/img/tight-coupling-framework-lib.png)
 
@@ -42,7 +35,7 @@ At first this concept was very much applied within a framework specific context.
 It was much more about building framework specific components flexible enought to easily evolve over time rather than building cross-frameworks libraries.
 But it was a good reminder of the upsides of the separation of concerns in a UI building context. Something that, at the time was a bit forgotten about in favor tightly coupled components.
 
-In parallel, the handling of the state of the component went throught a few iterations and explorations.
+In parallel, the handling of the state of the component went throught a few iterations and innovations.
 Users felt the limitations of the basic state utilities built in the frameworks ([useState](https://reactjs.org/docs/hooks-reference.html#usestate), [vuejs state management](https://vuejs.org/guide/scaling-up/state-management.html)) particularly when it comes to handling "global" / "app" state for which the framework state utilities were not built to do (as they are focused on component state handling).
 
 And the communities began to build solutions for these limitations, but with their core logic outside of rendering UI libraries, for example:
@@ -57,7 +50,7 @@ The combinaison of these two trends (headless ui and state handling outside of t
 
 In 2022, we've started to see quite a few "multiframeworks" libraries emerged and we are even starting to see a meta-framework go in that direction as well.
 Some of libraries (the whole [Tan Stack](https://tanstack.com/) for example) and framework ([Remix](https://remix.run/)) started coupled with one framework before going the multiframework route.
-Some other were built from the start with a multiframework goal (Zag) but it still came from the experience of building first for one framework (react) and then adding another one (vue) with Chakra UI.
+Some other were built from the start with a multiframework goal [Zagjs](https://zagjs.com/) but it still came from the experience of building first for one framework (react) and then adding another one (vue) for the [Chakra-UI](https://chakra-ui.com/) library.
 
 Design pattern wise, for these frontend libraries, the most common one I've seen adopted to serve these multiframework is, unsurprisingly, the [adapter pattern](https://en.wikipedia.org/wiki/Adapter_pattern).
 
