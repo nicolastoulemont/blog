@@ -53,10 +53,10 @@ And the communities began to build solutions for these limitations, but with the
 - proxies ([valtio](https://github.com/pmndrs/valtio))
 - [full blown state machines](https://xstate.js.org/)
 
-The combinaison of these two trends (headless ui and state handling outside of the UI framework) is the underlying force behind for more decoupling to come in the frontend ecosystem.
+The combinaison of these two trends (headless ui and state handling outside of the UI framework) is the underlying force behind the emergence of a multiframework paradigm in the frontend ecosystem.
 
 In 2022, we've started to see quite a few "multiframeworks" libraries emerged and we are even starting to see a meta-framework go in that direction as well.
-Some of libraries (the whole Tan stack for example) and framework (remix) started coupled with one framework before going the multiframework route.
+Some of libraries (the whole [Tan Stack](https://tanstack.com/) for example) and framework ([Remix](https://remix.run/)) started coupled with one framework before going the multiframework route.
 Some other were built from the start with a multiframework goal (Zag) but it still came from the experience of building first for one framework (react) and then adding another one (vue) with Chakra UI.
 
 Design pattern wise, for these frontend libraries, the most common one I've seen adopted to serve these multiframework is, unsurprisingly, the [adapter pattern](https://en.wikipedia.org/wiki/Adapter_pattern).
@@ -80,7 +80,7 @@ Most of these implementations seem to be fairly similar in spirit, the differenc
 
 </Callout>
 
-Interestingly, Zag is the first library (of many I hope) I've seen to support SolidJS from the start, a testament to SolidJS progress in the frontend ecosystem, despite being a quite recent.
+Interestingly, Zag is the first library (of many I hope) I've seen to support SolidJS from the start, a testament to SolidJS progress in the frontend ecosystem despite its quite recent release.
 
 ### UI kits
 
@@ -90,30 +90,51 @@ I would guess that this is mainly due to the history of the Chakra UI project, w
 
 I very much see [Zagjs](https://zagjs.com/) as the logical next step in the evolution of the Chakra UI project, solving, I assume, a lot of the pain points the Chakra UI community faced rebuilding their UI kit for Vue after initially being focused on React.
 
-- Headless UI
+[Headless UI](https://headlessui.com/) is a UI kit of **_"Completely unstyled, fully accessible UI components, designed to integrate beautifully with Tailwind CSS."_**.
+In the same vein as Chakra UI, this library doesn't implemented a shared core of logic with adapters but different packages for both [React](https://github.com/tailwindlabs/headlessui/tree/main/packages/%40headlessui-react) and [Vue](https://github.com/tailwindlabs/headlessui/tree/main/packages/%40headlessui-vue).
+Instead, it has a different implementation for each framework.
 
-### Multiframeworks components
+### The Tan stack
 
-Headless + Multiframework (React, Solid, Svelte, Vuejs)
+![tan stack](/img/tan-stack.png)
 
-Tan stack
+The "[Tan Stack](https://tanstack.com/)" is a great example for the rise of a multiframework approach (supporting pretty much every UI rendering framework except Angular).
+Built by [Tanner Linsley](https://twitter.com/tannerlinsley), it's a small set of libraries ([query](https://tanstack.com/query/v4), [table](https://tanstack.com/table/v8), [virtual](https://tanstack.com/virtual/v3), [router](https://tanstack.com/router/v4)) but originally around react that have (or are in the process of) migrated to a multiframework approach.
 
-- Query
-- Table
-- Virtual
-
-AG grid
+In many ways, **I think that the Tan Stack is, with Zagjs, at the forefront of what the main libraries in the frontend ecosystem are going to be in the future**.
+Built around a core of logic that can be adapted to multiple consumer frameworks, they bring a much more scalable solution to their problem space than framework specific libraries.
 
 ## Multiframework at the full stack "meta framework" level
 
-- Remix
+On the meta framework level, the [Remix](https://remix.run/) full stack framework doesn't market itself has a "React full stack framework" (unlike [NextJS](https://nextjs.org/)) but as a:
+**_"full stack web framework that lets you focus on the user interface and work back through web standards to deliver a fast, slick, and resilient user experience."_**.
 
-## What could this mean ?
+They core opinion is that building on web standards (that are framework agnostic) solves most of the pain points of building a web application today.
+It's interesting to see that opinion emerge as a selling point in 2022, one could say that it is very revealing of the current state of frontend development practices.
 
-- More decoupling -> more reusability
-- Potential consolidation of the librarys around a few well supported multiframeworks libs
-- Not being multiframeworks may end up being a big "con" in the future of frontend development
-- May have some evolution in how we architect our frontend applications, maybe with a more "UI framework agnostic" architecture preference.
-- UI frameworks may have less to do as their role will be more focus on UI orchestrations:
-  - For example, using Remix make the developer write a lot less React code (less useEffect and others)
-  - This could mean the same of others frameworks
+First built with React as the view layer, the [project heavily leverage the adapter architectural pattern](https://github.com/remix-run/remix/tree/main/packages), mainly to support various deployment target at the moment (August 2022).
+Despite being quite recent, it's seems that there is already [some, community led, efforts to built support for others UI frameworks](https://twitter.com/ryanflorence/status/1529438363341639680) (Vue, maybe SolidJS).
+
+## Looking ahead
+
+What could this mean ?
+First of all, I'm not sure of anything, I'm not even sure this emerging trend will continue in the future.
+But should it continue, we could expect the following:
+
+- Rise of the multiframework libraries
+
+  - Leveraging their wider adoption base, multiframework libraries slowly become the new standard of way of solving their respective problem space.
+  - With this new status, they become a de-facto learning steps for new developers, creating a snowball effect increasing their dominance.
+
+- Consolidation of the frontend ecosystem around fewer multiframework libraries
+
+  - Why rebuild framework specifc solution, when a well tested, multiframework solution is just an adapter (a few hunders of lines of code) away ?
+  - Being framework specific solution becomes a net negative in the adoption decision process for projects spanning many years.
+  - Simplification of the frontend ecosystem: less relevant libraries for a given problem space.
+
+- UI rendering framework choice become a less structural choice than before.
+
+  - There are less and less UI rendering framework specific code written. We already see this with the Remix framework with which a whole less of React specific code is written.
+  - A UI rendering framework migration (say from React to SolidJS (JSX -> JSX)) can be done with a few codemods.
+
+- With the exception of native support (like [React Native](https://reactnative.dev/)), the ecosystem around the UI rendering framework is less relevant, as more and more of the common issus are solved with multiframework libraries. Developer experience and performance are the two main decision factors for adoption.
