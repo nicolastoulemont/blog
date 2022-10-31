@@ -2,7 +2,7 @@ import fs from "fs"
 import path from "path"
 import matter from "gray-matter"
 import { isValid } from "date-fns"
-import type { CategoryNames, PostMetaData, PostMatterData } from "~/lib/mdx"
+import type { CategoryNames, PostMetaData, PostMatterData } from "./types"
 import { getFilesPath } from "./get-files-path.server"
 
 interface Category {
