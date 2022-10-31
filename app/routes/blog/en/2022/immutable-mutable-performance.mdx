@@ -1,0 +1,285 @@
+---
+date: "2022-05-01"
+cardImage: "/img/growth.png"
+title: "Immutable vs mutable, a recent use-case where purity and immutability caused performance issues"
+snippet: "While working on making a design system responsive API implementation, I faced performance issues due to functional purity and immutability. A switch to a mutable approach unlocked interesting gains."
+description: "While working on making a design system responsive API implementation, I faced performance issues due to functional purity and immutability. A switch to a mutable approach unlocked interesting gains."
+imagePath: "/img/growth.png"
+imageAlt: "Performance"
+imageWidth: "256"
+imageHeight: "256"
+category: "General"
+---
+
+import { PostIntro } from "~/components"
+
+# Immutable vs mutable, a use-case with performance issues
+
+<PostIntro publishedAt="May 1st 2022" category="General" />
+
+## A bit of context
+
+I currently work as a software engineer on the design system team of a french scale-up.
+One of the first thing that struck me when I arrived was that there were no built-in way to express responsive styles in the design system implementation.
+
+Having been an avid user of [Chakra-UI](https://chakra-ui.com/docs/styled-system/features/responsive-styles) and [Tailwind](https://tailwindcss.com/docs/responsive-design) for a while, I was used to leverage these responsive styles a lot in the applications I built.
+Therefore, shortly after I joined the team, I proposed to add a responsive styles API to our components and utility.
+
+Our design system is implemented in React, using the CSS-in-JS approach (with the [emotion](https://emotion.sh/) library to handle style tag creation).
+This is due to a cross-compatibility between React (web) and React Native (mobile) requirement of the design system. Therefore the implementation of the responsive styles API would be heavily reliant on JS logic.
+
+Our design system implementation is architected around the concepts of primitive components (atoms) that would be composed into (molecular) larger more complex components.
+Our root primitive is a `<Box />` component which is used in every other primitive and components.
+This component role is mainly about mapping props to CSS properties (common between React-Native and CSS properties) and applying some default styles in the process.
+
+In order to apply these default styles and / or transform our design tokens into valid values, its original implementation would use pure "mapping" functions that would map props to styles.
+These functions would be called with the `<Box />` props and return the desired CSS properties that would be spread in a style object later transform into css styles by emotion.
+
+```ts
+function mapPropsToMargin({ margin, marginLeft, marginRight, marginTop, marginBottom }) {
+  return {
+    margin: transformToken(margin || marginLeft || marginRight || marginTop || marginBottom),
+    marginLeft: transformToken(marginLeft),
+    marginRight: transformToken(marginRight),
+    marginTop: transformToken(marginTop),
+    marginBottom: transformToken(marginBottom),
+  }
+}
+
+// Called liked this.
+const styles = {
+  ...mapPropsToMargin(props),
+  // ...mapPropsToPadding(props)
+  // etc
+}
+```
+
+This original implementation was an application of functional purity and data immutability.
+This is now a pretty common habit in the React ecosystem where functional purity and immutability are important concepts that have been used a lot in the past (think of flux architecture, the redux library, etc).
+But in our case, it wasn't needed and would lead to performance issues when implementing the responsive styles API.
+
+## Responsive API requirements
+
+In order to implement the responsive props API, I would need to leverage these functions that mapped props to styles. By doing it at the `<Box />` level, the responsive API would then bubble up
+to all our other primitives and other components.
+
+Having benchmarked a few CSS-in-JS libraries, I decided to propose a responsive style API based on objects like so:
+
+```tsx
+<Box margin={{ base: 0, sm: 2, md: 4, lg: 8 }} />
+```
+
+But the responsive styles API would not be limited to a few properties, ultimately it would be a generic API that would allow to apply responsive styles to any property.
+Therefore we would need to convert props objects like these:
+
+```ts
+const props = {
+  display: "flex",
+  borderRadius: { base: "100%", lg: "9999px" },
+  margin: { base: "10px", sm: "20px", md: "30px", lg: "40px" },
+  padding: { base: "10px", sm: "20px", md: "30px", lg: "40px" },
+  width: { base: "100%", sm: "70%", md: "50%", lg: "30%" },
+  height: 300,
+}
+```
+
+Into an emotion compatible object, like this one:
+
+```ts
+const styleObject = {
+  width: "100%",
+  height: 300,
+  borderRadius: "100%",
+  display: "flex",
+  margin: "10px",
+  padding: "10px",
+  "@media (min-width: 470px)": {
+    width: "70%",
+    margin: "20px",
+    padding: "20px",
+  },
+  "@media (min-width: 780px)": {
+    width: "50%",
+    margin: "30px",
+    padding: "30px",
+  },
+  "@media (min-width: 1020px)": {
+    width: "30%",
+    borderRadius: "9999px",
+    margin: "40px",
+    padding: "40px",
+  },
+}
+```
+
+In case you haven't noticed, we don't want to emite one `@media` query per property but one per breakpoint for evident performance reasons.
+Therefore we would need to merge the different properties together and dispatch the different styles key-value pairs into one query per breakpoint.
+
+There are many ways to transform this original props object into the style object emotion needs. Let's examine them:
+
+## An immutable and functionnally pure approach
+
+The first one would be to keep using an immutable and functionnally pure approach, like so:
+
+```ts
+const breakpoints = {
+  sm: 470,
+  md: 780,
+  lg: 1020,
+}
+
+function mapPropsToStyles(props) {
+  let styles = {}
+
+  for (const prop in props) {
+    if (typeof props[prop] !== "object") {
+      styles[prop] = transformToken(props[prop])
+    } else {
+      const value = props[prop]
+      for (const bp in value) {
+        if (bp === "base") {
+          styles[prop] = transformToken(value[bp])
+        } else if (breakpoints[bp]) {
+          const query = `@media (min-width: ${breakpoints[bp]}px)`
+          if (styles[query]) {
+            styles[query][prop] = transformToken(value[bp])
+          } else {
+            styles[query] = { [prop]: transformToken(value[bp]) }
+          }
+        }
+      }
+    }
+  }
+
+  return styles
+}
+
+// Called liked this.
+const styles = mapPropsToStyles(props)
+```
+
+This seems to the obvious choices, because at first glance, in order to merge the different properties queries together, a loop seems to be the best way to do it.
+
+The first drawback is that we cannot keep specific "mapping" functions for each type of style properties because we cannot share a common reference between pure functions.
+
+The second drawback is that now the transformToken function cannot be specific to one type of CSS properties (like margins, positions, etc) anymore but must be able to transform different tokens for different CSS properties and all our CSS properties.
+
+The third drawback is that this function will be called on each render of the root component of our design system.
+This means that in any given page, this function would be called thousands of times, creating thousands of loops in process which is not ideal in terms of memory usage and performance.
+
+This function average runtime over a 1 000 000 runs is 0.00243ms per iteration (on a **_M1 Macbook pro (2021)_**, probably more on a outdated mobile device).
+For a page of medium to high complexity (1000 - 3000 thousands of `<Box />` render) we would spend between 2,43ms and 7,29ms of main thread javascript execution time to process the props into styles for a complete page.
+This is still kind of acceptable but is the kind of small performance hit that added with others will make the app feel a bit slow, especially on low end mobile devices.
+
+Let's now have a look at a different implementation.
+
+## An impure, mutable approach
+
+In this other implementation, the functions mapping props to styles are not pure, they only mutate the style and media objects, given as functions parameters, by appending styles key-value pairs to them.
+When a prop is a responsive object, they delegate the transformed token to the handleResponsive utility function who will then append the valid value to the media object.
+
+```ts
+const mediaQueries = {
+  sm: "@media (min-width: 470px)",
+  md: "@media (min-width: 780px)",
+  lg: "@media (min-width: 1020px)",
+}
+
+function isResponsive(value) {
+  return typeof value === "object"
+}
+
+function handleResponsive(responsiveObject, styles, media, key) {
+  if (responsiveObject.base) {
+    styles[key] = responsiveObject.base
+  }
+  if (responsiveObject.sm) {
+    if (media[mediaQueries.sm]) {
+      media[mediaQueries.sm][key] = responsiveObject.sm
+    } else {
+      media[mediaQueries.sm] = { [key]: responsiveObject.sm }
+    }
+  }
+  if (responsiveObject.md) {
+    if (media[mediaQueries.md]) {
+      media[mediaQueries.md][key] = responsiveObject.md
+    } else {
+      media[mediaQueries.md] = { [key]: responsiveObject.md }
+    }
+  }
+  if (responsiveObject.lg) {
+    if (media[mediaQueries.lg]) {
+      media[mediaQueries.lg][key] = responsiveObject.lg
+    } else {
+      media[mediaQueries.lg] = { [key]: responsiveObject.lg }
+    }
+  }
+}
+
+function mapDimension({ width, height }, styles, media) {
+  if (isResponsive(width)) {
+    handleResponsive(transformDimensionToken(width), styles, media, "width")
+  } else {
+    styles.width = transformDimensionToken(width)
+  }
+
+  if (isResponsive(height)) {
+    handleResponsive(transformDimensionToken(height), styles, media, "height")
+  } else {
+    styles.height = transformDimensionToken(height)
+  }
+}
+function mapSpacing({ margin, padding }, styles, media) {
+  if (isResponsive(margin)) {
+    handleResponsive(transforSpacingToken(margin), styles, media, "margin")
+  } else {
+    styles.margin = transforSpacingToken(margin)
+  }
+
+  if (isResponsive(padding)) {
+    handleResponsive(transforSpacingToken(padding), styles, media, "padding")
+  } else {
+    styles.padding = transforSpacingToken(padding)
+  }
+}
+
+function mapPropsToStyles(props) {
+  let media = {}
+  let styles = {}
+  mapDimension(props, styles, media)
+  mapSpacing(props, styles, media)
+  // etc...
+  Object.assign(styles, media)
+  return styles
+}
+
+// A be called liked so.
+const styles = mapPropsToStyles(props)
+```
+
+This implementation is very similar to the first one, but it avoids the need the create a lot objects via the spread operator.
+It also allow us to keep our different "mapping" functions and our different token transformer functions which is a nice gain in developer experience.
+Also, by accepting the mapping function impurity we can leverage the synchronous execution of Javascript to act as a loop over the props object keys and values.
+
+This may seems a bit counter-intuitive but this function runtime average over a 1 000 000 runs is 0.000322ms per iteration.
+For our medium to high complexity page we would only spend between 0,322ms and 0,966ms of main thread javascript execution time to process the props into styles, which is far more acceptable.
+The first solution, functionnally pure, is 657.142% slower.
+
+Why is that ?
+
+The reason is that this second implementation allows the JS engine to simply add functions to the [call stack](https://developer.mozilla.org/en-US/docs/Glossary/Call_stack), call them synchronously to append properties to a single reference object.
+Both of these operations requires very little memory and are very fast.
+
+On the other hand, the first implementation because its requires allocation of resources for a loop of unkown lenght and to iterate over it, is slower.
+
+## Conclusion
+
+In the end, we implemented a variant of the second solution based on our specific needs.
+At first we expected to **loose** between 10-20% of rendering performance by adding the possibility to have responsive styles. We were ok with this trade-off.
+In the end, by using the second solution, we were able to **gain** between 7-20% of rendering performance, mainly because of the reduction of object creation (via the removal of object spread).
+That's a positive delta of 17-40% between our initial expectations and the final outcome.
+
+If you want to read the results of my explorations on this topic, you can find them on my [GitHub](https://github.com/nicolastoulemont/bench-responsive-props).
+
+Finally, I would not recommend to go to such length for anything where high performance is not a strong requirement.
+In our case we also had the luxury of having time to experiment with different approaches, mainly because adding responsive API to a design system is a core architectural decision that deserve to be carefully implemented.
