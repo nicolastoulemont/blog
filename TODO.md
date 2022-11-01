@@ -1,3 +1,3 @@
-- [] categories based colors in blog
 - [] dark mode
+- [] seo
 - [] deployment
