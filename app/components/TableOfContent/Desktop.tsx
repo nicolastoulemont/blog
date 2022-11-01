@@ -8,8 +8,6 @@ export function DesktopTableOfContent({ elements = [], activeColor }: TableOfCon
   const elementIds = useMemo(() => elements.map((element) => element.id), [elements])
   const { currentActiveIndex } = useTableOfContent({ elementIds })
 
-  console.log("here")
-
   return (
     <aside className="fixed top-20 right-0 hidden w-auto rounded-lg p-6 md:max-w-[300px] lg:block lg:pr-3 2xl:pr-6">
       <p>On this page</p>
