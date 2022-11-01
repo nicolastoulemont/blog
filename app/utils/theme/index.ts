@@ -1,1 +1,2 @@
-export * from './useSystemTheme'
+export * from "./useSystemTheme"
+export * from "./categories"

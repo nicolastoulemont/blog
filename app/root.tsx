@@ -52,7 +52,7 @@ export function CatchBoundary() {
         <Meta />
         <Links />
       </head>
-      <body className="min-h-screen bg-white dark:bg-slate-800">
+      <body className="text-ren min-h-screen bg-white dark:bg-slate-800">
         <Header />
         <main className="mx-auto block h-[calc(100vh-56px)] w-full max-w-6xl px-6 sm:px-12">
           <section className="mt-3 flex flex-col text-center sm:mt-12">

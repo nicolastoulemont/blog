@@ -13,12 +13,11 @@ module.exports = {
   // serverBuildPath: "api/index.js",
   // publicPath: "/build/",
   mdx: async () => {
-    const [rehypeHighLight, rehypePrettyCode, rehypeSlug, rehypeAutoLinkHeadings, remarkToc] = await Promise.all([
+    const [rehypeHighLight, rehypePrettyCode, rehypeSlug, rehypeAutoLinkHeadings] = await Promise.all([
       import("rehype-highlight").then((mod) => mod.default),
       import("rehype-pretty-code").then((mod) => mod.default),
       import("rehype-slug").then((mod) => mod.default),
       import("rehype-autolink-headings").then((mod) => mod.default),
-      import("remark-toc").then((mod) => mod.default),
     ])
 
     const options = {
@@ -41,8 +40,7 @@ module.exports = {
     const codeHighLightPlugins = process.env.NODE_ENV === "development" ? rehypeHighLight : [rehypePrettyCode, options]
 
     return {
-      remarkPlugins: [remarkToc],
-      rehypePlugins: [codeHighLightPlugins, rehypeSlug, rehypeAutoLinkHeadings],
+      rehypePlugins: [codeHighLightPlugins, rehypeSlug],
     }
   },
 }

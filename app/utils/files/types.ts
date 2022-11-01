@@ -1,3 +1,5 @@
+import { ElementProps } from "~/components/TableOfContent/types"
+
 export type Category = "Data Structures" | "React" | "Animations" | "GraphQL" | "Career" | "Architecture" | "General"
 export type CategoryNames =
   | "Data Structures"
@@ -21,6 +23,7 @@ export interface PostMetaData {
   category: CategoryNames | Array<CategoryNames>
   translation?: string
   translationSlug?: string
+  headings: ElementProps[]
 }
 
 export type PostMatterData = Pick<

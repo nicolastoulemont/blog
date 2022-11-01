@@ -6,7 +6,7 @@ export function Header() {
 
   return (
     <header className="sticky top-0 z-50 flex w-full items-center justify-center bg-white shadow-lg">
-      <nav className="flex w-full max-w-6xl items-center justify-between py-2 px-6 sm:px-12">
+      <nav className="flex w-full max-w-6xl items-center justify-between py-2 px-6 md:px-12">
         <NavLink to="/" className="flex items-center justify-center">
           <img src="/img/site-logo.svg" alt="home page" className="w-11" />
         </NavLink>

@@ -1,7 +1,8 @@
-import React, { useMemo } from 'react'
-import type { TocProps } from './types'
-import { TocLink } from './Link'
-import { FiMenu } from 'react-icons/fi'
+import React, { useMemo } from "react"
+import { useTableOfContent } from "./useTableOfContent"
+import type { TableOfContentProps } from "./types"
+import { TocLink } from "./Link"
+import { FiMenu } from "react-icons/fi"
 import {
   UnorderedList,
   IconButton,
@@ -12,33 +13,32 @@ import {
   DrawerContent,
   DrawerCloseButton,
   useDisclosure,
-} from '@chakra-ui/react'
-import { useTocHighlight } from 'utils/useTocHightlight'
+} from "@chakra-ui/react"
 
-export function TocMobile({ elements, activeColor }: TocProps) {
+export function MobileTableOfContent({ elements, activeColor }: TableOfContentProps) {
   const { isOpen, onOpen, onClose } = useDisclosure()
   const elementIds = useMemo(() => elements.map((element) => element.id), [elements])
-  const { currentActiveIndex } = useTocHighlight({ elementIds })
+  const { currentActiveIndex } = useTableOfContent({ elementIds })
 
   return (
     <>
       <IconButton
         colorScheme={activeColor}
         icon={<FiMenu />}
-        aria-label='Page navigation'
-        pos='fixed'
+        aria-label="Page navigation"
+        pos="fixed"
         bottom={70}
-        right='15px'
-        display={{ base: 'flex', lg: 'none' }}
-        rounded='3xl'
+        right="15px"
+        display={{ base: "flex", lg: "none" }}
+        rounded="3xl"
         onClick={onOpen}
       />
-      <Drawer isOpen={isOpen} onClose={onClose} placement='bottom'>
+      <Drawer isOpen={isOpen} onClose={onClose} placement="bottom">
         <DrawerOverlay />
         <DrawerContent>
           <DrawerCloseButton />
           <DrawerHeader mb={3} />
-          <DrawerBody as='nav'>
+          <DrawerBody as="nav">
             <UnorderedList pb={6} ml={0}>
               {elements.map((element, index) => (
                 <TocLink

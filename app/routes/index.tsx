@@ -1,12 +1,11 @@
 import { useLoaderData, Form, useSearchParams, useSubmit, Link } from "@remix-run/react"
-import { CategoryList } from "~/utils/files"
+import { list } from "~/utils/files"
 import { motion, AnimatePresence } from "framer-motion"
 import { Request } from "@remix-run/node"
 
 export const loader = ({ request }: { request: Request }) => {
   const urlSearchParams = new URLSearchParams(request.url.split("?")[1])
   const params = Object.fromEntries(urlSearchParams.entries())
-  const list = new CategoryList()
 
   if (!params.search || params.search === "") {
     return list.get()
@@ -32,7 +31,7 @@ export default function Index() {
   const params = Object.fromEntries(searchParams)
 
   return (
-    <main className="mx-auto min-h-full w-full max-w-6xl px-6 sm:px-12">
+    <main className="mx-auto min-h-full w-full max-w-6xl px-6 md:px-12">
       <section>
         <h1 className="mt-6 mb-6 text-3xl font-bold text-slate-800  sm:mt-12 sm:text-5xl">Hi, I'm Nicolas Toulemont</h1>
         <p className="mb:9 text-center text-lg font-bold text-slate-600  sm:text-2xl md:mb-12 md:text-left">
