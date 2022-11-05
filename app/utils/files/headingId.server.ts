@@ -1,10 +1,3 @@
-export function generateHeadingId(str: string) {
-  return new String(str)
-    .toLowerCase()
-    .replace(/[^a-zA-Z0-9 ]/g, "")
-    .replace(/\s/g, "-")
-}
-
 export function getType(heading: string): HeadingType | undefined {
   if (heading.startsWith("######")) return "h6"
   if (heading.startsWith("#####")) return "h5"

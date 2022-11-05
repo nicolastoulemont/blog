@@ -1,2 +1,2 @@
 export * from "./ThemeProvider"
-export * from "./themeSession.server"
+export * from "./theme-session.server"

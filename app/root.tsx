@@ -1,4 +1,7 @@
 import type { LinksFunction, MetaFunction, Request } from "@remix-run/node"
+import { Header } from "~/components"
+import styles from "./tailwind.css"
+import { getThemeSession, ThemeBody, ThemeHead, ThemeProvider, useTheme } from "./utils/styles"
 import {
   Link,
   Links,
@@ -10,10 +13,6 @@ import {
   useCatch,
   useLoaderData,
 } from "@remix-run/react"
-
-import { Header } from "~/components"
-import styles from "./tailwind.css"
-import { getThemeSession, Theme, ThemeBody, ThemeHead, ThemeProvider, useTheme } from "./utils/styles"
 
 export let links: LinksFunction = () => {
   return [{ rel: "stylesheet", href: styles }]

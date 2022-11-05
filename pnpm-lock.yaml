@@ -11,6 +11,7 @@ specifiers:
   '@remix-run/vercel': ^1.7.4
   '@tailwindcss/forms': ^0.5.3
   '@tailwindcss/typography': ^0.5.7
+  '@types/github-slugger': ^1.3.0
   '@types/react': ^18.0.24
   '@types/react-dom': ^18.0.8
   '@vercel/node': ^2.4.4
@@ -18,6 +19,7 @@ specifiers:
   date-fns: ^2.29.3
   eslint: ^8.26.0
   framer-motion: ^7.6.2
+  github-slugger: ^1.5.0
   gray-matter: ^4.0.3
   npm-run-all: ^4.1.5
   prettier: ^2.7.1
@@ -46,6 +48,7 @@ dependencies:
   cross-env: 7.0.3
   date-fns: 2.29.3
   framer-motion: 7.6.2_biqbaboplfbrettd7655fr4n2y
+  github-slugger: 1.5.0
   gray-matter: 4.0.3
   npm-run-all: 4.1.5
   prettier: 2.7.1
@@ -65,6 +68,7 @@ devDependencies:
   '@remix-run/dev': 1.7.4_uroeops6y5plvzrhwx7fnuiija
   '@remix-run/eslint-config': 1.7.4_lmezopescv3nnfjcfgbaewnf6i
   '@remix-run/serve': 1.7.4_biqbaboplfbrettd7655fr4n2y
+  '@types/github-slugger': 1.3.0
   '@types/react': 18.0.24
   '@types/react-dom': 18.0.8
   eslint: 8.26.0
@@ -2317,6 +2321,10 @@ packages:
 
   /@types/estree/1.0.0:
     resolution: {integrity: sha512-WulqXMDUTYAXCjZnk6JtIHPigp55cVtDgDrO2gHRwhyJto21+1zbVCtOYB2L1F9w4qCQ0rOGWBnBe0FNTiEJIQ==}
+    dev: true
+
+  /@types/github-slugger/1.3.0:
+    resolution: {integrity: sha512-J/rMZa7RqiH/rT29TEVZO4nBoDP9XJOjnbbIofg7GQKs4JIduEO3WLpte+6WeUz/TcrXKlY+bM7FYrp8yFB+3g==}
     dev: true
 
   /@types/glob/7.2.0:

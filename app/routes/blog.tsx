@@ -11,7 +11,7 @@ export const loader = ({ request }: { request: Request }) => {
 
 export default function BlogContainer() {
   const data = useLoaderData<typeof loader>()
-  const activeColor = CATEGORY_COLOR_REGISTRY[Array.isArray(data.category) ? data.category[0] : data.category]
+  const activeColor = CATEGORY_COLOR_REGISTRY[data.category]
 
   return (
     <main className="relative px-6 pt-10 lg:px-12">

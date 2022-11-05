@@ -1,1 +1,1 @@
-export * from "./categoryList.server"
+export * from "./get-posts.server"

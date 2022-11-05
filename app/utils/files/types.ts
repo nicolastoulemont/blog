@@ -11,8 +11,9 @@ export interface PostMetaData {
   imageAlt: string
   imageWidth: string
   imageHeight: string
-  category: CategoryNames | CategoryNames[]
-  translation?: string
+  category: CategoryNames
+  translation?: "fr"
+  lang: "en" | "fr"
   translationSlug?: string
   headings: ElementProps[]
 }
