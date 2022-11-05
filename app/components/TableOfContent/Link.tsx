@@ -1,5 +1,5 @@
 import { Link } from "@remix-run/react"
-import { CATEGORY_COLOR_VARIANTS } from "~/utils/theme"
+import { CATEGORY_COLOR_VARIANTS } from "~/utils/styles"
 import { TableOfContentLinkProps } from "./types"
 
 const styles = {
@@ -43,7 +43,7 @@ export function TableOfContentLink({
       <Link
         className={`${styles[element.type].size} ${
           isActive ? `${bg} ${text}` : ""
-        } w-full rounded-md p-2 font-medium text-gray-700 hover:${bg} hover:${text}`}
+        } w-full rounded-md p-2 font-medium text-gray-700 dark:text-white hover:${bg} hover:${text}`}
         to={`#${element.id}`}
         onClick={onClose}
         style={{

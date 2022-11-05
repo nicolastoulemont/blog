@@ -1,6 +1,6 @@
 import { ReactNode } from "react"
 import * as FiIcons from "react-icons/fi"
-import { CATEGORY_COLOR_VARIANTS, ColorNames } from "~/utils/theme"
+import { CATEGORY_COLOR_VARIANTS, ColorNames } from "~/utils/styles"
 interface CalloutProps {
   children: ReactNode
   icon?: keyof typeof FiIcons

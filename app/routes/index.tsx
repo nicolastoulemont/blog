@@ -2,6 +2,7 @@ import { useLoaderData, Form, useSearchParams, useSubmit, Link } from "@remix-ru
 import { list } from "~/utils/files"
 import { motion, AnimatePresence } from "framer-motion"
 import { Request } from "@remix-run/node"
+import { useTheme } from "~/utils/styles"
 
 export const loader = ({ request }: { request: Request }) => {
   const urlSearchParams = new URLSearchParams(request.url.split("?")[1])
@@ -33,27 +34,29 @@ export default function Index() {
   return (
     <main className="mx-auto min-h-full w-full max-w-6xl px-6 md:px-12">
       <section>
-        <h1 className="mt-6 mb-6 text-3xl font-bold text-slate-800  sm:mt-12 sm:text-5xl">Hi, I'm Nicolas Toulemont</h1>
-        <p className="mb:9 text-center text-lg font-bold text-slate-600  sm:text-2xl md:mb-12 md:text-left">
+        <h1 className="mt-6 mb-6 text-3xl font-bold text-slate-800 dark:text-white sm:mt-12 sm:text-5xl">
+          Hi, I'm Nicolas Toulemont
+        </h1>
+        <p className="mb:9 text-center text-lg font-bold text-slate-600 dark:text-white sm:text-2xl md:mb-12 md:text-left">
           I'm a french full stack software engineer. I mainly use and enjoy Typescript, Node, React and GraphQL at the
           moment. Posts
         </p>
       </section>
       <Form method="get" className="py-6">
         <label htmlFor="search">
-          <h2 className="mb-6 text-xl font-bold text-slate-800  sm:text-3xl">Posts</h2>
+          <h2 className="mb-6 text-xl font-bold text-slate-800 dark:text-white  sm:text-3xl">Posts</h2>
         </label>
         <input
           id="search"
           name="search"
           type="text"
-          className="w-full rounded-lg"
+          className="w-full rounded-lg dark:bg-slate-500 dark:placeholder:text-slate-800"
           placeholder="Search posts"
           onChange={(e) => submit(e.currentTarget.form)}
           {...(params.search && params.search !== "" && { defaultValue: params.search })}
         />
       </Form>
-      <div aria-hidden className="mb-6 w-full rounded bg-slate-200" style={{ height: 2 }} />
+      <div aria-hidden className="mb-6 w-full rounded bg-slate-200 dark:bg-slate-900" style={{ height: 2 }} />
       <AnimatePresence>
         {data.map((category, index) => (
           <motion.section
@@ -65,7 +68,7 @@ export default function Index() {
             exit="hidden"
             transition={{ duration: 0.3, ease: "easeInOut" }}
           >
-            <h3 className="text:lg font-bold text-slate-800 sm:text-2xl ">{category.category}</h3>
+            <h3 className="text:lg font-bold text-slate-800 dark:text-white sm:text-2xl ">{category.category}</h3>
             <ul>
               {category.posts.map((post) => (
                 <motion.li
@@ -91,7 +94,7 @@ export default function Index() {
                     className="my-3 flex flex-col-reverse items-center justify-center rounded-lg p-6 shadow-xl hover:shadow-2xl sm:flex-row sm:justify-between sm:p-9"
                     style={{ transition: "box-shadow 0.3s ease-in-out" }}
                   >
-                    <article className="w-full pt-6 sm:w-3/4 sm:pt-0">
+                    <article className="w-full pt-6 dark:text-white sm:w-3/4 sm:pt-0">
                       <h4 className="mb-1 text-lg font-bold sm:text-xl ">{post.title}</h4>
                       <p className="mb-3 text-sm ">{post.date}</p>
                       <p>{post.description}</p>

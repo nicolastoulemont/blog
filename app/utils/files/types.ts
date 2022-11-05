@@ -1,14 +1,5 @@
 import { ElementProps } from "~/components/TableOfContent/types"
-
-export type Category = "Data Structures" | "React" | "Animations" | "GraphQL" | "Career" | "Architecture" | "General"
-export type CategoryNames =
-  | "Data Structures"
-  | "React"
-  | "Animations"
-  | "GraphQL"
-  | "Career"
-  | "Architecture"
-  | "General"
+import type { CategoryNames } from "~/utils/styles/categories"
 
 export interface PostMetaData {
   title: string
@@ -20,7 +11,7 @@ export interface PostMetaData {
   imageAlt: string
   imageWidth: string
   imageHeight: string
-  category: CategoryNames | Array<CategoryNames>
+  category: CategoryNames | CategoryNames[]
   translation?: string
   translationSlug?: string
   headings: ElementProps[]

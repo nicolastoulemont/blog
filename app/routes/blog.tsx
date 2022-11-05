@@ -2,7 +2,7 @@ import { Outlet, useLoaderData } from "@remix-run/react"
 import { motion } from "framer-motion"
 import { list } from "~/utils/files"
 import { DesktopTableOfContent, MobileTableOfContent } from "~/components"
-import { CATEGORY_COLOR_REGISTRY } from "~/utils/theme"
+import { CATEGORY_COLOR_REGISTRY } from "~/utils/styles"
 
 export const loader = ({ request }: { request: Request }) => {
   const slug = `/blog${request.url.split("/blog")[1]}`

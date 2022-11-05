@@ -1,6 +1,4 @@
-import { CategoryNames } from "../files/types"
-
-export type ColorNames = "cyan" | "red" | "orange" | "pink" | "blue" | "purple" | "green" | "gray" | "yellow"
+import type { CategoryNames, ColorNames } from "./categories.types"
 
 export const CATEGORY_COLOR_REGISTRY: Record<CategoryNames, ColorNames> = {
   "Data Structures": "cyan",

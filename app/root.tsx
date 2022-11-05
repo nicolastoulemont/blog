@@ -1,10 +1,19 @@
-import type { LinksFunction, MetaFunction } from "@remix-run/node"
-import { Link, Links, LiveReload, Meta, Outlet, Scripts, ScrollRestoration, useCatch } from "@remix-run/react"
+import type { LinksFunction, MetaFunction, Request } from "@remix-run/node"
+import {
+  Link,
+  Links,
+  LiveReload,
+  Meta,
+  Outlet,
+  Scripts,
+  ScrollRestoration,
+  useCatch,
+  useLoaderData,
+} from "@remix-run/react"
 
 import { Header } from "~/components"
 import styles from "./tailwind.css"
-
-import { useSystemTheme } from "./utils/theme"
+import { getThemeSession, Theme, ThemeBody, ThemeHead, ThemeProvider, useTheme } from "./utils/styles"
 
 export let links: LinksFunction = () => {
   return [{ rel: "stylesheet", href: styles }]
@@ -16,23 +25,44 @@ export const meta: MetaFunction = () => ({
   viewport: "width=device-width,initial-scale=1",
 })
 
-export default function App() {
-  useSystemTheme()
+export const loader = async ({ request }: { request: Request }) => {
+  const themeSession = await getThemeSession(request)
+
+  return {
+    theme: themeSession.getTheme(),
+  }
+}
+
+function Document() {
+  const data = useLoaderData<typeof loader>()
+  const [theme] = useTheme()
 
   return (
-    <html lang="en">
+    <html lang="en" className={theme ?? ""}>
       <head>
         <Meta />
         <Links />
+        <ThemeHead ssrTheme={Boolean(data.theme)} />
       </head>
       <body className="min-h-screen bg-white dark:bg-slate-800">
         <Header />
         <Outlet />
+        <ThemeBody ssrTheme={Boolean(data.theme)} />
         <ScrollRestoration />
         <Scripts />
         <LiveReload />
       </body>
     </html>
+  )
+}
+
+export default function App() {
+  const data = useLoaderData<typeof loader>()
+
+  return (
+    <ThemeProvider specifiedTheme={data.theme}>
+      <Document />
+    </ThemeProvider>
   )
 }
 

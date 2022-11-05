@@ -10,7 +10,7 @@ export function DesktopTableOfContent({ elements = [], activeColor }: TableOfCon
 
   return (
     <aside className="fixed top-20 right-0 hidden w-auto rounded-lg p-6 md:max-w-[300px] lg:block lg:pr-3 2xl:pr-6">
-      <p>On this page</p>
+      <p className="mb-2 dark:text-white">On this page</p>
       <nav className="max-h-[80vh] overflow-scroll">
         <ul>
           {elements.map((element, index) => (

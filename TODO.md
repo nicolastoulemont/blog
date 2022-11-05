@@ -1,3 +1,2 @@
-- [] dark mode
 - [] seo
 - [] deployment

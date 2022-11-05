@@ -1,5 +1,5 @@
-import { CategoryNames } from "~/utils/files/types"
-import { CATEGORY_COLOR_REGISTRY, CATEGORY_COLOR_VARIANTS } from "~/utils/theme"
+import { CategoryNames } from "~/utils/styles"
+import { CATEGORY_COLOR_REGISTRY, CATEGORY_COLOR_VARIANTS } from "~/utils/styles"
 
 interface PostIntroProps {
   publishedAt: string
