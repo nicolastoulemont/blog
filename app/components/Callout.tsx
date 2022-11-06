@@ -13,7 +13,7 @@ export function Callout({ children, icon, variant = "blue" }: CalloutProps) {
   const { stroke, bg, text } = CATEGORY_COLOR_VARIANTS[variant]
   return (
     <div
-      className={`text-cya my-3 flex flex-col items-center rounded-2xl px-3 py-3 text-center sm:flex-row sm:py-0 sm:text-left ${bg} ${text}`}
+      className={`my-3 flex flex-col items-center rounded-2xl px-6 py-3 text-center sm:flex-row sm:py-0 sm:text-left ${bg} ${text}`}
     >
       {Icon && (
         <div className="mb:3 sm:mb:0 mr-0 sm:mr-3 sm:mt-0">

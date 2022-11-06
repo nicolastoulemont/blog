@@ -36,14 +36,13 @@ export function TableOfContentLink({
   isFirst,
   onClose = () => {},
 }: TableOfContentLinkProps) {
-  const { bg, text } = CATEGORY_COLOR_VARIANTS[activeColor]
+  const { bg, text, hoverBg, hoverText } = CATEGORY_COLOR_VARIANTS[activeColor]
 
   return (
-    <li className="flex" style={{ marginLeft: styles[element.type].spacing }}>
+    <li className="my-3 flex" style={{ marginLeft: styles[element.type].spacing }}>
       <Link
-        className={`${styles[element.type].size} ${
-          isActive ? `${bg} ${text}` : ""
-        } w-full rounded-md p-2 font-medium text-gray-700 dark:text-white hover:${bg} hover:${text}`}
+        className={`${styles[element.type].size} ${isActive ? `${bg} ${text}` : ""} 
+        w-full rounded-md p-2 font-medium text-gray-700 dark:text-white ${hoverBg} ${hoverText}`}
         to={`#${element.id}`}
         onClick={onClose}
         style={{
