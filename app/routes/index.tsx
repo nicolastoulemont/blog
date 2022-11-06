@@ -22,7 +22,7 @@ export default function Index() {
   const params = Object.fromEntries(searchParams)
 
   return (
-    <main className="mx-auto min-h-full w-full max-w-6xl px-6 md:px-12">
+    <main className="mx-auto min-h-full w-full max-w-6xl px-6 pb-6 md:px-12">
       <section>
         <h1 className="mt-6 mb-6 text-3xl font-bold text-slate-800 dark:text-white sm:mt-12 sm:text-5xl">
           Hi, I'm Nicolas Toulemont

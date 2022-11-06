@@ -34,7 +34,7 @@ export default function BlogContainer() {
   const activeColor = CATEGORY_COLOR_REGISTRY[data.category]
 
   return (
-    <main className="relative px-6 pt-10 lg:px-12">
+    <main className="relative px-6 pt-10 pb-6 lg:px-12">
       <motion.article
         className="prose m-0 mx-auto w-full dark:prose-invert lg:mx-0 lg:max-w-[calc(100%-250px)] lg:prose-lg 2xl:mx-auto 2xl:max-w-5xl"
         variants={{ visible: { opacity: 1 }, hidden: { opacity: 0 } }}
