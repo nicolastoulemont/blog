@@ -1,6 +1,6 @@
-# fly.toml file generated for test-blog-3 on 2022-11-06T13:09:19+01:00
+# fly.toml file generated for nicolas-toulemont-blog on 2022-11-06T15:31:35+01:00
 
-app = "test-blog-3"
+app = "nicolas-toulemont-blog"
 kill_signal = "SIGINT"
 kill_timeout = 5
 processes = []
