@@ -19,9 +19,24 @@ export let links: LinksFunction = () => {
 }
 
 export const meta: MetaFunction = () => ({
-  charset: "utf-8",
-  title: "New Remix App",
+  title: "Nicolas Toulemont engineering blog",
+  description: "Web development content about React, Typescript, GraphQL, Node",
+  canonical: "https://nicolastoulemont.dev",
   viewport: "width=device-width,initial-scale=1",
+  charset: "utf-8",
+  openGraph: {
+    type: "website",
+    locale: "en-US",
+    url: "https://nicolastoulemont.dev",
+    site_name: "Nicolas Toulemont engineering blog",
+    title: "Nicolas Toulemont engineering blog",
+    description: "Web development content about React, Typescript, GraphQL, Node",
+  },
+  twitter: {
+    handle: "@n_toulemont",
+    site: "@n_toulemont",
+    cardType: "summary_large_image",
+  },
 })
 
 export const loader = async ({ request }: { request: Request }) => {
@@ -41,6 +56,13 @@ function Document() {
       <head>
         <Meta />
         <Links />
+        <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
+        <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png" />
+        <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png" />
+        <link rel="manifest" href="/site.webmanifest" />
+        <link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5" />
+        <meta name="msapplication-TileColor" content="#da532c" />
+        <meta name="theme-color" content="#ffffff" />
         <ThemeHead ssrTheme={Boolean(data.theme)} />
       </head>
       <body className="min-h-screen bg-white dark:bg-slate-800">
