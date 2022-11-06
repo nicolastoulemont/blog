@@ -35,7 +35,7 @@ module.exports = {
     const codeHighLightPlugins = process.env.NODE_ENV === "development" ? rehypeHighLight : [rehypePrettyCode, options]
 
     return {
-      rehypePlugins: [codeHighLightPlugins, rehypeSlug],
+      rehypePlugins: [codeHighLightPlugins, rehypeSlug, rehypeAutoLinkHeadings],
     }
   },
 }
