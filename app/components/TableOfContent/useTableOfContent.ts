@@ -27,7 +27,6 @@ export function useTableOfContent({ elementIds, OFFSET_TOP = 90 }: useTableOfCon
 
       let index = -1
       while (index < elements.length - 1) {
-        console.log("here")
         const element = elements[index + 1]
         if (element) {
           const { top } = element.getBoundingClientRect()
