@@ -55,7 +55,7 @@ function searchPosts(input: string) {
 
   const match = (str: string) => str.toLowerCase().includes(query)
 
-  for (const post of getPosts()) {
+  for (const post of getPosts("en")) {
     const hit = match(post.title) || match(post.description) || match(post.category)
     if (hit) {
       hits.push(post)
