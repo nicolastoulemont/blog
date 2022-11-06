@@ -3,10 +3,30 @@ import { motion } from "framer-motion"
 import { list } from "~/utils/files"
 import { DesktopTableOfContent, MobileTableOfContent } from "~/components"
 import { CATEGORY_COLOR_REGISTRY } from "~/utils/styles"
+import { MetaFunction } from "@remix-run/node"
+import { PostMetaData } from "~/utils/files/types"
 
 export const loader = ({ request }: { request: Request }) => {
   const slug = `/blog${request.url.split("/blog")[1]}`
   return list.getBySlug(slug)
+}
+
+export const meta: MetaFunction = ({ data }: { data: PostMetaData }) => {
+  const canonical = `https://nicolastoulemont.dev${data.slug}`
+  return {
+    canonical,
+    "og:url": canonical,
+    "og:type": "article",
+    title: data.title,
+    "og:title": data.title,
+    description: data.description,
+    "og:description": data.description,
+    "og:image": data.imagePath,
+    "og:image:width": data.imageWidth,
+    "og:image:height": data.imageHeight,
+    "og:image:alt": data.imageAlt,
+    "article:published_time": data.date,
+  }
 }
 
 export default function BlogContainer() {
