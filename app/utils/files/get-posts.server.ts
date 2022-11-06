@@ -8,8 +8,6 @@ import { getType, HeadingType } from "./headingId.server"
 import { ElementProps } from "~/components/TableOfContent/types"
 import GithubSlugger from "github-slugger"
 
-const slugger = new GithubSlugger()
-
 function getPosts(lang?: "en" | "fr"): PostMetaData[] {
   const filesPath = getFilesPath(path.join(process.cwd(), "app", "routes", "blog"))
 
@@ -28,6 +26,7 @@ function getPosts(lang?: "en" | "fr"): PostMetaData[] {
 
       const parseHeadings = /(#|##|###|####|#####|######) (.*$)/gim
 
+      const slugger = new GithubSlugger()
       const headings: ElementProps[] =
         content.match(parseHeadings)?.map((heading: string) => {
           const content = heading.replace(/#/g, "").trim()
