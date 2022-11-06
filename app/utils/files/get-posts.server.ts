@@ -9,27 +9,21 @@ import { ElementProps } from "~/components/TableOfContent/types"
 import GithubSlugger from "github-slugger"
 
 function getPosts(lang?: "en" | "fr"): PostMetaData[] {
-  const filesPath = getFilesPath(path.join(process.cwd(), "app", "routes", "blog"))
+  const filePaths = getFilesPath(path.join(process.cwd(), "app", "routes", "blog"))
 
-  const publishedPosts = filesPath
-    // For now we only show english posts and only add small link to the
-    // translation on the card
-    // .filter((filePath) => !filePath.includes("blog/fr/"))
+  const publishedPosts = filePaths
     .map((filePath) => {
       const source = fs.readFileSync(filePath, "utf8")
       const { data, content } = matter(source) as unknown as { data: PostMatterData; content: string }
-
-      // Relative path within the project
-      const relativePath = filePath.split(process.cwd())[1]
-
-      const slug = `/blog${relativePath.split("blog")[1].replace(".mdx", "")}`
+      const relativePath = filePath.split("routes")[1]
+      const slug = relativePath.replace(".mdx", "")
 
       const parseHeadings = /(#|##|###|####|#####|######) (.*$)/gim
 
       const slugger = new GithubSlugger()
       const headings: ElementProps[] =
         content.match(parseHeadings)?.map((heading: string) => {
-          const content = heading.replace(/#/g, "").trim()
+          const content = heading?.replace(/#/g, "").trim()
           return {
             id: slugger.slug(content),
             type: getType(heading) as HeadingType,
@@ -39,7 +33,7 @@ function getPosts(lang?: "en" | "fr"): PostMetaData[] {
 
       return {
         ...data,
-        ...(data.translation && { translationSlug: slug.replace(/\/en\//, "/fr/") }),
+        ...(data.translation && { translationSlug: slug?.replace(/\/en\//, "/fr/") }),
         lang: slug.includes("/en/") ? "en" : ("fr" as "en" | "fr"),
         headings,
         slug,

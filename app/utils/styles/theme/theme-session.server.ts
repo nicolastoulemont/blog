@@ -4,7 +4,7 @@ import { isTheme } from "./ThemeProvider"
 import type { Theme } from "./ThemeProvider"
 
 // Make use to set the environment variable SESSION_SECRET before running the code
-const sessionSecret = process.env.SESSION_SECRET ?? "DEFAULT_SECRET"
+const sessionSecret = process.env.SESSION_SECRET ?? "DEV_THEME_SECRET"
 
 const themeStorage = createCookieSessionStorage({
   cookie: {
