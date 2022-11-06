@@ -2,6 +2,7 @@ import { useLoaderData, Form, useSearchParams, useSubmit, Link } from "@remix-ru
 import { list } from "~/utils/files"
 import { motion, AnimatePresence } from "framer-motion"
 import { Request } from "@remix-run/node"
+import Tag from "~/components/Tag"
 
 export const loader = ({ request }: { request: Request }) => {
   const urlSearchParams = new URLSearchParams(request.url.split("?")[1])
@@ -83,7 +84,11 @@ export default function Index() {
               >
                 <article className="w-full dark:text-white sm:w-3/4 sm:pt-0">
                   <h4 className="text-md mb-1 font-bold">{post.title}</h4>
-                  <p className="mb-3 text-sm">{post.date}</p>
+                  <div className="mb-3 flex flex-row items-center justify-start">
+                    <Tag category={post.category} size="sm" />
+                    <p className="ml-3 text-xs">{post.date}</p>
+                  </div>
+
                   <p className="text-sm">{post.description}</p>
                 </article>
                 <div className="my-6 flex w-full items-center justify-center md:w-14  md:py-0">
