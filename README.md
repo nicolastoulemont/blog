@@ -7,5 +7,5 @@ Built with:
 - Remix
 - TypeScript
 - MDX
-- Tailwind
+- Tailwindcss
 - Framer motion
