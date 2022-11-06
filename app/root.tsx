@@ -24,19 +24,15 @@ export const meta: MetaFunction = () => ({
   canonical: "https://nicolastoulemont.dev",
   viewport: "width=device-width,initial-scale=1",
   charset: "utf-8",
-  openGraph: {
-    type: "website",
-    locale: "en-US",
-    url: "https://nicolastoulemont.dev",
-    site_name: "Nicolas Toulemont engineering blog",
-    title: "Nicolas Toulemont engineering blog",
-    description: "Web development content about React, Typescript, GraphQL, Node",
-  },
-  twitter: {
-    handle: "@n_toulemont",
-    site: "@n_toulemont",
-    cardType: "summary_large_image",
-  },
+  "og:type": "website",
+  "og:locale": "en-US",
+  "og:url": "https://nicolastoulemont.dev",
+  "og:title": "Nicolas Toulemont engineering blog",
+  "og:site_name": "Nicolas Toulemont engineering blog",
+  "og:description": "Web development content about React, Typescript, GraphQL, Node",
+  "twitter:site": "@n_toulemont",
+  "twitter:creator": "@n_toulemont",
+  "twitter:card": "summary_large_image",
 })
 
 export const loader = async ({ request }: { request: Request }) => {
