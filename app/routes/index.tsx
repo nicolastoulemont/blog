@@ -66,7 +66,7 @@ export default function Index() {
               to={post.slug}
               className="my-3 flex flex-col-reverse items-center justify-center p-6 md:flex-row md:justify-between"
             >
-              <article className="w-full dark:text-white sm:w-3/4 sm:pt-0">
+              <article className="w-full text-slate-800 dark:text-white sm:w-3/4 sm:pt-0">
                 <h4 className="text-md mb-1 font-bold">{post.title}</h4>
                 <div className="mb-3 flex flex-row items-center justify-start">
                   <Tag category={post.category} size="sm" />
