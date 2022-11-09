@@ -30,7 +30,7 @@ export function ThemeToggle() {
   return (
     <DropdownMenu.Root>
       <DropdownMenu.Trigger asChild>
-        <button className="flex h-10 w-10 items-center justify-center rounded-full hover:bg-gray-100 dark:hover:bg-slate-600">
+        <button className="flex h-10 w-10 items-center justify-center rounded-full text-slate-800 hover:bg-gray-100 dark:hover:bg-slate-600">
           <FiMenu size="1.3rem" className="stroke:slate-800 dark:stroke-white" aria-label="open theme menu" />
         </button>
       </DropdownMenu.Trigger>
@@ -42,7 +42,7 @@ export function ThemeToggle() {
         >
           <DropdownMenu.Item>
             <button
-              className="flex items-center justify-start py-1 dark:text-white"
+              className="flex items-center justify-start py-1 text-slate-800 dark:text-white"
               onClick={() => setTheme(Theme.LIGHT)}
             >
               <FiSun size="1.2rem" className="stroke:slate-800 mr-6 dark:stroke-white" /> Light
@@ -50,7 +50,7 @@ export function ThemeToggle() {
           </DropdownMenu.Item>
           <DropdownMenu.Item>
             <button
-              className="flex items-center justify-start py-1 dark:text-white"
+              className="flex items-center justify-start py-1 text-slate-800 dark:text-white"
               onClick={() => setTheme(Theme.DARK)}
             >
               <FiMoon size="1.2rem" className="stroke:slate-800 mr-6 dark:stroke-white" /> Dark
