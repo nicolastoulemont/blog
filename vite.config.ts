@@ -9,7 +9,8 @@ import react from "@vitejs/plugin-react"
 export default defineConfig({
   plugins: [tsconfigPaths(), react()],
   test: {
-    /* for example, use global to avoid globals imports (describe, test, expect): */
-    // globals: true,
+    globals: true,
+    environment: "jsdom",
+    setupFiles: "./vite.setup.ts",
   },
 })
