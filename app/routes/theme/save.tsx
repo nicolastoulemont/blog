@@ -3,7 +3,7 @@ import { json, redirect } from "@remix-run/node"
 import * as DropdownMenu from "@radix-ui/react-dropdown-menu"
 import { FiMenu, FiMoon, FiSun } from "react-icons/fi"
 
-import { getThemeSession, isTheme, Theme, Themed, useTheme } from "~/utils/styles"
+import { getThemeSession, isTheme, Theme, useTheme } from "~/utils/styles"
 
 export const action: ActionFunction = async ({ request }) => {
   const themeSession = await getThemeSession(request)

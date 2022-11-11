@@ -1,4 +1,4 @@
-import { Link } from "@remix-run/react"
+import { Link, useNavigate } from "@remix-run/react"
 import { CATEGORY_COLOR_VARIANTS } from "~/utils/styles"
 import { TableOfContentLinkProps } from "./types"
 
@@ -37,6 +37,13 @@ export function TableOfContentLink({
   onClose = () => {},
 }: TableOfContentLinkProps) {
   const { bg, text, hoverBg, hoverText } = CATEGORY_COLOR_VARIANTS[activeColor]
+  const navigate = useNavigate()
+
+  function handleClick() {
+    // Headless UI Dialog prevent regular navigation with the link
+    navigate(`#${element.id}`)
+    onClose()
+  }
 
   return (
     <li className="my-3 flex" style={{ marginLeft: styles[element.type].spacing }}>
@@ -44,7 +51,7 @@ export function TableOfContentLink({
         className={`${styles[element.type].size} ${isActive ? `${bg} ${text}` : ""} 
         w-full rounded-md p-2 font-medium text-gray-700 dark:text-white ${hoverBg} ${hoverText}`}
         to={`#${element.id}`}
-        onClick={onClose}
+        onClick={handleClick}
         style={{
           transitionTimingFunction: "ease-in-out",
           transitionProperty: "color, background-color",
