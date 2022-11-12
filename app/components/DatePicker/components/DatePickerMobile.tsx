@@ -1,3 +1,5 @@
+import { Calendar } from "./Calendar"
+
 export function DatePickerMobile() {
-  return <div>DatePickerMobile</div>
+  return <Calendar />
 }

@@ -1,3 +1,8 @@
+export type Locale = "en-GB" | "fr-FR"
+
 export interface DatePickerProps {
-  locale: "en-GB"
+  label: string
+  locale: Locale
+  value: Date | undefined
+  onChange: (date: Date) => void
 }

@@ -1,3 +1,5 @@
+import { Calendar } from "./Calendar"
+
 export function DatePickerDesktop() {
-  return <div>DatePickerDesktop</div>
+  return <Calendar />
 }
