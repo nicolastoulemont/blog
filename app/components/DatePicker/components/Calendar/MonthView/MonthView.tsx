@@ -1,6 +1,7 @@
 import { isSameMonth } from "date-fns"
 import { getMonthsName, handleMonthChange } from "../../../utils"
 import { useDatePicker } from "../../Provider"
+import { AnimatedViewWrapper } from "../AnimatedViewWrapper"
 import { CalendarButton } from "../CalendarButton"
 import { CalendarText } from "../CalendarText"
 import { CalendarUnderline } from "../CalendarUnderline"
@@ -24,19 +25,21 @@ export function MonthView() {
 
   return (
     <div className="flex w-full flex-col">
-      <div className="grid grid-cols-3 gap-4 px-6 py-14 sm:px-4 sm:py-8">
-        {months.map((month, monthIndex) => (
-          <div
-            key={`month-${monthIndex}`}
-            className="relative flex h-[40px] w-[88px] items-center justify-center sm:w-[72px]"
-          >
-            <CalendarButton onClick={() => handleClick(monthIndex)} isSelected={isSelected(monthIndex)}>
-              <CalendarText variant={isSelected(monthIndex) ? "selected" : "regular"}>{month}</CalendarText>
-            </CalendarButton>
-            {isCurrentMonth(monthIndex) && <CalendarUnderline variant="other" />}
-          </div>
-        ))}
-      </div>
+      <AnimatedViewWrapper motionKey={state.calendarDate.getFullYear()} slideDir={state.slideDir}>
+        <div className="grid grid-cols-3 gap-4 px-6 py-14 sm:px-4 sm:py-8">
+          {months.map((month, monthIndex) => (
+            <div
+              key={`month-${monthIndex}`}
+              className="relative flex h-[40px] w-[88px] items-center justify-center sm:w-[72px]"
+            >
+              <CalendarButton onClick={() => handleClick(monthIndex)} isSelected={isSelected(monthIndex)}>
+                <CalendarText variant={isSelected(monthIndex) ? "selected" : "regular"}>{month}</CalendarText>
+              </CalendarButton>
+              {isCurrentMonth(monthIndex) && <CalendarUnderline variant="other" />}
+            </div>
+          ))}
+        </div>
+      </AnimatedViewWrapper>
     </div>
   )
 }

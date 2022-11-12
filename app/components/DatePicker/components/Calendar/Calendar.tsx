@@ -4,24 +4,40 @@ import { DayView } from "./DayView"
 import { HeaderButton, HeaderIconButton } from "./Header"
 import { MonthView } from "./MonthView"
 import { YearView } from "./YearView"
+import { motion } from "framer-motion"
+import { useWindowSize } from "react-use"
 
 export function Calendar() {
   const { state, dispatch, locale } = useDatePicker()
+  const window = useWindowSize()
   const monthsNames = getMonthsName(locale)
   const currentMonth = monthsNames[state.calendarDate.getMonth()]
 
+  const heights = {
+    days: window.width > 500 ? 390 : 420,
+    others: window.width > 500 ? 350 : 400,
+  }
+
   return (
-    <div className="h-auto w-[375px] overflow-hidden rounded-2xl border border-blue-500 p-4 sm:w-[330px]">
+    <motion.div
+      initial={false}
+      animate={{ height: state.view === "days" ? heights.days : heights.others }}
+      transition={{ bounce: 0, duration: 0.3, ease: "circOut" }}
+      className="w-[375px] overflow-hidden rounded-2xl border border-blue-500 p-4 sm:w-[330px]"
+    >
       <div className="flex flex-row items-center justify-between border-b border-gray-300 pb-2 sm:pb-1">
         <div className="flex">
           <HeaderButton
             className="mr-1"
-            isActive={true}
+            isActive={state.view === "months"}
             onClick={() => dispatch({ type: "SET_VIEW", payload: "months" })}
           >
             {currentMonth.charAt(0).toUpperCase() + currentMonth.slice(1)}
           </HeaderButton>
-          <HeaderButton isActive={false} onClick={() => dispatch({ type: "SET_VIEW", payload: "years" })}>
+          <HeaderButton
+            isActive={state.view === "years"}
+            onClick={() => dispatch({ type: "SET_VIEW", payload: "years" })}
+          >
             {state.calendarDate.getFullYear()}
           </HeaderButton>
         </div>
@@ -48,6 +64,6 @@ export function Calendar() {
       {state.view === "days" && <DayView />}
       {state.view === "months" && <MonthView />}
       {state.view === "years" && <YearView />}
-    </div>
+    </motion.div>
   )
 }

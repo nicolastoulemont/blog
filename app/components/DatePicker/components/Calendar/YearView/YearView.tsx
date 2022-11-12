@@ -1,5 +1,6 @@
 import { getYearsRange, handleYearChange } from "../../../utils"
 import { useDatePicker } from "../../Provider"
+import { AnimatedViewWrapper } from "../AnimatedViewWrapper"
 import { CalendarButton } from "../CalendarButton"
 import { CalendarText } from "../CalendarText"
 import { CalendarUnderline } from "../CalendarUnderline"
@@ -19,19 +20,27 @@ export function YearView() {
 
   return (
     <div className="flex w-full flex-col">
-      <div className="grid grid-cols-3 gap-4 px-6 py-14 sm:px-4 sm:py-8">
-        {years.map((year, yearIndex) => (
-          <div
-            key={`year-${yearIndex}`}
-            className="relative flex h-[40px] w-[88px] items-center justify-center sm:w-[72px]"
-          >
-            <CalendarButton onClick={() => handleClick(year)} isSelected={isSelected(year)}>
-              <CalendarText variant={isSelected(year) ? "selected" : "regular"}>{year}</CalendarText>
-            </CalendarButton>
-            {isCurrentYear(year) && <CalendarUnderline variant="other" />}
-          </div>
-        ))}
-      </div>
+      <AnimatedViewWrapper
+        motionKey={state.yearRange[0]}
+        slideDir={state.slideDir}
+        drag
+        onDragLeft={() => dispatch({ type: "YEAR_VIEW_CHANGE", payload: "increment" })}
+        onDragRight={() => dispatch({ type: "YEAR_VIEW_CHANGE", payload: "decrement" })}
+      >
+        <div className="grid grid-cols-3 gap-4 px-6 py-14 sm:px-4 sm:py-8">
+          {years.map((year, yearIndex) => (
+            <div
+              key={`year-${yearIndex}`}
+              className="relative flex h-[40px] w-[88px] items-center justify-center sm:w-[72px]"
+            >
+              <CalendarButton onClick={() => handleClick(year)} isSelected={isSelected(year)}>
+                <CalendarText variant={isSelected(year) ? "selected" : "regular"}>{year}</CalendarText>
+              </CalendarButton>
+              {isCurrentYear(year) && <CalendarUnderline variant="other" />}
+            </div>
+          ))}
+        </div>
+      </AnimatedViewWrapper>
     </div>
   )
 }

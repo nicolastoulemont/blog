@@ -7,7 +7,7 @@ export function init({ value }: Partial<DatePickerProps>): State {
     /**
      * Controller for the different views shown to the user
      */
-    view: "months",
+    view: "days",
     /** The value given back to the consumer of the DatePicker */
     value,
     /**

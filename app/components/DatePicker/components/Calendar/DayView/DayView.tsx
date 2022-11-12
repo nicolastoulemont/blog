@@ -1,14 +1,15 @@
 import { getMonthDays, getWeekDaysName } from "../../../utils"
 import { useDatePicker } from "../../Provider"
+import { AnimatedViewWrapper } from "../AnimatedViewWrapper"
 import { DayCell, TableNavigationProvider } from "./components"
 
 export function DayView() {
-  const { locale, state } = useDatePicker()
+  const { locale, state, dispatch } = useDatePicker()
   const days = getWeekDaysName(locale, "short")
   const weeks = getMonthDays(state.calendarDate)
 
   return (
-    <div className="pt-2">
+    <div className="h-[calc(100% - 8px)] w-full pt-2">
       <TableNavigationProvider>
         <table className="table-auto border-separate border-spacing-1">
           <thead>
@@ -22,15 +23,25 @@ export function DayView() {
               ))}
             </tr>
           </thead>
-          <tbody>
-            {weeks.map((week, rowIndex) => (
-              <tr key={`week-${rowIndex}`}>
-                {week.map((day, colIndex) => (
-                  <DayCell key={`${rowIndex}-${colIndex}`} day={day} rowIndex={rowIndex} colIndex={colIndex} />
+          <AnimatedViewWrapper
+            motionKey={state.calendarDate.getMonth()}
+            slideDir={state.slideDir}
+            drag
+            onDragLeft={() => dispatch({ type: "MONTH_VIEW_CHANGE", payload: "increment" })}
+            onDragRight={() => dispatch({ type: "MONTH_VIEW_CHANGE", payload: "decrement" })}
+          >
+            <div className="-ml-1">
+              <tbody>
+                {weeks.map((week, rowIndex) => (
+                  <tr key={`week-${rowIndex}`}>
+                    {week.map((day, colIndex) => (
+                      <DayCell key={`${rowIndex}-${colIndex}`} day={day} rowIndex={rowIndex} colIndex={colIndex} />
+                    ))}
+                  </tr>
                 ))}
-              </tr>
-            ))}
-          </tbody>
+              </tbody>
+            </div>
+          </AnimatedViewWrapper>
         </table>
       </TableNavigationProvider>
     </div>
