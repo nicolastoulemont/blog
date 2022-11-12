@@ -3,23 +3,23 @@ import { getWeekDaysName } from "./getWeekDaysName"
 
 describe("getMonthsName", () => {
   test("should returns months names with given locale and format", () => {
-    expect(getWeekDaysName("fr-FR")).toStrictEqual({
-      sun: "dimanche",
-      mon: "lundi",
-      tue: "mardi",
-      wed: "mercredi",
-      thu: "jeudi",
-      fri: "vendredi",
-      sat: "samedi",
-    })
-    expect(getWeekDaysName("en-GB")).toStrictEqual({
-      sun: "Sunday",
-      mon: "Monday",
-      tue: "Tuesday",
-      wed: "Wednesday",
-      thu: "Thursday",
-      fri: "Friday",
-      sat: "Saturday",
-    })
+    expect(getWeekDaysName("fr-FR")).toStrictEqual([
+      "lundi",
+      "mardi",
+      "mercredi",
+      "jeudi",
+      "vendredi",
+      "samedi",
+      "dimanche",
+    ])
+    expect(getWeekDaysName("en-GB")).toStrictEqual([
+      "Monday",
+      "Tuesday",
+      "Wednesday",
+      "Thursday",
+      "Friday",
+      "Saturday",
+      "Sunday",
+    ])
   })
 })

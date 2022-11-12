@@ -15,13 +15,5 @@ export function getWeekDaysName(locale: Locale = "en-GB", weekday: WeekDay = "lo
     weekday,
   })
 
-  return {
-    sun: format(sun),
-    mon: format(mon),
-    tue: format(tue),
-    wed: format(wed),
-    thu: format(thu),
-    fri: format(fri),
-    sat: format(sat),
-  }
+  return [format(mon), format(tue), format(wed), format(thu), format(fri), format(sat), format(sun)]
 }

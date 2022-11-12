@@ -12,8 +12,5 @@ export function getMonthsName(local: Local = "en-GB", month: Month = "long") {
 
   return Array(12)
     .fill(null)
-    .map((_, index) => ({
-      index,
-      name: format(new Date(currentYear, index, 1)),
-    }))
+    .map((_, index) => format(new Date(currentYear, index, 1)))
 }
