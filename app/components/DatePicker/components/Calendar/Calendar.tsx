@@ -3,6 +3,7 @@ import { useDatePicker } from "../Provider"
 import { DayView } from "./DayView"
 import { HeaderButton, HeaderIconButton } from "./Header"
 import { MonthView } from "./MonthView"
+import { YearView } from "./YearView"
 
 export function Calendar() {
   const { state, dispatch, locale } = useDatePicker()
@@ -10,7 +11,7 @@ export function Calendar() {
   const currentMonth = monthsNames[state.calendarDate.getMonth()]
 
   return (
-    <div className="h-[483px] w-[375px] overflow-hidden rounded-2xl p-4 sm:h-[382px] sm:w-[330px]">
+    <div className="h-auto w-[375px] overflow-hidden rounded-2xl border border-blue-500 p-4 sm:w-[330px]">
       <div className="flex flex-row items-center justify-between border-b border-gray-300 pb-2 sm:pb-1">
         <div className="flex">
           <HeaderButton
@@ -46,7 +47,7 @@ export function Calendar() {
       </div>
       {state.view === "days" && <DayView />}
       {state.view === "months" && <MonthView />}
-      {state.view === "years" && <div>Years view</div>}
+      {state.view === "years" && <YearView />}
     </div>
   )
 }

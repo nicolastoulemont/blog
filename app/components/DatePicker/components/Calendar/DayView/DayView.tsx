@@ -24,7 +24,7 @@ export function DayView() {
           </thead>
           <tbody>
             {weeks.map((week, rowIndex) => (
-              <tr>
+              <tr key={`week-${rowIndex}`}>
                 {week.map((day, colIndex) => (
                   <DayCell key={`${rowIndex}-${colIndex}`} day={day} rowIndex={rowIndex} colIndex={colIndex} />
                 ))}

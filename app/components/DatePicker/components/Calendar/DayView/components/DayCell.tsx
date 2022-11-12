@@ -3,7 +3,7 @@ import { CalendarUnderline } from "../../CalendarUnderline"
 import { isSameDay, isSameMonth } from "date-fns"
 import { useDatePicker } from "../../../Provider"
 import { useTableNavigation } from "./TableNavigationProvider"
-import clsx from "clsx"
+import { CalendarText } from "../../CalendarText"
 
 interface DayCellProps {
   day: Date
@@ -19,12 +19,6 @@ export function DayCell({ day, rowIndex, colIndex }: DayCellProps) {
   const isWithinCurrentMonth = isSameMonth(state.calendarDate, day)
   const isCurrentDay = isSameDay(new Date(), day)
 
-  const textStyles = {
-    muted: "text-slate-400 font-normal",
-    regular: "text-slate-700 font-medium",
-    selected: "text-white font-medium",
-  } as const
-
   const variant = isSelected ? "selected" : isWithinCurrentMonth ? "regular" : "muted"
 
   return (
@@ -36,9 +30,7 @@ export function DayCell({ day, rowIndex, colIndex }: DayCellProps) {
           isSelected={isSelected}
           onClick={() => dispatch({ type: "SELECT_DAY", payload: day })}
         >
-          <span className={clsx("text-base font-medium transition-colors sm:text-sm", textStyles[variant])}>
-            {day.getDate()}
-          </span>
+          <CalendarText variant={variant}>{day.getDate()}</CalendarText>
         </CalendarButton>
         {isCurrentDay && <CalendarUnderline variant="day" />}
       </div>
