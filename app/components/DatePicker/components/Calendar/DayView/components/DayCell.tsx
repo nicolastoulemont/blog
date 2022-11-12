@@ -11,6 +11,10 @@ interface DayCellProps {
   colIndex: number
 }
 
+const isNavigationKey = (event: React.KeyboardEvent<HTMLButtonElement>) => {
+  return ["ArrowUp", "ArrowDown", "ArrowLeft", "ArrowRight", "Tab"].includes(event.code)
+}
+
 export function DayCell({ day, rowIndex, colIndex }: DayCellProps) {
   const { state, dispatch } = useDatePicker()
   const { mapRefToMatrix, handleKeyboardNavigation } = useTableNavigation()
@@ -21,12 +25,20 @@ export function DayCell({ day, rowIndex, colIndex }: DayCellProps) {
 
   const variant = isSelected ? "selected" : isWithinCurrentMonth ? "regular" : "muted"
 
+  function handleKeyDown(event: React.KeyboardEvent<HTMLButtonElement>) {
+    if (isNavigationKey(event)) {
+      handleKeyboardNavigation(event, rowIndex, colIndex)
+    } else {
+      dispatch({ type: "SELECT_DAY", payload: day })
+    }
+  }
+
   return (
     <td className="h-10 w-10 sm:h-9 sm:w-9">
       <div className="relative flex h-10 w-10 items-center justify-center sm:h-9 sm:w-9">
         <CalendarButton
           ref={(ref) => mapRefToMatrix(ref as HTMLButtonElement, rowIndex, colIndex)}
-          onKeyDown={(event) => handleKeyboardNavigation(event, rowIndex, colIndex)}
+          onKeyDown={handleKeyDown}
           isSelected={isSelected}
           onClick={() => dispatch({ type: "SELECT_DAY", payload: day })}
         >

@@ -14,8 +14,8 @@ export function Calendar() {
   const currentMonth = monthsNames[state.calendarDate.getMonth()]
 
   const heights = {
-    days: window.width > 500 ? 390 : 420,
-    others: window.width > 500 ? 350 : 400,
+    days: window.width > 500 ? 386 : 420,
+    others: window.width > 500 ? 350 : 420,
   }
 
   return (
@@ -23,7 +23,7 @@ export function Calendar() {
       initial={false}
       animate={{ height: state.view === "days" ? heights.days : heights.others }}
       transition={{ bounce: 0, duration: 0.3, ease: "circOut" }}
-      className="w-[375px] overflow-hidden rounded-2xl border border-blue-500 p-4 sm:w-[330px]"
+      className="w-[360px] overflow-hidden rounded-2xl border border-blue-500 p-4 sm:w-[330px]"
     >
       <div className="flex flex-row items-center justify-between border-b border-gray-300 pb-2 sm:pb-1">
         <div className="flex">
