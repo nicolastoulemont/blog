@@ -3,7 +3,11 @@ import { useDatePicker } from "../../Provider"
 import { AnimatedViewWrapper } from "../AnimatedViewWrapper"
 import { DayCell, TableNavigationProvider } from "./components"
 
-export function DayView() {
+interface DayViewProps {
+  onClose: () => void
+}
+
+export function DayView(props: DayViewProps) {
   const { locale, state, dispatch } = useDatePicker()
   const days = getWeekDaysName(locale, "short")
   const weeks = getMonthDays(state.calendarDate)
@@ -51,7 +55,13 @@ export function DayView() {
               {weeks.map((week, rowIndex) => (
                 <tr key={`week-${rowIndex}`}>
                   {week.map((day, colIndex) => (
-                    <DayCell key={`${rowIndex}-${colIndex}`} day={day} rowIndex={rowIndex} colIndex={colIndex} />
+                    <DayCell
+                      {...props}
+                      key={`${rowIndex}-${colIndex}`}
+                      day={day}
+                      rowIndex={rowIndex}
+                      colIndex={colIndex}
+                    />
                   ))}
                 </tr>
               ))}

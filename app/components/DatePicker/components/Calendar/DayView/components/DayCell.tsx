@@ -6,6 +6,7 @@ import { useTableNavigation } from "./TableNavigationProvider"
 import { CalendarText } from "../../CalendarText"
 
 interface DayCellProps {
+  onClose: () => void
   day: Date
   rowIndex: number
   colIndex: number
@@ -15,7 +16,7 @@ const isNavigationKey = (event: React.KeyboardEvent<HTMLButtonElement>) => {
   return ["ArrowUp", "ArrowDown", "ArrowLeft", "ArrowRight", "Tab"].includes(event.code)
 }
 
-export function DayCell({ day, rowIndex, colIndex }: DayCellProps) {
+export function DayCell({ day, rowIndex, colIndex, onClose }: DayCellProps) {
   const { state, dispatch } = useDatePicker()
   const { mapRefToMatrix, handleKeyboardNavigation } = useTableNavigation()
 
@@ -25,11 +26,16 @@ export function DayCell({ day, rowIndex, colIndex }: DayCellProps) {
 
   const variant = isSelected ? "selected" : isWithinCurrentMonth ? "regular" : "muted"
 
+  function selectDay() {
+    dispatch({ type: "SELECT_DAY", payload: day })
+    onClose()
+  }
+
   function handleKeyDown(event: React.KeyboardEvent<HTMLButtonElement>) {
     if (isNavigationKey(event)) {
       handleKeyboardNavigation(event, rowIndex, colIndex)
     } else {
-      dispatch({ type: "SELECT_DAY", payload: day })
+      selectDay()
     }
   }
 
@@ -40,7 +46,7 @@ export function DayCell({ day, rowIndex, colIndex }: DayCellProps) {
           ref={(ref) => mapRefToMatrix(ref as HTMLButtonElement, rowIndex, colIndex)}
           onKeyDown={handleKeyDown}
           isSelected={isSelected}
-          onClick={() => dispatch({ type: "SELECT_DAY", payload: day })}
+          onClick={selectDay}
         >
           <CalendarText variant={variant}>{day.getDate()}</CalendarText>
         </CalendarButton>

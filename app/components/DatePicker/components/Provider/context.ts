@@ -3,12 +3,13 @@ import type { Actions, State } from "./Provider.types"
 import { init } from "./init"
 import { DatePickerProps } from "../../DatePicker.types"
 
-export interface DatePickerContextValues extends Omit<DatePickerProps, "label"> {
+export interface DatePickerContextValues extends DatePickerProps {
   state: State
   dispatch: React.Dispatch<Actions>
 }
 
 export const DatePickerContext = createContext<DatePickerContextValues>({
+  label: "",
   state: init({}),
   dispatch: () => {},
   locale: "en-GB",

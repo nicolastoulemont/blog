@@ -7,7 +7,12 @@ import { YearView } from "./YearView"
 import { motion } from "framer-motion"
 import { useWindowSize } from "react-use"
 
-export function Calendar() {
+interface CalendarProps {
+  onClose: () => void
+  calendarInitialRef: React.RefObject<HTMLButtonElement>
+}
+
+export function Calendar(props: CalendarProps) {
   const { state, dispatch, locale } = useDatePicker()
   const window = useWindowSize()
   const monthsNames = getMonthsName(locale)
@@ -23,11 +28,12 @@ export function Calendar() {
       initial={false}
       animate={{ height: state.view === "days" ? heights.days : heights.others }}
       transition={{ bounce: 0, duration: 0.3, ease: "circOut" }}
-      className="w-[360px] overflow-hidden rounded-2xl border border-blue-500 p-4 sm:w-[330px]"
+      className="w-[360px] overflow-hidden rounded-2xl p-4 sm:w-[330px]"
     >
       <div className="flex flex-row items-center justify-between border-b border-gray-300 pb-2 sm:pb-1">
         <div className="flex">
           <HeaderButton
+            ref={props.calendarInitialRef}
             className="mr-1"
             isActive={state.view === "months"}
             onClick={() => dispatch({ type: "SET_VIEW", payload: "months" })}
@@ -61,7 +67,7 @@ export function Calendar() {
           />
         </div>
       </div>
-      {state.view === "days" && <DayView />}
+      {state.view === "days" && <DayView {...props} />}
       {state.view === "months" && <MonthView />}
       {state.view === "years" && <YearView />}
     </motion.div>

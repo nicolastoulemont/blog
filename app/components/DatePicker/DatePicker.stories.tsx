@@ -13,5 +13,9 @@ export default metas
 export const Default = ({}) => {
   const [value, setValue] = useState<Date>()
 
-  return <DatePicker label="Your birthday" locale="en-GB" value={value} onChange={setValue} />
+  return (
+    <div className="relative w-[300px]">
+      <DatePicker label="Your birthday" placeholder="Pick a date" locale="en-GB" value={value} onChange={setValue} />
+    </div>
+  )
 }

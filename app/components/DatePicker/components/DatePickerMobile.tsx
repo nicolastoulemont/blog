@@ -1,5 +1,13 @@
 import { Calendar } from "./Calendar"
+import { Input } from "./Input"
+import { useDatePicker } from "./Provider"
 
 export function DatePickerMobile() {
-  return <Calendar />
+  const { label } = useDatePicker()
+  return (
+    <>
+      <Input label={label} />
+      <Calendar />
+    </>
+  )
 }

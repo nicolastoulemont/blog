@@ -10,7 +10,6 @@ export const ACTIONS_RECORD = {
 
 export function reducer(state: State, action: Actions): State {
   const { type } = action
-  console.log("action", action)
 
   switch (type) {
     case ACTIONS_RECORD.SET_VIEW:
