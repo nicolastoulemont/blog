@@ -1,10 +1,11 @@
+import { clsx } from "clsx"
 import { useMemo, useState } from "react"
 import { useTableOfContent } from "./useTableOfContent"
 import type { TableOfContentProps } from "./types"
 import { FiMenu, FiX } from "react-icons/fi"
 import { motion, AnimatePresence, Variants } from "framer-motion"
 import { Dialog } from "@headlessui/react"
-import { Link, useNavigate } from "@remix-run/react"
+import { useNavigate, Link } from "@remix-run/react"
 import { CATEGORY_COLOR_VARIANTS } from "~/utils/styles"
 import { TableOfContentLinkProps } from "./types"
 
@@ -25,6 +26,7 @@ export function MobileTableOfContent({ elements, activeColor }: TableOfContentPr
   const [open, setOpen] = useState(false)
   const elementIds = useMemo(() => elements.map((element) => element.id), [elements])
   const { currentActiveIndex } = useTableOfContent({ elementIds })
+  const navigate = useNavigate()
 
   return (
     <>
@@ -62,6 +64,7 @@ export function MobileTableOfContent({ elements, activeColor }: TableOfContentPr
               </div>
               <Dialog.Description>
                 <nav className="max-h-[70vh] overflow-scroll px-6 pb-6 pt-2">
+                  <h2 className="mb-2 text-lg font-semibold text-gray-700 dark:text-white">On this page</h2>
                   <ul>
                     {elements.map((element, index) => (
                       <MobileLink
@@ -70,7 +73,12 @@ export function MobileTableOfContent({ elements, activeColor }: TableOfContentPr
                         activeColor={activeColor}
                         isActive={currentActiveIndex === index}
                         isFirst={index === 0}
-                        onClose={() => setOpen(false)}
+                        onClose={() => {
+                          // Imperative navigation since the Dialog component
+                          // mess up with the normal link based navigation
+                          setTimeout(() => navigate(`#${element.id}`), 300)
+                          setOpen(false)
+                        }}
                       />
                     ))}
                   </ul>
@@ -84,50 +92,29 @@ export function MobileTableOfContent({ elements, activeColor }: TableOfContentPr
   )
 }
 
-const styles = {
-  h1: {
-    spacing: 0,
-    size: "text-lg",
-  },
-  h2: {
-    spacing: 0,
-    size: "text-lg",
-  },
-  h3: {
-    spacing: "0.5rem",
-    size: "text-base",
-  },
-  h4: {
-    spacing: "1rem",
-    size: "text-sm",
-  },
-  h5: {
-    spacing: "1.25rem",
-    size: "text-xs",
-  },
-  h6: {
-    spacing: "1.5rem",
-    size: "text-[11px]",
-  },
+const spacings = {
+  h1: "ml-0",
+  h2: "ml-4",
+  h3: "ml-8",
+  h4: "ml-12",
+  h5: "ml-16",
+  h6: "ml-20",
 } as const
 
-export function MobileLink({ element, activeColor, isActive, isFirst, onClose = () => {} }: TableOfContentLinkProps) {
+export function MobileLink({ element, activeColor, isActive, isFirst, onClose }: TableOfContentLinkProps) {
   const { bg, text, hoverBg, hoverText } = CATEGORY_COLOR_VARIANTS[activeColor]
-  const navigate = useNavigate()
-
-  function handleClick() {
-    // Headless UI Dialog prevent regular navigation with the link
-    navigate(`#${element.id}`)
-    onClose()
-  }
 
   return (
-    <li className="my-3 flex" style={{ marginLeft: styles[element.type].spacing }}>
+    <li className={clsx("my-3 flex", spacings[element.type])}>
       <Link
-        className={`${styles[element.type].size} ${isActive ? `${bg} ${text}` : ""} 
-        w-full rounded-md p-2 font-medium text-gray-700 dark:text-white ${hoverBg} ${hoverText}`}
+        className={clsx(
+          "w-full rounded-md p-2 text-sm font-normal text-gray-700 dark:text-white",
+          isActive && `${bg} ${text}`,
+          hoverBg,
+          hoverText
+        )}
         to={`#${element.id}`}
-        onClick={handleClick}
+        onClick={onClose}
         style={{
           transitionTimingFunction: "ease-in-out",
           transitionProperty: "color, background-color",
