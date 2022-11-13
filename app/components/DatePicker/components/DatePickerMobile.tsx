@@ -6,7 +6,7 @@ import { Input } from "./Input"
 import { useDatePicker } from "./Provider"
 
 export function DatePickerMobile() {
-  const [open, setOpen] = useState(true)
+  const [open, setOpen] = useState(false)
   const inputRef = useRef<HTMLInputElement>(null)
   const calendarInitialRef = useRef<HTMLButtonElement>(null)
   const { label, placeholder, dispatch } = useDatePicker()
