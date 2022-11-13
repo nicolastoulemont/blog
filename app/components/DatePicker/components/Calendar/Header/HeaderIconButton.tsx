@@ -1,4 +1,4 @@
-import { ReactNode, forwardRef } from "react"
+import { forwardRef } from "react"
 import { clsx } from "clsx"
 import { FiChevronLeft, FiChevronRight } from "react-icons/fi"
 
