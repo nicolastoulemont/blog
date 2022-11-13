@@ -6,6 +6,7 @@ export const ACTIONS_RECORD = {
   YEAR_VIEW_CHANGE: "YEAR_VIEW_CHANGE",
   SELECT_DAY: "SELECT_DAY",
   SELECT_MONTH_OR_YEAR: "SELECT_MONTH_OR_YEAR",
+  RESET_DATEPICKER: "RESET_DATEPICKER",
 } as const
 
 export function reducer(state: State, action: Actions): State {
@@ -66,6 +67,14 @@ export function reducer(state: State, action: Actions): State {
         view: "days",
         slideDir: "none",
         calendarDate: action.payload,
+      }
+    }
+    case ACTIONS_RECORD.RESET_DATEPICKER: {
+      return {
+        ...state,
+        view: "days",
+        slideDir: "none",
+        calendarDate: state.value ? state.value : new Date(),
       }
     }
     default:

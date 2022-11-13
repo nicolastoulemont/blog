@@ -10,7 +10,7 @@ export function DatePickerDesktop() {
   const inputRef = useRef<HTMLInputElement>(null)
   const calendarInitialRef = useRef<HTMLButtonElement>(null)
   const calendarContainerRef = useRef<HTMLDivElement>(null)
-  const { label, placeholder } = useDatePicker()
+  const { label, placeholder, dispatch } = useDatePicker()
   const [open, setOpen] = useState(false)
 
   useClickAway(calendarContainerRef, () => closeCalendar())
@@ -21,6 +21,7 @@ export function DatePickerDesktop() {
   }
 
   function closeCalendar() {
+    dispatch({ type: "RESET_DATEPICKER" })
     setOpen(false)
     inputRef.current?.focus()
   }
