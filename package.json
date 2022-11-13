@@ -15,7 +15,7 @@
     "start": "remix-serve build",
     "test": "vitest",
     "test:watch": "vitest watch",
-    "chromatic": "npx chromatic"
+    "chromatic": "pnpx chromatic"
   },
   "dependencies": {
     "@headlessui/react": "^1.7.4",
