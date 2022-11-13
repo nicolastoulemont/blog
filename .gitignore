@@ -9,3 +9,6 @@ node_modules
 /app/tailwind.css
 
 .DS_Store
+
+## Chromatic
+storybook-static
