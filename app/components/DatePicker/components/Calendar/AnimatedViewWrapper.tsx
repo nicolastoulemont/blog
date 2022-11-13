@@ -77,7 +77,7 @@ export function AnimatedViewWrapper({
           animate="center"
           exit="exit"
           custom={{ slideDir, animationValuesMap }}
-          transition={{ duration: 0.45, ease: "easeOut" }}
+          transition={{ duration: 0.3, ease: "easeOut" }}
           drag={window.width < 500 && drag ? "x" : false}
           dragMomentum={false}
           dragConstraints={{ left: 75, right: 75 }}
