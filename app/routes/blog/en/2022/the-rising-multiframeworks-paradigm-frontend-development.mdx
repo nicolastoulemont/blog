@@ -32,7 +32,7 @@ A short while after, and maybe has a response to this tight coupling, the concep
 
 At first this concept was very much applied within a framework specific context.
 It was much more about building framework specific components flexible enought to easily evolve over time rather than building cross-frameworks libraries.
-But it was a good reminder of the upsides of the separation of concerns in a UI building context. Something that, at the time was a bit forgotten about in favor tightly coupled components.
+But it was a good reminder of the upsides of the separation of concerns in a UI building context, something that at the time was a bit forgotten about in favor tightly coupled components.
 
 In parallel, the handling of the state of the component went throught a few iterations and innovations.
 Users felt the limitations of the basic state utilities built in the frameworks ([useState](https://reactjs.org/docs/hooks-reference.html#usestate), [vuejs state management](https://vuejs.org/guide/scaling-up/state-management.html)) particularly when it comes to handling "global" / "app" state for which the framework state utilities were not built to do (as they are focused on component state handling).
@@ -125,11 +125,11 @@ But should it continue, we could expect the following:
 
 - Consolidation of the frontend ecosystem around fewer multiframework libraries
 
-  - Why rebuild framework specifc solution, when a well tested, multiframework solution is just an adapter (a few hunders of lines of code) away ?
+  - Why rebuild framework specifc solution, when a well tested, multiframeworks solution is just an adapter (a few hunders of lines of code) away ?
   - Being framework specific solution becomes a net negative in the adoption decision process for projects spanning many years.
   - Simplification of the frontend ecosystem: less relevant libraries for a given problem space.
 
-- UI rendering framework choice become a less structural choice than before.
+- The choice of a particular UI rendering framework become less structural than before.
 
   - There are less and less UI rendering framework specific code written. We already see this with the Remix framework with which a whole less of React specific code is written.
   - A UI rendering framework migration (say from React to SolidJS (JSX -> JSX)) can be done with a few codemods.
