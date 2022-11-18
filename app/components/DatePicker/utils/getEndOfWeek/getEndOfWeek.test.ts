@@ -1,5 +1,3 @@
-import { describe, test, expect } from "vitest"
-
 import { getEndOfWeek } from "./getEndOfWeek"
 
 describe("getEndOfWeek", () => {
