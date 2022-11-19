@@ -42,6 +42,8 @@ function getPosts(lang?: "en" | "fr"): PostMetaData[] {
     .filter((post) => isValid(new Date(post.date)))
     .sort((a, b) => (new Date(b.date).getTime() > new Date(a.date).getTime() ? 1 : -1))
 
+  // console.log(publishedPosts)
+
   if (lang) {
     return publishedPosts.filter((post) => post.lang === lang)
   } else {
@@ -56,7 +58,7 @@ function searchPosts(input: string) {
   const match = (str: string) => str.toLowerCase().includes(query)
 
   for (const post of getPosts("en")) {
-    const hit = match(post.title) || match(post.description) || match(post.category)
+    const hit = match(post.title) || match(post.description) || post.categories.some((category) => match(category))
     if (hit) {
       hits.push(post)
     }

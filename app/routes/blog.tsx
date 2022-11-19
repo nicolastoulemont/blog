@@ -31,7 +31,7 @@ export const meta: MetaFunction = ({ data }: { data: PostMetaData }) => {
 
 export default function BlogContainer() {
   const data = useLoaderData<typeof loader>()
-  const activeColor = CATEGORY_COLOR_REGISTRY[data.category]
+  const activeColor = CATEGORY_COLOR_REGISTRY[data.categories[0]]
 
   return (
     <main className="relative">

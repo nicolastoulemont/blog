@@ -69,7 +69,12 @@ export default function Index() {
               <article className="w-full text-slate-800 dark:text-white sm:w-3/4 sm:pt-0">
                 <h4 className="text-md mb-1 font-bold">{post.title}</h4>
                 <div className="mb-3 flex flex-row items-center justify-start">
-                  <Tag category={post.category} size="sm" />
+                  <div className="flex flex-row items-center space-x-2">
+                    {post.categories?.map((category) => (
+                      <Tag key={category} category={category} size="sm" />
+                    ))}
+                  </div>
+
                   <p className="ml-3 text-xs">{post.date}</p>
                 </div>
 

@@ -11,7 +11,7 @@ export interface PostMetaData {
   imageAlt: string
   imageWidth: string
   imageHeight: string
-  category: CategoryNames
+  categories: [CategoryNames]
   translation?: "fr"
   lang: "en" | "fr"
   translationSlug?: string
@@ -22,7 +22,7 @@ export type PostMatterData = Pick<
   PostMetaData,
   | "date"
   | "description"
-  | "category"
+  | "categories"
   | "imageAlt"
   | "imagePath"
   | "imageHeight"
