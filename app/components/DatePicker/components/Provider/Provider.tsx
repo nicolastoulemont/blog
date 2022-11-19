@@ -26,13 +26,17 @@ export function DatePickerProvider({ children, ...props }: DatePickerProviderPro
   function handleSelectMonth(monthIndex: number) {
     const date = handleMonthChange(state.calendarDate, monthIndex)
     dispatch({ type: "SELECT_MONTH_OR_YEAR", payload: date })
-    onChange(date)
+    if (state.value) {
+      onChange(date)
+    }
   }
 
   function handleSelectYear(year: number) {
     const date = handleYearChange(state.calendarDate, year)
     dispatch({ type: "SELECT_MONTH_OR_YEAR", payload: date })
-    onChange(date)
+    if (state.value) {
+      onChange(date)
+    }
   }
 
   return (

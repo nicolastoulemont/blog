@@ -40,13 +40,14 @@ export function DayCell({ day, rowIndex, colIndex, onClose }: DayCellProps) {
   }
 
   return (
-    <td className="h-10 w-10 sm:h-9 sm:w-9">
+    <td className="h-10 w-10 sm:h-9 sm:w-9" aria-selected={isSelected ? "true" : "false"}>
       <div className="relative flex h-10 w-10 items-center justify-center sm:h-9 sm:w-9">
         <CalendarButton
           ref={(ref) => mapRefToMatrix(ref as HTMLButtonElement, rowIndex, colIndex)}
           onKeyDown={handleKeyDown}
           isSelected={isSelected}
           onClick={selectDay}
+          aria-label={day.toLocaleDateString()}
         >
           <CalendarText variant={variant}>{day.getDate()}</CalendarText>
         </CalendarButton>

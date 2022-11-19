@@ -1,4 +1,4 @@
-import { useRef } from "react"
+import { useEffect, useRef } from "react"
 import { Calendar } from "./Calendar"
 import { Input } from "./Input"
 import { useDatePicker } from "./Provider"
@@ -11,32 +11,34 @@ export function DatePickerDesktop() {
 
   return (
     <Popover className="relative">
-      {({ open, close }) => (
-        <>
-          <Popover.Button ref={btnRef} className="w-[300px]">
-            <Input tabIndex={-1} label={label} placeholder={placeholder} />
-          </Popover.Button>
-          <Transition
-            show={open}
-            enter="transition duration-100 ease-out"
-            enterFrom="transform scale-95 opacity-0"
-            enterTo="transform scale-100 opacity-100"
-            leave="transition duration-75 ease-out"
-            leaveFrom="transform scale-100 opacity-100"
-            leaveTo="transform scale-95 opacity-0"
-          >
-            <Popover.Panel className="absolute z-50 mt-3 rounded-2xl shadow-lg">
-              <Calendar
-                calendarInitialRef={calendarInitialRef}
-                onClose={() => {
-                  dispatch({ type: "RESET_DATEPICKER" })
-                  close(btnRef)
-                }}
-              />
-            </Popover.Panel>
-          </Transition>
-        </>
-      )}
+      {({ open, close }) => {
+        useEffect(() => {
+          if (!open) {
+            dispatch({ type: "RESET_DATEPICKER" })
+          }
+        }, [open])
+
+        return (
+          <>
+            <Popover.Button ref={btnRef} className="w-[300px]" aria-label="Datepicker">
+              <Input tabIndex={-1} label={label} placeholder={placeholder} />
+            </Popover.Button>
+            <Transition
+              show={open}
+              enter="transition duration-100 ease-out"
+              enterFrom="transform scale-95 opacity-0"
+              enterTo="transform scale-100 opacity-100"
+              leave="transition duration-75 ease-out"
+              leaveFrom="transform scale-100 opacity-100"
+              leaveTo="transform scale-95 opacity-0"
+            >
+              <Popover.Panel className="absolute z-50 mt-3 rounded-2xl shadow-lg">
+                <Calendar calendarInitialRef={calendarInitialRef} onClose={() => close(btnRef)} />
+              </Popover.Panel>
+            </Transition>
+          </>
+        )
+      }}
     </Popover>
   )
 }

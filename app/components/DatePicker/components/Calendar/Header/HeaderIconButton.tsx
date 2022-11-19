@@ -21,7 +21,6 @@ export const HeaderIconButton = forwardRef<HTMLButtonElement, HeaderIconButtonPr
       )}
       {...props}
     >
-      <span className="sr-only">{variant === "left" ? "Previous" : "Next"}</span>
       {variant === "left" ? (
         <FiChevronLeft className="h-5 w-5 sm:h-4 sm:w-4" />
       ) : (

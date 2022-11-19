@@ -1,5 +1,5 @@
 import { isSameMonth } from "date-fns"
-import { getMonthsName } from "../../../utils"
+import { getMonthsName, formatDate } from "../../../utils"
 import { useDatePicker } from "../../Provider"
 import { AnimatedViewWrapper } from "../AnimatedViewWrapper"
 import { CalendarButton } from "../CalendarButton"
@@ -18,6 +18,11 @@ export function MonthView() {
     return state.value ? isSameMonth(state.value, monthAsDate) : false
   }
 
+  const formatMonth = (monthIndex: number) => {
+    const monthAsDate = new Date(state.calendarDate.getFullYear(), monthIndex, 1)
+    return formatDate(monthAsDate, locale, { month: "long" })
+  }
+
   return (
     <div className="flex w-full flex-col">
       <AnimatedViewWrapper motionKey={state.calendarDate.getFullYear()} slideDir={state.slideDir}>
@@ -27,7 +32,11 @@ export function MonthView() {
               key={`month-${monthIndex}`}
               className="relative flex h-[40px] w-[88px] items-center justify-center sm:w-[72px]"
             >
-              <CalendarButton onClick={() => handleSelectMonth(monthIndex)} isSelected={isSelected(monthIndex)}>
+              <CalendarButton
+                onClick={() => handleSelectMonth(monthIndex)}
+                isSelected={isSelected(monthIndex)}
+                aria-label={formatMonth(monthIndex)}
+              >
                 <CalendarText variant={isSelected(monthIndex) ? "selected" : "regular"}>{month}</CalendarText>
               </CalendarButton>
               {isCurrentMonth(monthIndex) && <CalendarUnderline variant="other" />}

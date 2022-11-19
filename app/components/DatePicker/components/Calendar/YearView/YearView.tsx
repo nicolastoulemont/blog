@@ -1,4 +1,4 @@
-import { getYearsRange, handleYearChange } from "../../../utils"
+import { getYearsRange } from "../../../utils"
 import { useDatePicker } from "../../Provider"
 import { AnimatedViewWrapper } from "../AnimatedViewWrapper"
 import { CalendarButton } from "../CalendarButton"
@@ -28,7 +28,11 @@ export function YearView() {
               key={`year-${yearIndex}`}
               className="relative flex h-[40px] w-[88px] items-center justify-center sm:w-[72px]"
             >
-              <CalendarButton onClick={() => handleSelectYear(year)} isSelected={isSelected(year)}>
+              <CalendarButton
+                onClick={() => handleSelectYear(year)}
+                isSelected={isSelected(year)}
+                aria-label={String(year)}
+              >
                 <CalendarText variant={isSelected(year) ? "selected" : "regular"}>{year}</CalendarText>
               </CalendarButton>
               {isCurrentYear(year) && <CalendarUnderline variant="other" />}

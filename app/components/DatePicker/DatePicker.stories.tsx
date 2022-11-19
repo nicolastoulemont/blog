@@ -11,7 +11,7 @@ const metas: ComponentMeta<typeof DatePicker> = {
 export default metas
 
 export const Default = ({}) => {
-  const [value, setValue] = useState<Date>()
+  const [value, setValue] = useState<Date | undefined>(new Date(2022, 10, 1))
 
   return (
     <div className="flex flex-col">
@@ -24,7 +24,7 @@ export const Default = ({}) => {
       </div>
       <div>
         <button className="rounded-lg bg-blue-600 px-3 py-2 font-medium text-white" onClick={() => setValue(undefined)}>
-          Reset datapicker
+          Reset datepicker
         </button>
       </div>
     </div>

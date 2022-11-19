@@ -1,4 +1,4 @@
-import { getMonthDays, getWeekDaysName } from "../../../utils"
+import { formatDate, getMonthDays, getWeekDaysName } from "../../../utils"
 import { useDatePicker } from "../../Provider"
 import { AnimatedViewWrapper } from "../AnimatedViewWrapper"
 import { DayCell, TableNavigationProvider } from "./components"
@@ -34,6 +34,7 @@ export function DayView(props: DayViewProps) {
           onDragRight={() => dispatch({ type: "MONTH_VIEW_CHANGE", payload: "decrement" })}
         >
           <table className="table-auto border-separate border-spacing-1">
+            <caption className="sr-only">{formatDate(state.calendarDate, locale, { month: "long" })} days</caption>
             <thead
               className="sr-only"
               /** HTML table requires a clean table element only HTML tree hierarchy to apply their styles, 
