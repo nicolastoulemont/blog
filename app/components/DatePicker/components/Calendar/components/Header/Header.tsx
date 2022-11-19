@@ -6,7 +6,7 @@ import { HeaderIconButton } from "./HeaderIconButton"
 
 type HeaderProps = Pick<CalendarProps, "calendarInitialRef">
 
-export function Header(props: HeaderProps) {
+export function Header({ calendarInitialRef }: HeaderProps) {
   const { state, dispatch, locale } = useDatePicker()
   const monthsNames = getMonthsName(locale)
   const currentMonthRaw = monthsNames[state.calendarDate.getMonth()]
@@ -32,7 +32,7 @@ export function Header(props: HeaderProps) {
     <div className="flex flex-row items-center justify-between border-b border-gray-300 pb-2 sm:pb-1">
       <div className="flex">
         <HeaderButton
-          ref={props.calendarInitialRef}
+          ref={calendarInitialRef}
           className="mr-1"
           isActive={state.view === "months"}
           onKeyDown={(event) => console.log(event)}

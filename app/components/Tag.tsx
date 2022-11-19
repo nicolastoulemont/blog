@@ -1,6 +1,6 @@
 import { CategoryNames, CATEGORY_COLOR_REGISTRY, CATEGORY_COLOR_VARIANTS } from "~/utils/styles"
 
-export default function Tag({
+export function Tag({
   category,
   className,
   size = "md",

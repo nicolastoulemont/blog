@@ -1,11 +1,20 @@
-import { forwardRef } from "react"
+import { forwardRef, ReactNode } from "react"
 import { useDatePicker } from "../Provider"
 
-interface InputProps extends React.InputHTMLAttributes<HTMLInputElement> {
-  label: string
-}
+export const InputContainer = ({ children }: { children: ReactNode }) => (
+  <div className="flex flex-col text-left">{children}</div>
+)
 
-export const Input = forwardRef<HTMLInputElement, InputProps>(function Input({ label, placeholder, ...props }, ref) {
+export const InputLabel = ({ label }: { label: string }) => (
+  <label className="mb-1 block text-sm font-medium" htmlFor="datepicker-input">
+    {label}
+  </label>
+)
+
+export const Input = forwardRef<HTMLInputElement, React.InputHTMLAttributes<HTMLInputElement>>(function Input(
+  { placeholder, ...props },
+  ref
+) {
   const { state } = useDatePicker()
 
   const formatDate = (date: Date) => {
@@ -24,20 +33,15 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(function Input({ l
   }
 
   return (
-    <div className="flex flex-col text-left">
-      <label className="mb-1 block text-sm font-medium" htmlFor="datepicker-input">
-        {label}
-      </label>
-      <input
-        ref={ref}
-        type="text"
-        readOnly
-        value={state.value ? formatDate(state.value) : ""}
-        className="border-1 rounded-lg border-gray-300 px-3 py-2 text-sm"
-        id="datepicker-input"
-        placeholder={placeholder}
-        {...props}
-      />
-    </div>
+    <input
+      ref={ref}
+      type="text"
+      readOnly
+      value={state.value ? formatDate(state.value) : ""}
+      className="border-1 w-full rounded-lg border-gray-300 px-3 py-2 text-sm"
+      id="datepicker-input"
+      placeholder={placeholder}
+      {...props}
+    />
   )
 })

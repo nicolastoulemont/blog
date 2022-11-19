@@ -1,6 +1,6 @@
 import { useEffect, useRef } from "react"
 import { Calendar } from "./Calendar"
-import { Input } from "./Input"
+import { Input, InputContainer, InputLabel } from "./Input"
 import { useDatePicker } from "./Provider"
 import { Popover, Transition } from "@headlessui/react"
 
@@ -20,9 +20,13 @@ export function DatePickerDesktop() {
 
         return (
           <>
-            <Popover.Button ref={btnRef} className="w-[300px]" aria-label="Datepicker">
-              <Input tabIndex={-1} label={label} placeholder={placeholder} />
-            </Popover.Button>
+            <InputContainer>
+              <InputLabel label={label} />
+              <Popover.Button ref={btnRef} className="w-[300px]" aria-label="Datepicker">
+                <Input tabIndex={-1} placeholder={placeholder} />
+              </Popover.Button>
+            </InputContainer>
+
             <Transition
               show={open}
               enter="transition duration-100 ease-out"

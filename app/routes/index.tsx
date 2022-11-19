@@ -1,7 +1,7 @@
 import { useLoaderData, Form, useSearchParams, useSubmit, Link } from "@remix-run/react"
 import { list } from "~/utils/files"
 import { Request } from "@remix-run/node"
-import Tag from "~/components/Tag"
+import { Tag } from "~/components"
 
 export const loader = ({ request }: { request: Request }) => {
   const urlSearchParams = new URLSearchParams(request.url.split("?")[1])

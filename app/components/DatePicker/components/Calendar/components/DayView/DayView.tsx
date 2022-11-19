@@ -7,7 +7,7 @@ interface DayViewProps {
   onClose: () => void
 }
 
-export function DayView(props: DayViewProps) {
+export function DayView({ onClose }: DayViewProps) {
   const { locale, state, dispatch } = useDatePicker()
   const days = getWeekDaysName(locale, "short")
   const weeks = getMonthDays(state.calendarDate)
@@ -57,7 +57,7 @@ export function DayView(props: DayViewProps) {
                 <tr key={`week-${rowIndex}`}>
                   {week.map((day, colIndex) => (
                     <DayCell
-                      {...props}
+                      onClose={onClose}
                       key={`${rowIndex}-${colIndex}`}
                       day={day}
                       rowIndex={rowIndex}

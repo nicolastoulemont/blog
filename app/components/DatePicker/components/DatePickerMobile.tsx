@@ -2,7 +2,7 @@ import { Dialog, Transition } from "@headlessui/react"
 import { Fragment, useRef, useState } from "react"
 
 import { Calendar } from "./Calendar"
-import { Input } from "./Input"
+import { Input, InputContainer, InputLabel } from "./Input"
 import { useDatePicker } from "./Provider"
 
 export function DatePickerMobile() {
@@ -31,12 +31,11 @@ export function DatePickerMobile() {
 
   return (
     <>
-      <Input
-        label={label}
-        placeholder={placeholder}
-        onKeyDown={handleInputKeyDown}
-        onClick={() => !open && openCalendar()}
-      />
+      <InputContainer>
+        <InputLabel label={label} />
+        <Input placeholder={placeholder} onKeyDown={handleInputKeyDown} onClick={() => !open && openCalendar()} />
+      </InputContainer>
+
       <Transition appear show={open} as={Fragment}>
         <Dialog as="div" className="relative z-50" onClose={() => closeCalendar()}>
           <Transition.Child

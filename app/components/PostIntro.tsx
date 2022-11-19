@@ -1,5 +1,5 @@
 import { CategoryNames } from "~/utils/styles"
-import Tag from "./Tag"
+import { Tag } from "./Tag"
 
 interface PostIntroProps {
   publishedAt: string
