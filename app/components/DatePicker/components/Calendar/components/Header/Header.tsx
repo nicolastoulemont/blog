@@ -35,7 +35,6 @@ export function Header({ calendarInitialRef }: HeaderProps) {
           ref={calendarInitialRef}
           className="mr-1"
           isActive={state.view === "months"}
-          onKeyDown={(event) => console.log(event)}
           onClick={() => dispatch({ type: "SET_VIEW", payload: "months" })}
           aria-label={`Current month: ${currentMonth}, click to show months panel`}
         >

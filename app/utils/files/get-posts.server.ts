@@ -42,8 +42,6 @@ function getPosts(lang?: "en" | "fr"): PostMetaData[] {
     .filter((post) => isValid(new Date(post.date)))
     .sort((a, b) => (new Date(b.date).getTime() > new Date(a.date).getTime() ? 1 : -1))
 
-  // console.log(publishedPosts)
-
   if (lang) {
     return publishedPosts.filter((post) => post.lang === lang)
   } else {

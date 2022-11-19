@@ -38,7 +38,7 @@ export const Input = forwardRef<HTMLInputElement, React.InputHTMLAttributes<HTML
       type="text"
       readOnly
       value={state.value ? formatDate(state.value) : ""}
-      className="border-1 w-full rounded-lg border-gray-300 px-3 py-2 text-sm"
+      className="border-1 w-full rounded-lg border-gray-300 px-3 py-2 text-sm text-slate-700"
       id="datepicker-input"
       placeholder={placeholder}
       {...props}
