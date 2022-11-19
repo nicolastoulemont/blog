@@ -9,7 +9,7 @@
     "dev": "run-p \"dev:*\"",
     "dev:css": "npm run generate:css -- --watch",
     "dev:remix": "remix dev",
-    "dev:components": "start-storybook -p 4001",
+    "storybook": "run-p \"start-storybook -p 4001\" \"generate:css -- --watch\"",
     "build-storybook": "build-storybook",
     "generate:css": "npx tailwindcss -i ./styles/tailwind.css -o ./app/tailwind.css",
     "start": "remix-serve build",

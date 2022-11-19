@@ -10,3 +10,56 @@ imageWidth: "256"
 imageHeight: "256"
 categories: ["React", "Animations"]
 ---
+
+import { PostIntro, Container, DatePickerDemo } from "~/components"
+
+# How to build a datepicker from scratch
+
+_*With nice animations and gesture support for mobile users*_
+
+<PostIntro publishedAt="November 19th 2022" categories={["React", "Animations"]} />
+
+Firstly, you should probably not build one from scratch and use an open source one ([Material UI](https://mui.com/x/react-date-pickers/getting-started/), [Mantine UI](https://mantine.dev/dates/date-picker/)) as building a datepicker is fairly complicated and with some edge cases.
+
+Secondly, to give credits where they're due, the datepicker we're gonna build has been inspired in some ways by [Mantine UI](https://mantine.dev/dates/date-picker/) on the **technical side** and on the **design side** by the datepicker I have been building at my day job _*(I'm a design system engineer at the moment)*_ with the help of [Sylvie NGuyen](https://www.linkedin.com/in/ssilbing/).
+We're still goint to build something a little different tho !
+
+## What we're going to build
+
+<Container>
+  <DatePickerDemo />
+</Container>
+
+## Structure
+
+### Adaptive behavior
+
+#### Within a popover on large screens
+
+#### Within a modal container on mobile screens
+
+### Input
+
+### Calendar UI
+
+#### Calendar header
+
+#### Days view
+
+#### Months view
+
+##### Month change
+
+##### Edge cases
+
+#### Years view
+
+##### Year change
+
+##### Edge cases
+
+## Animations
+
+### Slide animations
+
+### Drag gestures
