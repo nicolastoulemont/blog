@@ -1,4 +1,4 @@
-import { getMonthsName } from "~/components/DatePicker/utils"
+import { getMonthsName } from "../../../utils"
 import { useDatePicker } from "../../Provider"
 import { CalendarProps } from "../Calendar"
 import { HeaderButton } from "./HeaderButton"
