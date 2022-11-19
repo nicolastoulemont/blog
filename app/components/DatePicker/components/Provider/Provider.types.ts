@@ -27,6 +27,6 @@ export type Actions =
   | { type: ActionType<"SET_VIEW">; payload: Views }
   | { type: ActionType<"MONTH_VIEW_CHANGE">; payload: ViewChange }
   | { type: ActionType<"YEAR_VIEW_CHANGE">; payload: ViewChange }
-  | { type: ActionType<"SELECT_DAY">; payload: Date }
+  | { type: ActionType<"SELECT_DAY">; payload: Date | undefined }
   | { type: ActionType<"SELECT_MONTH_OR_YEAR">; payload: Date }
   | { type: ActionType<"RESET_DATEPICKER"> }

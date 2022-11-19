@@ -1,11 +1,10 @@
 import { DatePickerProps } from "./DatePicker.types"
 import { DatePickerMobile, DatePickerDesktop, DatePickerProvider } from "./components"
-import { useWindowSize } from "react-use"
+
+import { useIsMobile } from "./utils"
 
 export function DatePicker(props: DatePickerProps) {
-  const { width } = useWindowSize()
+  const isMobile = useIsMobile()
 
-  return (
-    <DatePickerProvider {...props}>{width > 500 ? <DatePickerDesktop /> : <DatePickerMobile />}</DatePickerProvider>
-  )
+  return <DatePickerProvider {...props}>{isMobile ? <DatePickerMobile /> : <DatePickerDesktop />}</DatePickerProvider>
 }

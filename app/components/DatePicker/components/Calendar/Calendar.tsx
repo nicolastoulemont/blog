@@ -1,11 +1,10 @@
-import { getMonthsName } from "../../utils"
+import { getMonthsName, useIsMobile } from "../../utils"
 import { useDatePicker } from "../Provider"
 import { DayView } from "./DayView"
 import { HeaderButton, HeaderIconButton } from "./Header"
 import { MonthView } from "./MonthView"
 import { YearView } from "./YearView"
 import { motion } from "framer-motion"
-import { useWindowSize } from "react-use"
 
 interface CalendarProps {
   onClose: () => void
@@ -14,13 +13,13 @@ interface CalendarProps {
 
 export function Calendar(props: CalendarProps) {
   const { state, dispatch, locale } = useDatePicker()
-  const window = useWindowSize()
+  const isMobile = useIsMobile()
   const monthsNames = getMonthsName(locale)
   const currentMonth = monthsNames[state.calendarDate.getMonth()]
 
   const heights = {
-    days: window.width > 500 ? 386 : 420,
-    others: window.width > 500 ? 350 : 420,
+    days: isMobile ? 420 : 386,
+    others: isMobile ? 420 : 350,
   }
 
   return (
@@ -28,7 +27,7 @@ export function Calendar(props: CalendarProps) {
       initial={false}
       animate={{ height: state.view === "days" ? heights.days : heights.others }}
       transition={{ bounce: 0, duration: 0.3, ease: "circOut" }}
-      className="w-[360px] overflow-hidden rounded-2xl p-4 sm:w-[330px]"
+      className="w-[360px] overflow-hidden rounded-2xl bg-white p-4 sm:w-[330px]"
     >
       <div className="flex flex-row items-center justify-between border-b border-gray-300 pb-2 sm:pb-1">
         <div className="flex">

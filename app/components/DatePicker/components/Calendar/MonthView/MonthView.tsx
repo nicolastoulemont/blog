@@ -1,5 +1,5 @@
 import { isSameMonth } from "date-fns"
-import { getMonthsName, handleMonthChange } from "../../../utils"
+import { getMonthsName } from "../../../utils"
 import { useDatePicker } from "../../Provider"
 import { AnimatedViewWrapper } from "../AnimatedViewWrapper"
 import { CalendarButton } from "../CalendarButton"
@@ -7,13 +7,8 @@ import { CalendarText } from "../CalendarText"
 import { CalendarUnderline } from "../CalendarUnderline"
 
 export function MonthView() {
-  const { locale, state, dispatch } = useDatePicker()
+  const { locale, state, handleSelectMonth } = useDatePicker()
   const months = getMonthsName(locale, "short")
-
-  function handleClick(monthIndex: number) {
-    const date = handleMonthChange(state.calendarDate, monthIndex)
-    dispatch({ type: "SELECT_MONTH_OR_YEAR", payload: date })
-  }
 
   const isCurrentMonth = (monthIndex: number) =>
     isSameMonth(new Date(), new Date(new Date().getFullYear(), monthIndex, 1))
@@ -32,7 +27,7 @@ export function MonthView() {
               key={`month-${monthIndex}`}
               className="relative flex h-[40px] w-[88px] items-center justify-center sm:w-[72px]"
             >
-              <CalendarButton onClick={() => handleClick(monthIndex)} isSelected={isSelected(monthIndex)}>
+              <CalendarButton onClick={() => handleSelectMonth(monthIndex)} isSelected={isSelected(monthIndex)}>
                 <CalendarText variant={isSelected(monthIndex) ? "selected" : "regular"}>{month}</CalendarText>
               </CalendarButton>
               {isCurrentMonth(monthIndex) && <CalendarUnderline variant="other" />}

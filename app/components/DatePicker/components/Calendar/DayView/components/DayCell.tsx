@@ -17,7 +17,7 @@ const isNavigationKey = (event: React.KeyboardEvent<HTMLButtonElement>) => {
 }
 
 export function DayCell({ day, rowIndex, colIndex, onClose }: DayCellProps) {
-  const { state, dispatch } = useDatePicker()
+  const { state, handleSelectDay } = useDatePicker()
   const { mapRefToMatrix, handleKeyboardNavigation } = useTableNavigation()
 
   const isSelected = state.value ? isSameDay(day, state.value) : false
@@ -27,7 +27,7 @@ export function DayCell({ day, rowIndex, colIndex, onClose }: DayCellProps) {
   const variant = isSelected ? "selected" : isWithinCurrentMonth ? "regular" : "muted"
 
   function selectDay() {
-    dispatch({ type: "SELECT_DAY", payload: day })
+    handleSelectDay(day)
     onClose()
   }
 

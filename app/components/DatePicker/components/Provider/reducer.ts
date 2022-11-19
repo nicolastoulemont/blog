@@ -55,7 +55,7 @@ export function reducer(state: State, action: Actions): State {
       return {
         ...state,
         value: action.payload,
-        calendarDate: action.payload,
+        calendarDate: action.payload ? action.payload : state.calendarDate,
       }
     }
     case ACTIONS_RECORD.SELECT_MONTH_OR_YEAR: {

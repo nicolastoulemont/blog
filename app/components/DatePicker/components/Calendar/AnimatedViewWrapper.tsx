@@ -3,7 +3,7 @@ import type { PanInfo } from "framer-motion"
 import { AnimatePresence, motion } from "framer-motion"
 
 import type { State } from "../Provider/Provider.types"
-import { useWindowSize } from "react-use"
+import { useIsMobile } from "../../utils"
 
 interface VariantFnParams {
   slideDir: State["slideDir"]
@@ -41,9 +41,9 @@ export function AnimatedViewWrapper({
   onDragLeft,
   onDragRight,
 }: AnimateWrapperProps) {
-  const window = useWindowSize()
+  const isMobile = useIsMobile()
 
-  const width = window.width > 500 ? 300 : 400
+  const width = isMobile ? 400 : 300
 
   const animationValuesMap: AnimationValuesMap = {
     enter: {
@@ -78,7 +78,7 @@ export function AnimatedViewWrapper({
           exit="exit"
           custom={{ slideDir, animationValuesMap }}
           transition={{ duration: 0.3, ease: "easeOut" }}
-          drag={window.width < 500 && drag ? "x" : false}
+          drag={isMobile && drag ? "x" : false}
           dragMomentum={false}
           dragConstraints={{ left: 75, right: 75 }}
           onDragEnd={handleDrag}

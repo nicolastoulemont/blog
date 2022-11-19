@@ -6,13 +6,8 @@ import { CalendarText } from "../CalendarText"
 import { CalendarUnderline } from "../CalendarUnderline"
 
 export function YearView() {
-  const { state, dispatch } = useDatePicker()
+  const { state, dispatch, handleSelectYear } = useDatePicker()
   const years = getYearsRange(state.yearRange[0], state.yearRange[1])
-
-  function handleClick(year: number) {
-    const date = handleYearChange(state.calendarDate, year)
-    dispatch({ type: "SELECT_MONTH_OR_YEAR", payload: date })
-  }
 
   const isCurrentYear = (year: number) => new Date().getFullYear() === year
 
@@ -33,7 +28,7 @@ export function YearView() {
               key={`year-${yearIndex}`}
               className="relative flex h-[40px] w-[88px] items-center justify-center sm:w-[72px]"
             >
-              <CalendarButton onClick={() => handleClick(year)} isSelected={isSelected(year)}>
+              <CalendarButton onClick={() => handleSelectYear(year)} isSelected={isSelected(year)}>
                 <CalendarText variant={isSelected(year) ? "selected" : "regular"}>{year}</CalendarText>
               </CalendarButton>
               {isCurrentYear(year) && <CalendarUnderline variant="other" />}
