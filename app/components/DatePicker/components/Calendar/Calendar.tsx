@@ -1,9 +1,6 @@
 import { useIsMobile } from "../../utils"
 import { useDatePicker } from "../Provider"
-import { DayView } from "./DayView"
-import { Header } from "./Header"
-import { MonthView } from "./MonthView"
-import { YearView } from "./YearView"
+import { DayView, Header, MonthView, YearView } from "./components"
 import { motion } from "framer-motion"
 
 export interface CalendarProps {

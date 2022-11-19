@@ -2,8 +2,8 @@ import type { ReactNode } from "react"
 import type { PanInfo } from "framer-motion"
 import { AnimatePresence, motion } from "framer-motion"
 
-import type { State } from "../Provider/Provider.types"
-import { useIsMobile } from "../../utils"
+import type { State } from "../../Provider/Provider.types"
+import { useIsMobile } from "../../../utils"
 
 interface VariantFnParams {
   slideDir: State["slideDir"]

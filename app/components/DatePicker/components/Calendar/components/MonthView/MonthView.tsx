@@ -1,6 +1,6 @@
 import { isSameMonth } from "date-fns"
-import { getMonthsName, formatDate } from "../../../utils"
-import { useDatePicker } from "../../Provider"
+import { getMonthsName, formatDate } from "../../../../utils"
+import { useDatePicker } from "../../../Provider"
 import { AnimatedViewWrapper } from "../AnimatedViewWrapper"
 import { CalendarButton } from "../CalendarButton"
 import { CalendarText } from "../CalendarText"
