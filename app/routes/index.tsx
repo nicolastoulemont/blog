@@ -40,7 +40,7 @@ export default function Index() {
           id="search"
           name="search"
           type="text"
-          className="w-full rounded-lg bg-white text-slate-800 placeholder:text-slate-800 dark:bg-slate-500"
+          className="w-full rounded-lg bg-white text-slate-800 placeholder:text-slate-800 dark:border-black dark:bg-slate-900 dark:text-white dark:placeholder:text-white"
           placeholder="Search posts"
           onChange={(e) => submit(e.currentTarget.form)}
           {...(params.search && params.search !== "" && { defaultValue: params.search })}
