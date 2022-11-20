@@ -36,7 +36,7 @@ export default function BlogContainer() {
   return (
     <main className="relative">
       <motion.article
-        className="prose m-0 mx-auto w-full px-6 pt-10 pb-6 dark:prose-invert lg:mx-0 lg:max-w-[calc(100%-250px)] lg:prose-lg lg:px-12 2xl:mx-auto 2xl:max-w-6xl"
+        className="prose m-0 mx-auto w-full px-6 py-10 dark:prose-invert lg:mx-0 lg:max-w-[calc(100%-250px)] lg:prose-lg lg:px-12 2xl:mx-auto 2xl:max-w-6xl"
         variants={{ visible: { opacity: 1 }, hidden: { opacity: 0 } }}
         initial="hidden"
         animate="visible"
