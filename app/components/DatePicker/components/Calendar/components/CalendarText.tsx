@@ -3,7 +3,7 @@ import { ReactNode } from "react"
 
 const TEXT_VARIANTS = {
   muted: "text-slate-400 font-normal",
-  regular: "text-slate-700 font-medium",
+  regular: "text-slate-700 dark:text-white font-medium",
   selected: "text-white font-medium",
 } as const
 

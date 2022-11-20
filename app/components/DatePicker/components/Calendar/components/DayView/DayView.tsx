@@ -20,7 +20,7 @@ export function DayView({ onClose }: DayViewProps) {
             <div
               key={day}
               aria-hidden
-              className="flex h-10 w-10 items-center justify-center text-sm font-normal text-slate-600 sm:h-9 sm:w-9"
+              className="flex h-10 w-10 items-center justify-center text-sm font-normal text-slate-600 dark:text-gray-400 sm:h-9 sm:w-9"
             >
               {day}
             </div>

@@ -15,7 +15,7 @@ export const HeaderIconButton = forwardRef<HTMLButtonElement, HeaderIconButtonPr
     <button
       ref={ref}
       className={clsx(
-        "flex h-9 w-9 items-center justify-center rounded-xl border-none bg-blue-50 font-medium text-slate-700 sm:h-8 sm:w-8",
+        "flex h-9 w-9 items-center justify-center rounded-xl border-none bg-blue-50 font-medium text-slate-700 dark:bg-slate-900 dark:text-white sm:h-8 sm:w-8",
         props.disabled ? "text-slate-400" : "",
         className
       )}
