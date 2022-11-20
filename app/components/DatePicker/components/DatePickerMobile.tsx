@@ -9,7 +9,7 @@ export function DatePickerMobile() {
   const [open, setOpen] = useState(false)
   const inputRef = useRef<HTMLInputElement>(null)
   const calendarInitialRef = useRef<HTMLButtonElement>(null)
-  const { label, placeholder, dispatch } = useDatePicker()
+  const { dispatch } = useDatePicker()
 
   function openCalendar() {
     setOpen(true)
@@ -32,12 +32,12 @@ export function DatePickerMobile() {
   return (
     <>
       <InputContainer>
-        <InputLabel label={label} />
-        <Input placeholder={placeholder} onKeyDown={handleInputKeyDown} onClick={() => !open && openCalendar()} />
+        <InputLabel />
+        <Input onKeyDown={handleInputKeyDown} onClick={() => !open && openCalendar()} />
       </InputContainer>
 
       <Transition appear show={open} as={Fragment}>
-        <Dialog as="div" className="relative z-50" onClose={() => closeCalendar()}>
+        <Dialog as="div" className="relative z-50" onClose={closeCalendar}>
           <Transition.Child
             as={Fragment}
             enter="ease-out duration-300"

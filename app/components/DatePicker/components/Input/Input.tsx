@@ -5,17 +5,20 @@ export const InputContainer = ({ children }: { children: ReactNode }) => (
   <div className="flex flex-col text-left">{children}</div>
 )
 
-export const InputLabel = ({ label }: { label: string }) => (
-  <label className="mb-1 block text-sm font-medium" htmlFor="datepicker-input">
-    {label}
-  </label>
-)
+export const InputLabel = () => {
+  const { label } = useDatePicker()
+  return (
+    <label className="mb-1 block text-sm font-medium" htmlFor="datepicker-input">
+      {label}
+    </label>
+  )
+}
 
 export const Input = forwardRef<HTMLInputElement, React.InputHTMLAttributes<HTMLInputElement>>(function Input(
-  { placeholder, ...props },
+  { ...props },
   ref
 ) {
-  const { state } = useDatePicker()
+  const { state, placeholder } = useDatePicker()
 
   const formatDate = (date: Date) => {
     /**

@@ -7,7 +7,7 @@ import { Popover, Transition } from "@headlessui/react"
 export function DatePickerDesktop() {
   const btnRef = useRef<HTMLButtonElement>(null)
   const calendarInitialRef = useRef<HTMLButtonElement>(null)
-  const { label, placeholder, dispatch } = useDatePicker()
+  const { dispatch } = useDatePicker()
 
   return (
     <Popover className="relative">
@@ -21,9 +21,9 @@ export function DatePickerDesktop() {
         return (
           <>
             <InputContainer>
-              <InputLabel label={label} />
+              <InputLabel />
               <Popover.Button ref={btnRef} className="w-[300px]" aria-label="Datepicker">
-                <Input tabIndex={-1} placeholder={placeholder} />
+                <Input tabIndex={-1} />
               </Popover.Button>
             </InputContainer>
 
