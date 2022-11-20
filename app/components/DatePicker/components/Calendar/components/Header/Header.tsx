@@ -29,7 +29,7 @@ export function Header({ calendarInitialRef }: HeaderProps) {
   const currentYear = state.calendarDate.getFullYear()
 
   return (
-    <div className="flex flex-row items-center justify-between border-b border-gray-300 pb-2 sm:pb-1">
+    <div className="flex flex-row items-center justify-between border-b border-gray-300 pb-3">
       <div className="flex">
         <HeaderButton
           ref={calendarInitialRef}

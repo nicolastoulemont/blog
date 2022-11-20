@@ -60,7 +60,7 @@ export function DatePickerMobile() {
                 leaveFrom="opacity-100 scale-100"
                 leaveTo="opacity-0 scale-95"
               >
-                <Dialog.Panel className="flex w-full max-w-md transform items-center justify-center overflow-hidden rounded-t-2xl bg-white pt-3 align-bottom shadow-xl transition-all dark:bg-slate-800 dark:shadow-2xl">
+                <Dialog.Panel className="flex w-full max-w-md transform items-center justify-center overflow-hidden rounded-t-2xl bg-white pt-3 align-bottom shadow-xl transition-all dark:bg-slate-900 dark:shadow-2xl">
                   <Calendar calendarInitialRef={calendarInitialRef} onClose={closeCalendar} />
                 </Dialog.Panel>
               </Transition.Child>

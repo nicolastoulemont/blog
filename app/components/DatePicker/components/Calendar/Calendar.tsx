@@ -22,7 +22,7 @@ export function Calendar(props: CalendarProps) {
       initial={false}
       animate={{ height: state.view === "days" ? heights.days : heights.others }}
       transition={{ bounce: 0, duration: 0.3, ease: "circOut" }}
-      className="w-[360px] overflow-hidden rounded-2xl bg-white p-4 dark:bg-slate-800 sm:w-[330px]"
+      className="w-[360px] overflow-hidden rounded-2xl bg-white p-4 dark:bg-slate-900 sm:w-[330px]"
     >
       <Header calendarInitialRef={props.calendarInitialRef} />
       {state.view === "days" && <DayView onClose={props.onClose} />}
