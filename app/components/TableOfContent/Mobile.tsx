@@ -55,11 +55,11 @@ export function MobileTableOfContent({ elements, activeColor }: TableOfContentPr
               animate="visible"
               exit="hidden"
               transition={{ duration: 0.3 }}
-              className="fixed bottom-0 block w-full rounded-t-xl bg-white"
+              className="fixed bottom-0 block w-full rounded-t-xl bg-white shadow-lg dark:bg-slate-900"
             >
-              <div className="flex w-full justify-end">
+              <div className="flex w-full justify-end p-3">
                 <button className="flex h-[35px] w-[35px] items-center justify-center" onClick={() => setOpen(false)}>
-                  <FiX size="1.5rem" className="stroke-slate-700" aria-label="close menu" />
+                  <FiX size="1.5rem" className="stroke-slate-700 dark:stroke-white" aria-label="close menu" />
                 </button>
               </div>
               <Dialog.Description>
