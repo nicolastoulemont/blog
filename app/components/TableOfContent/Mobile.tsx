@@ -31,7 +31,7 @@ export function MobileTableOfContent({ elements, activeColor }: TableOfContentPr
   return (
     <>
       <button
-        className="fixed bottom-10 right-3 flex rounded-full bg-blue-500 p-3 shadow-lg lg:hidden"
+        className="fixed bottom-10 right-3 flex rounded-full bg-blue-500 p-3 shadow-lg dark:bg-blue-800 lg:hidden"
         onClick={() => setOpen(true)}
       >
         <FiMenu color="white" aria-label="open menu" />
