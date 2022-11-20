@@ -18,9 +18,9 @@ export const Input = forwardRef<HTMLInputElement, React.InputHTMLAttributes<HTML
   { ...props },
   ref
 ) {
-  const { state, placeholder } = useDatePicker()
+  const { state, placeholder, name } = useDatePicker()
 
-  const formatDate = (date: Date) => {
+  const dateToReadableFormat = (date: Date) => {
     /**
      * Using the built-in Intl feature of the browser:
      * https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Intl/DateTimeFormat
@@ -35,16 +35,23 @@ export const Input = forwardRef<HTMLInputElement, React.InputHTMLAttributes<HTML
     return formatter.format(date)
   }
 
+  //  Manual date splitting to match https://developer.mozilla.org/en-US/docs/Web/HTML/Element/input/date#value
+  const dateToHTMLValueFormat = (date: Date | undefined) =>
+    date ? `${date?.getFullYear()}-${date?.getMonth() + 1}-${date.getDate()}` : ""
+
   return (
-    <input
-      ref={ref}
-      type="text"
-      readOnly
-      value={state.value ? formatDate(state.value) : ""}
-      className="border-1 w-full rounded-lg border-gray-300 px-3 py-2 text-sm text-slate-700 dark:border-black dark:bg-slate-900 dark:text-white"
-      id="datepicker-input"
-      placeholder={placeholder}
-      {...props}
-    />
+    <>
+      <input
+        ref={ref}
+        type="text"
+        readOnly
+        value={state.value ? dateToReadableFormat(state.value) : ""}
+        className="border-1 w-full rounded-lg border-gray-300 px-3 py-2 text-sm text-slate-700 dark:border-black dark:bg-slate-900 dark:text-white"
+        id="datepicker-input"
+        placeholder={placeholder}
+        {...props}
+      />
+      {name ? <input hidden name={name} value={dateToHTMLValueFormat(state.value)} /> : null}
+    </>
   )
 })
