@@ -30,8 +30,8 @@ export function DayView({ onClose }: DayViewProps) {
           motionKey={state.calendarDate.getMonth()}
           slideDir={state.slideDir}
           drag
-          onDragLeft={() => dispatch({ type: "MONTH_VIEW_CHANGE", payload: "increment" })}
-          onDragRight={() => dispatch({ type: "MONTH_VIEW_CHANGE", payload: "decrement" })}
+          onDragLeft={() => dispatch({ type: "DAY_VIEW_CHANGE", payload: "increment" })}
+          onDragRight={() => dispatch({ type: "DAY_VIEW_CHANGE", payload: "decrement" })}
         >
           <table className="table-auto border-separate border-spacing-1">
             <caption className="sr-only">{formatDate(state.calendarDate, locale, { month: "long" })} days</caption>

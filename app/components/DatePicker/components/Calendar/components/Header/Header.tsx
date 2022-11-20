@@ -55,7 +55,7 @@ export function Header({ calendarInitialRef }: HeaderProps) {
           aria-label={state.view === "days" ? previousMonthLabel : previousYearRangeLabel}
           disabled={state.view === "months"}
           onClick={() => {
-            const type = state.view === "days" ? "MONTH_VIEW_CHANGE" : "YEAR_VIEW_CHANGE"
+            const type = state.view === "days" ? "DAY_VIEW_CHANGE" : "YEAR_VIEW_CHANGE"
             dispatch({ type: type, payload: "decrement" })
           }}
         />
@@ -64,7 +64,7 @@ export function Header({ calendarInitialRef }: HeaderProps) {
           disabled={state.view === "months"}
           aria-label={state.view === "days" ? nextMonthLabel : nextYearRangeLabel}
           onClick={() => {
-            const type = state.view === "days" ? "MONTH_VIEW_CHANGE" : "YEAR_VIEW_CHANGE"
+            const type = state.view === "days" ? "DAY_VIEW_CHANGE" : "YEAR_VIEW_CHANGE"
             dispatch({ type: type, payload: "increment" })
           }}
         />

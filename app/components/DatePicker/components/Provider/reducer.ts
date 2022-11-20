@@ -2,7 +2,7 @@ import { Actions, State } from "./Provider.types"
 
 export const ACTIONS_RECORD = {
   SET_VIEW: "SET_VIEW",
-  MONTH_VIEW_CHANGE: "MONTH_VIEW_CHANGE",
+  DAY_VIEW_CHANGE: "DAY_VIEW_CHANGE",
   YEAR_VIEW_CHANGE: "YEAR_VIEW_CHANGE",
   SELECT_DAY: "SELECT_DAY",
   SELECT_MONTH_OR_YEAR: "SELECT_MONTH_OR_YEAR",
@@ -18,7 +18,7 @@ export function reducer(state: State, action: Actions): State {
         ...state,
         view: action.payload,
       }
-    case ACTIONS_RECORD.MONTH_VIEW_CHANGE: {
+    case ACTIONS_RECORD.DAY_VIEW_CHANGE: {
       const updatedDate = new Date(state.calendarDate)
       const monthIndex = state.calendarDate.getMonth()
 
