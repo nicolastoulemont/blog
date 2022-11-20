@@ -1,5 +1,5 @@
 ---
-date: "2022-11-19"
+date: "2022-11-20"
 cardImage: "/img/calendrier.png"
 title: "How to build a datepicker from scratch"
 snippet: "Building a nice datepicker with animations and gesture support"
@@ -17,49 +17,865 @@ import { PostIntro, Container, DatePickerDemo } from "~/components"
 
 _*With nice animations and gesture support for mobile users*_
 
-<PostIntro publishedAt="November 19th 2022" categories={["React", "Animations"]} />
+<PostIntro publishedAt="November 20th 2022" categories={["React", "Animations"]} />
 
-Firstly, you should probably not build one from scratch and use an open source one ([Material UI](https://mui.com/x/react-date-pickers/getting-started/), [Mantine UI](https://mantine.dev/dates/date-picker/)) as building a datepicker is fairly complicated and with some edge cases.
+Firstly, you should probably not build one from scratch. Instead you should probably use the native html one or an open source one ([Material UI](https://mui.com/x/react-date-pickers/getting-started/), [Mantine UI](https://mantine.dev/dates/date-picker/)) as building a datepicker is fairly complicated and with some edge cases.
 
-Secondly, to give credits where they're due, the datepicker we're gonna build has been inspired in some ways by [Mantine UI](https://mantine.dev/dates/date-picker/) on the **technical side** and on the **design side** by the datepicker I have been building at my day job _*(I'm a design system engineer at the moment)*_ with the help of [Sylvie NGuyen](https://www.linkedin.com/in/ssilbing/).
-We're still goint to build something a little different tho !
+Secondly, to give credits where they're due, the datepicker we're gonna build has been inspired in some ways by [Mantine UI](https://mantine.dev/dates/date-picker/) on the technical side and on the design side by the datepicker I have been building at my day job _*(I'm a design system engineer at the moment)*_ with the help of [Sylvie NGuyen](https://www.linkedin.com/in/ssilbing/).
+But we're still going to build something a little bit different tho !
+
+Thirdly, we will build our datepicker with the following stuff: [React](https://reactjs.org/), [HeadlessUI](https://headlessui.com/), [tailwindcss](https://tailwindcss.com/) and [framer-motion](https://www.framer.com/motion/).
+And because this blog has a fancy dark mode, the datepicker will have one as well !
 
 ## What we're going to build
+
+The datepicker we're going to build will enable users to fill a readonly input via a calendar UI.
+It will not allow users to type a date within the input as well as using the calendar UI as this is a weekend project and I want to keep it relatively simple :)
 
 <Container>
   <DatePickerDemo />
 </Container>
 
-## Structure
+[Source code if you want to skip the post](https://github.com/nicolastoulemont/blog/tree/main/app/components/DatePicker/DatePicker.tsx)
+
+## Overall structure
+
+Our DatePicker behave differently whenever the user is on small screen or a larger one.
+It also has three main sub-components:
+
+- a context provider where we will handle the datepicker state (value, views, animations directions, etc.)
+- a readonly input to show an easily readable date value to the user once one has been selected
+- a Calendar UI to enable the user to navigate easily across months and years to pick a date.
+
+We will mostly focus on the UI code _(it would be too long otherwise)_, for the utility functions please read the [source](https://github.com/nicolastoulemont/blog/tree/main/app/components/DatePicker/DatePicker.tsx).
 
 ### Adaptive behavior
 
+The adaptive behavior leverage two headlessUI components: the [Popover](https://headlessui.com/react/popover) (large screens) and the [Dialog](https://headlessui.com/react/dialog) (small screens).
+They're used to display the calendar UI is a way that makes sense for each type of user (mobile vs desktop).
+The idea is to show the calendar UI close to the user input device so that interacting with it feel easy and natural:
+
+- on a **desktop** device that means close to the **mouse pointer**, so the popover will show the calendar UI just under the input with which the user just interacted.
+- on a **mobile** device that means close to the **user fingers**, so most likely at the bottom of the screen (like in the recent IOS 16 lock screen that put notifications at the bottom of the screen).
+
+```tsx
+import { DatePickerProps } from "./DatePicker.types"
+import { DatePickerMobile, DatePickerDesktop, DatePickerProvider } from "./components"
+
+import { useIsMobile } from "./utils"
+
+export function DatePicker(props: DatePickerProps) {
+  const isMobile = useIsMobile()
+
+  return <DatePickerProvider {...props}>{isMobile ? <DatePickerMobile /> : <DatePickerDesktop />}</DatePickerProvider>
+}
+```
+
 #### Within a popover on large screens
+
+Here we're not looking to make anything special, but only to use the headless ui popover with our input and calendar UI.
+
+A first small tradeoff that we've to make here is to split our `Input` component into 3 sub-components (`InputContainer`, `InputLabel` and `Input`)
+so that the `Popover.Button` component can only wrap the input and not the label or the container which would lead some ugly focus ring wrapping everything.
+
+We also prevent the user from accessing the input itself with a `tabIndex:-1` property on the input, which we can safely do since the input itself is `readonly`.
+This way, we allow the `Popover.Button` to be the only element in the DOM focusable instead of the input itself.
+
+```tsx
+import { useEffect, useRef } from "react"
+import { Calendar } from "./Calendar"
+import { Input, InputContainer, InputLabel } from "./Input"
+import { useDatePicker } from "./Provider"
+import { Popover, Transition } from "@headlessui/react"
+
+export function DatePickerDesktop() {
+  const btnRef = useRef<HTMLButtonElement>(null)
+  const calendarInitialRef = useRef<HTMLButtonElement>(null)
+  const { dispatch } = useDatePicker()
+
+  return (
+    <Popover className="relative">
+      {({ open, close }) => {
+        useEffect(() => {
+          if (!open) {
+            dispatch({ type: "RESET_DATEPICKER" })
+          }
+        }, [open])
+
+        return (
+          <>
+            <InputContainer>
+              <InputLabel />
+              <Popover.Button ref={btnRef} className="w-[300px]" aria-label="Datepicker">
+                <Input tabIndex={-1} />
+              </Popover.Button>
+            </InputContainer>
+
+            <Transition
+              show={open}
+              enter="transition duration-100 ease-out"
+              enterFrom="transform scale-95 opacity-0"
+              enterTo="transform scale-100 opacity-100"
+              leave="transition duration-75 ease-out"
+              leaveFrom="transform scale-100 opacity-100"
+              leaveTo="transform scale-95 opacity-0"
+            >
+              <Popover.Panel className="absolute z-50 mt-3 rounded-2xl shadow-xl dark:shadow-2xl">
+                <Calendar calendarInitialRef={calendarInitialRef} onClose={() => close(btnRef)} />
+              </Popover.Panel>
+            </Transition>
+          </>
+        )
+      }}
+    </Popover>
+  )
+}
+```
 
 #### Within a modal container on mobile screens
 
+Same as with the desktop behavior, we're not looking to make anything special here, only leverage the headless UI `Dialog`
+for our use case. Since the `Dialog` does a little less that the `Popover`, it doesn't have a `Dialog.Button` after all,
+we've to handle a bit more stuff here (open / close, focus and event handling on the `Input` component).
+
+```tsx
+import { Dialog, Transition } from "@headlessui/react"
+import { Fragment, useRef, useState } from "react"
+
+import { Calendar } from "./Calendar"
+import { Input, InputContainer, InputLabel } from "./Input"
+import { useDatePicker } from "./Provider"
+
+export function DatePickerMobile() {
+  const [open, setOpen] = useState(false)
+  const inputRef = useRef<HTMLInputElement>(null)
+  const calendarInitialRef = useRef<HTMLButtonElement>(null)
+  const { dispatch } = useDatePicker()
+
+  function openCalendar() {
+    setOpen(true)
+  }
+
+  function closeCalendar() {
+    dispatch({ type: "RESET_DATEPICKER" })
+    setOpen(false)
+    inputRef.current?.focus()
+  }
+
+  function handleInputKeyDown(event: React.KeyboardEvent<HTMLInputElement>) {
+    if (event.code === "Enter") {
+      openCalendar()
+    } else if (open && event.code === "Escape") {
+      closeCalendar()
+    }
+  }
+
+  return (
+    <>
+      <InputContainer>
+        <InputLabel />
+        <Input onKeyDown={handleInputKeyDown} onClick={() => !open && openCalendar()} />
+      </InputContainer>
+
+      <Transition appear show={open} as={Fragment}>
+        <Dialog as="div" className="relative z-50" onClose={closeCalendar}>
+          <Transition.Child
+            as={Fragment}
+            enter="ease-out duration-300"
+            enterFrom="opacity-0"
+            enterTo="opacity-100"
+            leave="ease-in duration-200"
+            leaveFrom="opacity-100"
+            leaveTo="opacity-0"
+          >
+            <div aria-hidden="true" className="fixed inset-0 bg-gray-800 bg-opacity-25" />
+          </Transition.Child>
+          <div className="fixed inset-0 overflow-y-auto">
+            <div className="flex min-h-full items-end justify-center text-center">
+              <Transition.Child
+                as={Fragment}
+                enter="ease-out duration-300"
+                enterFrom="opacity-0 scale-95"
+                enterTo="opacity-100 scale-100"
+                leave="ease-in duration-200"
+                leaveFrom="opacity-100 scale-100"
+                leaveTo="opacity-0 scale-95"
+              >
+                <Dialog.Panel className="flex w-full max-w-md transform items-center justify-center overflow-hidden rounded-t-2xl bg-white pt-3 align-bottom shadow-xl transition-all dark:bg-slate-900 dark:shadow-2xl">
+                  <Calendar calendarInitialRef={calendarInitialRef} onClose={closeCalendar} />
+                </Dialog.Panel>
+              </Transition.Child>
+            </div>
+          </div>
+        </Dialog>
+      </Transition>
+    </>
+  )
+}
+```
+
+### The context provider
+
+In order to manage our datepicker internal state, we will use a context provider.
+Our internal state is fairly simple in itself as this `init` function which return the initial `state` object shows.
+
+```ts
+import { DatePickerProviderProps, State } from "./Provider.types"
+
+export function init({ value }: Partial<DatePickerProviderProps>): State {
+  const calendarDate = value ?? new Date()
+  return {
+    /**
+     * Controller for the different views shown to the user
+     */
+    view: "days",
+    /** The value given back to the consumer of the DatePicker */
+    value,
+    /**
+     * Used as an internal date reference to populate the calendar UI
+     * and move across years and months without impacting the value selected itself
+     */
+    calendarDate,
+    /**
+     * Used to manage animation directions
+     */
+    slideDir: "none",
+    /**
+     * Used to manage fill the year view
+     */
+    yearRange: [new Date().getFullYear() - 2, new Date().getFullYear() + 9],
+  }
+}
+```
+
+There isn't so much added value into copy-pasting the `Provider` complete code,
+so for the curious here are the [reducer](https://github.com/nicolastoulemont/blog/tree/main/app/components/DatePicker/components/Provider/reducer.ts),
+[context](https://github.com/nicolastoulemont/blog/tree/main/app/components/DatePicker/components/Provider/context.ts)
+and [Provider](https://github.com/nicolastoulemont/blog/tree/main/app/components/DatePicker/components/Provider/Provider.tsx) files.
+
 ### Input
+
+The input is really simple as its a presentational component to show a value to the user.
+In the same manner as above, there is little added value in show you the code here, so instead
+feel free to take a look at it [yourself](https://github.com/nicolastoulemont/blog/tree/main/app/components/DatePicker/components/Input/Input.tsx)
+
+Our only **_unusual_** stuff in the `Input` is that we use an `hidden` input with a value in the `YYYY-MM-DD` ISO8601 string format if a `name` property is provided to the datepicker
+aside from the readonly input. This enable the datepicker to be used in an un-controlled way as well.
 
 ### Calendar UI
 
+The calendar UI is where the magic happens. It also where most of the fancy stuff is but
+its structure itself is fairly simple:
+
+- a header to show:
+  - the currently selected year within a button which shows the years view
+  - the currently selected month within a button which shows the months view
+  - a previous and a next icon buttons to navigate within a given view
+- a days view to show all of the days of the currently selected month
+- a months view to show all the available months
+- a years view to show a range of years to pick from
+
 #### Calendar header
+
+The calendar header is fairly simple UI wise, its a row of buttons with some nice accessibility labels for screen readers users.
+
+```tsx
+import { formatDate, getMonthsName } from "../../../../utils"
+import { useDatePicker } from "../../../Provider"
+import { CalendarProps } from "../../Calendar"
+import { HeaderButton } from "./HeaderButton"
+import { HeaderIconButton } from "./HeaderIconButton"
+
+type HeaderProps = Pick<CalendarProps, "calendarInitialRef">
+
+export function Header({ calendarInitialRef }: HeaderProps) {
+  const { state, dispatch, locale } = useDatePicker()
+  const monthsNames = getMonthsName(locale)
+  const currentMonthRaw = monthsNames[state.calendarDate.getMonth()]
+
+  const nextYearRangeLabel = `Years from ${state.yearRange[0] + 12} to ${state.yearRange[1] + 12}`
+  const previousYearRangeLabel = `Years from ${state.yearRange[0] - 12} to ${state.yearRange[1] - 12}`
+
+  const previousMonthLabel = `Show ${formatDate(
+    new Date(state.calendarDate.getFullYear(), state.calendarDate.getMonth() - 1, 1),
+    locale,
+    { month: "long" }
+  )}`
+  const nextMonthLabel = `Show ${formatDate(
+    new Date(state.calendarDate.getFullYear(), state.calendarDate.getMonth() + 1, 1),
+    locale,
+    { month: "long" }
+  )}`
+
+  const currentMonth = currentMonthRaw.charAt(0).toUpperCase() + currentMonthRaw.slice(1)
+  const currentYear = state.calendarDate.getFullYear()
+
+  function handleViewNavigation(direction: "increment" | "decrement") {
+    const type = state.view === "days" ? "DAY_VIEW_CHANGE" : "YEAR_VIEW_CHANGE"
+    dispatch({ type: type, payload: direction })
+  }
+
+  return (
+    <div className="flex flex-row items-center justify-between border-b border-gray-300 pb-3">
+      <div className="flex">
+        <HeaderButton
+          ref={calendarInitialRef}
+          className="mr-1"
+          isActive={state.view === "months"}
+          onClick={() => dispatch({ type: "SET_VIEW", payload: "months" })}
+          aria-label={`Current month: ${currentMonth}, click to show months panel`}
+        >
+          {currentMonth}
+        </HeaderButton>
+        <HeaderButton
+          isActive={state.view === "years"}
+          onClick={() => dispatch({ type: "SET_VIEW", payload: "years" })}
+          aria-label={`Current year: ${currentYear}, click to show years panel`}
+        >
+          {currentYear}
+        </HeaderButton>
+      </div>
+      <div className="flex">
+        <HeaderIconButton
+          className="mr-1"
+          variant="left"
+          aria-label={state.view === "days" ? previousMonthLabel : previousYearRangeLabel}
+          disabled={state.view === "months"}
+          onClick={() => handleViewNavigation("decrement")}
+        />
+        <HeaderIconButton
+          variant="right"
+          disabled={state.view === "months"}
+          aria-label={state.view === "days" ? nextMonthLabel : nextYearRangeLabel}
+          onClick={() => handleViewNavigation("increment")}
+        />
+      </div>
+    </div>
+  )
+}
+```
 
 #### Days view
 
+The days view is probably the most tricky view on the lot. But overall, its still about rendering enough days to always show 6 weeks
+(and therefore 6 rows) worth of days so that whatever the number of days available in a month, the day view height
+would stay constant.
+
+The most tricky part was that I wanted to keep using an html `table` but also didn't wanted to animate the `thead` content.
+This could have been an issue because table related stylings only apply correctly if the table node tree is only composed
+of table related element from the `table` container to the `td` leaf. Inserting other elements to handle animations
+would prevent me from using table related stylings.
+
+I ended up using the whole table node tree within my animation wrapper component but with the `thead` content only visible to screen readers
+and another row of regular `div`, hidden to screen readers but visible to others.
+This solution, while certainly not perfect, allowed me to get both the animation that I wanted and respect the html spec.
+
+```tsx
+import { formatDate, getMonthDays, getWeekDaysName } from "../../../../utils"
+import { useDatePicker } from "../../../Provider"
+import { AnimatedViewWrapper } from "../AnimatedViewWrapper"
+import { DayCell, TableNavigationProvider } from "./components"
+
+interface DayViewProps {
+  onClose: () => void
+}
+
+export function DayView({ onClose }: DayViewProps) {
+  const { locale, state, dispatch } = useDatePicker()
+  const days = getWeekDaysName(locale, "short")
+  const weeks = getMonthDays(state.calendarDate)
+
+  return (
+    <div className="h-[calc(100% - 8px)] w-full pt-2">
+      <TableNavigationProvider>
+        <div className="grid w-full grid-cols-7 gap-2 px-1" aria-hidden>
+          {days.map((day) => (
+            <div
+              key={day}
+              aria-hidden
+              className="flex h-10 w-10 items-center justify-center text-sm font-normal text-slate-600 dark:text-gray-400 sm:h-9 sm:w-9"
+            >
+              {day}
+            </div>
+          ))}
+        </div>
+        <AnimatedViewWrapper
+          motionKey={state.calendarDate.getMonth()}
+          slideDir={state.slideDir}
+          drag
+          onDragLeft={() => dispatch({ type: "DAY_VIEW_CHANGE", payload: "increment" })}
+          onDragRight={() => dispatch({ type: "DAY_VIEW_CHANGE", payload: "decrement" })}
+        >
+          <table className="border-spacing-1 table-auto border-separate">
+            <caption className="sr-only">{formatDate(state.calendarDate, locale, { month: "long" })} days</caption>
+            <thead
+              className="sr-only"
+              /** HTML table requires a clean table element only HTML tree hierarchy to apply their styles, 
+              /* this prevent us from inserting the AnimatedViewWrapper within the table, between the thead and the tbody
+              /* to only animate the movement of the days cells, keep the thead content (which doesn't change) static.
+              /* This is a work around, keeping the thead visible to screen reader only and using divs hidden from the screen readers
+              /* for the "table header" visible to non screen readers users.
+              */
+            >
+              <tr>
+                {days.map((day) => (
+                  <th key={day} scope="col">
+                    <div>{day}</div>
+                  </th>
+                ))}
+              </tr>
+            </thead>
+            <tbody>
+              {weeks.map((week, rowIndex) => (
+                <tr key={`week-${rowIndex}`}>
+                  {week.map((day, colIndex) => (
+                    <DayCell
+                      onClose={onClose}
+                      key={`${rowIndex}-${colIndex}`}
+                      day={day}
+                      rowIndex={rowIndex}
+                      colIndex={colIndex}
+                    />
+                  ))}
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </AnimatedViewWrapper>
+      </TableNavigationProvider>
+    </div>
+  )
+}
+```
+
+You might also have notice the `TableNavigationProvider` component wrapping the days table. This context provider is
+used to handle keyboard navigation within the table with the arrow keys. It's used with the `DayCell` component
+to create a matrix of `ref` of the buttons within the days table body.
+The event handler then focus the right ref based on location (rowIndex, colIndex) of the event source.
+
+```tsx
+import { KeyboardEvent, useRef } from "react"
+import { TableNavigationContext } from "./context"
+import type { Matrix, TableNavigationProviderProps } from "./TableNavigationProvider.types"
+
+export function TableNavigationProvider({ children, prevRef, afterRef }: TableNavigationProviderProps) {
+  const matrix = useRef<Matrix>([[]])
+
+  function mapRefToMatrix(ref: HTMLButtonElement, rowIndex: number, colIndex: number) {
+    if (!matrix.current[rowIndex]) {
+      matrix.current[rowIndex] = []
+    }
+
+    matrix.current[rowIndex][colIndex] = ref
+  }
+  function handleKeyboardNavigation(event: KeyboardEvent<HTMLButtonElement>, rowIndex: number, colIndex: number) {
+    event.preventDefault()
+    switch (event.code) {
+      case "Tab": {
+        if (event.shiftKey) {
+          prevRef?.current?.focus()
+        } else {
+          afterRef?.current?.focus()
+        }
+        break
+      }
+      case "ArrowDown": {
+        if (rowIndex + 1 < matrix.current.length) {
+          matrix.current[rowIndex + 1][colIndex]?.focus()
+        }
+        break
+      }
+      case "ArrowUp": {
+        if (rowIndex > 0) {
+          matrix.current[rowIndex - 1][colIndex]?.focus()
+        }
+        break
+      }
+      case "ArrowRight": {
+        if (colIndex !== 6) {
+          matrix.current[rowIndex][colIndex + 1]?.focus()
+        }
+        break
+      }
+      case "ArrowLeft": {
+        if (colIndex !== 0) {
+          matrix.current[rowIndex][colIndex - 1]?.focus()
+        }
+        break
+      }
+    }
+  }
+
+  return (
+    <TableNavigationContext.Provider value={{ handleKeyboardNavigation, mapRefToMatrix }}>
+      {children}
+    </TableNavigationContext.Provider>
+  )
+}
+```
+
+```tsx
+import { CalendarButton } from "../../CalendarButton"
+import { CalendarUnderline } from "../../CalendarUnderline"
+import { isSameDay, isSameMonth } from "date-fns"
+import { useDatePicker } from "../../../../Provider"
+import { useTableNavigation } from "./TableNavigationProvider"
+import { CalendarText } from "../../CalendarText"
+
+interface DayCellProps {
+  onClose: () => void
+  day: Date
+  rowIndex: number
+  colIndex: number
+}
+
+const isNavigationKey = (event: React.KeyboardEvent<HTMLButtonElement>) => {
+  return ["ArrowUp", "ArrowDown", "ArrowLeft", "ArrowRight", "Tab"].includes(event.code)
+}
+
+export function DayCell({ day, rowIndex, colIndex, onClose }: DayCellProps) {
+  const { state, handleSelectDay } = useDatePicker()
+  const { mapRefToMatrix, handleKeyboardNavigation } = useTableNavigation()
+
+  const isSelected = state.value ? isSameDay(day, state.value) : false
+  const isWithinCurrentMonth = isSameMonth(state.calendarDate, day)
+  const isCurrentDay = isSameDay(new Date(), day)
+
+  const variant = isSelected ? "selected" : isWithinCurrentMonth ? "regular" : "muted"
+
+  function selectDay() {
+    handleSelectDay(day)
+    onClose()
+  }
+
+  function handleKeyDown(event: React.KeyboardEvent<HTMLButtonElement>) {
+    if (isNavigationKey(event)) {
+      handleKeyboardNavigation(event, rowIndex, colIndex)
+    } else {
+      selectDay()
+    }
+  }
+
+  return (
+    <td className="h-10 w-10 sm:h-9 sm:w-9" aria-selected={isSelected ? "true" : "false"}>
+      <div className="relative flex h-10 w-10 items-center justify-center sm:h-9 sm:w-9">
+        <CalendarButton
+          ref={(ref) => mapRefToMatrix(ref as HTMLButtonElement, rowIndex, colIndex)}
+          onKeyDown={handleKeyDown}
+          isSelected={isSelected}
+          onClick={selectDay}
+          aria-label={day.toLocaleDateString()}
+        >
+          <CalendarText variant={variant}>{day.getDate()}</CalendarText>
+        </CalendarButton>
+        {isCurrentDay && <CalendarUnderline variant="day" />}
+      </div>
+    </td>
+  )
+}
+```
+
+I must admit that I didn't come with that idea myself, and shameless took it from [Mantine UI](https://mantine.dev/dates/date-picker/),
+with some changes to match how I wanted to use it. There are certainly other ways to do this tho !
+
 #### Months view
 
-##### Month change
+The month view is a lot simplier as it's only a grid with the twelve available months to pick from.
 
-##### Edge cases
+```tsx
+import { isSameMonth } from "date-fns"
+import { getMonthsName, formatDate } from "../../../../utils"
+import { useDatePicker } from "../../../Provider"
+import { AnimatedViewWrapper } from "../AnimatedViewWrapper"
+import { CalendarButton } from "../CalendarButton"
+import { CalendarText } from "../CalendarText"
+import { CalendarUnderline } from "../CalendarUnderline"
+
+export function MonthView() {
+  const { locale, state, handleSelectMonth } = useDatePicker()
+  const months = getMonthsName(locale, "short")
+
+  const isCurrentMonth = (monthIndex: number) =>
+    isSameMonth(new Date(), new Date(new Date().getFullYear(), monthIndex, 1))
+
+  const isSelected = (monthIndex: number) => {
+    const monthAsDate = new Date(state.calendarDate.getFullYear(), monthIndex, 1)
+    return state.value ? isSameMonth(state.value, monthAsDate) : false
+  }
+
+  const formatMonth = (monthIndex: number) => {
+    const monthAsDate = new Date(state.calendarDate.getFullYear(), monthIndex, 1)
+    return formatDate(monthAsDate, locale, { month: "long" })
+  }
+
+  return (
+    <div className="flex w-full flex-col">
+      <AnimatedViewWrapper motionKey={state.calendarDate.getFullYear()} slideDir={state.slideDir}>
+        <div className="grid grid-cols-3 gap-4 px-6 py-14 sm:px-4 sm:py-8">
+          {months.map((month, monthIndex) => (
+            <div
+              key={`month-${monthIndex}`}
+              className="relative flex h-[40px] w-[88px] items-center justify-center sm:w-[72px]"
+            >
+              <CalendarButton
+                onClick={() => handleSelectMonth(monthIndex)}
+                isSelected={isSelected(monthIndex)}
+                aria-label={formatMonth(monthIndex)}
+              >
+                <CalendarText variant={isSelected(monthIndex) ? "selected" : "regular"}>{month}</CalendarText>
+              </CalendarButton>
+              {isCurrentMonth(monthIndex) && <CalendarUnderline variant="other" />}
+            </div>
+          ))}
+        </div>
+      </AnimatedViewWrapper>
+    </div>
+  )
+}
+```
+
+However there is some complexity in handling how a user will change months, due to difference in months lengths.
+A nice trick is to leverage the fact that these edge cases happen at the end of the month, not at the beginning.
+Therefore, if we encounter a conflict, we can always set the date manually to the last days of the targetted month.
+
+```ts
+// Conflicts due to the differences in month number of days
+export const handleMonthChange = (currentDate: Date, nextMonthIndex: number) => {
+  const nextDate = new Date(currentDate)
+
+  nextDate.setMonth(nextMonthIndex)
+
+  /**
+   * If for some reason the new nextDate object getMonth() method
+   * doesn't return the same monthIndex as the one given then
+   * there was a date conflict, for example when moving from
+   * the 31 of march to the 28th of February
+   */
+  if (nextMonthIndex !== nextDate.getMonth()) {
+    // This trick allow us to the get the last day of the targeted month
+    return new Date(currentDate.getFullYear(), nextMonthIndex + 1, 0)
+  } else {
+    return nextDate
+  }
+}
+```
 
 #### Years view
 
-##### Year change
+The year view is also very simple UI wise, it pratically the same as the month view.
 
-##### Edge cases
+```tsx
+import { getYearsRange } from "../../../../utils"
+import { useDatePicker } from "../../../Provider"
+import { AnimatedViewWrapper } from "../AnimatedViewWrapper"
+import { CalendarButton } from "../CalendarButton"
+import { CalendarText } from "../CalendarText"
+import { CalendarUnderline } from "../CalendarUnderline"
+
+export function YearView() {
+  const { state, dispatch, handleSelectYear } = useDatePicker()
+  const years = getYearsRange(state.yearRange[0], state.yearRange[1])
+
+  const isCurrentYear = (year: number) => new Date().getFullYear() === year
+
+  const isSelected = (year: number) => (state.value ? state.value.getFullYear() === year : false)
+
+  return (
+    <div className="flex w-full flex-col">
+      <AnimatedViewWrapper
+        motionKey={state.yearRange[0]}
+        slideDir={state.slideDir}
+        drag
+        onDragLeft={() => dispatch({ type: "YEAR_VIEW_CHANGE", payload: "increment" })}
+        onDragRight={() => dispatch({ type: "YEAR_VIEW_CHANGE", payload: "decrement" })}
+      >
+        <div className="grid grid-cols-3 gap-4 px-6 py-14 sm:px-4 sm:py-8">
+          {years.map((year, yearIndex) => (
+            <div
+              key={`year-${yearIndex}`}
+              className="relative flex h-[40px] w-[88px] items-center justify-center sm:w-[72px]"
+            >
+              <CalendarButton
+                onClick={() => handleSelectYear(year)}
+                isSelected={isSelected(year)}
+                aria-label={String(year)}
+              >
+                <CalendarText variant={isSelected(year) ? "selected" : "regular"}>{year}</CalendarText>
+              </CalendarButton>
+              {isCurrentYear(year) && <CalendarUnderline variant="other" />}
+            </div>
+          ))}
+        </div>
+      </AnimatedViewWrapper>
+    </div>
+  )
+}
+```
+
+And in the same way that they were some edge cases when changing months, when changing years
+we've got to be aware of leap years. Fortunately for us, it's solved the same way we already solved the
+difference in months length.
+
+```ts
+// Leap year edge cases
+export const handleYearChange = (currentDate: Date, nextYear: number) => {
+  const nextDate = new Date(currentDate)
+
+  nextDate.setFullYear(nextYear)
+
+  /**
+   * If for some reason the new nextDate object getMonth() method
+   * doesn't return the same monthIndex as the current date
+   * there was a date conflict, for example when moving from
+   * the 29th of February 2020 to the 28th of February 2021
+   */
+  if (currentDate.getMonth() !== nextDate.getMonth()) {
+    // This trick allow us to the get the last day of the targeted month
+    return new Date(nextYear, currentDate.getMonth() + 1, 0)
+  } else {
+    return nextDate
+  }
+}
+```
 
 ## Animations
 
+Finally, the animations ! Where we get to add that finishing touch that makes the component truly nice to use.
+You might have noticed in the views components that they were wrapped by what I called an `AnimatedVievWrapper`.
+
+This component use framer-motion to handle both the slide animations and the drag gesture handling.
+
+```tsx
+import type { ReactNode } from "react"
+import type { PanInfo } from "framer-motion"
+import { AnimatePresence, motion } from "framer-motion"
+
+import type { State } from "../../Provider/Provider.types"
+import { useIsMobile } from "../../../utils"
+
+interface VariantFnParams {
+  slideDir: State["slideDir"]
+  animationValuesMap: AnimationValuesMap
+}
+
+const variants = {
+  enter: ({ slideDir, animationValuesMap }: VariantFnParams) => ({
+    x: animationValuesMap["enter"][slideDir],
+    opacity: 0,
+  }),
+  center: { x: 0, opacity: 1 },
+  exit: ({ slideDir, animationValuesMap }: VariantFnParams) => ({
+    x: animationValuesMap["exit"][slideDir],
+    opacity: 0,
+  }),
+}
+
+type AnimationValuesMap = Record<"enter" | "exit", Record<State["slideDir"], number>>
+
+interface AnimateWrapperProps {
+  motionKey: number
+  children: ReactNode
+  slideDir: State["slideDir"]
+  drag?: boolean
+  onDragRight?: () => void
+  onDragLeft?: () => void
+}
+
+export function AnimatedViewWrapper({
+  children,
+  slideDir,
+  motionKey,
+  drag,
+  onDragLeft,
+  onDragRight,
+}: AnimateWrapperProps) {
+  const isMobile = useIsMobile()
+
+  const width = isMobile ? 400 : 300
+
+  const animationValuesMap: AnimationValuesMap = {
+    enter: {
+      right: width,
+      left: -width,
+      none: 0,
+    },
+    exit: {
+      right: -width,
+      left: width,
+      none: 0,
+    },
+  }
+
+  const handleDrag = (_: MouseEvent | TouchEvent | PointerEvent, info: PanInfo) => {
+    if (info.offset.x < -75) {
+      onDragLeft && onDragLeft()
+    } else if (info.offset.x > 75) {
+      onDragRight && onDragRight()
+    }
+  }
+
+  return (
+    <div className="relative">
+      <AnimatePresence initial={false} custom={{ slideDir, animationValuesMap }}>
+        <motion.div
+          key={`${motionKey}-${slideDir}`}
+          style={{ position: "absolute", top: 0, width: "100%" }}
+          variants={variants}
+          initial="enter"
+          animate="center"
+          exit="exit"
+          custom={{ slideDir, animationValuesMap }}
+          transition={{ duration: 0.3, ease: "easeOut" }}
+          drag={isMobile && drag ? "x" : false}
+          dragMomentum={false}
+          dragConstraints={{ left: 75, right: 75 }}
+          onDragEnd={handleDrag}
+          dragSnapToOrigin
+        >
+          {children}
+        </motion.div>
+      </AnimatePresence>
+    </div>
+  )
+}
+```
+
 ### Slide animations
 
+The slide animations uses the `AnimatePresence` component from framer-motion to make the component children
+animate from left to right when the `slideDir` is `left` and the other way around when the `slideDir`
+is `right`. It handle both entering and exiting animations thanks for the variants we provide to the
+`motion.div` component.
+
+The `none` direction is used to prevent any sliding animations when we don't need it.
+
+It's very similar to the animations documented within the [framer-motion documentation](https://www.framer.com/docs/animate-presence/##exit-animations)
+and here again, we don't do anything particularly complicated, framer-motion does all the heavy lifting for us.
+
 ### Drag gestures
+
+The drag gesture support comes from the props given to the `motion.div`
+(`drag`, `dragMomentum`, `dragConstraints`, `onDragEnd` and `dragSnapeToOrigin`)
+and the on `onDragLeft` and `onDragRight` properties that are given to the `AnimatedViewWrapper`
+in the days and years views like so:
+
+```tsx
+<AnimatedViewWrapper
+  motionKey={state.calendarDate.getMonth()}
+  slideDir={state.slideDir}
+  drag
+  onDragLeft={() => dispatch({ type: "DAY_VIEW_CHANGE", payload: "increment" })}
+  onDragRight={() => dispatch({ type: "DAY_VIEW_CHANGE", payload: "decrement" })}
+>
+  {children}
+</AnimatedViewWrapper>
+```
+
+The trick is then really simple: on the dragEnd event, we trigger the slide animations which
+give the impression of one nice motion from the drag to the slide !
+
+Here again, framer-motion does the heavy lifting for us and we didn't invent anything new,
+just followed their [drag documentation](https://www.framer.com/docs/gestures/#drag).
+
+Congrats on making it to the end of this very long post,
+I hope you liked it !
