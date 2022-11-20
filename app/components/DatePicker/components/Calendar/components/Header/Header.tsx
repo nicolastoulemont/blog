@@ -28,6 +28,11 @@ export function Header({ calendarInitialRef }: HeaderProps) {
   const currentMonth = currentMonthRaw.charAt(0).toUpperCase() + currentMonthRaw.slice(1)
   const currentYear = state.calendarDate.getFullYear()
 
+  function handleViewNavigation(direction: "increment" | "decrement") {
+    const type = state.view === "days" ? "DAY_VIEW_CHANGE" : "YEAR_VIEW_CHANGE"
+    dispatch({ type: type, payload: direction })
+  }
+
   return (
     <div className="flex flex-row items-center justify-between border-b border-gray-300 pb-3">
       <div className="flex">
@@ -54,19 +59,13 @@ export function Header({ calendarInitialRef }: HeaderProps) {
           variant="left"
           aria-label={state.view === "days" ? previousMonthLabel : previousYearRangeLabel}
           disabled={state.view === "months"}
-          onClick={() => {
-            const type = state.view === "days" ? "DAY_VIEW_CHANGE" : "YEAR_VIEW_CHANGE"
-            dispatch({ type: type, payload: "decrement" })
-          }}
+          onClick={() => handleViewNavigation("decrement")}
         />
         <HeaderIconButton
           variant="right"
           disabled={state.view === "months"}
           aria-label={state.view === "days" ? nextMonthLabel : nextYearRangeLabel}
-          onClick={() => {
-            const type = state.view === "days" ? "DAY_VIEW_CHANGE" : "YEAR_VIEW_CHANGE"
-            dispatch({ type: type, payload: "increment" })
-          }}
+          onClick={() => handleViewNavigation("increment")}
         />
       </div>
     </div>
