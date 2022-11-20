@@ -1,7 +1,6 @@
-import { DatePickerProps } from "../../DatePicker.types"
-import { State } from "./Provider.types"
+import { DatePickerProviderProps, State } from "./Provider.types"
 
-export function init({ value }: Partial<DatePickerProps>): State {
+export function init({ value }: Partial<DatePickerProviderProps>): State {
   const calendarDate = value ?? new Date()
   return {
     /**
