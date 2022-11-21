@@ -1,20 +1,22 @@
+import React from "react"
 import { formatDate, getMonthDays, getWeekDaysName } from "../../../../utils"
 import { useDatePicker } from "../../../Provider"
+import { CalendarProps } from "../../Calendar"
 import { AnimatedViewWrapper } from "../AnimatedViewWrapper"
 import { DayCell, TableNavigationProvider } from "./components"
 
-interface DayViewProps {
-  onClose: () => void
+interface DayViewProps extends Pick<CalendarProps, "onClose" | "triggerRef"> {
+  headerLastBtnRef: React.RefObject<HTMLButtonElement>
 }
 
-export function DayView({ onClose }: DayViewProps) {
+export function DayView({ onClose, headerLastBtnRef, triggerRef }: DayViewProps) {
   const { locale, state, dispatch } = useDatePicker()
   const days = getWeekDaysName(locale, "short")
   const weeks = getMonthDays(state.calendarDate)
 
   return (
     <div className="h-[calc(100% - 8px)] w-full pt-2">
-      <TableNavigationProvider>
+      <TableNavigationProvider prevRef={headerLastBtnRef} afterRef={triggerRef}>
         <div className="grid w-full grid-cols-7 gap-2 px-1" aria-hidden>
           {days.map((day) => (
             <div

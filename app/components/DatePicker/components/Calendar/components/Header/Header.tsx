@@ -4,9 +4,11 @@ import { CalendarProps } from "../../Calendar"
 import { HeaderButton } from "./HeaderButton"
 import { HeaderIconButton } from "./HeaderIconButton"
 
-type HeaderProps = Pick<CalendarProps, "calendarInitialRef">
+type HeaderProps = Pick<CalendarProps, "calendarInitialRef"> & {
+  headerLastBtnRef: React.RefObject<HTMLButtonElement>
+}
 
-export function Header({ calendarInitialRef }: HeaderProps) {
+export function Header({ calendarInitialRef, headerLastBtnRef }: HeaderProps) {
   const { state, dispatch, locale } = useDatePicker()
   const monthsNames = getMonthsName(locale)
   const currentMonthRaw = monthsNames[state.calendarDate.getMonth()]
@@ -66,6 +68,7 @@ export function Header({ calendarInitialRef }: HeaderProps) {
           disabled={state.view === "months"}
           aria-label={state.view === "days" ? nextMonthLabel : nextYearRangeLabel}
           onClick={() => handleViewNavigation("increment")}
+          ref={headerLastBtnRef}
         />
       </div>
     </div>

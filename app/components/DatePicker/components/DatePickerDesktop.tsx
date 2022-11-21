@@ -37,7 +37,7 @@ export function DatePickerDesktop() {
               leaveTo="transform scale-95 opacity-0"
             >
               <Popover.Panel className="absolute z-50 mt-3 rounded-2xl shadow-xl dark:shadow-2xl">
-                <Calendar calendarInitialRef={calendarInitialRef} onClose={() => close(btnRef)} />
+                <Calendar calendarInitialRef={calendarInitialRef} triggerRef={btnRef} onClose={() => close(btnRef)} />
               </Popover.Panel>
             </Transition>
           </>
