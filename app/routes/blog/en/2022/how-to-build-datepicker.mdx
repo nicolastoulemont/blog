@@ -19,18 +19,18 @@ _*With nice animations and gesture support for mobile users*_
 
 <PostIntro publishedAt="November 20th 2022" categories={["React", "Animations"]} />
 
-Firstly, you should probably not build one from scratch. Instead you should probably use the native html one or an open source one ([Material UI](https://mui.com/x/react-date-pickers/getting-started/), [Mantine UI](https://mantine.dev/dates/date-picker/)) as building a datepicker is fairly complicated and with some edge cases.
+Firstly, you should probably not build one from scratch. Instead, you should probably use the native HTML one or an open source one ([Material UI](https://mui.com/x/react-date-pickers/getting-started/), [Mantine UI](https://mantine.dev/dates/date-picker/)) as building a datepicker is fairly complicated and with some edge cases.
 
 Secondly, to give credits where they're due, the datepicker we're gonna build has been inspired in some ways by [Mantine UI](https://mantine.dev/dates/date-picker/) on the technical side and on the design side by the datepicker I have been building at my day job _*(I'm a design system engineer at the moment)*_ with the help of [Sylvie NGuyen](https://www.linkedin.com/in/ssilbing/).
-But we're still going to build something a little bit different tho !
+But we're still going to build something a little bit different tho!
 
 Thirdly, we will build our datepicker with the following stuff: [React](https://reactjs.org/), [HeadlessUI](https://headlessui.com/), [tailwindcss](https://tailwindcss.com/) and [framer-motion](https://www.framer.com/motion/).
-And because this blog has a fancy dark mode, the datepicker will have one as well !
+And because this blog has a fancy dark mode, the datepicker will have one as well!
 
 ## What we're going to build
 
-The datepicker we're going to build will enable users to fill a readonly input via a calendar UI.
-It will not allow users to type a date within the input as well as using the calendar UI as this is a weekend project and I want to keep it relatively simple :)
+The datepicker we're going to build will enable users to fill in a read-only input via a calendar UI.
+It will not allow users to type a date within the input as well as use the calendar UI as this is a weekend project and I want to keep it relatively simple :)
 
 <Container>
   <DatePickerDemo />
@@ -40,11 +40,11 @@ It will not allow users to type a date within the input as well as using the cal
 
 ## Overall structure
 
-Our DatePicker behaves differently whenever the user is on small screen or a larger one.
+Our DatePicker behaves differently whenever the user is on a small screen or a larger one.
 It also has three main sub-components:
 
 - a context provider where we will handle the datepicker state (value, views, animations directions, etc.)
-- a readonly input to show an easily readable date value to the user once one has been selected
+- a read-only input to show an easily readable date value to the user once one has been selected
 - a Calendar UI to enable the user to navigate easily across months and years to pick a date.
 
 We will mostly focus on the UI code _(it would be too long otherwise)_, for the utility functions please read the [source](https://github.com/nicolastoulemont/blog/tree/main/app/components/DatePicker/DatePicker.tsx).
@@ -53,10 +53,10 @@ We will mostly focus on the UI code _(it would be too long otherwise)_, for the 
 
 The adaptive behavior leverage two headlessUI components: the [Popover](https://headlessui.com/react/popover) (large screens) and the [Dialog](https://headlessui.com/react/dialog) (small screens).
 They're used to display the calendar UI is a way that makes sense for each type of user (mobile vs desktop).
-The idea is to show the calendar UI close to the user input device so that interacting with it feel easy and natural:
+The idea is to show the calendar UI close to the user input device so that interacting with it feels easy and natural:
 
 - on a **desktop** device that means close to the **mouse pointer**, so the popover will show the calendar UI just under the input with which the user just interacted.
-- on a **mobile** device that means close to the **user fingers**, so most likely at the bottom of the screen (like in the recent IOS 16 lock screen that put notifications at the bottom of the screen).
+- on a **mobile** device that means close to the **user's fingers**, so most likely at the bottom of the screen (like in the recent IOS 16 lock screen that put notifications at the bottom of the screen).
 
 ```tsx
 import { DatePickerProps } from "./DatePicker.types"
@@ -73,10 +73,10 @@ export function DatePicker(props: DatePickerProps) {
 
 #### Within a popover on large screens
 
-Here we're not looking to make anything special, but only to use the headless ui popover with our input and calendar UI.
+Here we're not looking to make anything special, but only to use the headless UI popover with our input and calendar UI.
 
-A first small tradeoff that we've to make here is to split our `Input` component into 3 sub-components (`InputContainer`, `InputLabel` and `Input`)
-so that the `Popover.Button` component can only wrap the input and not the label or the container which would lead some ugly focus ring wrapping everything.
+A first small tradeoff that we've to make here is to split our `Input` component into 3 sub-components (`InputContainer`, `InputLabel`, and `Input`)
+so that the `Popover.Button` component can only wrap the input and not the label or the container which would lead to some ugly focus ring wrapping everything.
 
 We also prevent the user from accessing the input itself with a `tabIndex:-1` property on the input, which we can safely do since the input itself is `readonly`.
 This way, we allow the `Popover.Button` to be the only element in the DOM focusable instead of the input itself.
@@ -135,8 +135,8 @@ export function DatePickerDesktop() {
 #### Within a modal container on mobile screens
 
 Same as with the desktop behavior, we're not looking to make anything special here, only leverage the headless UI `Dialog`
-for our use case. Since the `Dialog` does a little less that the `Popover`, it doesn't have a `Dialog.Button` after all,
-we've to handle a bit more stuff here (open / close, focus and event handling on the `Input` component).
+for our use case. Since the `Dialog` does a little less than the `Popover`, it doesn't have a `Dialog.Button` after all,
+we've to handle a bit more stuff here (open/close, focus, and event handling on the `Input` component).
 
 ```tsx
 import { Dialog, Transition } from "@headlessui/react"
@@ -216,8 +216,8 @@ export function DatePickerMobile() {
 
 ### The context provider
 
-In order to manage our datepicker internal state, we will use a context provider.
-Our internal state is fairly simple in itself as this `init` function which return the initial `state` object shows.
+To manage our datepicker internal state, we will use a context provider.
+Our internal state is fairly simple in itself as this `init` function which returns the initial `state` object shows.
 
 ```ts
 import { DatePickerProviderProps, State } from "./Provider.types"
@@ -241,7 +241,7 @@ export function init({ value }: Partial<DatePickerProviderProps>): State {
      */
     slideDir: "none",
     /**
-     * Used to manage fill the year view
+     * Used to manage the year view
      */
     yearRange: [new Date().getFullYear() - 2, new Date().getFullYear() + 9],
   }
@@ -255,16 +255,16 @@ and [Provider](https://github.com/nicolastoulemont/blog/tree/main/app/components
 
 ### Input
 
-The input is really simple as its a presentational component to show a value to the user.
-In the same manner as above, there is little added value in show you the code here, so instead
+The input is really simple as it's a presentational component to show a value to the user.
+In the same manner, as above, there is little added value in showing you the code here, so instead
 feel free to take a look at it [yourself](https://github.com/nicolastoulemont/blog/tree/main/app/components/DatePicker/components/Input/Input.tsx)
 
-Our only **_unusual_** stuff in the `Input` is that we use an `hidden` input with a value in the `YYYY-MM-DD` ISO8601 string format if a `name` property is provided to the datepicker
-aside from the readonly input. This enable the datepicker to be used in an un-controlled way as well.
+Our only **_unusual_** stuff in the `Input` is that we use a `hidden` input with a value in the `YYYY-MM-DD` ISO8601 string format if a `name` property is provided to the datepicker
+aside from the read-only input. This enables the datepicker to be used in an uncontrolled way as well.
 
 ### Calendar UI
 
-The calendar UI is where the magic happens. It also where most of the fancy stuff is but
+The calendar UI is where the magic happens. It is also where most of the fancy stuff is but
 its structure itself is fairly simple:
 
 - a header to show:
@@ -277,7 +277,7 @@ its structure itself is fairly simple:
 
 #### Calendar header
 
-The calendar header is fairly simple UI wise, its a row of buttons with some nice accessibility labels for screen readers users.
+The calendar header is fairly simple UI-wise, it's a row of buttons with some nice accessibility labels for screen readers users.
 
 ```tsx
 import { formatDate, getMonthsName } from "../../../../utils"
@@ -357,18 +357,18 @@ export function Header({ calendarInitialRef }: HeaderProps) {
 
 #### Days view
 
-The days view is probably the most tricky view on the lot. But overall, its still about rendering enough days to always show 6 weeks
+The days view is probably the most tricky view on the lot. But overall, it's still about rendering enough days to always show 6 weeks
 (and therefore 6 rows) worth of days so that whatever the number of days available in a month, the day view height
 would stay constant.
 
-The most tricky part was that I wanted to keep using an html `table` but also didn't wanted to animate the `thead` content.
-This could have been an issue because table related stylings only apply correctly if the table node tree is only composed
-of table related element from the `table` container to the `td` leaf. Inserting other elements to handle animations
-would prevent me from using table related stylings.
+The most tricky part was that I wanted to keep using an HTML `table` but also didn't want to animate the `thead` content.
+This could have been an issue because table-related stylings only apply correctly if the table node tree is only composed
+of table-related element from the `table` container to the `td` leaf. Inserting other elements to handle animations
+would prevent me from using table-related stylings.
 
 I ended up using the whole table node tree within my animation wrapper component but with the `thead` content only visible to screen readers
 and another row of regular `div`, hidden to screen readers but visible to others.
-This solution, while certainly not perfect, allowed me to get both the animation that I wanted and respect the html spec.
+This solution, while certainly not perfect, allowed me to get both the animation that I wanted and respect the HTML spec.
 
 ```tsx
 import { formatDate, getMonthDays, getWeekDaysName } from "../../../../utils"
@@ -411,10 +411,10 @@ export function DayView({ onClose }: DayViewProps) {
             <thead
               className="sr-only"
               /** HTML table requires a clean table element only HTML tree hierarchy to apply their styles, 
-              /* this prevent us from inserting the AnimatedViewWrapper within the table, between the thead and the tbody
+              /* this prevents us from inserting the AnimatedViewWrapper within the table, between the thead and the tbody
               /* to only animate the movement of the days cells, keep the thead content (which doesn't change) static.
-              /* This is a work around, keeping the thead visible to screen reader only and using divs hidden from the screen readers
-              /* for the "table header" visible to non screen readers users.
+              /* This is a workaround, keeping the thead visible to the screen readers only and using divs hidden from the screen readers
+              /* for the "table header" visible to non-screen readers users.
               */
             >
               <tr>
@@ -448,10 +448,10 @@ export function DayView({ onClose }: DayViewProps) {
 }
 ```
 
-You might also have notice the `TableNavigationProvider` component wrapping the days table. This context provider is
+You might also have noticed the `TableNavigationProvider` component wrapping the days table. This context provider is
 used to handle keyboard navigation within the table with the arrow keys. It's used with the `DayCell` component
 to create a matrix of `ref` of the buttons within the days table body.
-The event handler then focus the right ref based on location (rowIndex, colIndex) of the event source.
+The event handler then focuses right ref based on the location (rowIndex, colIndex) of the event source.
 
 ```tsx
 import { KeyboardEvent, useRef } from "react"
@@ -575,12 +575,12 @@ export function DayCell({ day, rowIndex, colIndex, onClose }: DayCellProps) {
 }
 ```
 
-I must admit that I didn't come with that idea myself, and shameless took it from [Mantine UI](https://mantine.dev/dates/date-picker/),
-with some changes to match how I wanted to use it. There are certainly other ways to do this tho !
+I must admit that I didn't come up with that idea myself, and shamelessly took it from [Mantine UI](https://mantine.dev/dates/date-picker/),
+with some changes to match how I wanted to use it. There are certainly other ways to do this tho!
 
 #### Months view
 
-The month view is a lot simplier as it's only a grid with the twelve available months to pick from.
+The month view is a lot simpler as it's only a grid with the twelve available months to pick from.
 
 ```tsx
 import { isSameMonth } from "date-fns"
@@ -634,12 +634,12 @@ export function MonthView() {
 }
 ```
 
-However there is some complexity in handling how a user will change months, due to difference in months lengths.
+However, there is some complexity in handling how a user will change months, due to differences in month lengths.
 A nice trick is to leverage the fact that these edge cases happen at the end of the month, not at the beginning.
 Therefore, if we encounter a conflict, we can always set the date manually to the last days of the targetted month.
 
 ```ts
-// Conflicts due to the differences in month number of days
+// Conflicts due to the differences in a month number of days
 export const handleMonthChange = (currentDate: Date, nextMonthIndex: number) => {
   const nextDate = new Date(currentDate)
 
@@ -662,7 +662,7 @@ export const handleMonthChange = (currentDate: Date, nextMonthIndex: number) => 
 
 #### Years view
 
-The year view is also very simple UI wise, it pratically the same as the month view.
+The year view is also very simple UI-wise, it is pratically the same as the month view.
 
 ```tsx
 import { getYearsRange } from "../../../../utils"
@@ -740,7 +740,7 @@ export const handleYearChange = (currentDate: Date, nextYear: number) => {
 
 ## Animations
 
-Finally, the animations ! Where we get to add that finishing touch that makes the component truly nice to use.
+Finally, the animations! Where we get to add that finishing touch that makes the component truly nice to use.
 You might have noticed in the views components that they were wrapped by what I called an `AnimatedVievWrapper`.
 
 This component use framer-motion to handle both the slide animations and the drag gesture handling.
@@ -842,9 +842,9 @@ export function AnimatedViewWrapper({
 
 ### Slide animations
 
-The slide animations uses the `AnimatePresence` component from framer-motion to make the component children
+The slide animations use the `AnimatePresence` component from framer-motion to make the component children
 animate from left to right when the `slideDir` is `left` and the other way around when the `slideDir`
-is `right`. It handle both entering and exiting animations thanks for the variants we provide to the
+is `right`. It handles both entering and exiting animations thanks to the variants we provide to the
 `motion.div` component.
 
 The `none` direction is used to prevent any sliding animations when we don't need it.
@@ -872,10 +872,10 @@ in the days and years views like so:
 ```
 
 The trick is then really simple: on the dragEnd event, we trigger the slide animations which
-give the impression of one nice motion from the drag to the slide !
+give the impression of one nice motion from the drag to the slide!
 
 Here again, framer-motion does the heavy lifting for us and we didn't invent anything new,
 just followed their [drag documentation](https://www.framer.com/docs/gestures/#drag).
 
 Congrats on making it to the end of this very long post,
-I hope you liked it !
+I hope you liked it!
