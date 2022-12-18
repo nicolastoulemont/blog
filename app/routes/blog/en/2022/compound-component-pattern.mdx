@@ -1,0 +1,67 @@
+---
+date: "2022-12-17"
+cardImage: "/img/couches.png"
+title: "The compound component pattern"
+snippet: "A flexible component authoring pattern to give consumers a flexible composition based API"
+description: "A flexible component authoring pattern to give consumers a flexible composition based API"
+imagePath: "/img/couches.png"
+imageAlt: "Layers"
+imageWidth: "256"
+imageHeight: "256"
+categories: ["React", "Architecture"]
+---
+
+import { PostIntro, Container, AccordionDemo } from "~/components"
+
+# The compound component pattern
+
+_*A flexible component authoring pattern to give consumers a flexible composition based API*_
+
+<PostIntro publishedAt="December 18th 2022" categories={["React", "Architecture"]} />
+
+Compound components are component that share a common context to work together to perform one or more given task(s).
+They work by exposing a declarative API leaving the consumer compose them to achieve their goal.
+This is in contrast to components with an imperative API that usually require more extensive configuration properties to
+then handle their task internally.
+
+## What we're going to build
+
+<Container>
+  <AccordionDemo />
+</Container>
+
+Which has the following API
+
+```tsx
+function AccordionDemo() {
+  return (
+    <Accordion.Root>
+      <Accordion.Header>
+        Header content
+        <Accordion.Icon />
+      </Accordion.Header>
+      <Accordion.Panel>Panel content</Accordion.Panel>
+    </Accordion.Root>
+  )
+}
+```
+
+## A shared common context
+
+### Concept
+
+### React implementation
+
+## Small single purpose components
+
+### Header
+
+### Icon
+
+### Panel
+
+## Conclusion
+
+### Pros
+
+### Cons
