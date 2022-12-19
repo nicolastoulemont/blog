@@ -1,9 +1,9 @@
 ---
-date: "2022-12-17"
+date: "2022-12-19"
 cardImage: "/img/couches.png"
 title: "The compound component pattern"
-snippet: "A flexible component authoring pattern to give consumers a flexible composition based API"
-description: "A flexible component authoring pattern to give consumers a flexible composition based API"
+snippet: "A flexible component authoring pattern to give consumers a composition-based API"
+description: "A flexible component authoring pattern to give consumers a composition-based API"
 imagePath: "/img/couches.png"
 imageAlt: "Layers"
 imageWidth: "256"
@@ -15,14 +15,13 @@ import { PostIntro, Container, AccordionDemo } from "~/components"
 
 # The compound component pattern
 
-_*A flexible component authoring pattern to give consumers a flexible composition based API*_
+_*A flexible component authoring pattern to give consumers a composition-based API*_
 
-<PostIntro publishedAt="December 18th 2022" categories={["React", "Architecture"]} />
+<PostIntro publishedAt="December 19th 2022" categories={["React", "Architecture"]} />
 
-Compound components are component that share a common context to work together to perform one or more given task(s).
-They work by exposing a declarative API leaving the consumer compose them to achieve their goal.
-This is in contrast to components with an imperative API that usually require more extensive configuration properties to
-then handle their task internally.
+Compound components are components that share a common context to work together to perform one or more given task(s).
+They work by exposing a declarative API leaving the consumer to compose them to achieve their goal.
+This is in contrast to components with an imperative API that usually requires more extensive configuration properties to handle their task internally.
 
 ## What we're going to build
 
@@ -33,6 +32,8 @@ then handle their task internally.
 Which has the following API
 
 ```tsx
+import * as Accordion from "./Accordion"
+
 function AccordionDemo() {
   return (
     <Accordion.Root>
@@ -46,22 +47,269 @@ function AccordionDemo() {
 }
 ```
 
-## A shared common context
+## A shared context
+
+To orchestrate the multiple components' behavior, they need a way to share
+information between each other.
 
 ### Concept
 
+Scoped information sharing can be implemented in multiple ways but the core idea is to:
+
+- Share observable information between subscribers to that information
+- This information is scoped to its required subscribers and can be manipulated via an API, either by the subscribers or
+  other defined external setters.
+
 ### React implementation
 
-## Small single purpose components
+[ReactJS](https://beta.reactjs.org/) proposes a native API to handle such use cases: the [Context API](https://beta.reactjs.org/apis/react/useContext).
+
+In our case, we will use the context API to handle the accordion open/close state and make it available for subscriptions by
+others accordion components.
+
+```tsx
+import { createContext, useContext, useState } from "react"
+
+import type { AccordionRootProps } from "./Accordion.Root"
+
+interface AccordionContextValues extends Omit<AccordionRootProps, "children"> {
+  id: string
+  isOpen: boolean
+  onToggleChange: () => void
+}
+
+export const AccordionContext = createContext<AccordionContextValues | null>(null)
+
+export const useAccordion = () => {
+  const context = useContext(AccordionContext)
+
+  if (!context) {
+    throw new Error("useAccordionContext must be used within a AccordionProvider")
+  }
+
+  return context
+}
+
+type AccordionProviderProps = AccordionRootProps & { id: string }
+
+export const Provider = ({ children, isOpen: isOpenProps = false, onChange, ...props }: AccordionProviderProps) => {
+  const [isOpen, setIsOpen] = useState(isOpenProps)
+
+  const onToggleChange = () => {
+    setIsOpen((isOpen) => {
+      onChange && onChange(!isOpen)
+
+      return !isOpen
+    })
+  }
+
+  return <AccordionContext.Provider value={{ ...props, isOpen, onToggleChange }}>{children}</AccordionContext.Provider>
+}
+```
+
+We will then use it within our `Accordion.Root` component that will wrap our other components with the purpose of making the shared
+the information available for others and applying some container styles to the accordion.
+
+```tsx
+import { ReactNode, useId, forwardRef } from "react"
+import type { ComponentProps } from "react"
+import clsx from "clsx"
+
+import { Provider } from "./Accordion.Provider"
+
+type WrapperDivProps = Omit<ComponentProps<"div">, "onChange">
+
+export interface AccordionRootProps extends WrapperDivProps {
+  children: ReactNode
+  isOpen?: boolean
+  onChange?: (isOpen: boolean) => void
+}
+
+export const Root = forwardRef<HTMLDivElement, AccordionRootProps>(function Root(
+  { children, isOpen, onChange, className, ...props },
+  ref
+) {
+  const id = useId()
+
+  return (
+    <Provider isOpen={isOpen} onChange={onChange} id={id}>
+      <div
+        ref={ref}
+        {...props}
+        className={clsx(
+          "rounded-2xl border border-solid border-gray-200 shadow-sm transition-shadow duration-300 hover:shadow-md",
+          className
+        )}
+      >
+        {children}
+      </div>
+    </Provider>
+  )
+})
+```
+
+## Small single-purpose components
+
+With the shared state handled by our `Accordion.Root` component, we need to make the other components that compose our Accordion.
+With composition, flexibility, and extensivity in mind, we will make these components as simple to use as possible, with some [basic accessibility in mind](https://www.w3.org/WAI/ARIA/apg/example-index/accordion/accordion).
 
 ### Header
 
+Our header component is a styled button that triggers the open/close state of the accordion.
+As such, it's pretty simple, especially since the open/close logic is handled by the context provider.
+
+```tsx
+import clsx from "clsx"
+import { ComponentProps, forwardRef } from "react"
+
+import { useAccordion } from "./Accordion.Provider"
+
+export type AccordionHeaderProps = ComponentProps<"button">
+
+export const Header = forwardRef<HTMLButtonElement, AccordionHeaderProps>(function Header(
+  { children, className, ...props },
+  ref
+) {
+  const { isOpen, onToggleChange, id } = useAccordion()
+
+  return (
+    <h3 className="w-full">
+      <button
+        ref={ref}
+        id={id}
+        aria-controls={`panel-${id}`}
+        aria-expanded={isOpen}
+        onClick={onToggleChange}
+        className={clsx(
+          "flex w-full flex-grow items-center justify-between rounded-t-2xl p-4 ",
+          isOpen && "border-b border-gray-200",
+          !isOpen && "rounded-b-2xl",
+          className
+        )}
+        {...props}
+      >
+        {children}
+      </button>
+    </h3>
+  )
+})
+```
+
 ### Icon
+
+Our icon component is a purely decorative one that serves as a visual indicator of the opening capacity of the accordion when
+in its closed state.
+
+```tsx
+import { motion } from "framer-motion"
+import { ComponentProps, forwardRef } from "react"
+import { ChevronDownIcon } from "@heroicons/react/24/solid"
+import clsx from "clsx"
+
+import { useAccordion } from "./Accordion.Provider"
+
+export type AccordionIconProps = Omit<
+  ComponentProps<"svg">,
+  "onAnimationStart" | "onDragStart" | "onDragEnd" | "onDrag" | "ref"
+>
+
+const MotionChevronDownIcon = motion(ChevronDownIcon)
+
+export const Icon = forwardRef<SVGSVGElement, AccordionIconProps>(function ({ className, ...props }, ref) {
+  const { isOpen } = useAccordion()
+
+  return (
+    <MotionChevronDownIcon
+      animate={{ rotate: isOpen ? 90 : 0, transition: { duration: 0.3 } }}
+      ref={ref}
+      className={clsx("h-4 w-4 text-slate-800 dark:text-white", className)}
+      {...props}
+    />
+  )
+})
+```
 
 ### Panel
 
+Our panel component is fairly simple as well. It contains the elements that we want to show/hide
+based on the open/closed state of our accordion. Therefore, in our implementation, it's just a subscriber to our shared state with an animated open/close behavior.
+
+```tsx
+import { motion } from "framer-motion"
+import { ComponentProps, forwardRef } from "react"
+import clsx from "clsx"
+
+import { useAccordion } from "./Accordion.Provider"
+
+export type AccordionPanelProps = Omit<
+  ComponentProps<"div">,
+  "onAnimationStart" | "onDragStart" | "onDragEnd" | "onDrag" | "ref"
+>
+
+const variants = {
+  open: { opacity: 1, height: "auto" },
+  closed: { opacity: 0, height: 0 },
+}
+
+export const Panel = forwardRef<HTMLDivElement, AccordionPanelProps>(function Panel(
+  { children, className, ...props },
+  ref
+) {
+  const { isOpen, id } = useAccordion()
+
+  return (
+    <motion.div
+      ref={ref}
+      id={`panel-${id}`}
+      initial={isOpen ? "open" : "closed"}
+      animate={isOpen ? "open" : "closed"}
+      variants={variants}
+      transition={{ duration: 0.3 }}
+      role="region"
+      aria-hidden={!isOpen}
+      className={clsx("overflow-hidden", className)}
+      {...props}
+    >
+      {children}
+    </motion.div>
+  )
+})
+```
+
 ## Conclusion
+
+With all these components built, our export contract will be simple as well:
+
+```tsx
+// Accordion.tsx
+export { Header } from "./components/Accordion.Header"
+export { Icon } from "./components/Accordion.Icon"
+export { Panel } from "./components/Accordion.Panel"
+export { Root } from "./components/Accordion.Root"
+
+// Consumer file
+import * as Accordion from "./Accordion"
+```
+
+So looking back at this authoring pattern, what are its PROs and CONs:
 
 ### Pros
 
+- Single responsibility components
+- Flexible component usage
+- Component extensibility
+
 ### Cons
+
+- Slightly harder to build for beginners
+- The added flexibility and extensibility mean that the consumers can shoot themselves in the foot
+  more easily
+
+To conclude, this authoring pattern makes a lot of sense for a lot of UI components since product UI
+evolves quickly and the added flexibility and extensibility will avoid internalizing the product evolution
+over time.
+
+But it's a not solution that makes sense for all UI components.
+Some specific UI components (Datepickers for example) require so much tight coupling between the inner-components
+that adding too much flexibility provides a greater risk of the consumers shooting themselves in the foot than
+properly handling their needs by extending the component.
