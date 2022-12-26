@@ -8,7 +8,7 @@ import { getType, HeadingType } from "./headingId.server"
 import { ElementProps } from "~/components/TableOfContent/types"
 import GithubSlugger from "github-slugger"
 
-function getPosts(lang?: "en" | "fr"): PostMetaData[] {
+export function getAll(lang?: "en" | "fr"): PostMetaData[] {
   const filePaths = getFilesPath(path.join(process.cwd(), "app", "routes", "blog"))
 
   const publishedPosts = filePaths
@@ -49,13 +49,13 @@ function getPosts(lang?: "en" | "fr"): PostMetaData[] {
   }
 }
 
-function searchPosts(input: string) {
+export function search(input: string) {
   const hits = []
   const query = input.toLowerCase()
 
   const match = (str: string) => str.toLowerCase().includes(query)
 
-  for (const post of getPosts("en")) {
+  for (const post of getAll("en")) {
     const hit = match(post.title) || match(post.description) || post.categories.some((category) => match(category))
     if (hit) {
       hits.push(post)
@@ -65,8 +65,8 @@ function searchPosts(input: string) {
   return hits
 }
 
-function getPostBySlug(slug: string) {
-  const posts = getPosts()
+export function getBySlug(slug: string) {
+  const posts = getAll()
   const post = posts.find((post) => post.slug.includes(slug))
 
   if (!post) {
@@ -74,10 +74,4 @@ function getPostBySlug(slug: string) {
   }
 
   return post
-}
-
-export const list = {
-  get: getPosts,
-  search: searchPosts,
-  getBySlug: getPostBySlug,
 }
