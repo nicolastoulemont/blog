@@ -36,8 +36,10 @@ export function useTableOfContent({ elementIds, OFFSET_TOP = 90 }: useTableOfCon
           }
           index += 1
         } else {
-          console.log(elements)
-          throw new Error("Invalid heading id in this page")
+          if (process.env.NODE_ENV !== "production") {
+            console.log(elements)
+            throw new Error("Invalid heading id in this page")
+          }
         }
       }
 
