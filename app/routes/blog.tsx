@@ -1,46 +1,31 @@
-import { Outlet, useLoaderData } from "@remix-run/react"
+import { Outlet, useLoaderData, useLocation } from "@remix-run/react"
 import { motion } from "framer-motion"
 import * as Posts from "~/utils/files"
-import { Card, DesktopTableOfContent, MobileTableOfContent, Tag } from "~/components"
+import { Card, DesktopTableOfContent, MobileTableOfContent } from "~/components"
 import { CATEGORY_COLOR_REGISTRY } from "~/utils/styles"
-import { MetaFunction } from "@remix-run/node"
 import { PostMetaData } from "~/utils/files/types"
+import { useMemo } from "react"
 
 const isSameLanguage = (suggestion: PostMetaData, post: PostMetaData) => suggestion.lang === post.lang
 const isNotTargetPost = (suggestion: PostMetaData, post: PostMetaData) => suggestion.title !== post.title
 const hasCommonCategory = (suggestion: PostMetaData, post: PostMetaData) =>
   post.categories.some((category) => suggestion.categories.includes(category))
 
-export const loader = ({ request }: { request: Request }) => {
-  const slug = `/blog${request.url.split("/blog")[1]}`
-  const post = Posts.getBySlug(slug)
-  const suggestions = Posts.getAll().filter(
-    (sug) => isSameLanguage(sug, post) && isNotTargetPost(sug, post) && hasCommonCategory(sug, post)
-  )
-
-  return { post, suggestions }
-}
-
-export const meta: MetaFunction = ({ data: { post } }: { data: { post: PostMetaData } }) => {
-  const canonical = `https://nicolastoulemont.dev${post.slug}`
-  return {
-    canonical,
-    "og:url": canonical,
-    "og:type": "article",
-    title: post.title,
-    "og:title": post.title,
-    description: post.description,
-    "og:description": post.description,
-    "og:image": post.imagePath,
-    "og:image:width": post.imageWidth,
-    "og:image:height": post.imageHeight,
-    "og:image:alt": post.imageAlt,
-    "article:published_time": post.date,
-  }
-}
+export const loader = () => ({ posts: Posts.getAll() })
 
 export default function BlogContainer() {
-  const { post, suggestions } = useLoaderData<typeof loader>()
+  const { posts } = useLoaderData<typeof loader>()
+  const location = useLocation()
+
+  const { post, suggestions } = useMemo(() => {
+    const [post] = posts.filter((post) => post.slug === location.pathname)
+
+    const suggestions = posts.filter(
+      (suggestion) =>
+        isSameLanguage(suggestion, post) && isNotTargetPost(suggestion, post) && hasCommonCategory(suggestion, post)
+    )
+    return { post, suggestions }
+  }, [location.pathname])
 
   const activeColor = CATEGORY_COLOR_REGISTRY[post.categories[0]]
 

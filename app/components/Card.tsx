@@ -27,7 +27,7 @@ export function Card({ post }: { post: PostMetaData }) {
               ))}
             </div>
 
-            <p className="ml-3 text-xs">{post.date}</p>
+            <p className="ml-3 text-xs">{post["article:published_time"]}</p>
           </div>
 
           <p className="text-sm">{post.description}</p>
@@ -35,10 +35,10 @@ export function Card({ post }: { post: PostMetaData }) {
         <div className="my-6 flex w-full items-center justify-center md:w-14  md:py-0">
           <img
             className="mx-auto w-24 md:mx-0 md:w-14"
-            src={post.imagePath}
-            width={post.imageWidth}
-            height={post.imageHeight}
-            alt={post.imageAlt}
+            src={post["og:image"]}
+            alt={post["og:image:alt"]}
+            width={post["og:image:width"]}
+            height={post["og:image:height"]}
           />
         </div>
       </Link>

@@ -32,15 +32,18 @@ export function getAll(lang?: "en" | "fr"): PostMetaData[] {
         }) ?? []
 
       return {
-        ...data,
-        ...(data.translation && { translationSlug: slug?.replace(/\/en\//, "/fr/") }),
-        lang: slug.includes("/en/") ? "en" : ("fr" as "en" | "fr"),
+        categories: data.categories,
         headings,
         slug,
-      }
+        ...data.meta,
+        ...(data.translation && { translationSlug: slug?.replace(/\/en\//, "/fr/") }),
+        lang: slug.includes("/en/") ? "en" : ("fr" as "en" | "fr"),
+      } as PostMetaData
     })
-    .filter((post) => isValid(new Date(post.date)))
-    .sort((a, b) => (new Date(b.date).getTime() > new Date(a.date).getTime() ? 1 : -1))
+    .filter((post) => isValid(new Date(post["article:published_time"])))
+    .sort((a, b) =>
+      new Date(b["article:published_time"]).getTime() > new Date(a["article:published_time"]).getTime() ? 1 : -1
+    )
 
   if (lang) {
     return publishedPosts.filter((post) => post.lang === lang)

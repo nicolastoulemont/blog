@@ -1,34 +1,32 @@
 import { ElementProps } from "~/components/TableOfContent/types"
 import type { CategoryNames } from "~/utils/styles/categories"
 
-export interface PostMetaData {
+interface MetaData {
+  canonical: string
+  "og:url": string
   title: string
-  date: string | "not_published"
-  slug: string
-  snippet: string
+  "og:title": string
   description: string
-  imagePath: string
-  imageAlt: string
-  imageWidth: string
-  imageHeight: string
+  "og:description": string
+  "og:type": string
+  "og:image": string
+  "og:image:alt": string
+  "og:image:width": string
+  "og:image:height": string
+  "article:published_time": string | "not_published"
+}
+
+export interface PostMatterData {
+  meta: MetaData
+  categories: [CategoryNames]
+  translation?: "fr" | "en"
+}
+
+export interface PostMetaData extends MetaData {
+  slug: string
   categories: [CategoryNames]
   translation?: "fr"
   lang: "en" | "fr"
   translationSlug?: string
   headings: ElementProps[]
 }
-
-export type PostMatterData = Pick<
-  PostMetaData,
-  | "date"
-  | "description"
-  | "categories"
-  | "imageAlt"
-  | "imagePath"
-  | "imageHeight"
-  | "imageWidth"
-  | "snippet"
-  | "title"
-  | "translation"
-  | "translationSlug"
->
