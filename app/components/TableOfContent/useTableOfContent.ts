@@ -17,7 +17,7 @@ export function useTableOfContent({ elementIds, OFFSET_TOP = 90 }: useTableOfCon
     function updateActiveElement() {
       const pageHeight = document.body.scrollHeight
       const scrollPosition = window.scrollY + window.innerHeight
-      const elements = getHTMLElements(elementIds)
+      const elements = getHTMLElements(elementIds).filter(Boolean)
 
       // If scrolled at the bottom, early return
       if (scrollPosition >= 0 && pageHeight - scrollPosition <= OFFSET_TOP) {
