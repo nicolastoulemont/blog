@@ -33,6 +33,11 @@ function Case({ initialDate = new Date(2022, 10, 1) }) {
   )
 }
 
+jest.mock("framer-motion", () => ({
+  ...jest.requireActual("framer-motion"),
+  useReducedMotion: () => true,
+}))
+
 describe("DatePicker", () => {
   test("should be able to select a different year", async () => {
     render(<Case />)
@@ -52,12 +57,6 @@ describe("DatePicker", () => {
     })
 
     userEvent.click(screen.getByText("2023"))
-
-    await waitFor(() => {
-      expect(screen.getByLabelText("01/11/2023")).toBeDefined()
-    })
-
-    userEvent.click(screen.getByLabelText("01/11/2023"))
 
     await waitFor(() => {
       // @ts-expect-error toHaveValue type
@@ -82,12 +81,6 @@ describe("DatePicker", () => {
     })
 
     userEvent.click(screen.getByText("Dec"))
-
-    await waitFor(() => {
-      expect(screen.getByLabelText("01/12/2022")).toBeDefined()
-    })
-
-    userEvent.click(screen.getByLabelText("01/12/2022"))
 
     await waitFor(() => {
       // @ts-expect-error toHaveValue type
