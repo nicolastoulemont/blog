@@ -96,7 +96,12 @@ export const useAccordion = () => {
 
 type AccordionProviderProps = AccordionRootProps & { id: string }
 
-export const Provider = ({ children, isOpen: isOpenProps = false, onChange, ...props }: AccordionProviderProps) => {
+export const Provider = ({
+  children,
+  isOpen: isOpenProps = false,
+  onChange,
+  ...props
+}: AccordionProviderProps) => {
   const [isOpen, setIsOpen] = useState(isOpenProps)
 
   const onToggleChange = () => {
@@ -107,7 +112,11 @@ export const Provider = ({ children, isOpen: isOpenProps = false, onChange, ...p
     })
   }
 
-  return <AccordionContext.Provider value={{ ...props, isOpen, onToggleChange }}>{children}</AccordionContext.Provider>
+  return (
+    <AccordionContext.Provider value={{ ...props, isOpen, onToggleChange }}>
+      {children}
+    </AccordionContext.Provider>
+  )
 }
 ```
 
@@ -219,7 +228,10 @@ export type AccordionIconProps = Omit<
 
 const MotionChevronDownIcon = motion(ChevronDownIcon)
 
-export const Icon = forwardRef<SVGSVGElement, AccordionIconProps>(function ({ className, ...props }, ref) {
+export const Icon = forwardRef<SVGSVGElement, AccordionIconProps>(function (
+  { className, ...props },
+  ref
+) {
   const { isOpen } = useAccordion()
 
   return (

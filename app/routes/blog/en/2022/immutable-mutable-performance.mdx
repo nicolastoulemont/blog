@@ -42,7 +42,9 @@ These functions would be called with the `<Box />` props and return the desired 
 ```ts
 function mapPropsToMargin({ margin, marginLeft, marginRight, marginTop, marginBottom }) {
   return {
-    margin: transformToken(margin || marginLeft || marginRight || marginTop || marginBottom),
+    margin: transformToken(
+      margin || marginLeft || marginRight || marginTop || marginBottom
+    ),
     marginLeft: transformToken(marginLeft),
     marginRight: transformToken(marginRight),
     marginTop: transformToken(marginTop),

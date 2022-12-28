@@ -6,7 +6,10 @@ module.exports = {
     enableGlobally: true,
     legacyFakeTimers: true,
   },
-  setupFilesAfterEnv: ["@testing-library/jest-dom/extend-expect", "@testing-library/jest-dom/matchers"],
+  setupFilesAfterEnv: [
+    "@testing-library/jest-dom/extend-expect",
+    "@testing-library/jest-dom/matchers",
+  ],
   transform: {
     "^.+\\.tsx?$": [
       "@swc/jest",

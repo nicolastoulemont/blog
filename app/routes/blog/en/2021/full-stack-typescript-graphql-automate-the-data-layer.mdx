@@ -98,7 +98,12 @@ And finally we export a useApollo react hooks who will just return the initializ
 ```typescript
 // in lib/apolloClient.ts
 
-import { InMemoryCache, ApolloClient, HttpLink, NormalizedCacheObject } from "@apollo/client"
+import {
+  InMemoryCache,
+  ApolloClient,
+  HttpLink,
+  NormalizedCacheObject,
+} from "@apollo/client"
 
 let apolloClient: ApolloClient<NormalizedCacheObject>
 
@@ -221,7 +226,9 @@ export const userById = queryField("userById", {
     const user = data.find((user) => user.id === args.id)
     if (!user) {
       return {
-        errors: [{ key: "notFound", message: `No user matching the id: ${args.id} was found` }],
+        errors: [
+          { key: "notFound", message: `No user matching the id: ${args.id} was found` },
+        ],
       }
     }
 
@@ -442,15 +449,28 @@ export const UserByIdDocument = gql`
  *   },
  * });
  */
-export function useUserByIdQuery(baseOptions: Apollo.QueryHookOptions<UserByIdQuery, UserByIdQueryVariables>) {
-  return Apollo.useQuery<UserByIdQuery, UserByIdQueryVariables>(UserByIdDocument, baseOptions)
+export function useUserByIdQuery(
+  baseOptions: Apollo.QueryHookOptions<UserByIdQuery, UserByIdQueryVariables>
+) {
+  return Apollo.useQuery<UserByIdQuery, UserByIdQueryVariables>(
+    UserByIdDocument,
+    baseOptions
+  )
 }
-export function useUserByIdLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<UserByIdQuery, UserByIdQueryVariables>) {
-  return Apollo.useLazyQuery<UserByIdQuery, UserByIdQueryVariables>(UserByIdDocument, baseOptions)
+export function useUserByIdLazyQuery(
+  baseOptions?: Apollo.LazyQueryHookOptions<UserByIdQuery, UserByIdQueryVariables>
+) {
+  return Apollo.useLazyQuery<UserByIdQuery, UserByIdQueryVariables>(
+    UserByIdDocument,
+    baseOptions
+  )
 }
 export type UserByIdQueryHookResult = ReturnType<typeof useUserByIdQuery>
 export type UserByIdLazyQueryHookResult = ReturnType<typeof useUserByIdLazyQuery>
-export type UserByIdQueryResult = Apollo.QueryResult<UserByIdQuery, UserByIdQueryVariables>
+export type UserByIdQueryResult = Apollo.QueryResult<
+  UserByIdQuery,
+  UserByIdQueryVariables
+>
 export const UsersDocument = gql`
   query Users {
     users {
@@ -482,10 +502,14 @@ export const UsersDocument = gql`
  *   },
  * });
  */
-export function useUsersQuery(baseOptions?: Apollo.QueryHookOptions<UsersQuery, UsersQueryVariables>) {
+export function useUsersQuery(
+  baseOptions?: Apollo.QueryHookOptions<UsersQuery, UsersQueryVariables>
+) {
   return Apollo.useQuery<UsersQuery, UsersQueryVariables>(UsersDocument, baseOptions)
 }
-export function useUsersLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<UsersQuery, UsersQueryVariables>) {
+export function useUsersLazyQuery(
+  baseOptions?: Apollo.LazyQueryHookOptions<UsersQuery, UsersQueryVariables>
+) {
   return Apollo.useLazyQuery<UsersQuery, UsersQueryVariables>(UsersDocument, baseOptions)
 }
 export type UsersQueryHookResult = ReturnType<typeof useUsersQuery>

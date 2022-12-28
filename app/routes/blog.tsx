@@ -6,8 +6,10 @@ import { CATEGORY_COLOR_REGISTRY } from "~/utils/styles"
 import { PostMetaData } from "~/utils/files/types"
 import { useMemo } from "react"
 
-const isSameLanguage = (suggestion: PostMetaData, post: PostMetaData) => suggestion.lang === post.lang
-const isNotTargetPost = (suggestion: PostMetaData, post: PostMetaData) => suggestion.title !== post.title
+const isSameLanguage = (suggestion: PostMetaData, post: PostMetaData) =>
+  suggestion.lang === post.lang
+const isNotTargetPost = (suggestion: PostMetaData, post: PostMetaData) =>
+  suggestion.title !== post.title
 const hasCommonCategory = (suggestion: PostMetaData, post: PostMetaData) =>
   post.categories.some((category) => suggestion.categories.includes(category))
 
@@ -22,7 +24,9 @@ export default function BlogContainer() {
 
     const suggestions = posts.filter(
       (suggestion) =>
-        isSameLanguage(suggestion, post) && isNotTargetPost(suggestion, post) && hasCommonCategory(suggestion, post)
+        isSameLanguage(suggestion, post) &&
+        isNotTargetPost(suggestion, post) &&
+        hasCommonCategory(suggestion, post)
     )
     return { post, suggestions }
   }, [location.pathname])

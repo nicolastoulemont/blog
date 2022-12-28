@@ -9,14 +9,23 @@ function Case({ initialDate = new Date(2022, 10, 1) }) {
   return (
     <div className="flex flex-col">
       <div className="w-[300px]">
-        <DatePicker label="Your birthday" placeholder="Pick a date" locale="en-GB" value={value} onChange={setValue} />
+        <DatePicker
+          label="Your birthday"
+          placeholder="Pick a date"
+          locale="en-GB"
+          value={value}
+          onChange={setValue}
+        />
       </div>
       <div className="mt-6 h-[62px] w-[300px]">
         <h2 className="mb-2 text-sm font-medium">Inner value</h2>
         <p>{value ? value.toLocaleDateString() : ""}</p>
       </div>
       <div>
-        <button className="rounded-lg bg-blue-600 px-3 py-2 font-medium text-white" onClick={() => setValue(undefined)}>
+        <button
+          className="rounded-lg bg-blue-600 px-3 py-2 font-medium text-white"
+          onClick={() => setValue(undefined)}
+        >
           Reset datepicker
         </button>
       </div>
@@ -34,7 +43,9 @@ describe("DatePicker", () => {
       expect(screen.getByLabelText("Current year: 2022, click to show years panel"))
     })
 
-    userEvent.click(screen.getByLabelText("Current year: 2022, click to show years panel"))
+    userEvent.click(
+      screen.getByLabelText("Current year: 2022, click to show years panel")
+    )
 
     await waitFor(() => {
       expect(screen.getByText("2023")).toBeDefined()
@@ -62,7 +73,9 @@ describe("DatePicker", () => {
       expect(screen.getByLabelText("Current month: November, click to show months panel"))
     })
 
-    userEvent.click(screen.getByLabelText("Current month: November, click to show months panel"))
+    userEvent.click(
+      screen.getByLabelText("Current month: November, click to show months panel")
+    )
 
     await waitFor(() => {
       expect(screen.getByText("Dec")).toBeDefined()
@@ -92,7 +105,9 @@ describe("DatePicker", () => {
       expect(screen.getByLabelText("Current year: 2020, click to show years panel"))
     })
 
-    userEvent.click(screen.getByLabelText("Current year: 2020, click to show years panel"))
+    userEvent.click(
+      screen.getByLabelText("Current year: 2020, click to show years panel")
+    )
 
     await waitFor(() => {
       expect(screen.getByText("2021")).toBeDefined()
@@ -114,7 +129,9 @@ describe("DatePicker", () => {
       expect(screen.getByLabelText("Current month: March, click to show months panel"))
     })
 
-    userEvent.click(screen.getByLabelText("Current month: March, click to show months panel"))
+    userEvent.click(
+      screen.getByLabelText("Current month: March, click to show months panel")
+    )
 
     await waitFor(() => {
       expect(screen.getByText("Feb")).toBeDefined()

@@ -28,13 +28,15 @@ export default function Index() {
           Hi, I'm Nicolas Toulemont
         </h1>
         <p className="mb:9 text-center text-lg font-bold text-slate-600 dark:text-white sm:text-2xl md:mb-12 md:text-left">
-          I'm a french full stack software engineer. I mainly use and enjoy Typescript, Node, React and GraphQL at the
-          moment.
+          I'm a french full stack software engineer. I mainly use and enjoy Typescript,
+          Node, React and GraphQL at the moment.
         </p>
       </section>
       <Form method="get" className="py-6">
         <label htmlFor="search">
-          <h2 className="mb-6 text-xl font-bold text-slate-800 dark:text-white  sm:text-3xl">Posts</h2>
+          <h2 className="mb-6 text-xl font-bold text-slate-800 dark:text-white  sm:text-3xl">
+            Posts
+          </h2>
         </label>
         <input
           id="search"
@@ -46,7 +48,11 @@ export default function Index() {
           {...(params.search && params.search !== "" && { defaultValue: params.search })}
         />
       </Form>
-      <div aria-hidden className="mb-6 w-full rounded bg-slate-200 dark:bg-slate-900" style={{ height: 2 }} />
+      <div
+        aria-hidden
+        className="mb-6 w-full rounded bg-slate-200 dark:bg-slate-900"
+        style={{ height: 2 }}
+      />
 
       <ul className="grid w-full grid-cols-1 gap-2 pb-10 md:grid-cols-2 md:gap-4">
         {data.map((post) => (

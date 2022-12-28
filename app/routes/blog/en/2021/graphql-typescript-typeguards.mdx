@@ -217,7 +217,12 @@ query Users {
 Whose GraphQL return type is :
 
 ```graphql
-union UserResult = ActiveUser | BannedUser | DeletedUser | InvalidArgumentsError | UserAuthenticationError
+union UserResult =
+    ActiveUser
+  | BannedUser
+  | DeletedUser
+  | InvalidArgumentsError
+  | UserAuthenticationError
 ```
 
 And that we want to be able to change the status of the users and then update our cache accordingly so that it reflect the updated status of the user.
@@ -272,7 +277,9 @@ const [changeUserStatus] = useChangeUserStatusMutation({
     const existingUsers = cache.readQuery<UsersQuery>({ query: GET_USERS })
     const filteredUsers = existingUsers.users.filter(
       (user) =>
-        (user.__typename === "ActiveUser" || user.__typename === "DeletedUser" || user.__typename === "BannedUser") &&
+        (user.__typename === "ActiveUser" ||
+          user.__typename === "DeletedUser" ||
+          user.__typename === "BannedUser") &&
         (changeUserStatus.__typename === "ActiveUser" ||
           changeUserStatus.__typename === "DeletedUser" ||
           changeUserStatus.__typename === "BannedUser") &&
@@ -297,7 +304,9 @@ const [changeUserStatus] = useChangeUserStatusMutation({
     const existingUsers = cache.readQuery<UsersQuery>({ query: GET_USERS })
     const filteredUsers = existingUsers.users.filter(
       (user) =>
-        (isType(user, "ActiveUser") || isType(user, "DeletedUser") || isType(user, "BannedUser")) &&
+        (isType(user, "ActiveUser") ||
+          isType(user, "DeletedUser") ||
+          isType(user, "BannedUser")) &&
         (isType(changeUserStatus, "ActiveUser") ||
           isType(changeUserStatus, "DeletedUser") ||
           isType(changeUserStatus, "BannedUser")) &&
@@ -329,7 +338,10 @@ function isEither<
   Result extends GraphQLResult,
   Typename extends ValueOfTypename<Result>,
   PossibleTypes extends Array<Typename>
->(result: Result, typenames: PossibleTypes): result is Extract<Result, { __typename: typeof typenames[number] }> {
+>(
+  result: Result,
+  typenames: PossibleTypes
+): result is Extract<Result, { __typename: typeof typenames[number] }> {
   const types = typenames?.filter((type) => isType(result, type))
   return types ? types.length > 0 : false
 }
@@ -379,7 +391,10 @@ function isNot<
   Result extends GraphQLResult,
   Typename extends ValueOfTypename<Result>,
   ExcludedTypes extends Array<Typename>
->(result: Result, typenames: ExcludedTypes): result is Exclude<Result, { __typename: typeof typenames[number] }> {
+>(
+  result: Result,
+  typenames: ExcludedTypes
+): result is Exclude<Result, { __typename: typeof typenames[number] }> {
   const types = typenames?.filter((type) => isType(result, type))
   return types ? types.length === 0 : false
 }
@@ -418,7 +433,10 @@ In order to do that we will need to filter our users into three different arrays
 
 ```typescript
 const { data, loading } = useUsersQuery()
-const activeUsers = useMemo(() => data?.users?.filter((user) => isType(user, "ActiveUser")) ?? [], [data])
+const activeUsers = useMemo(
+  () => data?.users?.filter((user) => isType(user, "ActiveUser")) ?? [],
+  [data]
+)
 ```
 
 One could think that the previous filtering is enough to get the correct users and at runtime it is. But sadly Typescript doesn't understand that now activeUsers is an array ActiveUsers only.
@@ -430,10 +448,17 @@ In order to handle that, we could need to cast the activeUsers array as `Array<A
 type GraphQLResult = { __typename: string }
 type ValueOfTypename<T extends GraphQLResult> = T["__typename"]
 
-export function isTypeInTuple<ResultItem extends GraphQLResult, Typename extends ValueOfTypename<ResultItem>>(
+export function isTypeInTuple<
+  ResultItem extends GraphQLResult,
+  Typename extends ValueOfTypename<ResultItem>
+>(
   typename: Typename
-): (resultItem: ResultItem) => resultItem is Extract<ResultItem, { __typename: Typename }> {
-  return function (resultItem: ResultItem): resultItem is Extract<ResultItem, { __typename: Typename }> {
+): (
+  resultItem: ResultItem
+) => resultItem is Extract<ResultItem, { __typename: Typename }> {
+  return function (
+    resultItem: ResultItem
+  ): resultItem is Extract<ResultItem, { __typename: Typename }> {
     return isType(resultItem, typename)
   }
 }
@@ -449,7 +474,10 @@ The way the type is asserted is similar to our other functions.But instead of on
 This tell typescript what to expect from it. Now we can use it as follow:
 
 ```typescript
-const activeUsers = useMemo(() => data?.users?.filter(isTypeInTuple("ActiveUser")) ?? [], [data])
+const activeUsers = useMemo(
+  () => data?.users?.filter(isTypeInTuple("ActiveUser")) ?? [],
+  [data]
+)
 ```
 
 And we will get a correctly typed ActiveUser array.

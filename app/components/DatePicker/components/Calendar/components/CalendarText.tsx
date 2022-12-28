@@ -7,9 +7,20 @@ const TEXT_VARIANTS = {
   selected: "text-white font-medium",
 } as const
 
-export function CalendarText({ children, variant }: { children: ReactNode; variant: keyof typeof TEXT_VARIANTS }) {
+export function CalendarText({
+  children,
+  variant,
+}: {
+  children: ReactNode
+  variant: keyof typeof TEXT_VARIANTS
+}) {
   return (
-    <span className={clsx("text-base font-medium transition-colors sm:text-sm", TEXT_VARIANTS[variant])}>
+    <span
+      className={clsx(
+        "text-base font-medium transition-colors sm:text-sm",
+        TEXT_VARIANTS[variant]
+      )}
+    >
       {children}
     </span>
   )

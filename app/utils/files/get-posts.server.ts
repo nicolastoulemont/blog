@@ -14,7 +14,10 @@ export function getAll(lang?: "en" | "fr"): PostMetaData[] {
   const publishedPosts = filePaths
     .map((filePath) => {
       const source = fs.readFileSync(filePath, "utf8")
-      const { data, content } = matter(source) as unknown as { data: PostMatterData; content: string }
+      const { data, content } = matter(source) as unknown as {
+        data: PostMatterData
+        content: string
+      }
       const relativePath = filePath.split("routes")[1]
       const slug = relativePath.replace(".mdx", "")
 
@@ -42,7 +45,10 @@ export function getAll(lang?: "en" | "fr"): PostMetaData[] {
     })
     .filter((post) => isValid(new Date(post["article:published_time"])))
     .sort((a, b) =>
-      new Date(b["article:published_time"]).getTime() > new Date(a["article:published_time"]).getTime() ? 1 : -1
+      new Date(b["article:published_time"]).getTime() >
+      new Date(a["article:published_time"]).getTime()
+        ? 1
+        : -1
     )
 
   if (lang) {
@@ -59,7 +65,10 @@ export function search(input: string) {
   const match = (str: string) => str.toLowerCase().includes(query)
 
   for (const post of getAll("en")) {
-    const hit = match(post.title) || match(post.description) || post.categories.some((category) => match(category))
+    const hit =
+      match(post.title) ||
+      match(post.description) ||
+      post.categories.some((category) => match(category))
     if (hit) {
       hits.push(post)
     }

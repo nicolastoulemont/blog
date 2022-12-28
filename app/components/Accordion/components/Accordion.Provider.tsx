@@ -22,7 +22,12 @@ export const useAccordion = () => {
 
 type AccordionProviderProps = AccordionRootProps & { id: string }
 
-export const Provider = ({ children, isOpen: isOpenProps = false, onChange, ...props }: AccordionProviderProps) => {
+export const Provider = ({
+  children,
+  isOpen: isOpenProps = false,
+  onChange,
+  ...props
+}: AccordionProviderProps) => {
   const [isOpen, setIsOpen] = useState(isOpenProps)
 
   const onToggleChange = () => {
@@ -33,5 +38,9 @@ export const Provider = ({ children, isOpen: isOpenProps = false, onChange, ...p
     })
   }
 
-  return <AccordionContext.Provider value={{ ...props, isOpen, onToggleChange }}>{children}</AccordionContext.Provider>
+  return (
+    <AccordionContext.Provider value={{ ...props, isOpen, onToggleChange }}>
+      {children}
+    </AccordionContext.Provider>
+  )
 }

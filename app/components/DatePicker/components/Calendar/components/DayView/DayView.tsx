@@ -36,7 +36,9 @@ export function DayView({ onClose, headerLastBtnRef, triggerRef }: DayViewProps)
           onDragRight={() => dispatch({ type: "DAY_VIEW_CHANGE", payload: "decrement" })}
         >
           <table className="table-auto border-separate border-spacing-1">
-            <caption className="sr-only">{formatDate(state.calendarDate, locale, { month: "long" })} days</caption>
+            <caption className="sr-only">
+              {formatDate(state.calendarDate, locale, { month: "long" })} days
+            </caption>
             <thead
               className="sr-only"
               /** HTML table requires a clean table element only HTML tree hierarchy to apply their styles, 

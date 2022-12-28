@@ -43,7 +43,10 @@ While not implemented as a Javascript hashtable in the following example the loo
 This allow this batchQueries function to avoid using a nested loop in the return array map function. It means that we only interate on the data and ids arrays once.
 
 ```typescript
-export async function batchQueries<T extends Document>(model: Model<T>, ids: Array<string>) {
+export async function batchQueries<T extends Document>(
+  model: Model<T>,
+  ids: Array<string>
+) {
   const data = await model.find({ _id: { $in: ids } })
   const lookup: Record<string, T> = data.reduce((acc: Record<string, T>, item: T) => {
     acc[item.id] = item

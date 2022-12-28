@@ -6,13 +6,18 @@ import { Link } from "@remix-run/react"
 import { CATEGORY_COLOR_VARIANTS } from "~/utils/styles"
 import { TableOfContentLinkProps } from "./types"
 
-export function DesktopTableOfContent({ elements = [], activeColor }: TableOfContentProps) {
+export function DesktopTableOfContent({
+  elements = [],
+  activeColor,
+}: TableOfContentProps) {
   const elementIds = useMemo(() => elements.map((element) => element.id), [elements])
   const { currentActiveIndex } = useTableOfContent({ elementIds })
 
   return (
     <aside className="fixed top-20 right-0 hidden w-auto rounded-lg p-6 md:max-w-[280px] lg:block lg:pr-3">
-      <h2 className="mb-2 text-lg font-semibold text-gray-700 dark:text-white">On this page</h2>
+      <h2 className="mb-2 text-lg font-semibold text-gray-700 dark:text-white">
+        On this page
+      </h2>
       <nav className="max-h-[80vh] overflow-scroll">
         <ul>
           {elements.map((element, index) => (
@@ -39,7 +44,12 @@ const spacings = {
   h6: "ml-20",
 } as const
 
-export function DesktopLink({ element, activeColor, isActive, isFirst }: TableOfContentLinkProps) {
+export function DesktopLink({
+  element,
+  activeColor,
+  isActive,
+  isFirst,
+}: TableOfContentLinkProps) {
   const { bg, text, hoverBg, hoverText } = CATEGORY_COLOR_VARIANTS[activeColor]
 
   return (

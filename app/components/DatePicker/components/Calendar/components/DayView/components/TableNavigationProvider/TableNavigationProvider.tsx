@@ -1,8 +1,15 @@
 import { KeyboardEvent, useRef } from "react"
 import { TableNavigationContext } from "./context"
-import type { Matrix, TableNavigationProviderProps } from "./TableNavigationProvider.types"
+import type {
+  Matrix,
+  TableNavigationProviderProps,
+} from "./TableNavigationProvider.types"
 
-export function TableNavigationProvider({ children, prevRef, afterRef }: TableNavigationProviderProps) {
+export function TableNavigationProvider({
+  children,
+  prevRef,
+  afterRef,
+}: TableNavigationProviderProps) {
   const matrix = useRef<Matrix>([[]])
 
   function mapRefToMatrix(ref: HTMLButtonElement, rowIndex: number, colIndex: number) {
@@ -12,7 +19,11 @@ export function TableNavigationProvider({ children, prevRef, afterRef }: TableNa
 
     matrix.current[rowIndex][colIndex] = ref
   }
-  function handleKeyboardNavigation(event: KeyboardEvent<HTMLButtonElement>, rowIndex: number, colIndex: number) {
+  function handleKeyboardNavigation(
+    event: KeyboardEvent<HTMLButtonElement>,
+    rowIndex: number,
+    colIndex: number
+  ) {
     event.preventDefault()
     switch (event.code) {
       case "Tab": {

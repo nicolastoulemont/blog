@@ -11,7 +11,9 @@ describe("getMonthDays", () => {
     expect(monthDays[0][2]).toStrictEqual(new Date(2021, 1, 3))
     expect(monthDays[1][0]).toStrictEqual(new Date(2021, 1, 8))
     expect(monthDays[2][0]).toStrictEqual(new Date(2021, 1, 15))
-    expect(monthDays[monthDays.length - 1][monthDays[0].length - 1]).toStrictEqual(new Date(2021, 2, 14))
+    expect(monthDays[monthDays.length - 1][monthDays[0].length - 1]).toStrictEqual(
+      new Date(2021, 2, 14)
+    )
   })
   test("should returns outside days for given month", () => {
     // April 2021 has outside days in the beginning and end of month
@@ -20,6 +22,8 @@ describe("getMonthDays", () => {
     expect(monthDays).toHaveLength(6)
     expect(monthDays[0][0]).toStrictEqual(new Date(2021, 2, 29))
     expect(monthDays[0][1]).toStrictEqual(new Date(2021, 2, 30))
-    expect(monthDays[monthDays.length - 1][monthDays[0].length - 1]).toStrictEqual(new Date(2021, 4, 9))
+    expect(monthDays[monthDays.length - 1][monthDays[0].length - 1]).toStrictEqual(
+      new Date(2021, 4, 9)
+    )
   })
 })

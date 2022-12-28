@@ -8,12 +8,13 @@ module.exports = {
   // serverBuildPath: "build/index.js",
   // publicPath: "/build/",
   mdx: async () => {
-    const [rehypeHighLight, rehypePrettyCode, rehypeSlug, rehypeAutoLinkHeadings] = await Promise.all([
-      import("rehype-highlight").then((mod) => mod.default),
-      import("rehype-pretty-code").then((mod) => mod.default),
-      import("rehype-slug").then((mod) => mod.default),
-      import("rehype-autolink-headings").then((mod) => mod.default),
-    ])
+    const [rehypeHighLight, rehypePrettyCode, rehypeSlug, rehypeAutoLinkHeadings] =
+      await Promise.all([
+        import("rehype-highlight").then((mod) => mod.default),
+        import("rehype-pretty-code").then((mod) => mod.default),
+        import("rehype-slug").then((mod) => mod.default),
+        import("rehype-autolink-headings").then((mod) => mod.default),
+      ])
 
     const options = {
       theme: "dark-plus",
@@ -32,7 +33,10 @@ module.exports = {
       },
     }
 
-    const codeHighLightPlugins = process.env.NODE_ENV === "development" ? rehypeHighLight : [rehypePrettyCode, options]
+    const codeHighLightPlugins =
+      process.env.NODE_ENV === "development"
+        ? rehypeHighLight
+        : [rehypePrettyCode, options]
 
     return {
       rehypePlugins: [codeHighLightPlugins, rehypeSlug, rehypeAutoLinkHeadings],

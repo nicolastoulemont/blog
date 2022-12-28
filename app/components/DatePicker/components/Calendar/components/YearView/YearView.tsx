@@ -11,7 +11,8 @@ export function YearView() {
 
   const isCurrentYear = (year: number) => new Date().getFullYear() === year
 
-  const isSelected = (year: number) => (state.value ? state.value.getFullYear() === year : false)
+  const isSelected = (year: number) =>
+    state.value ? state.value.getFullYear() === year : false
 
   return (
     <div className="flex w-full flex-col">
@@ -33,7 +34,9 @@ export function YearView() {
                 isSelected={isSelected(year)}
                 aria-label={String(year)}
               >
-                <CalendarText variant={isSelected(year) ? "selected" : "regular"}>{year}</CalendarText>
+                <CalendarText variant={isSelected(year) ? "selected" : "regular"}>
+                  {year}
+                </CalendarText>
               </CalendarButton>
               {isCurrentYear(year) && <CalendarUnderline variant="other" />}
             </div>

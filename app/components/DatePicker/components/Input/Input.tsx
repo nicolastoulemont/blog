@@ -14,10 +14,10 @@ export const InputLabel = () => {
   )
 }
 
-export const Input = forwardRef<HTMLInputElement, React.InputHTMLAttributes<HTMLInputElement>>(function Input(
-  { ...props },
-  ref
-) {
+export const Input = forwardRef<
+  HTMLInputElement,
+  React.InputHTMLAttributes<HTMLInputElement>
+>(function Input({ ...props }, ref) {
   const { state, placeholder, name } = useDatePicker()
 
   const dateToReadableFormat = (date: Date) => {
@@ -51,7 +51,9 @@ export const Input = forwardRef<HTMLInputElement, React.InputHTMLAttributes<HTML
         placeholder={placeholder}
         {...props}
       />
-      {name ? <input hidden name={name} value={dateToHTMLValueFormat(state.value)} /> : null}
+      {name ? (
+        <input hidden name={name} value={dateToHTMLValueFormat(state.value)} />
+      ) : null}
     </>
   )
 })

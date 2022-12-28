@@ -27,9 +27,16 @@ export function Calendar({ onClose, calendarInitialRef, triggerRef }: CalendarPr
       transition={{ bounce: 0, duration: 0.3, ease: "circOut" }}
       className="w-[360px] overflow-hidden rounded-2xl bg-white p-4 dark:bg-slate-900 sm:w-[330px]"
     >
-      <Header calendarInitialRef={calendarInitialRef} headerLastBtnRef={headerLastBtnRef} />
+      <Header
+        calendarInitialRef={calendarInitialRef}
+        headerLastBtnRef={headerLastBtnRef}
+      />
       {state.view === "days" && (
-        <DayView onClose={onClose} triggerRef={triggerRef} headerLastBtnRef={headerLastBtnRef} />
+        <DayView
+          onClose={onClose}
+          triggerRef={triggerRef}
+          headerLastBtnRef={headerLastBtnRef}
+        />
       )}
       {state.view === "months" && <MonthView />}
       {state.view === "years" && <YearView />}

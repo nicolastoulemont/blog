@@ -58,13 +58,22 @@ export function MobileTableOfContent({ elements, activeColor }: TableOfContentPr
               className="fixed bottom-0 block w-full rounded-t-xl bg-white shadow-lg dark:bg-slate-900"
             >
               <div className="flex w-full justify-end p-3">
-                <button className="flex h-[35px] w-[35px] items-center justify-center" onClick={() => setOpen(false)}>
-                  <FiX size="1.5rem" className="stroke-slate-700 dark:stroke-white" aria-label="close menu" />
+                <button
+                  className="flex h-[35px] w-[35px] items-center justify-center"
+                  onClick={() => setOpen(false)}
+                >
+                  <FiX
+                    size="1.5rem"
+                    className="stroke-slate-700 dark:stroke-white"
+                    aria-label="close menu"
+                  />
                 </button>
               </div>
               <Dialog.Description>
                 <nav className="max-h-[70vh] overflow-scroll px-6 pb-6 pt-2">
-                  <h2 className="mb-2 text-lg font-semibold text-gray-700 dark:text-white">On this page</h2>
+                  <h2 className="mb-2 text-lg font-semibold text-gray-700 dark:text-white">
+                    On this page
+                  </h2>
                   <ul>
                     {elements.map((element, index) => (
                       <MobileLink
@@ -101,7 +110,13 @@ const spacings = {
   h6: "ml-20",
 } as const
 
-export function MobileLink({ element, activeColor, isActive, isFirst, onClose }: TableOfContentLinkProps) {
+export function MobileLink({
+  element,
+  activeColor,
+  isActive,
+  isFirst,
+  onClose,
+}: TableOfContentLinkProps) {
   const { bg, text, hoverBg, hoverText } = CATEGORY_COLOR_VARIANTS[activeColor]
 
   return (

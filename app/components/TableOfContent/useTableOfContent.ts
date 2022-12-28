@@ -9,7 +9,10 @@ interface useTableOfContentProps {
   OFFSET_TOP?: number
 }
 
-export function useTableOfContent({ elementIds, OFFSET_TOP = 90 }: useTableOfContentProps) {
+export function useTableOfContent({
+  elementIds,
+  OFFSET_TOP = 90,
+}: useTableOfContentProps) {
   const [currentActiveIndex, setCurrentActiveIndex] = useState<number>(0)
   const timeoutRef = useRef<number | null>(null)
 

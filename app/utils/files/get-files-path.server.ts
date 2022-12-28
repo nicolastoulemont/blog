@@ -12,5 +12,8 @@ export function getFilesPath(dir: string) {
   })
 
   // @ts-expect-error
-  return files.reduce((all, folderContents) => all.concat(folderContents), []) as Array<string>
+  return files.reduce(
+    (all, folderContents) => all.concat(folderContents),
+    []
+  ) as Array<string>
 }

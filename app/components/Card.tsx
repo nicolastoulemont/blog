@@ -7,11 +7,21 @@ export function Card({ post }: { post: PostMetaData }) {
     <li
       key={post.slug}
       style={{ transition: "box-shadow 0.3s ease-in-out" }}
-      className={`block h-full w-full rounded-lg shadow-xl hover:shadow-2xl ${post.translation ? "relative" : ""}`}
+      className={`block h-full w-full rounded-lg shadow-xl hover:shadow-2xl ${
+        post.translation ? "relative" : ""
+      }`}
     >
       {post.translation && (
-        <Link to={post.translationSlug as string} className="absolute" style={{ top: 0, right: 15, width: 30 }}>
-          <img src={`/img/flag_${post.translation}.svg`} width="100%" alt={post.translation} />
+        <Link
+          to={post.translationSlug as string}
+          className="absolute"
+          style={{ top: 0, right: 15, width: 30 }}
+        >
+          <img
+            src={`/img/flag_${post.translation}.svg`}
+            width="100%"
+            alt={post.translation}
+          />
         </Link>
       )}
       <Link

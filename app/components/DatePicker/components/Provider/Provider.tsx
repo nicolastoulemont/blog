@@ -41,7 +41,14 @@ export function DatePickerProvider({ children, ...props }: DatePickerProviderPro
 
   return (
     <DatePickerContext.Provider
-      value={{ state, dispatch, handleSelectDay, handleSelectMonth, handleSelectYear, ...props }}
+      value={{
+        state,
+        dispatch,
+        handleSelectDay,
+        handleSelectMonth,
+        handleSelectYear,
+        ...props,
+      }}
     >
       {children}
     </DatePickerContext.Provider>

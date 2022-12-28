@@ -12,7 +12,10 @@ export type AccordionIconProps = Omit<
 
 const MotionChevronDownIcon = motion(ChevronDownIcon)
 
-export const Icon = forwardRef<SVGSVGElement, AccordionIconProps>(function ({ className, ...props }, ref) {
+export const Icon = forwardRef<SVGSVGElement, AccordionIconProps>(function (
+  { className, ...props },
+  ref
+) {
   const { isOpen } = useAccordion()
 
   return (

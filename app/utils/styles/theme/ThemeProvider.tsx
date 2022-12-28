@@ -1,6 +1,13 @@
 import { useFetcher } from "@remix-run/react"
 import type { Dispatch, ReactNode, SetStateAction } from "react"
-import { createContext, createElement, useContext, useEffect, useRef, useState } from "react"
+import {
+  createContext,
+  createElement,
+  useContext,
+  useEffect,
+  useRef,
+  useState,
+} from "react"
 
 enum Theme {
   DARK = "dark",
@@ -13,9 +20,16 @@ type ThemeContextType = [Theme | null, Dispatch<SetStateAction<Theme | null>>]
 const ThemeContext = createContext<ThemeContextType | undefined>(undefined)
 
 const prefersDarkMQ = "(prefers-color-scheme: dark)"
-const getPreferredTheme = () => (window.matchMedia(prefersDarkMQ).matches ? Theme.DARK : Theme.LIGHT)
+const getPreferredTheme = () =>
+  window.matchMedia(prefersDarkMQ).matches ? Theme.DARK : Theme.LIGHT
 
-function ThemeProvider({ children, specifiedTheme }: { children: ReactNode; specifiedTheme: Theme | null }) {
+function ThemeProvider({
+  children,
+  specifiedTheme,
+}: {
+  children: ReactNode
+  specifiedTheme: Theme | null
+}) {
   const [theme, setTheme] = useState<Theme | null>(() => {
     // On the server, if we don't have a specified theme then we should
     // return null and the clientThemeCode will set the theme for us
@@ -68,7 +82,9 @@ function ThemeProvider({ children, specifiedTheme }: { children: ReactNode; spec
     return () => mediaQuery.removeEventListener("change", handleChange)
   }, [])
 
-  return <ThemeContext.Provider value={[theme, setTheme]}>{children}</ThemeContext.Provider>
+  return (
+    <ThemeContext.Provider value={[theme, setTheme]}>{children}</ThemeContext.Provider>
+  )
 }
 
 const clientThemeCode = `
@@ -148,7 +164,10 @@ function ThemeHead({ ssrTheme }: { ssrTheme: boolean }) {
         On the server, "theme" might be `null`, so clientThemeCode ensures that
         this is correct before hydration.
       */}
-      <meta name="color-scheme" content={theme === "light" ? "light dark" : "dark light"} />
+      <meta
+        name="color-scheme"
+        content={theme === "light" ? "light dark" : "dark light"}
+      />
       {/*
         If we know what the theme is from the server then we don't need
         to do fancy tricks prior to hydration to make things match.
@@ -194,7 +213,9 @@ const clientDarkAndLightModeElsCode = `;(() => {
 })();`
 
 function ThemeBody({ ssrTheme }: { ssrTheme: boolean }) {
-  return ssrTheme ? null : <script dangerouslySetInnerHTML={{ __html: clientDarkAndLightModeElsCode }} />
+  return ssrTheme ? null : (
+    <script dangerouslySetInnerHTML={{ __html: clientDarkAndLightModeElsCode }} />
+  )
 }
 
 function useTheme() {

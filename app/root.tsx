@@ -1,7 +1,13 @@
 import type { LinksFunction, MetaFunction, Request } from "@remix-run/node"
 import { Header } from "~/components"
 import styles from "./tailwind.css"
-import { getThemeSession, ThemeBody, ThemeHead, ThemeProvider, useTheme } from "./utils/styles"
+import {
+  getThemeSession,
+  ThemeBody,
+  ThemeHead,
+  ThemeProvider,
+  useTheme,
+} from "./utils/styles"
 import {
   Link,
   Links,

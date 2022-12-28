@@ -19,7 +19,10 @@ export const action: ActionFunction = async ({ request }) => {
   }
 
   themeSession.setTheme(theme)
-  return json({ success: true }, { headers: { "Set-Cookie": await themeSession.commit() } })
+  return json(
+    { success: true },
+    { headers: { "Set-Cookie": await themeSession.commit() } }
+  )
 }
 
 export const loader: LoaderFunction = () => redirect("/", { status: 404 })
@@ -31,7 +34,11 @@ export function ThemeToggle() {
     <DropdownMenu.Root>
       <DropdownMenu.Trigger asChild>
         <button className="flex h-10 w-10 items-center justify-center rounded-full text-slate-800 hover:bg-gray-100 dark:hover:bg-slate-600">
-          <FiMenu size="1.3rem" className="stroke:slate-800 dark:stroke-white" aria-label="open theme menu" />
+          <FiMenu
+            size="1.3rem"
+            className="stroke:slate-800 dark:stroke-white"
+            aria-label="open theme menu"
+          />
         </button>
       </DropdownMenu.Trigger>
 
@@ -45,7 +52,8 @@ export function ThemeToggle() {
               className="flex items-center justify-start py-1 text-slate-800 dark:text-white"
               onClick={() => setTheme(Theme.LIGHT)}
             >
-              <FiSun size="1.2rem" className="stroke:slate-800 mr-6 dark:stroke-white" /> Light
+              <FiSun size="1.2rem" className="stroke:slate-800 mr-6 dark:stroke-white" />{" "}
+              Light
             </button>
           </DropdownMenu.Item>
           <DropdownMenu.Item>
@@ -53,7 +61,8 @@ export function ThemeToggle() {
               className="flex items-center justify-start py-1 text-slate-800 dark:text-white"
               onClick={() => setTheme(Theme.DARK)}
             >
-              <FiMoon size="1.2rem" className="stroke:slate-800 mr-6 dark:stroke-white" /> Dark
+              <FiMoon size="1.2rem" className="stroke:slate-800 mr-6 dark:stroke-white" />{" "}
+              Dark
             </button>
           </DropdownMenu.Item>
         </DropdownMenu.Content>

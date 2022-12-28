@@ -6,7 +6,13 @@ export const DatePickerDemo = () => {
 
   return (
     <div className="h-auto w-[300px]">
-      <DatePicker label="Your birthday" placeholder="Pick a date" locale="en-GB" value={value} onChange={setValue} />
+      <DatePicker
+        label="Your birthday"
+        placeholder="Pick a date"
+        locale="en-GB"
+        value={value}
+        onChange={setValue}
+      />
     </div>
   )
 }

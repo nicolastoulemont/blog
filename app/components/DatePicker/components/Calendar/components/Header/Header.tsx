@@ -13,8 +13,12 @@ export function Header({ calendarInitialRef, headerLastBtnRef }: HeaderProps) {
   const monthsNames = getMonthsName(locale)
   const currentMonthRaw = monthsNames[state.calendarDate.getMonth()]
 
-  const nextYearRangeLabel = `Years from ${state.yearRange[0] + 12} to ${state.yearRange[1] + 12}`
-  const previousYearRangeLabel = `Years from ${state.yearRange[0] - 12} to ${state.yearRange[1] - 12}`
+  const nextYearRangeLabel = `Years from ${state.yearRange[0] + 12} to ${
+    state.yearRange[1] + 12
+  }`
+  const previousYearRangeLabel = `Years from ${state.yearRange[0] - 12} to ${
+    state.yearRange[1] - 12
+  }`
 
   const previousMonthLabel = `Show ${formatDate(
     new Date(state.calendarDate.getFullYear(), state.calendarDate.getMonth() - 1, 1),

@@ -6,5 +6,9 @@ import { useIsMobile } from "./utils"
 export function DatePicker(props: DatePickerProps) {
   const isMobile = useIsMobile()
 
-  return <DatePickerProvider {...props}>{isMobile ? <DatePickerMobile /> : <DatePickerDesktop />}</DatePickerProvider>
+  return (
+    <DatePickerProvider {...props}>
+      {isMobile ? <DatePickerMobile /> : <DatePickerDesktop />}
+    </DatePickerProvider>
+  )
 }

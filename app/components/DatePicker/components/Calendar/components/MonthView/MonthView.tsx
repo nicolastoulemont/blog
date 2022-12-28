@@ -25,7 +25,10 @@ export function MonthView() {
 
   return (
     <div className="flex w-full flex-col">
-      <AnimatedViewWrapper motionKey={state.calendarDate.getFullYear()} slideDir={state.slideDir}>
+      <AnimatedViewWrapper
+        motionKey={state.calendarDate.getFullYear()}
+        slideDir={state.slideDir}
+      >
         <div className="grid grid-cols-3 gap-4 px-6 py-14 sm:px-4 sm:py-8">
           {months.map((month, monthIndex) => (
             <div
@@ -37,7 +40,9 @@ export function MonthView() {
                 isSelected={isSelected(monthIndex)}
                 aria-label={formatMonth(monthIndex)}
               >
-                <CalendarText variant={isSelected(monthIndex) ? "selected" : "regular"}>{month}</CalendarText>
+                <CalendarText variant={isSelected(monthIndex) ? "selected" : "regular"}>
+                  {month}
+                </CalendarText>
               </CalendarButton>
               {isCurrentMonth(monthIndex) && <CalendarUnderline variant="other" />}
             </div>

@@ -71,7 +71,11 @@ import { useIsMobile } from "./utils"
 export function DatePicker(props: DatePickerProps) {
   const isMobile = useIsMobile()
 
-  return <DatePickerProvider {...props}>{isMobile ? <DatePickerMobile /> : <DatePickerDesktop />}</DatePickerProvider>
+  return (
+    <DatePickerProvider {...props}>
+      {isMobile ? <DatePickerMobile /> : <DatePickerDesktop />}
+    </DatePickerProvider>
+  )
 }
 ```
 
@@ -125,7 +129,10 @@ export function DatePickerDesktop() {
               leaveTo="transform scale-95 opacity-0"
             >
               <Popover.Panel className="absolute z-50 mt-3 rounded-2xl shadow-xl dark:shadow-2xl">
-                <Calendar calendarInitialRef={calendarInitialRef} onClose={() => close(btnRef)} />
+                <Calendar
+                  calendarInitialRef={calendarInitialRef}
+                  onClose={() => close(btnRef)}
+                />
               </Popover.Panel>
             </Transition>
           </>
@@ -206,7 +213,10 @@ export function DatePickerMobile() {
                 leaveTo="opacity-0 scale-95"
               >
                 <Dialog.Panel className="flex w-full max-w-md transform items-center justify-center overflow-hidden rounded-t-2xl bg-white pt-3 align-bottom shadow-xl transition-all dark:bg-slate-900 dark:shadow-2xl">
-                  <Calendar calendarInitialRef={calendarInitialRef} onClose={closeCalendar} />
+                  <Calendar
+                    calendarInitialRef={calendarInitialRef}
+                    onClose={closeCalendar}
+                  />
                 </Dialog.Panel>
               </Transition.Child>
             </div>
@@ -297,8 +307,12 @@ export function Header({ calendarInitialRef }: HeaderProps) {
   const monthsNames = getMonthsName(locale)
   const currentMonthRaw = monthsNames[state.calendarDate.getMonth()]
 
-  const nextYearRangeLabel = `Years from ${state.yearRange[0] + 12} to ${state.yearRange[1] + 12}`
-  const previousYearRangeLabel = `Years from ${state.yearRange[0] - 12} to ${state.yearRange[1] - 12}`
+  const nextYearRangeLabel = `Years from ${state.yearRange[0] + 12} to ${
+    state.yearRange[1] + 12
+  }`
+  const previousYearRangeLabel = `Years from ${state.yearRange[0] - 12} to ${
+    state.yearRange[1] - 12
+  }`
 
   const previousMonthLabel = `Show ${formatDate(
     new Date(state.calendarDate.getFullYear(), state.calendarDate.getMonth() - 1, 1),
@@ -410,8 +424,10 @@ export function DayView({ onClose }: DayViewProps) {
           onDragLeft={() => dispatch({ type: "DAY_VIEW_CHANGE", payload: "increment" })}
           onDragRight={() => dispatch({ type: "DAY_VIEW_CHANGE", payload: "decrement" })}
         >
-          <table className="border-spacing-1 table-auto border-separate">
-            <caption className="sr-only">{formatDate(state.calendarDate, locale, { month: "long" })} days</caption>
+          <table className="table-auto border-separate border-spacing-1">
+            <caption className="sr-only">
+              {formatDate(state.calendarDate, locale, { month: "long" })} days
+            </caption>
             <thead
               className="sr-only"
               /** HTML table requires a clean table element only HTML tree hierarchy to apply their styles, 
@@ -460,9 +476,16 @@ The event handler then focuses right ref based on the location (rowIndex, colInd
 ```tsx
 import { KeyboardEvent, useRef } from "react"
 import { TableNavigationContext } from "./context"
-import type { Matrix, TableNavigationProviderProps } from "./TableNavigationProvider.types"
+import type {
+  Matrix,
+  TableNavigationProviderProps,
+} from "./TableNavigationProvider.types"
 
-export function TableNavigationProvider({ children, prevRef, afterRef }: TableNavigationProviderProps) {
+export function TableNavigationProvider({
+  children,
+  prevRef,
+  afterRef,
+}: TableNavigationProviderProps) {
   const matrix = useRef<Matrix>([[]])
 
   function mapRefToMatrix(ref: HTMLButtonElement, rowIndex: number, colIndex: number) {
@@ -472,7 +495,11 @@ export function TableNavigationProvider({ children, prevRef, afterRef }: TableNa
 
     matrix.current[rowIndex][colIndex] = ref
   }
-  function handleKeyboardNavigation(event: KeyboardEvent<HTMLButtonElement>, rowIndex: number, colIndex: number) {
+  function handleKeyboardNavigation(
+    event: KeyboardEvent<HTMLButtonElement>,
+    rowIndex: number,
+    colIndex: number
+  ) {
     event.preventDefault()
     switch (event.code) {
       case "Tab": {
@@ -614,7 +641,10 @@ export function MonthView() {
 
   return (
     <div className="flex w-full flex-col">
-      <AnimatedViewWrapper motionKey={state.calendarDate.getFullYear()} slideDir={state.slideDir}>
+      <AnimatedViewWrapper
+        motionKey={state.calendarDate.getFullYear()}
+        slideDir={state.slideDir}
+      >
         <div className="grid grid-cols-3 gap-4 px-6 py-14 sm:px-4 sm:py-8">
           {months.map((month, monthIndex) => (
             <div
@@ -626,7 +656,9 @@ export function MonthView() {
                 isSelected={isSelected(monthIndex)}
                 aria-label={formatMonth(monthIndex)}
               >
-                <CalendarText variant={isSelected(monthIndex) ? "selected" : "regular"}>{month}</CalendarText>
+                <CalendarText variant={isSelected(monthIndex) ? "selected" : "regular"}>
+                  {month}
+                </CalendarText>
               </CalendarButton>
               {isCurrentMonth(monthIndex) && <CalendarUnderline variant="other" />}
             </div>
@@ -682,7 +714,8 @@ export function YearView() {
 
   const isCurrentYear = (year: number) => new Date().getFullYear() === year
 
-  const isSelected = (year: number) => (state.value ? state.value.getFullYear() === year : false)
+  const isSelected = (year: number) =>
+    state.value ? state.value.getFullYear() === year : false
 
   return (
     <div className="flex w-full flex-col">
@@ -704,7 +737,9 @@ export function YearView() {
                 isSelected={isSelected(year)}
                 aria-label={String(year)}
               >
-                <CalendarText variant={isSelected(year) ? "selected" : "regular"}>{year}</CalendarText>
+                <CalendarText variant={isSelected(year) ? "selected" : "regular"}>
+                  {year}
+                </CalendarText>
               </CalendarButton>
               {isCurrentYear(year) && <CalendarUnderline variant="other" />}
             </div>

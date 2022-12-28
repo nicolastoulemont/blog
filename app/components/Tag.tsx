@@ -1,4 +1,8 @@
-import { CategoryNames, CATEGORY_COLOR_REGISTRY, CATEGORY_COLOR_VARIANTS } from "~/utils/styles"
+import {
+  CategoryNames,
+  CATEGORY_COLOR_REGISTRY,
+  CATEGORY_COLOR_VARIANTS,
+} from "~/utils/styles"
 
 export function Tag({
   category,
@@ -17,5 +21,9 @@ export function Tag({
     md: "px-2 py-1 text-sm",
   }
 
-  return <div className={`rounded-lg ${sizes[size]} ${bg} ${text} ${className}`}>{category}</div>
+  return (
+    <div className={`rounded-lg ${sizes[size]} ${bg} ${text} ${className}`}>
+      {category}
+    </div>
+  )
 }

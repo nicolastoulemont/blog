@@ -61,7 +61,11 @@ export const OperationLoggerPlugin = plugin({
       const startTimeMs = new Date().valueOf()
       const value = await next(root, args, ctx, info)
       const endTimeMs = new Date().valueOf()
-      console.log(`${info.operation.operation} ${info.operation.name.value} took ${endTimeMs - startTimeMs} ms`)
+      console.log(
+        `${info.operation.operation} ${info.operation.name.value} took ${
+          endTimeMs - startTimeMs
+        } ms`
+      )
       return value
     }
   },
@@ -98,7 +102,8 @@ export const createUser = mutationField("createUser", {
     email: nonNull(stringArg()),
   },
   async resolve(_, args, context) {
-    if (!context.ctx.logged) return { code: "UNAUTHORIZED", message: "UNAUTHENTICATED_PLEASE_LOGIN" }
+    if (!context.ctx.logged)
+      return { code: "UNAUTHORIZED", message: "UNAUTHENTICATED_PLEASE_LOGIN" }
     // else create user
   },
 })
@@ -184,7 +189,9 @@ export const createUser = mutationField("createUser", {
     email: nonNull(stringArg()),
   },
   authorization: (context) =>
-    !context.ctx.logged ? { code: "UNAUTHORIZED", message: "UNAUTHENTICATED_PLEASE_LOGIN" } : undefined,
+    !context.ctx.logged
+      ? { code: "UNAUTHORIZED", message: "UNAUTHENTICATED_PLEASE_LOGIN" }
+      : undefined,
   async resolve(_, args, context) {
     // only authorized users will get here
   },
