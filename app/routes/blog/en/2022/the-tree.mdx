@@ -28,12 +28,11 @@ a hierarchical structure between a set of connected nodes.
 Each node in the tree can be connected to many children (depending on the type of tree),
 but must be connected to exactly one parent, except for the root node, which has no parent.
 
-It can have multiple uses, one of the better known are binary trees which enable logarithmic
-search operations on the nodes of the tree.
+It can have multiple uses, one of the better knowns is binary trees which enable logarithmic search operations on the nodes of the tree.
 
-In this post tho, we will focus on building a basic tree data structure, which allow usage
+In this post tho, we will focus on building a basic tree data structure, which allow us
 to explore how [Javascript generators functions](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Iterators_and_Generators#generator_functions)
-can help build custom iterators for tree based data structures.
+can help build custom iterators for tree-based data structures.
 
 ![tree](/img/tree.png)
 
@@ -46,7 +45,7 @@ Let's start with the building blocks of our tree: the `Node` and `Tree` classes.
 Our `Node` class will have two properties:
 
 - A `name` to identify it
-- `children` to contains its child nodes.
+- `children` to contain its child nodes.
 
 Our `Tree` class will, at first, only have a `root` property that will be the top of our tree.
 
@@ -69,13 +68,13 @@ class Tree {
 ```
 
 Later we will want to add so methods to our `Tree` class to make it useful, probably I/O operations (`get`, `set`, `update`, `remove`).
-To be able to perform these operations, a common operation is to traverse our tree from the root to the leafs.
+To be able to perform these operations, a common operation is to traverse our tree from the root to the leaves.
 
 ### Tree traversal
 
-In order to easily access all the nodes of our tree, we need a way to iterate over every nodes of the tree.
+To easily access all the nodes of our tree, we need a way to iterate over every node of the tree.
 But since our tree is not a native Javascript array, we cannot use built-in iterators like `forEach`, `for of`, etc.
-Let's handle this by building our own custom iterator to handle our specific needs using a [generator function](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Iterators_and_Generators#generator_functions).
+Let's handle this by building our custom iterator to handle our specific needs using a [generator function](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Iterators_and_Generators#generator_functions).
 
 ```tsx
 export class Tree {
@@ -88,7 +87,7 @@ export class Tree {
     if (!node) return
     yield node
     if (node.children.length) {
-      for (let child of node.children) {
+      for (const child of node.children) {
         yield* this.traverse(child)
       }
     }
@@ -96,22 +95,22 @@ export class Tree {
 }
 ```
 
-This generator function is pretty simple, it recursively iterate over every node of the tree, yielding _*("giving")*_ each one back
-to the function caller, before moving to each node children until it has yield every leaf of the tree.
+This generator function is pretty simple, it recursively iterates over every node of the tree, yielding _*("giving")*_ each one back
+to the function caller, before moving to each node children until it has yielded every leaf of the tree.
 
 ### I/O methods
 
-Now that we have a method the easily iterate over our tree, we can add some I/O methods.
+Now that we have a method that easily iterates over our tree, we can add some I/O methods.
 
 #### Set method
 
-In order to set a node to our tree, we have to 2 cases:
+To set a node to our tree, we have to 2 cases:
 
-- The tree doesn't have a root node yet, in this case their is no need to give the tree a node name to insert the new node into.
-- The tree already has a root node, in this case we need to provide an address for the node we need to insert,
+- The tree doesn't have a root node yet, in this case, there is no need to give the tree a node name to insert the new node into.
+- The tree already has a root node, in this case, we need to provide an address for the node we need to insert,
   here will use the node name as an address to find where to insert it.
 
-With these two use case in mind, and using our `traverse` function to iterate within our tree, our set function is fairly simple.
+With these two use cases in mind, and using our `traverse` function to iterate within our tree, our set function is fairly simple.
 
 ```tsx
 type IOResult = Node[] | null | undefined
@@ -147,14 +146,14 @@ export class Tree {
 
 #### Get method
 
-In order to read a specific node from our tree, we will add a `get` method.
+To read a specific node from our tree, we will add a `get` method.
 Since our `traverse` function handle the iteration, this one is fairly simple, with only three
 possible results:
 
 - There is no root node, meaning that the only possible result is `null`.
 - There are one or more nodes with the queries name (we don't restrict the node names to be unique).
   Therefore the result will be an array of nodes `Node[]`.
-- There are no matching node, meaning the queried name is `undefined`.
+- There is no matching node, meaning the queried name is `undefined`.
 
 ```tsx
 type IOResult = Node[] | null | undefined
@@ -183,7 +182,7 @@ export class Tree {
 
 Let's now add an `update` method. It will be very similar to the `set` method, which
 in a way is about updating an existing node to add a new child node to it.
-To keep it simple, we will keep it's signature to a `boolean` result, but we could
+To keep it simple, we will keep its signature to a `boolean` result, but we could
 have an array with the updated nodes instead if we wanted to.
 
 ```tsx
@@ -211,13 +210,13 @@ export class Tree {
 
 #### Remove method
 
-Finally let's enable the tree users to remove nodes from the tree.
-This one is has a caveat because in order to remove a node we need to do two things:
+Finally, let's enable the tree users to remove nodes from the tree.
+This one has a caveat because to remove a node we need to do two things:
 
 - Find it
-- Lift its children nodes to its parent node in order to avoid removing more nodes than one.
+- Lift its children nodes to its parent node to avoid removing more nodes than one.
 
-In order to do, we will iterate over our nodes to find to find the target node when reaching its parent node.
+To do this, we will iterate over our nodes to find the target node when reaching its parent node.
 We will then do the following:
 
 - Hold a reference to the target node
@@ -249,8 +248,6 @@ export class Tree {
 }
 ```
 
-That's it for this basic tree !
+That's it for this basic tree!
 
-To conclude, we can see that a generator function can be a very useful abstraction over
-a custom iteration process. It has allowed us separe the iteration from the I/O itself
-and keep our code simple and clean.
+To conclude, we can see that a generator function can be a very useful abstraction over a custom iteration process. It has allowed us to separate the iteration from the I/O itself and keep our code simple and clean.

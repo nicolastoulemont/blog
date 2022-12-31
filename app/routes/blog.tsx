@@ -17,10 +17,10 @@ export const loader = () => ({ posts: Posts.getAll() })
 
 export default function BlogContainer() {
   const { posts } = useLoaderData<typeof loader>()
-  const location = useLocation()
+  const { pathname } = useLocation()
 
   const { post, suggestions } = useMemo(() => {
-    const [post] = posts.filter((post) => post.slug === location.pathname)
+    const [post] = posts.filter((post) => post.slug === pathname)
 
     const suggestions = posts.filter(
       (suggestion) =>
@@ -29,7 +29,7 @@ export default function BlogContainer() {
         hasCommonCategory(suggestion, post)
     )
     return { post, suggestions }
-  }, [location.pathname])
+  }, [pathname])
 
   const activeColor = CATEGORY_COLOR_REGISTRY[post.categories[0]]
 
