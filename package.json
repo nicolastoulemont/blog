@@ -1,4 +1,7 @@
 {
+  "name": "blog",
+  "author": "Nicolas Toulemont",
+  "license": "MIT",
   "private": true,
   "sideEffects": false,
   "scripts": {
@@ -79,9 +82,5 @@
   },
   "engines": {
     "node": ">=14"
-  },
-  "name": "",
-  "version": "",
-  "readme": "ERROR: No README data found!",
-  "_id": "@"
+  }
 }
