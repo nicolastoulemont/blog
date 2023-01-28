@@ -5,6 +5,7 @@ import { Card, DesktopTableOfContent, MobileTableOfContent } from "~/components"
 import { CATEGORY_COLOR_REGISTRY } from "~/utils/styles"
 import { PostMetaData } from "~/utils/files/types"
 import { useMemo } from "react"
+import { LoaderArgs, redirect } from "@remix-run/node"
 
 const isSameLanguage = (suggestion: PostMetaData, post: PostMetaData) =>
   suggestion.lang === post.lang
@@ -13,7 +14,17 @@ const isNotTargetPost = (suggestion: PostMetaData, post: PostMetaData) =>
 const hasCommonCategory = (suggestion: PostMetaData, post: PostMetaData) =>
   post.categories.some((category) => suggestion.categories.includes(category))
 
-export const loader = () => ({ posts: Posts.getAll() })
+export const loader = ({ request }: LoaderArgs) => {
+  const posts = Posts.getAll()
+  const pathname = new URL(request.url).pathname
+  const [post] = posts.filter((post) => post.slug === pathname)
+
+  if (!post) {
+    throw redirect("/")
+  }
+
+  return { posts }
+}
 
 export default function BlogContainer() {
   const { posts } = useLoaderData<typeof loader>()
@@ -21,7 +32,6 @@ export default function BlogContainer() {
 
   const { post, suggestions } = useMemo(() => {
     const [post] = posts.filter((post) => post.slug === pathname)
-
     const suggestions = posts.filter(
       (suggestion) =>
         isSameLanguage(suggestion, post) &&

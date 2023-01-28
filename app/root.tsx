@@ -7,6 +7,7 @@ import {
   ThemeHead,
   ThemeProvider,
   useTheme,
+  Theme,
 } from "./utils/styles"
 import {
   Link,
@@ -99,31 +100,33 @@ export function CatchBoundary() {
   const src = ERRORS_IMGS[caught.status]
 
   return (
-    <html>
-      <head>
-        <title>Oops!</title>
-        <Meta />
-        <Links />
-      </head>
-      <body className="text-ren min-h-screen bg-white dark:bg-slate-800">
-        <Header />
-        <main className="mx-auto block h-[calc(100vh-56px)] w-full max-w-6xl px-6 sm:px-12">
-          <section className="mt-3 flex flex-col text-center sm:mt-12">
-            {src && <img src={src} className="mx-auto w-36" />}
-            <h1 className="my-6 mx-auto text-3xl font-bold text-slate-800  sm:mt-12 sm:text-5xl">
-              {caught.status} {caught.statusText}
-            </h1>
-            {caught.data && <p>{caught.data}</p>}
-            <Link to="/" className="font-bold text-blue-500">
-              Go Back
-            </Link>
-          </section>
-        </main>
+    <ThemeProvider specifiedTheme={Theme.LIGHT}>
+      <html>
+        <head>
+          <title>Oops!</title>
+          <Meta />
+          <Links />
+        </head>
+        <body className="text-ren min-h-screen bg-white dark:bg-slate-800">
+          <Header />
+          <main className="mx-auto block h-[calc(100vh-56px)] w-full max-w-6xl px-6 sm:px-12">
+            <section className="mt-3 flex flex-col text-center sm:mt-12">
+              {src && <img src={src} className="mx-auto w-36" />}
+              <h1 className="my-6 mx-auto text-3xl font-bold text-slate-800  sm:mt-12 sm:text-5xl">
+                {caught.status} {caught.statusText}
+              </h1>
+              {caught.data && <p>{caught.data}</p>}
+              <Link to="/" className="font-bold text-blue-500">
+                Go Back
+              </Link>
+            </section>
+          </main>
 
-        <ScrollRestoration />
-        <Scripts />
-        <LiveReload />
-      </body>
-    </html>
+          <ScrollRestoration />
+          <Scripts />
+          <LiveReload />
+        </body>
+      </html>
+    </ThemeProvider>
   )
 }
