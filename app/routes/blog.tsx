@@ -1,11 +1,11 @@
-import { Outlet, useLoaderData, useLocation } from "@remix-run/react"
+import { Link, Outlet, useCatch, useLoaderData, useLocation } from "@remix-run/react"
 import { motion } from "framer-motion"
 import * as Posts from "~/utils/files"
 import { Card, DesktopTableOfContent, MobileTableOfContent } from "~/components"
 import { CATEGORY_COLOR_REGISTRY } from "~/utils/styles"
 import { PostMetaData } from "~/utils/files/types"
 import { useMemo } from "react"
-import { LoaderArgs, redirect } from "@remix-run/node"
+import { LoaderArgs } from "@remix-run/node"
 
 const isSameLanguage = (suggestion: PostMetaData, post: PostMetaData) =>
   suggestion.lang === post.lang
@@ -20,7 +20,10 @@ export const loader = ({ request }: LoaderArgs) => {
   const [post] = posts.filter((post) => post.slug === pathname)
 
   if (!post) {
-    throw redirect("/")
+    throw new Response("Not Found", {
+      status: 404,
+      statusText: "Oops didn't find the requested ressources",
+    })
   }
 
   return { posts }
@@ -67,6 +70,28 @@ export default function BlogContainer() {
       </motion.article>
       <DesktopTableOfContent elements={post.headings} activeColor={activeColor} />
       <MobileTableOfContent elements={post.headings} activeColor={activeColor} />
+    </main>
+  )
+}
+
+export function CatchBoundary() {
+  const caught = useCatch()
+
+  return (
+    <main className="mx-auto block h-[calc(100vh-56px)] w-full max-w-6xl px-6 sm:px-12">
+      <section className="flex flex-col space-y-6 text-center sm:mt-12">
+        <img src="/img/404.png" className="mx-auto w-36" />
+        <h1 className=" mx-auto text-3xl font-bold text-slate-800 dark:text-white sm:mt-12 sm:text-5xl">
+          {caught.status}
+        </h1>
+        <p className="text-center text-lg font-bold text-slate-600 dark:text-white">
+          {caught.statusText}
+        </p>
+
+        <Link to="/" className="font-bold text-blue-500 underline underline-offset-2">
+          Go Back
+        </Link>
+      </section>
     </main>
   )
 }
