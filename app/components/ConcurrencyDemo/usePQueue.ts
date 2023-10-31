@@ -48,7 +48,7 @@ export function usePQueue({
       const controller = abortControllersMap[taskId]
       if (controller) {
         controller.abort()
-        const { [taskId]: toBeDeleted, ...rest } = abortControllersMap
+        const { [taskId]: removed, ...rest } = abortControllersMap
         setAbortControllersMap(rest)
       }
     },
