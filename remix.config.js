@@ -9,13 +9,11 @@ module.exports = {
   // publicPath: "/build/",
   serverDependenciesToBundle: ["github-slugger"],
   mdx: async () => {
-    const [rehypeHighLight, rehypePrettyCode, rehypeSlug, rehypeAutoLinkHeadings] =
-      await Promise.all([
-        import("rehype-highlight").then((mod) => mod.default),
-        import("rehype-pretty-code").then((mod) => mod.default),
-        import("rehype-slug").then((mod) => mod.default),
-        import("rehype-autolink-headings").then((mod) => mod.default),
-      ])
+    const [rehypePrettyCode, rehypeSlug, rehypeAutoLinkHeadings] = await Promise.all([
+      import("rehype-pretty-code").then((mod) => mod.default),
+      import("rehype-slug").then((mod) => mod.default),
+      import("rehype-autolink-headings").then((mod) => mod.default),
+    ])
 
     const options = {
       theme: "dark-plus",
@@ -34,13 +32,8 @@ module.exports = {
       },
     }
 
-    const codeHighLightPlugins =
-      process.env.NODE_ENV === "development"
-        ? rehypeHighLight
-        : [rehypePrettyCode, options]
-
     return {
-      rehypePlugins: [codeHighLightPlugins, rehypeSlug, rehypeAutoLinkHeadings],
+      rehypePlugins: [[rehypePrettyCode, options], rehypeSlug, rehypeAutoLinkHeadings],
     }
   },
 }
