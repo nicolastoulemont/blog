@@ -3,9 +3,9 @@ import { motion } from 'framer-motion'
 import * as Posts from '~/utils/files'
 import { Card, DesktopTableOfContent, MobileTableOfContent } from '~/components'
 import { CATEGORY_COLOR_REGISTRY } from '~/utils/styles'
-import { PostMetaData } from '~/utils/files/types'
+import type { PostMetaData } from '~/utils/files/types'
 import { useMemo } from 'react'
-import { LoaderArgs } from '@remix-run/node'
+import type { LoaderArgs } from '@remix-run/node'
 
 const isSameLanguage = (suggestion: PostMetaData, post: PostMetaData) =>
   suggestion.lang === post.lang
@@ -42,7 +42,7 @@ export default function BlogContainer() {
         hasCommonCategory(suggestion, post)
     )
     return { post, suggestions }
-  }, [pathname])
+  }, [pathname, posts])
 
   const activeColor = CATEGORY_COLOR_REGISTRY[post.categories[0]]
 
@@ -80,7 +80,7 @@ export function CatchBoundary() {
   return (
     <main className="mx-auto block h-[calc(100vh-56px)] w-full max-w-6xl px-6 sm:px-12">
       <section className="flex flex-col space-y-6 text-center sm:mt-12">
-        <img src="/img/404.png" className="mx-auto w-36" />
+        <img src="/img/404.png" className="mx-auto w-36" alt="Post not found" />
         <h1 className=" mx-auto text-3xl font-bold text-slate-800 dark:text-white sm:mt-12 sm:text-5xl">
           {caught.status}
         </h1>

@@ -1,6 +1,6 @@
 import { useLoaderData, Form, useSearchParams, useSubmit } from '@remix-run/react'
 import * as Posts from '~/utils/files'
-import { Request } from '@remix-run/node'
+import type { Request } from '@remix-run/node'
 import { Card } from '~/components'
 
 export const loader = ({ request }: { request: Request }) => {

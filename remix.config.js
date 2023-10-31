@@ -7,7 +7,7 @@ module.exports = {
   // assetsBuildDirectory: "public/build",
   // serverBuildPath: "build/index.js",
   // publicPath: "/build/",
-  serverDependenciesToBundle: ['github-slugger'],
+  serverDependenciesToBundle: ['github-slugger', 'p-queue', 'p-timeout'],
   mdx: async () => {
     const [rehypePrettyCode, rehypeSlug, rehypeAutoLinkHeadings] = await Promise.all([
       import('rehype-pretty-code').then((mod) => mod.default),

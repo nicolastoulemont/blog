@@ -28,7 +28,7 @@ export const action: ActionFunction = async ({ request }) => {
 export const loader: LoaderFunction = () => redirect('/', { status: 404 })
 
 export function ThemeToggle() {
-  const [theme, setTheme] = useTheme()
+  const [_, setTheme] = useTheme()
 
   return (
     <DropdownMenu.Root>
