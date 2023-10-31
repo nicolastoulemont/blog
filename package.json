@@ -3,6 +3,9 @@
   "version": "",
   "private": true,
   "sideEffects": false,
+  "engines": {
+    "node": ">=20"
+  },
   "scripts": {
     "build": "cross-env NODE_ENV=production run-s \"build:*\"",
     "build:css": "pnpm generate:css --minify",
@@ -77,8 +80,5 @@
     "require-from-string": "^2.0.2",
     "typescript": "^5.2.2",
     "webpack": "^5.89.0"
-  },
-  "engines": {
-    "node": ">=18"
   }
 }

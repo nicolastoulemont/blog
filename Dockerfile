@@ -1,8 +1,5 @@
 # base node image
-FROM node:16-bullseye-slim as base
-
-# Install openssl for Prisma
-# RUN apt-get update && apt-get install -y openssl
+FROM node:20-bullseye-slim as base
 
 RUN npm install -g pnpm
 
@@ -34,10 +31,6 @@ RUN mkdir /app
 WORKDIR /app
 
 COPY --from=deps /app/node_modules /app/node_modules
-
-# If we're using Prisma, uncomment to cache the prisma schema
-# ADD prisma .
-# RUN npx prisma generate
 
 ADD . .
 RUN pnpm build
