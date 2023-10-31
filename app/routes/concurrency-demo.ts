@@ -1,14 +1,5 @@
-import { json, type LoaderArgs } from "@remix-run/node"
-import { sleep } from "~/utils/sleep"
+import { json } from '@remix-run/node'
 
-export const loader = async ({ request }: LoaderArgs) => {
-  const urlSearchParams = new URLSearchParams(request.url.split("?")[1])
-  const params = Object.fromEntries(urlSearchParams.entries())
-
-  if (params.duration && typeof parseInt(params.duration, 10) === "number") {
-    await sleep(parseInt(params.duration, 10))
-    return json({ success: true })
-  }
-
+export const loader = async () => {
   return json({ success: true })
 }

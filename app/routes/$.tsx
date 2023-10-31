@@ -18,7 +18,7 @@ export function CatchBoundary() {
   return (
     <main className="mx-auto block h-[calc(100vh-56px)] w-full max-w-6xl px-6 sm:px-12">
       <section className="flex flex-col space-y-6 text-center sm:mt-12">
-        <img src="/img/404.png" className="mx-auto w-36" />
+        <img src="/img/404.png" className="mx-auto w-36" alt="Post not found" />
         <h1 className=" mx-auto text-3xl font-bold text-slate-800 dark:text-white sm:mt-12 sm:text-5xl">
           {caught.status}
         </h1>

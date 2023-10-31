@@ -1,7 +1,7 @@
-import PQueue, { AbortError } from "p-queue"
-import type {Options, QueueAddOptions} from 'p-queue'
-import type PriorityQueue from "p-queue/dist/priority-queue"
-import { useState, useEffect, useCallback } from "react"
+import PQueue, { AbortError } from 'p-queue'
+import type { Options, QueueAddOptions } from 'p-queue'
+import type PriorityQueue from 'p-queue/dist/priority-queue'
+import { useEffect, useCallback, useMemo } from 'react'
 
 interface Task {
   id: string
@@ -13,24 +13,23 @@ export function usePQueue({
   autoStart = true,
   ...rest
 }: Options<PriorityQueue, QueueAddOptions>) {
-  const [PQ] = useState(() => new PQueue({ concurrency, ...rest }))
-  const [abortControllersMap, setAbortControllersMap] = useState<
-    Record<string, AbortController>
-  >({})
+  const PQ = useMemo(() => new PQueue({ concurrency, ...rest }), [concurrency, rest])
+  const AbortControllerMap = useMemo(() => new Map<string, AbortController>(), [])
 
   useEffect(() => {
-    if (autoStart && Object.keys(abortControllersMap).length > 0) {
+    if (autoStart && AbortControllerMap.size > 0) {
       PQ.start()
     }
-  }, [abortControllersMap, PQ, autoStart])
+  }, [AbortControllerMap, PQ, autoStart])
+
+  PQ.on('idle', () => {
+    AbortControllerMap.clear()
+  })
 
   const enqueue = useCallback(
     async (task: Task) => {
       const controller = new AbortController()
-      setAbortControllersMap((prev) => ({
-        ...prev,
-        [task.id]: controller,
-      }))
+      AbortControllerMap.set(task.id, controller)
 
       try {
         await PQ.add(task.fn, { signal: controller.signal })
@@ -40,31 +39,30 @@ export function usePQueue({
         }
       }
     },
-    [PQ]
+    [PQ, AbortControllerMap]
   )
 
   const dequeue = useCallback(
-    (taskId: Task["id"]) => {
-      const controller = abortControllersMap[taskId]
+    (taskId: Task['id']) => {
+      const controller = AbortControllerMap.get(taskId)
       if (controller) {
         controller.abort()
-        const { [taskId]: removed, ...rest } = abortControllersMap
-        setAbortControllersMap(rest)
+        AbortControllerMap.delete(taskId)
       }
     },
-    [abortControllersMap]
+    [AbortControllerMap]
   )
 
   const clearQueue = useCallback(() => {
     PQ.clear()
-    setAbortControllersMap({})
-  }, [PQ])
+    AbortControllerMap.clear()
+  }, [PQ, AbortControllerMap])
 
   return {
     enqueue,
     dequeue,
     clearQueue,
     start: PQ.start,
-    onIdle: PQ.onIdle
+    onIdle: PQ.onIdle,
   }
 }
