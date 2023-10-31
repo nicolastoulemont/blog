@@ -1,14 +1,14 @@
-import { isSameMonth } from "date-fns"
-import { getMonthsName, formatDate } from "../../../../utils"
-import { useDatePicker } from "../../../Provider"
-import { AnimatedViewWrapper } from "../AnimatedViewWrapper"
-import { CalendarButton } from "../CalendarButton"
-import { CalendarText } from "../CalendarText"
-import { CalendarUnderline } from "../CalendarUnderline"
+import { isSameMonth } from 'date-fns'
+import { getMonthsName, formatDate } from '../../../../utils'
+import { useDatePicker } from '../../../Provider'
+import { AnimatedViewWrapper } from '../AnimatedViewWrapper'
+import { CalendarButton } from '../CalendarButton'
+import { CalendarText } from '../CalendarText'
+import { CalendarUnderline } from '../CalendarUnderline'
 
 export function MonthView() {
   const { locale, state, handleSelectMonth } = useDatePicker()
-  const months = getMonthsName(locale, "short")
+  const months = getMonthsName(locale, 'short')
 
   const isCurrentMonth = (monthIndex: number) =>
     isSameMonth(new Date(), new Date(new Date().getFullYear(), monthIndex, 1))
@@ -20,7 +20,7 @@ export function MonthView() {
 
   const formatMonth = (monthIndex: number) => {
     const monthAsDate = new Date(state.calendarDate.getFullYear(), monthIndex, 1)
-    return formatDate(monthAsDate, locale, { month: "long" })
+    return formatDate(monthAsDate, locale, { month: 'long' })
   }
 
   return (
@@ -40,7 +40,7 @@ export function MonthView() {
                 isSelected={isSelected(monthIndex)}
                 aria-label={formatMonth(monthIndex)}
               >
-                <CalendarText variant={isSelected(monthIndex) ? "selected" : "regular"}>
+                <CalendarText variant={isSelected(monthIndex) ? 'selected' : 'regular'}>
                   {month}
                 </CalendarText>
               </CalendarButton>

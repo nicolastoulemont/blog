@@ -1,5 +1,5 @@
-import { HeadingType } from "~/utils/files/headingId.server"
-import { ColorNames } from "~/utils/styles"
+import { HeadingType } from '~/utils/files/headingId.server'
+import { ColorNames } from '~/utils/styles'
 
 export type ElementProps = {
   type: HeadingType

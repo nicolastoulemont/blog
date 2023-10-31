@@ -1,5 +1,5 @@
-import { ReactNode, forwardRef } from "react"
-import { clsx } from "clsx"
+import { ReactNode, forwardRef } from 'react'
+import { clsx } from 'clsx'
 
 interface HeaderButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
   isActive: boolean
@@ -13,10 +13,10 @@ export const HeaderButton = forwardRef<HTMLButtonElement, HeaderButtonProps>(
       <button
         ref={ref}
         className={clsx(
-          "rounded-xl border-2 bg-blue-50 px-3 py-1 text-base font-medium text-slate-700 dark:bg-slate-800 dark:text-white sm:px-2 sm:text-sm",
+          'rounded-xl border-2 bg-blue-50 px-3 py-1 text-base font-medium text-slate-700 dark:bg-slate-800 dark:text-white sm:px-2 sm:text-sm',
           isActive
-            ? "border-blue-300 dark:border-black"
-            : "border-blue-50 dark:border-slate-800",
+            ? 'border-blue-300 dark:border-black'
+            : 'border-blue-50 dark:border-slate-800',
           className
         )}
         {...props}

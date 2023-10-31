@@ -1,6 +1,6 @@
-import type { LinksFunction, MetaFunction, Request } from "@remix-run/node"
-import { Header } from "~/components"
-import styles from "./tailwind.css"
+import type { LinksFunction, MetaFunction, Request } from '@remix-run/node'
+import { Header } from '~/components'
+import styles from './tailwind.css'
 import {
   getThemeSession,
   ThemeBody,
@@ -8,7 +8,7 @@ import {
   ThemeProvider,
   useTheme,
   Theme,
-} from "./utils/styles"
+} from './utils/styles'
 import {
   Link,
   Links,
@@ -19,27 +19,27 @@ import {
   ScrollRestoration,
   useCatch,
   useLoaderData,
-} from "@remix-run/react"
+} from '@remix-run/react'
 
 export let links: LinksFunction = () => {
-  return [{ rel: "stylesheet", href: styles }]
+  return [{ rel: 'stylesheet', href: styles }]
 }
 
 export const meta: MetaFunction = () => ({
-  title: "Nicolas Toulemont engineering blog",
-  description: "Web development content about React, Typescript, GraphQL, Node",
-  canonical: "https://nicolastoulemont.dev",
-  viewport: "width=device-width,initial-scale=1",
-  charset: "utf-8",
-  "og:type": "website",
-  "og:locale": "en-US",
-  "og:url": "https://nicolastoulemont.dev",
-  "og:title": "Nicolas Toulemont engineering blog",
-  "og:site_name": "Nicolas Toulemont engineering blog",
-  "og:description": "Web development content about React, Typescript, GraphQL, Node",
-  "twitter:site": "@n_toulemont",
-  "twitter:creator": "@n_toulemont",
-  "twitter:card": "summary_large_image",
+  title: 'Nicolas Toulemont engineering blog',
+  description: 'Web development content about React, Typescript, GraphQL, Node',
+  canonical: 'https://nicolastoulemont.dev',
+  viewport: 'width=device-width,initial-scale=1',
+  charset: 'utf-8',
+  'og:type': 'website',
+  'og:locale': 'en-US',
+  'og:url': 'https://nicolastoulemont.dev',
+  'og:title': 'Nicolas Toulemont engineering blog',
+  'og:site_name': 'Nicolas Toulemont engineering blog',
+  'og:description': 'Web development content about React, Typescript, GraphQL, Node',
+  'twitter:site': '@n_toulemont',
+  'twitter:creator': '@n_toulemont',
+  'twitter:card': 'summary_large_image',
 })
 
 export const loader = async ({ request }: { request: Request }) => {
@@ -55,7 +55,7 @@ function Document() {
   const [theme] = useTheme()
 
   return (
-    <html lang="en" className={theme ?? ""}>
+    <html lang="en" className={theme ?? ''}>
       <head>
         <Meta />
         <Links />

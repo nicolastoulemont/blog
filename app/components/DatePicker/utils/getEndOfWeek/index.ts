@@ -1,1 +1,1 @@
-export * from "./getEndOfWeek"
+export * from './getEndOfWeek'

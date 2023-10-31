@@ -1,14 +1,14 @@
-import { useLoaderData, Form, useSearchParams, useSubmit } from "@remix-run/react"
-import * as Posts from "~/utils/files"
-import { Request } from "@remix-run/node"
-import { Card } from "~/components"
+import { useLoaderData, Form, useSearchParams, useSubmit } from '@remix-run/react'
+import * as Posts from '~/utils/files'
+import { Request } from '@remix-run/node'
+import { Card } from '~/components'
 
 export const loader = ({ request }: { request: Request }) => {
-  const urlSearchParams = new URLSearchParams(request.url.split("?")[1])
+  const urlSearchParams = new URLSearchParams(request.url.split('?')[1])
   const params = Object.fromEntries(urlSearchParams.entries())
 
-  if (!params.search || params.search === "") {
-    return Posts.getAll("en")
+  if (!params.search || params.search === '') {
+    return Posts.getAll('en')
   } else {
     return Posts.search(params.search)
   }
@@ -45,7 +45,7 @@ export default function Index() {
           className="w-full rounded-lg bg-white text-slate-800 placeholder:text-slate-800 dark:border-black dark:bg-slate-900 dark:text-white dark:placeholder:text-white"
           placeholder="Search posts"
           onChange={(e) => submit(e.currentTarget.form)}
-          {...(params.search && params.search !== "" && { defaultValue: params.search })}
+          {...(params.search && params.search !== '' && { defaultValue: params.search })}
         />
       </Form>
       <div

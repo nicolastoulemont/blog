@@ -2,23 +2,23 @@ import {
   CategoryNames,
   CATEGORY_COLOR_REGISTRY,
   CATEGORY_COLOR_VARIANTS,
-} from "~/utils/styles"
+} from '~/utils/styles'
 
 export function Tag({
   category,
   className,
-  size = "md",
+  size = 'md',
 }: {
   category: CategoryNames
   className?: string
-  size?: "sm" | "md"
+  size?: 'sm' | 'md'
 }) {
   const activeColor = CATEGORY_COLOR_REGISTRY[category]
   const { bg, text } = CATEGORY_COLOR_VARIANTS[activeColor]
 
   const sizes = {
-    sm: "p-1 text-xs",
-    md: "px-2 py-1 text-sm",
+    sm: 'p-1 text-xs',
+    md: 'px-2 py-1 text-sm',
   }
 
   return (

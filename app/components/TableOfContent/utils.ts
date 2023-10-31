@@ -1,5 +1,5 @@
-import { motion } from "framer-motion"
-import { chakra, useMultiStyleConfig } from "@chakra-ui/react"
+import { motion } from 'framer-motion'
+import { chakra, useMultiStyleConfig } from '@chakra-ui/react'
 
 export const MotionBox = chakra(motion.div)
 
@@ -24,7 +24,7 @@ export const fontSize = {
 export const useActiveStyles = (activeColorScheme: string) => {
   const {
     container: { bg, color },
-  } = useMultiStyleConfig("Tag", { colorScheme: activeColorScheme })
+  } = useMultiStyleConfig('Tag', { colorScheme: activeColorScheme })
   return {
     bg,
     color,

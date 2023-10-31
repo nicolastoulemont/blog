@@ -1,7 +1,7 @@
-import { getYearsRange } from "./getYearsRange"
+import { getYearsRange } from './getYearsRange'
 
-describe("getYearsRange", () => {
-  test("should returns correct years range", () => {
+describe('getYearsRange', () => {
+  test('should returns correct years range', () => {
     const range = getYearsRange(2000, 2010)
 
     expect(range).toStrictEqual([

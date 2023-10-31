@@ -1,8 +1,8 @@
-import { Link, useCatch } from "@remix-run/react"
+import { Link, useCatch } from '@remix-run/react'
 
 // Catch all route
 export const loader = () => {
-  throw new Response("Not Found", {
+  throw new Response('Not Found', {
     status: 404,
     statusText: "Oops didn't find the requested ressources",
   })

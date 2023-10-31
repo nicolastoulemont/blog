@@ -1,5 +1,5 @@
-import { Link } from "@remix-run/react"
-import * as Accordion from "./Accordion"
+import { Link } from '@remix-run/react'
+import * as Accordion from './Accordion'
 
 export function AccordionDemo() {
   return (

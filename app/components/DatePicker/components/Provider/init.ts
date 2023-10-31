@@ -1,4 +1,4 @@
-import { DatePickerProviderProps, State } from "./Provider.types"
+import { DatePickerProviderProps, State } from './Provider.types'
 
 export function init({ value }: Partial<DatePickerProviderProps>): State {
   const calendarDate = value ?? new Date()
@@ -6,7 +6,7 @@ export function init({ value }: Partial<DatePickerProviderProps>): State {
     /**
      * Controller for the different views shown to the user
      */
-    view: "days",
+    view: 'days',
     /** The value given back to the consumer of the DatePicker */
     value,
     /**
@@ -17,7 +17,7 @@ export function init({ value }: Partial<DatePickerProviderProps>): State {
     /**
      * Used to manage animation directions
      */
-    slideDir: "none",
+    slideDir: 'none',
     /**
      * Used to manage fill the year view
      */

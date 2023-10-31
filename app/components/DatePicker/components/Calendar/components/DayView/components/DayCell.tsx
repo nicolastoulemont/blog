@@ -1,9 +1,9 @@
-import { CalendarButton } from "../../CalendarButton"
-import { CalendarUnderline } from "../../CalendarUnderline"
-import { isSameDay, isSameMonth } from "date-fns"
-import { useDatePicker } from "../../../../Provider"
-import { useTableNavigation } from "./TableNavigationProvider"
-import { CalendarText } from "../../CalendarText"
+import { CalendarButton } from '../../CalendarButton'
+import { CalendarUnderline } from '../../CalendarUnderline'
+import { isSameDay, isSameMonth } from 'date-fns'
+import { useDatePicker } from '../../../../Provider'
+import { useTableNavigation } from './TableNavigationProvider'
+import { CalendarText } from '../../CalendarText'
 
 interface DayCellProps {
   onClose: () => void
@@ -13,7 +13,7 @@ interface DayCellProps {
 }
 
 const isNavigationKey = (event: React.KeyboardEvent<HTMLButtonElement>) => {
-  return ["ArrowUp", "ArrowDown", "ArrowLeft", "ArrowRight", "Tab"].includes(event.code)
+  return ['ArrowUp', 'ArrowDown', 'ArrowLeft', 'ArrowRight', 'Tab'].includes(event.code)
 }
 
 export function DayCell({ day, rowIndex, colIndex, onClose }: DayCellProps) {
@@ -24,7 +24,7 @@ export function DayCell({ day, rowIndex, colIndex, onClose }: DayCellProps) {
   const isWithinCurrentMonth = isSameMonth(state.calendarDate, day)
   const isCurrentDay = isSameDay(new Date(), day)
 
-  const variant = isSelected ? "selected" : isWithinCurrentMonth ? "regular" : "muted"
+  const variant = isSelected ? 'selected' : isWithinCurrentMonth ? 'regular' : 'muted'
 
   function selectDay() {
     handleSelectDay(day)
@@ -40,7 +40,7 @@ export function DayCell({ day, rowIndex, colIndex, onClose }: DayCellProps) {
   }
 
   return (
-    <td className="h-10 w-10 sm:h-9 sm:w-9" aria-selected={isSelected ? "true" : "false"}>
+    <td className="h-10 w-10 sm:h-9 sm:w-9" aria-selected={isSelected ? 'true' : 'false'}>
       <div className="relative flex h-10 w-10 items-center justify-center sm:h-9 sm:w-9">
         <CalendarButton
           ref={(ref) => mapRefToMatrix(ref as HTMLButtonElement, rowIndex, colIndex)}

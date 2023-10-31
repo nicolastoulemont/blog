@@ -1,25 +1,25 @@
 ---
-categories: ["General", "React"]
+categories: ['General', 'React']
 meta:
-  canonical: "https://nicolastoulemont.dev/blog/en/2022/immutable-mutable-performance"
-  "og:url": "https://nicolastoulemont.dev/blog/en/2022/immutable-mutable-performance"
-  title: "Immutable vs mutable, a recent use-case where purity and immutability caused performance issues"
-  "og:title": "Immutable vs mutable, a recent use-case where purity and immutability caused performance issues"
-  description: "Using a mutable approach may lead to enormous performance gains."
-  "og:description": "Using a mutable approach may lead to enormous performance gains."
-  "og:type": "article"
-  "og:image": "/img/growth.png"
-  "og:image:alt": "Performance"
-  "og:image:width": "256"
-  "og:image:height": "256"
-  "article:published_time": "2022-05-01"
+  canonical: 'https://nicolastoulemont.dev/blog/en/2022/immutable-mutable-performance'
+  'og:url': 'https://nicolastoulemont.dev/blog/en/2022/immutable-mutable-performance'
+  title: 'Immutable vs mutable, a recent use-case where purity and immutability caused performance issues'
+  'og:title': 'Immutable vs mutable, a recent use-case where purity and immutability caused performance issues'
+  description: 'Using a mutable approach may lead to enormous performance gains.'
+  'og:description': 'Using a mutable approach may lead to enormous performance gains.'
+  'og:type': 'article'
+  'og:image': '/img/growth.png'
+  'og:image:alt': 'Performance'
+  'og:image:width': '256'
+  'og:image:height': '256'
+  'article:published_time': '2022-05-01'
 ---
 
-import { PostIntro } from "~/components"
+import { PostIntro } from '~/components'
 
 # Immutable vs mutable: a use case with performance issues
 
-<PostIntro publishedAt="May 1st 2022" categories={["General", "React"]} />
+<PostIntro publishedAt="May 1st 2022" categories={['General', 'React']} />
 
 ## A bit of context
 
@@ -80,11 +80,11 @@ Therefore we would need to convert props objects like these:
 
 ```ts
 const props = {
-  display: "flex",
-  borderRadius: { base: "100%", lg: "9999px" },
-  margin: { base: "10px", sm: "20px", md: "30px", lg: "40px" },
-  padding: { base: "10px", sm: "20px", md: "30px", lg: "40px" },
-  width: { base: "100%", sm: "70%", md: "50%", lg: "30%" },
+  display: 'flex',
+  borderRadius: { base: '100%', lg: '9999px' },
+  margin: { base: '10px', sm: '20px', md: '30px', lg: '40px' },
+  padding: { base: '10px', sm: '20px', md: '30px', lg: '40px' },
+  width: { base: '100%', sm: '70%', md: '50%', lg: '30%' },
   height: 300,
 }
 ```
@@ -93,27 +93,27 @@ Into an emotion compatible object, like this one:
 
 ```ts
 const styleObject = {
-  width: "100%",
+  width: '100%',
   height: 300,
-  borderRadius: "100%",
-  display: "flex",
-  margin: "10px",
-  padding: "10px",
-  "@media (min-width: 470px)": {
-    width: "70%",
-    margin: "20px",
-    padding: "20px",
+  borderRadius: '100%',
+  display: 'flex',
+  margin: '10px',
+  padding: '10px',
+  '@media (min-width: 470px)': {
+    width: '70%',
+    margin: '20px',
+    padding: '20px',
   },
-  "@media (min-width: 780px)": {
-    width: "50%",
-    margin: "30px",
-    padding: "30px",
+  '@media (min-width: 780px)': {
+    width: '50%',
+    margin: '30px',
+    padding: '30px',
   },
-  "@media (min-width: 1020px)": {
-    width: "30%",
-    borderRadius: "9999px",
-    margin: "40px",
-    padding: "40px",
+  '@media (min-width: 1020px)': {
+    width: '30%',
+    borderRadius: '9999px',
+    margin: '40px',
+    padding: '40px',
   },
 }
 ```
@@ -138,12 +138,12 @@ function mapPropsToStyles(props) {
   let styles = {}
 
   for (const prop in props) {
-    if (typeof props[prop] !== "object") {
+    if (typeof props[prop] !== 'object') {
       styles[prop] = transformToken(props[prop])
     } else {
       const value = props[prop]
       for (const bp in value) {
-        if (bp === "base") {
+        if (bp === 'base') {
           styles[prop] = transformToken(value[bp])
         } else if (breakpoints[bp]) {
           const query = `@media (min-width: ${breakpoints[bp]}px)`
@@ -186,13 +186,13 @@ When a prop is a responsive object, they delegate the transformed token to the h
 
 ```ts
 const mediaQueries = {
-  sm: "@media (min-width: 470px)",
-  md: "@media (min-width: 780px)",
-  lg: "@media (min-width: 1020px)",
+  sm: '@media (min-width: 470px)',
+  md: '@media (min-width: 780px)',
+  lg: '@media (min-width: 1020px)',
 }
 
 function isResponsive(value) {
-  return typeof value === "object"
+  return typeof value === 'object'
 }
 
 function handleResponsive(responsiveObject, styles, media, key) {
@@ -224,26 +224,26 @@ function handleResponsive(responsiveObject, styles, media, key) {
 
 function mapDimension({ width, height }, styles, media) {
   if (isResponsive(width)) {
-    handleResponsive(transformDimensionToken(width), styles, media, "width")
+    handleResponsive(transformDimensionToken(width), styles, media, 'width')
   } else {
     styles.width = transformDimensionToken(width)
   }
 
   if (isResponsive(height)) {
-    handleResponsive(transformDimensionToken(height), styles, media, "height")
+    handleResponsive(transformDimensionToken(height), styles, media, 'height')
   } else {
     styles.height = transformDimensionToken(height)
   }
 }
 function mapSpacing({ margin, padding }, styles, media) {
   if (isResponsive(margin)) {
-    handleResponsive(transforSpacingToken(margin), styles, media, "margin")
+    handleResponsive(transforSpacingToken(margin), styles, media, 'margin')
   } else {
     styles.margin = transforSpacingToken(margin)
   }
 
   if (isResponsive(padding)) {
-    handleResponsive(transforSpacingToken(padding), styles, media, "padding")
+    handleResponsive(transforSpacingToken(padding), styles, media, 'padding')
   } else {
     styles.padding = transforSpacingToken(padding)
   }

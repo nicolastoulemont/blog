@@ -1,1 +1,1 @@
-export * from "./YearView"
+export * from './YearView'

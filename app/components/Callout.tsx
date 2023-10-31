@@ -1,13 +1,13 @@
-import { ReactNode } from "react"
-import * as FiIcons from "react-icons/fi"
-import { CATEGORY_COLOR_VARIANTS, ColorNames } from "~/utils/styles"
+import { ReactNode } from 'react'
+import * as FiIcons from 'react-icons/fi'
+import { CATEGORY_COLOR_VARIANTS, ColorNames } from '~/utils/styles'
 interface CalloutProps {
   children: ReactNode
   icon?: keyof typeof FiIcons
   variant?: ColorNames
 }
 
-export function Callout({ children, icon, variant = "blue" }: CalloutProps) {
+export function Callout({ children, icon, variant = 'blue' }: CalloutProps) {
   // @ts-expect-error types mistatches
   const Icon = FiIcons[icon]
   const { stroke, bg, text } = CATEGORY_COLOR_VARIANTS[variant]

@@ -1,5 +1,5 @@
-import { useFetcher } from "@remix-run/react"
-import type { Dispatch, ReactNode, SetStateAction } from "react"
+import { useFetcher } from '@remix-run/react'
+import type { Dispatch, ReactNode, SetStateAction } from 'react'
 import {
   createContext,
   createElement,
@@ -7,11 +7,11 @@ import {
   useEffect,
   useRef,
   useState,
-} from "react"
+} from 'react'
 
 enum Theme {
-  DARK = "dark",
-  LIGHT = "light",
+  DARK = 'dark',
+  LIGHT = 'light',
 }
 const themes: Array<Theme> = Object.values(Theme)
 
@@ -19,7 +19,7 @@ type ThemeContextType = [Theme | null, Dispatch<SetStateAction<Theme | null>>]
 
 const ThemeContext = createContext<ThemeContextType | undefined>(undefined)
 
-const prefersDarkMQ = "(prefers-color-scheme: dark)"
+const prefersDarkMQ = '(prefers-color-scheme: dark)'
 const getPreferredTheme = () =>
   window.matchMedia(prefersDarkMQ).matches ? Theme.DARK : Theme.LIGHT
 
@@ -45,7 +45,7 @@ function ThemeProvider({
 
     // there's no way for us to know what the theme should be in this context
     // the client will have to figure it out before hydration.
-    if (typeof document === "undefined") {
+    if (typeof document === 'undefined') {
       return null
     }
 
@@ -70,7 +70,7 @@ function ThemeProvider({
       return
     }
 
-    persistThemeRef.current.submit({ theme }, { action: "theme/save", method: "post" })
+    persistThemeRef.current.submit({ theme }, { action: 'theme/save', method: 'post' })
   }, [theme])
 
   useEffect(() => {
@@ -78,8 +78,8 @@ function ThemeProvider({
     const handleChange = () => {
       setTheme(mediaQuery.matches ? Theme.DARK : Theme.LIGHT)
     }
-    mediaQuery.addEventListener("change", handleChange)
-    return () => mediaQuery.removeEventListener("change", handleChange)
+    mediaQuery.addEventListener('change', handleChange)
+    return () => mediaQuery.removeEventListener('change', handleChange)
   }, [])
 
   return (
@@ -166,7 +166,7 @@ function ThemeHead({ ssrTheme }: { ssrTheme: boolean }) {
       */}
       <meta
         name="color-scheme"
-        content={theme === "light" ? "light dark" : "dark light"}
+        content={theme === 'light' ? 'light dark' : 'dark light'}
       />
       {/*
         If we know what the theme is from the server then we don't need
@@ -221,7 +221,7 @@ function ThemeBody({ ssrTheme }: { ssrTheme: boolean }) {
 function useTheme() {
   const context = useContext(ThemeContext)
   if (context === undefined) {
-    throw new Error("useTheme must be used within a ThemeProvider")
+    throw new Error('useTheme must be used within a ThemeProvider')
   }
   return context
 }
@@ -243,24 +243,24 @@ function Themed({
   const [theme] = useTheme()
   const [initialTheme] = useState(theme)
   const themeToReference = initialOnly ? initialTheme : theme
-  const serverRenderWithUnknownTheme = !theme && typeof document === "undefined"
+  const serverRenderWithUnknownTheme = !theme && typeof document === 'undefined'
 
   if (serverRenderWithUnknownTheme) {
     // stick them both in and our little script will update the DOM to match
     // what we'll render in the client during hydration.
     return (
       <>
-        {createElement("dark-mode", null, dark)}
-        {createElement("light-mode", null, light)}
+        {createElement('dark-mode', null, dark)}
+        {createElement('light-mode', null, light)}
       </>
     )
   }
 
-  return <>{themeToReference === "light" ? light : dark}</>
+  return <>{themeToReference === 'light' ? light : dark}</>
 }
 
 function isTheme(value: unknown): value is Theme {
-  return typeof value === "string" && themes.includes(value as Theme)
+  return typeof value === 'string' && themes.includes(value as Theme)
 }
 
 export { isTheme, Theme, Themed, ThemeBody, ThemeHead, ThemeProvider, useTheme }

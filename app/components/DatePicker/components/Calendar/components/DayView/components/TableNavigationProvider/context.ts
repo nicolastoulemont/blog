@@ -1,4 +1,4 @@
-import { createContext, KeyboardEvent, useContext } from "react"
+import { createContext, KeyboardEvent, useContext } from 'react'
 
 export interface TableNavigationValues {
   mapRefToMatrix: (ref: HTMLButtonElement, rowIndex: number, colIndex: number) => void

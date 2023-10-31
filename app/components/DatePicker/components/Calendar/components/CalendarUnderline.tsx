@@ -1,7 +1,7 @@
-import clsx from "clsx"
+import clsx from 'clsx'
 
 interface CalendarUnderlineProps {
-  variant: "day" | "other"
+  variant: 'day' | 'other'
 }
 
 export function CalendarUnderline({ variant }: CalendarUnderlineProps) {
@@ -9,10 +9,10 @@ export function CalendarUnderline({ variant }: CalendarUnderlineProps) {
     <div
       aria-hidden
       className={clsx(
-        "absolute z-0 rounded-lg bg-blue-200 dark:bg-white",
-        variant === "day"
-          ? "bottom-1 h-[3px] w-4 sm:h-[2px] sm:w-3"
-          : "bottom-[6px] h-[3px] w-4 sm:bottom-[7.5px]"
+        'absolute z-0 rounded-lg bg-blue-200 dark:bg-white',
+        variant === 'day'
+          ? 'bottom-1 h-[3px] w-4 sm:h-[2px] sm:w-3'
+          : 'bottom-[6px] h-[3px] w-4 sm:bottom-[7.5px]'
       )}
     />
   )

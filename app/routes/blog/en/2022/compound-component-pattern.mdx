@@ -1,27 +1,27 @@
 ---
-categories: ["React", "Architecture"]
+categories: ['React', 'Architecture']
 meta:
-  canonical: "https://nicolastoulemont.dev/blog/en/2022/compound-component-pattern"
-  "og:url": "https://nicolastoulemont.dev/blog/en/2022/compound-component-pattern"
-  title: "The compound component pattern"
-  "og:title": "The compound component pattern"
-  description: "A flexible component authoring pattern to give consumers a composition-based API"
-  "og:description": "A flexible component authoring pattern to give consumers a composition-based API"
-  "og:type": "article"
-  "og:image": "/img/couches.png"
-  "og:image:alt": "Layers"
-  "og:image:width": "256"
-  "og:image:height": "256"
-  "article:published_time": "2022-12-19"
+  canonical: 'https://nicolastoulemont.dev/blog/en/2022/compound-component-pattern'
+  'og:url': 'https://nicolastoulemont.dev/blog/en/2022/compound-component-pattern'
+  title: 'The compound component pattern'
+  'og:title': 'The compound component pattern'
+  description: 'A flexible component authoring pattern to give consumers a composition-based API'
+  'og:description': 'A flexible component authoring pattern to give consumers a composition-based API'
+  'og:type': 'article'
+  'og:image': '/img/couches.png'
+  'og:image:alt': 'Layers'
+  'og:image:width': '256'
+  'og:image:height': '256'
+  'article:published_time': '2022-12-19'
 ---
 
-import { PostIntro, Container, AccordionDemo } from "~/components"
+import { PostIntro, Container, AccordionDemo } from '~/components'
 
 # The compound component pattern
 
 _*A flexible component authoring pattern to give consumers a composition-based API*_
 
-<PostIntro publishedAt="December 19th 2022" categories={["React", "Architecture"]} />
+<PostIntro publishedAt="December 19th 2022" categories={['React', 'Architecture']} />
 
 Compound components are components that share a common context to perform one or more given task(s) together.
 They work by exposing a declarative API leaving the consumer to compose them to achieve their goal.
@@ -36,7 +36,7 @@ This is in contrast to components with an imperative API that usually requires m
 Which has the following API
 
 ```tsx
-import * as Accordion from "./Accordion"
+import * as Accordion from './Accordion'
 
 function AccordionDemo() {
   return (
@@ -72,11 +72,11 @@ In our case, we will use the context API to handle the accordion open/close stat
 others accordion components.
 
 ```tsx
-import { createContext, useContext, useState } from "react"
+import { createContext, useContext, useState } from 'react'
 
-import type { AccordionRootProps } from "./Accordion.Root"
+import type { AccordionRootProps } from './Accordion.Root'
 
-interface AccordionContextValues extends Omit<AccordionRootProps, "children"> {
+interface AccordionContextValues extends Omit<AccordionRootProps, 'children'> {
   id: string
   isOpen: boolean
   onToggleChange: () => void
@@ -88,7 +88,7 @@ export const useAccordion = () => {
   const context = useContext(AccordionContext)
 
   if (!context) {
-    throw new Error("useAccordionContext must be used within a AccordionProvider")
+    throw new Error('useAccordionContext must be used within a AccordionProvider')
   }
 
   return context
@@ -124,13 +124,13 @@ We will then use it within our `Accordion.Root` component that will wrap our oth
 the information available for others and applying some container styles to the accordion.
 
 ```tsx
-import { ReactNode, useId, forwardRef } from "react"
-import type { ComponentProps } from "react"
-import clsx from "clsx"
+import { ReactNode, useId, forwardRef } from 'react'
+import type { ComponentProps } from 'react'
+import clsx from 'clsx'
 
-import { Provider } from "./Accordion.Provider"
+import { Provider } from './Accordion.Provider'
 
-type WrapperDivProps = Omit<ComponentProps<"div">, "onChange">
+type WrapperDivProps = Omit<ComponentProps<'div'>, 'onChange'>
 
 export interface AccordionRootProps extends WrapperDivProps {
   children: ReactNode
@@ -150,7 +150,7 @@ export const Root = forwardRef<HTMLDivElement, AccordionRootProps>(function Root
         ref={ref}
         {...props}
         className={clsx(
-          "rounded-2xl border border-solid border-gray-200 shadow-sm transition-shadow duration-300 hover:shadow-md",
+          'rounded-2xl border border-solid border-gray-200 shadow-sm transition-shadow duration-300 hover:shadow-md',
           className
         )}
       >
@@ -172,12 +172,12 @@ Our header component is a styled button that triggers the open/close state of th
 As such, it's pretty simple, especially since the open/close logic is handled by the context provider.
 
 ```tsx
-import clsx from "clsx"
-import { ComponentProps, forwardRef } from "react"
+import clsx from 'clsx'
+import { ComponentProps, forwardRef } from 'react'
 
-import { useAccordion } from "./Accordion.Provider"
+import { useAccordion } from './Accordion.Provider'
 
-export type AccordionHeaderProps = ComponentProps<"button">
+export type AccordionHeaderProps = ComponentProps<'button'>
 
 export const Header = forwardRef<HTMLButtonElement, AccordionHeaderProps>(function Header(
   { children, className, ...props },
@@ -194,9 +194,9 @@ export const Header = forwardRef<HTMLButtonElement, AccordionHeaderProps>(functi
         aria-expanded={isOpen}
         onClick={onToggleChange}
         className={clsx(
-          "flex w-full flex-grow items-center justify-between rounded-t-2xl p-4 ",
-          isOpen && "border-b border-gray-200",
-          !isOpen && "rounded-b-2xl",
+          'flex w-full flex-grow items-center justify-between rounded-t-2xl p-4 ',
+          isOpen && 'border-b border-gray-200',
+          !isOpen && 'rounded-b-2xl',
           className
         )}
         {...props}
@@ -214,16 +214,16 @@ Our icon component is a purely decorative one that serves as a visual indicator 
 in its closed state.
 
 ```tsx
-import { motion } from "framer-motion"
-import { ComponentProps, forwardRef } from "react"
-import { ChevronDownIcon } from "@heroicons/react/24/solid"
-import clsx from "clsx"
+import { motion } from 'framer-motion'
+import { ComponentProps, forwardRef } from 'react'
+import { ChevronDownIcon } from '@heroicons/react/24/solid'
+import clsx from 'clsx'
 
-import { useAccordion } from "./Accordion.Provider"
+import { useAccordion } from './Accordion.Provider'
 
 export type AccordionIconProps = Omit<
-  ComponentProps<"svg">,
-  "onAnimationStart" | "onDragStart" | "onDragEnd" | "onDrag" | "ref"
+  ComponentProps<'svg'>,
+  'onAnimationStart' | 'onDragStart' | 'onDragEnd' | 'onDrag' | 'ref'
 >
 
 const MotionChevronDownIcon = motion(ChevronDownIcon)
@@ -238,7 +238,7 @@ export const Icon = forwardRef<SVGSVGElement, AccordionIconProps>(function (
     <MotionChevronDownIcon
       animate={{ rotate: isOpen ? 90 : 0, transition: { duration: 0.3 } }}
       ref={ref}
-      className={clsx("h-4 w-4 text-slate-800 dark:text-white", className)}
+      className={clsx('h-4 w-4 text-slate-800 dark:text-white', className)}
       {...props}
     />
   )
@@ -251,19 +251,19 @@ Our panel component is fairly simple as well. It contains the elements that we w
 based on the open/closed state of our accordion. Therefore, in our implementation, it's just a subscriber to our shared state with an animated open/close behavior.
 
 ```tsx
-import { motion } from "framer-motion"
-import { ComponentProps, forwardRef } from "react"
-import clsx from "clsx"
+import { motion } from 'framer-motion'
+import { ComponentProps, forwardRef } from 'react'
+import clsx from 'clsx'
 
-import { useAccordion } from "./Accordion.Provider"
+import { useAccordion } from './Accordion.Provider'
 
 export type AccordionPanelProps = Omit<
-  ComponentProps<"div">,
-  "onAnimationStart" | "onDragStart" | "onDragEnd" | "onDrag" | "ref"
+  ComponentProps<'div'>,
+  'onAnimationStart' | 'onDragStart' | 'onDragEnd' | 'onDrag' | 'ref'
 >
 
 const variants = {
-  open: { opacity: 1, height: "auto" },
+  open: { opacity: 1, height: 'auto' },
   closed: { opacity: 0, height: 0 },
 }
 
@@ -277,13 +277,13 @@ export const Panel = forwardRef<HTMLDivElement, AccordionPanelProps>(function Pa
     <motion.div
       ref={ref}
       id={`panel-${id}`}
-      initial={isOpen ? "open" : "closed"}
-      animate={isOpen ? "open" : "closed"}
+      initial={isOpen ? 'open' : 'closed'}
+      animate={isOpen ? 'open' : 'closed'}
       variants={variants}
       transition={{ duration: 0.3 }}
       role="region"
       aria-hidden={!isOpen}
-      className={clsx("overflow-hidden", className)}
+      className={clsx('overflow-hidden', className)}
       {...props}
     >
       {children}
@@ -298,13 +298,13 @@ With all these components built, our export contract will be simple as well:
 
 ```tsx
 // Accordion.tsx
-export { Header } from "./components/Accordion.Header"
-export { Icon } from "./components/Accordion.Icon"
-export { Panel } from "./components/Accordion.Panel"
-export { Root } from "./components/Accordion.Root"
+export { Header } from './components/Accordion.Header'
+export { Icon } from './components/Accordion.Icon'
+export { Panel } from './components/Accordion.Panel'
+export { Root } from './components/Accordion.Root'
 
 // Consumer file
-import * as Accordion from "./Accordion"
+import * as Accordion from './Accordion'
 ```
 
 So looking back at this authoring pattern, what are its PROs and CONs:

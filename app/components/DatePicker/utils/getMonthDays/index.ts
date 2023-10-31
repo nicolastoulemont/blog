@@ -1,1 +1,1 @@
-export * from "./getMonthDays"
+export * from './getMonthDays'

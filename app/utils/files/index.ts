@@ -1,1 +1,1 @@
-export * from "./get-posts.server"
+export * from './get-posts.server'

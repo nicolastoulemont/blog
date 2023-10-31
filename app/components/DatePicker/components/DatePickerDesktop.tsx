@@ -1,8 +1,8 @@
-import { useEffect, useRef } from "react"
-import { Calendar } from "./Calendar"
-import { Input, InputContainer, InputLabel } from "./Input"
-import { useDatePicker } from "./Provider"
-import { Popover, Transition } from "@headlessui/react"
+import { useEffect, useRef } from 'react'
+import { Calendar } from './Calendar'
+import { Input, InputContainer, InputLabel } from './Input'
+import { useDatePicker } from './Provider'
+import { Popover, Transition } from '@headlessui/react'
 
 export function DatePickerDesktop() {
   const btnRef = useRef<HTMLButtonElement>(null)
@@ -14,7 +14,7 @@ export function DatePickerDesktop() {
       {({ open, close }) => {
         useEffect(() => {
           if (!open) {
-            dispatch({ type: "RESET_DATEPICKER" })
+            dispatch({ type: 'RESET_DATEPICKER' })
           }
         }, [open])
 

@@ -1,25 +1,25 @@
 ---
-categories: ["GraphQL"]
+categories: ['GraphQL']
 meta:
-  canonical: "https://nicolastoulemont.dev/blog/en/2021/nexus-gql-plugins"
-  "og:url": "https://nicolastoulemont.dev/blog/en/2021/nexus-gql-plugins"
-  title: "How to build custom plugins for GraphQL Nexus"
-  "og:title": "How to build custom plugins for GraphQL Nexus"
-  description: "Buiding typesafe field level plugins  to run field level middlewares with the graphql nexus framework."
-  "og:description": "Buiding typesafe field level plugins  to run field level middlewares with the graphql nexus framework."
-  "og:type": "article"
-  "og:image": "/img/thumbnail-ts-nexus.png"
-  "og:image:alt": "GraphQL Nexus and Typescript"
-  "og:image:width": "388"
-  "og:image:height": "171"
-  "article:published_time": "2021-04-19"
+  canonical: 'https://nicolastoulemont.dev/blog/en/2021/nexus-gql-plugins'
+  'og:url': 'https://nicolastoulemont.dev/blog/en/2021/nexus-gql-plugins'
+  title: 'How to build custom plugins for GraphQL Nexus'
+  'og:title': 'How to build custom plugins for GraphQL Nexus'
+  description: 'Buiding typesafe field level plugins  to run field level middlewares with the graphql nexus framework.'
+  'og:description': 'Buiding typesafe field level plugins  to run field level middlewares with the graphql nexus framework.'
+  'og:type': 'article'
+  'og:image': '/img/thumbnail-ts-nexus.png'
+  'og:image:alt': 'GraphQL Nexus and Typescript'
+  'og:image:width': '388'
+  'og:image:height': '171'
+  'article:published_time': '2021-04-19'
 ---
 
-import { PostIntro } from "~/components"
+import { PostIntro } from '~/components'
 
 # How to build custom plugins with GraphQL Nexus
 
-<PostIntro publishedAt="Apr 19th 2021" categories={["GraphQL"]} />
+<PostIntro publishedAt="Apr 19th 2021" categories={['GraphQL']} />
 
 Most, if not all, API layers end up needing some way to create, manage and execute some form of abstract logic during the request and response cycle.
 A very well known example are express middleware functions that can be used for a large number of services: authentication or rate limiting to name a few.
@@ -47,10 +47,10 @@ When a resolver is created for a type, it can optionally return a "middleware" f
 Here is an illustration of an operations execute time logger that will execute on every operation:
 
 ```typescript
-import { plugin } from "nexus"
+import { plugin } from 'nexus'
 
 export const OperationLoggerPlugin = plugin({
-  name: "OperationLoggerPlugin",
+  name: 'OperationLoggerPlugin',
   onCreateFieldResolver() {
     /* If you want to escape it return out of it
 			if(escape condition) {
@@ -75,15 +75,15 @@ export const OperationLoggerPlugin = plugin({
 We then need to include this plugins into our schema definition within the makeSchema nexus function:
 
 ```typescript
-import { makeSchema } from "nexus"
-import * as types from "./typeDefs"
-import path from "path"
-import { OperationLoggerPlugin } from "./plugins"
+import { makeSchema } from 'nexus'
+import * as types from './typeDefs'
+import path from 'path'
+import { OperationLoggerPlugin } from './plugins'
 export const schema = makeSchema({
   types,
   outputs: {
-    schema: path.join(process.cwd(), "src", "schema.graphql"),
-    typegen: path.join(process.cwd(), "src", "nexus.ts"),
+    schema: path.join(process.cwd(), 'src', 'schema.graphql'),
+    typegen: path.join(process.cwd(), 'src', 'nexus.ts'),
   },
   plugins: [OperationLoggerPlugin],
 })
@@ -94,8 +94,8 @@ But what if we only want to execute a plugin on a specific objectType ?
 Let's imaging that we want to prevent anyone to create a new user and only allow logged user to create news one, we could handle the authentication handling in the resolver:
 
 ```typescript
-export const createUser = mutationField("createUser", {
-  type: "UserResult",
+export const createUser = mutationField('createUser', {
+  type: 'UserResult',
   args: {
     id: nonNull(stringArg()),
     username: nonNull(stringArg()),
@@ -103,7 +103,7 @@ export const createUser = mutationField("createUser", {
   },
   async resolve(_, args, context) {
     if (!context.ctx.logged)
-      return { code: "UNAUTHORIZED", message: "UNAUTHENTICATED_PLEASE_LOGIN" }
+      return { code: 'UNAUTHORIZED', message: 'UNAUTHENTICATED_PLEASE_LOGIN' }
     // else create user
   },
 })
@@ -113,12 +113,12 @@ But authentication logic is usally common accross many fields and we should want
 We will do that in pretty much the same way we did with the OperationLoggerPlugin but with an escape condition and some additional types to help us use the plugin in a type safe way.
 
 ```typescript
-import { plugin } from "nexus"
-import { printedGenTyping } from "nexus/dist/utils"
+import { plugin } from 'nexus'
+import { printedGenTyping } from 'nexus/dist/utils'
 
 const fieldDefTypes = printedGenTyping({
   optional: true,
-  name: "authorization",
+  name: 'authorization',
   description: `
       Authorization for an individual field. Returning "undefined"
       or "Promise<undefined>" means the field can be accessed.
@@ -128,7 +128,7 @@ const fieldDefTypes = printedGenTyping({
 })
 
 export const fieldAuthorizationPlugin = plugin({
-  name: "FieldAuthPlugin",
+  name: 'FieldAuthPlugin',
   description: `Field level Auth plugin which
      return the validation fn errors instead of throwing them`,
   fieldDefTypes: fieldDefTypes,
@@ -140,7 +140,7 @@ export const fieldAuthorizationPlugin = plugin({
     }
 
     // If it does have this field, but it's not a function, it's wrong -> print a warning
-    if (typeof authorization !== "function") {
+    if (typeof authorization !== 'function') {
       console.error(
         new Error(
           `The auth property provided to ${config.fieldConfig.name} with type ${
@@ -181,8 +181,8 @@ We basically get potential errors from the given authorization function which we
 Now we only have to add an authorization property of the createUser mutation and to pass it the callback function that handle the authentication
 
 ```typescript
-export const createUser = mutationField("createUser", {
-  type: "UserResult",
+export const createUser = mutationField('createUser', {
+  type: 'UserResult',
   args: {
     id: nonNull(stringArg()),
     username: nonNull(stringArg()),
@@ -190,7 +190,7 @@ export const createUser = mutationField("createUser", {
   },
   authorization: (context) =>
     !context.ctx.logged
-      ? { code: "UNAUTHORIZED", message: "UNAUTHENTICATED_PLEASE_LOGIN" }
+      ? { code: 'UNAUTHORIZED', message: 'UNAUTHENTICATED_PLEASE_LOGIN' }
       : undefined,
   async resolve(_, args, context) {
     // only authorized users will get here

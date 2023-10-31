@@ -1,15 +1,15 @@
-import type { ActionFunction, LoaderFunction } from "@remix-run/node"
-import { json, redirect } from "@remix-run/node"
-import * as DropdownMenu from "@radix-ui/react-dropdown-menu"
-import { FiMenu, FiMoon, FiSun } from "react-icons/fi"
+import type { ActionFunction, LoaderFunction } from '@remix-run/node'
+import { json, redirect } from '@remix-run/node'
+import * as DropdownMenu from '@radix-ui/react-dropdown-menu'
+import { FiMenu, FiMoon, FiSun } from 'react-icons/fi'
 
-import { getThemeSession, isTheme, Theme, useTheme } from "~/utils/styles"
+import { getThemeSession, isTheme, Theme, useTheme } from '~/utils/styles'
 
 export const action: ActionFunction = async ({ request }) => {
   const themeSession = await getThemeSession(request)
   const requestText = await request.text()
   const form = new URLSearchParams(requestText)
-  const theme = form.get("theme")
+  const theme = form.get('theme')
 
   if (!isTheme(theme)) {
     return json({
@@ -21,11 +21,11 @@ export const action: ActionFunction = async ({ request }) => {
   themeSession.setTheme(theme)
   return json(
     { success: true },
-    { headers: { "Set-Cookie": await themeSession.commit() } }
+    { headers: { 'Set-Cookie': await themeSession.commit() } }
   )
 }
 
-export const loader: LoaderFunction = () => redirect("/", { status: 404 })
+export const loader: LoaderFunction = () => redirect('/', { status: 404 })
 
 export function ThemeToggle() {
   const [theme, setTheme] = useTheme()
@@ -52,7 +52,7 @@ export function ThemeToggle() {
               className="flex items-center justify-start py-1 text-slate-800 dark:text-white"
               onClick={() => setTheme(Theme.LIGHT)}
             >
-              <FiSun size="1.2rem" className="stroke:slate-800 mr-6 dark:stroke-white" />{" "}
+              <FiSun size="1.2rem" className="stroke:slate-800 mr-6 dark:stroke-white" />{' '}
               Light
             </button>
           </DropdownMenu.Item>
@@ -61,7 +61,7 @@ export function ThemeToggle() {
               className="flex items-center justify-start py-1 text-slate-800 dark:text-white"
               onClick={() => setTheme(Theme.DARK)}
             >
-              <FiMoon size="1.2rem" className="stroke:slate-800 mr-6 dark:stroke-white" />{" "}
+              <FiMoon size="1.2rem" className="stroke:slate-800 mr-6 dark:stroke-white" />{' '}
               Dark
             </button>
           </DropdownMenu.Item>

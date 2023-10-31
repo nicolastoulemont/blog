@@ -1,33 +1,33 @@
-import type { ReactNode } from "react"
-import type { PanInfo } from "framer-motion"
-import { AnimatePresence, motion } from "framer-motion"
+import type { ReactNode } from 'react'
+import type { PanInfo } from 'framer-motion'
+import { AnimatePresence, motion } from 'framer-motion'
 
-import type { State } from "../../Provider/Provider.types"
-import { useIsMobile } from "../../../utils"
+import type { State } from '../../Provider/Provider.types'
+import { useIsMobile } from '../../../utils'
 
 interface VariantFnParams {
-  slideDir: State["slideDir"]
+  slideDir: State['slideDir']
   animationValuesMap: AnimationValuesMap
 }
 
 const variants = {
   enter: ({ slideDir, animationValuesMap }: VariantFnParams) => ({
-    x: animationValuesMap["enter"][slideDir],
+    x: animationValuesMap['enter'][slideDir],
     opacity: 0,
   }),
   center: { x: 0, opacity: 1 },
   exit: ({ slideDir, animationValuesMap }: VariantFnParams) => ({
-    x: animationValuesMap["exit"][slideDir],
+    x: animationValuesMap['exit'][slideDir],
     opacity: 0,
   }),
 }
 
-type AnimationValuesMap = Record<"enter" | "exit", Record<State["slideDir"], number>>
+type AnimationValuesMap = Record<'enter' | 'exit', Record<State['slideDir'], number>>
 
 interface AnimateWrapperProps {
   motionKey: number
   children: ReactNode
-  slideDir: State["slideDir"]
+  slideDir: State['slideDir']
   drag?: boolean
   onDragRight?: () => void
   onDragLeft?: () => void
@@ -71,14 +71,14 @@ export function AnimatedViewWrapper({
       <AnimatePresence initial={false} custom={{ slideDir, animationValuesMap }}>
         <motion.div
           key={`${motionKey}-${slideDir}`}
-          style={{ position: "absolute", top: 0, width: "100%" }}
+          style={{ position: 'absolute', top: 0, width: '100%' }}
           variants={variants}
           initial="enter"
           animate="center"
           exit="exit"
           custom={{ slideDir, animationValuesMap }}
-          transition={{ duration: 0.3, ease: "easeOut" }}
-          drag={isMobile && drag ? "x" : false}
+          transition={{ duration: 0.3, ease: 'easeOut' }}
+          drag={isMobile && drag ? 'x' : false}
           dragMomentum={false}
           dragConstraints={{ left: 75, right: 75 }}
           onDragEnd={handleDrag}

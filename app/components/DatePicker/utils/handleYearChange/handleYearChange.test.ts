@@ -1,7 +1,7 @@
-import { handleYearChange } from "./handleYearChange"
+import { handleYearChange } from './handleYearChange'
 
-describe("handleYearChange", () => {
-  test("should handle bisextil year change conflicts", () => {
+describe('handleYearChange', () => {
+  test('should handle bisextil year change conflicts', () => {
     const dateWithConflict = handleYearChange(new Date(2020, 1, 29), 2021)
 
     expect(dateWithConflict).toStrictEqual(new Date(2021, 1, 28))

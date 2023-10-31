@@ -1,9 +1,9 @@
-import { Dialog, Transition } from "@headlessui/react"
-import { Fragment, useRef, useState } from "react"
+import { Dialog, Transition } from '@headlessui/react'
+import { Fragment, useRef, useState } from 'react'
 
-import { Calendar } from "./Calendar"
-import { Input, InputContainer, InputLabel } from "./Input"
-import { useDatePicker } from "./Provider"
+import { Calendar } from './Calendar'
+import { Input, InputContainer, InputLabel } from './Input'
+import { useDatePicker } from './Provider'
 
 export function DatePickerMobile() {
   const [open, setOpen] = useState(false)
@@ -16,15 +16,15 @@ export function DatePickerMobile() {
   }
 
   function closeCalendar() {
-    dispatch({ type: "RESET_DATEPICKER" })
+    dispatch({ type: 'RESET_DATEPICKER' })
     setOpen(false)
     inputRef.current?.focus()
   }
 
   function handleInputKeyDown(event: React.KeyboardEvent<HTMLInputElement>) {
-    if (event.code === "Enter") {
+    if (event.code === 'Enter') {
       openCalendar()
-    } else if (open && event.code === "Escape") {
+    } else if (open && event.code === 'Escape') {
       closeCalendar()
     }
   }

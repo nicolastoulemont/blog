@@ -1,6 +1,6 @@
-import { createContext, useContext } from "react"
-import type { Actions, State } from "./Provider.types"
-import { DatePickerProps } from "../../DatePicker.types"
+import { createContext, useContext } from 'react'
+import type { Actions, State } from './Provider.types'
+import { DatePickerProps } from '../../DatePicker.types'
 
 export interface DatePickerContextValues extends DatePickerProps {
   state: State
@@ -15,7 +15,7 @@ export const DatePickerContext = createContext<DatePickerContextValues | null>(n
 export const useDatePicker = () => {
   const context = useContext(DatePickerContext)
   if (!context) {
-    throw new Error("useDatePicker must be used within a DatePickerProvider")
+    throw new Error('useDatePicker must be used within a DatePickerProvider')
   }
   return context
 }

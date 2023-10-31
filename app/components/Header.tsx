@@ -1,12 +1,12 @@
-import { NavLink } from "@remix-run/react"
-import { FiGithub, FiTwitter } from "react-icons/fi"
-import { ThemeToggle } from "../routes/theme/save"
+import { NavLink } from '@remix-run/react'
+import { FiGithub, FiTwitter } from 'react-icons/fi'
+import { ThemeToggle } from '../routes/theme/save'
 export function Header() {
-  const transition = "background-color 0.3s ease-in-out"
+  const transition = 'background-color 0.3s ease-in-out'
 
   return (
     <header className="sticky top-0 z-10 flex w-full items-center justify-center bg-white  shadow-lg dark:bg-slate-800">
-      <nav className="flex w-full max-w-6xl items-center justify-between py-2 px-6 md:px-12">
+      <nav className="flex w-full max-w-6xl items-center justify-between px-6 py-2 md:px-12">
         <NavLink to="/" className="flex items-center justify-center">
           <img src="/img/site-logo.svg" alt="home page" className="w-11" />
         </NavLink>

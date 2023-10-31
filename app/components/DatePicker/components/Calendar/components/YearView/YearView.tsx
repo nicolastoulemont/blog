@@ -1,9 +1,9 @@
-import { getYearsRange } from "../../../../utils"
-import { useDatePicker } from "../../../Provider"
-import { AnimatedViewWrapper } from "../AnimatedViewWrapper"
-import { CalendarButton } from "../CalendarButton"
-import { CalendarText } from "../CalendarText"
-import { CalendarUnderline } from "../CalendarUnderline"
+import { getYearsRange } from '../../../../utils'
+import { useDatePicker } from '../../../Provider'
+import { AnimatedViewWrapper } from '../AnimatedViewWrapper'
+import { CalendarButton } from '../CalendarButton'
+import { CalendarText } from '../CalendarText'
+import { CalendarUnderline } from '../CalendarUnderline'
 
 export function YearView() {
   const { state, dispatch, handleSelectYear } = useDatePicker()
@@ -20,8 +20,8 @@ export function YearView() {
         motionKey={state.yearRange[0]}
         slideDir={state.slideDir}
         drag
-        onDragLeft={() => dispatch({ type: "YEAR_VIEW_CHANGE", payload: "increment" })}
-        onDragRight={() => dispatch({ type: "YEAR_VIEW_CHANGE", payload: "decrement" })}
+        onDragLeft={() => dispatch({ type: 'YEAR_VIEW_CHANGE', payload: 'increment' })}
+        onDragRight={() => dispatch({ type: 'YEAR_VIEW_CHANGE', payload: 'decrement' })}
       >
         <div className="grid grid-cols-3 gap-4 px-6 py-14 sm:px-4 sm:py-8">
           {years.map((year, yearIndex) => (
@@ -34,7 +34,7 @@ export function YearView() {
                 isSelected={isSelected(year)}
                 aria-label={String(year)}
               >
-                <CalendarText variant={isSelected(year) ? "selected" : "regular"}>
+                <CalendarText variant={isSelected(year) ? 'selected' : 'regular'}>
                   {year}
                 </CalendarText>
               </CalendarButton>

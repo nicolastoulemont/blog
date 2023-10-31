@@ -1,10 +1,10 @@
-import type { ComponentMeta } from "@storybook/react"
-import { useState } from "react"
+import type { ComponentMeta } from '@storybook/react'
+import { useState } from 'react'
 
-import { DatePicker } from "./DatePicker"
+import { DatePicker } from './DatePicker'
 
 const metas: ComponentMeta<typeof DatePicker> = {
-  title: "DatePicker",
+  title: 'DatePicker',
   component: DatePicker,
 }
 
@@ -26,7 +26,7 @@ export const Default = ({}) => {
       </div>
       <div className="mt-6 h-[62px] w-[300px]">
         <h2 className="mb-2 text-sm font-medium">Inner value</h2>
-        <p>{value ? value.toLocaleDateString() : ""}</p>
+        <p>{value ? value.toLocaleDateString() : ''}</p>
       </div>
       <div>
         <button

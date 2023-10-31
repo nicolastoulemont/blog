@@ -1,9 +1,9 @@
-import { KeyboardEvent, useRef } from "react"
-import { TableNavigationContext } from "./context"
+import { KeyboardEvent, useRef } from 'react'
+import { TableNavigationContext } from './context'
 import type {
   Matrix,
   TableNavigationProviderProps,
-} from "./TableNavigationProvider.types"
+} from './TableNavigationProvider.types'
 
 export function TableNavigationProvider({
   children,
@@ -26,7 +26,7 @@ export function TableNavigationProvider({
   ) {
     event.preventDefault()
     switch (event.code) {
-      case "Tab": {
+      case 'Tab': {
         if (event.shiftKey) {
           prevRef?.current?.focus()
         } else {
@@ -34,25 +34,25 @@ export function TableNavigationProvider({
         }
         break
       }
-      case "ArrowDown": {
+      case 'ArrowDown': {
         if (rowIndex + 1 < matrix.current.length) {
           matrix.current[rowIndex + 1][colIndex]?.focus()
         }
         break
       }
-      case "ArrowUp": {
+      case 'ArrowUp': {
         if (rowIndex > 0) {
           matrix.current[rowIndex - 1][colIndex]?.focus()
         }
         break
       }
-      case "ArrowRight": {
+      case 'ArrowRight': {
         if (colIndex !== 6) {
           matrix.current[rowIndex][colIndex + 1]?.focus()
         }
         break
       }
-      case "ArrowLeft": {
+      case 'ArrowLeft': {
         if (colIndex !== 0) {
           matrix.current[rowIndex][colIndex - 1]?.focus()
         }

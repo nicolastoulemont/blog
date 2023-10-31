@@ -1,9 +1,9 @@
-import type { ComponentMeta } from "@storybook/react"
+import type { ComponentMeta } from '@storybook/react'
 
-import * as Accordion from "./Accordion"
+import * as Accordion from './Accordion'
 
 const metas: ComponentMeta<typeof Accordion.Root> = {
-  title: "Accordion",
+  title: 'Accordion',
   component: Accordion.Root,
 }
 

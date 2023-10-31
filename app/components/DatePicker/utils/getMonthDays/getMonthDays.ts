@@ -1,5 +1,5 @@
-import { getStartOfWeek } from "../getStartOfWeek"
-import { getEndOfWeek } from "../getEndOfWeek"
+import { getStartOfWeek } from '../getStartOfWeek'
+import { getEndOfWeek } from '../getEndOfWeek'
 
 export function getMonthDays(month: Date): Date[][] {
   const currentMonth = month.getMonth()

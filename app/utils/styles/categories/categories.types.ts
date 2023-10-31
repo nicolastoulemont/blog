@@ -1,19 +1,19 @@
 export type ColorNames =
-  | "cyan"
-  | "red"
-  | "orange"
-  | "pink"
-  | "blue"
-  | "purple"
-  | "green"
-  | "gray"
-  | "yellow"
+  | 'cyan'
+  | 'red'
+  | 'orange'
+  | 'pink'
+  | 'blue'
+  | 'purple'
+  | 'green'
+  | 'gray'
+  | 'yellow'
 
 export type CategoryNames =
-  | "Data Structures"
-  | "React"
-  | "Animations"
-  | "GraphQL"
-  | "Career"
-  | "Architecture"
-  | "General"
+  | 'Data Structures'
+  | 'React'
+  | 'Animations'
+  | 'GraphQL'
+  | 'Career'
+  | 'Architecture'
+  | 'General'

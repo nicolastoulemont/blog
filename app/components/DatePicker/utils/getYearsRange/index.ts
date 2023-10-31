@@ -1,1 +1,1 @@
-export * from "./getYearsRange"
+export * from './getYearsRange'

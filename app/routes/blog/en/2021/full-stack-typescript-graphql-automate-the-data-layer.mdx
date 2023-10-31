@@ -1,25 +1,25 @@
 ---
-categories: ["GraphQL"]
+categories: ['GraphQL']
 meta:
-  canonical: "https://nicolastoulemont.dev/blog/en/2021/full-stack-typescript-graphql-automate-the-data-layer"
-  "og:url": "https://nicolastoulemont.dev/blog/en/2021/full-stack-typescript-graphql-automate-the-data-layer"
-  title: "Full Stack Typescript GraphQL - Automate the data layer"
-  "og:title": "Full Stack Typescript GraphQL - Automate the data layer"
-  description: "Leverage GraphQL & Typescript codegen, documentation and observability across the stack"
-  "og:description": "Leverage GraphQL & Typescript codegen, documentation and observability across the stack"
-  "og:type": "article"
-  "og:image": "/img/thumbnail-ts-gql.png"
-  "og:image:alt": "Typescript and graphql"
-  "og:image:width": "229"
-  "og:image:height": "126"
-  "article:published_time": "2021-01-18"
+  canonical: 'https://nicolastoulemont.dev/blog/en/2021/full-stack-typescript-graphql-automate-the-data-layer'
+  'og:url': 'https://nicolastoulemont.dev/blog/en/2021/full-stack-typescript-graphql-automate-the-data-layer'
+  title: 'Full Stack Typescript GraphQL - Automate the data layer'
+  'og:title': 'Full Stack Typescript GraphQL - Automate the data layer'
+  description: 'Leverage GraphQL & Typescript codegen, documentation and observability across the stack'
+  'og:description': 'Leverage GraphQL & Typescript codegen, documentation and observability across the stack'
+  'og:type': 'article'
+  'og:image': '/img/thumbnail-ts-gql.png'
+  'og:image:alt': 'Typescript and graphql'
+  'og:image:width': '229'
+  'og:image:height': '126'
+  'article:published_time': '2021-01-18'
 ---
 
-import { PostIntro } from "~/components"
+import { PostIntro } from '~/components'
 
 # Full Stack Typescript GraphQL - Automate the data layer
 
-<PostIntro publishedAt="Jan 18th 2021" categories={["GraphQL"]} />
+<PostIntro publishedAt="Jan 18th 2021" categories={['GraphQL']} />
 
 Building a modern web application usually means building both an API and a client side application.
 Unless the project is built on a monorepo setup, the API and the Client are built and maintained in different repos and many times in differents languages / by differents teams.
@@ -63,8 +63,8 @@ The rest of the code is an implementation detail based on the [with apollo route
 ```typescript
 // in pages/api/graphql.ts
 
-import { ApolloServer } from "apollo-server-micro"
-import { schema } from "src/schema"
+import { ApolloServer } from 'apollo-server-micro'
+import { schema } from 'src/schema'
 export const config = {
   api: {
     bodyParser: false,
@@ -74,7 +74,7 @@ export const config = {
 const server = new ApolloServer({ schema })
 
 const handler = server.createHandler({
-  path: "/api/graphql",
+  path: '/api/graphql',
 })
 
 export default handler
@@ -103,14 +103,14 @@ import {
   ApolloClient,
   HttpLink,
   NormalizedCacheObject,
-} from "@apollo/client"
+} from '@apollo/client'
 
 let apolloClient: ApolloClient<NormalizedCacheObject>
 
 function createApolloClient() {
   return new ApolloClient({
     link: new HttpLink({
-      uri: "/api/graphql",
+      uri: '/api/graphql',
     }),
     cache: new InMemoryCache(),
   })
@@ -134,8 +134,8 @@ This step is necessary to be able to use apollo client hooks such as useQuery or
 ```typescript
 // in /pages/_app.tsx
 
-import { ApolloProvider } from "@apollo/client"
-import { useApollo } from "lib/apolloClient"
+import { ApolloProvider } from '@apollo/client'
+import { useApollo } from 'lib/apolloClient'
 
 function MyApp({ Component, pageProps }) {
   const client = useApollo()
@@ -157,15 +157,15 @@ In our src folder we will build a small basic schema using the nexus librairy.
 ```typescript
 // in src/schema.ts
 
-import { makeSchema } from "nexus"
-import * as types from "./typeDefs"
-import path from "path"
+import { makeSchema } from 'nexus'
+import * as types from './typeDefs'
+import path from 'path'
 
 export const schema = makeSchema({
   types,
   outputs: {
-    schema: path.join(process.cwd(), "src", "schema.graphql"),
-    typegen: path.join(process.cwd(), "src", "nexus.ts"),
+    schema: path.join(process.cwd(), 'src', 'schema.graphql'),
+    typegen: path.join(process.cwd(), 'src', 'nexus.ts'),
   },
 })
 ```
@@ -175,50 +175,50 @@ And some basics types describing a user and some queries
 ```typescript
 // in src/typeDefs.ts
 
-import { idArg, nonNull, objectType, queryField } from "nexus"
+import { idArg, nonNull, objectType, queryField } from 'nexus'
 
 const data = [
-  { id: "1", username: "Nicolas", email: "nicolas@email.com", verified: true },
-  { id: "2", username: "David", email: "david@email.com", verified: false },
-  { id: "3", username: "Matthieu", email: "matthieu@email.com", verified: true },
+  { id: '1', username: 'Nicolas', email: 'nicolas@email.com', verified: true },
+  { id: '2', username: 'David', email: 'david@email.com', verified: false },
+  { id: '3', username: 'Matthieu', email: 'matthieu@email.com', verified: true },
 ]
 
 export const Error = objectType({
-  name: "Error",
+  name: 'Error',
   definition(t) {
-    t.string("key")
-    t.string("message")
+    t.string('key')
+    t.string('message')
   },
 })
 
 export const User = objectType({
-  name: "User",
+  name: 'User',
   definition(t) {
-    t.id("id")
-    t.string("username")
-    t.string("email")
-    t.boolean("verified")
+    t.id('id')
+    t.string('username')
+    t.string('email')
+    t.boolean('verified')
   },
 })
 
 export const UserResponse = objectType({
-  name: "UserResponse",
+  name: 'UserResponse',
   definition(t) {
-    t.field("user", { type: "User" })
-    t.list.field("errors", { type: "Error" })
+    t.field('user', { type: 'User' })
+    t.list.field('errors', { type: 'Error' })
   },
 })
 
 export const UsersResponse = objectType({
-  name: "UsersResponse",
+  name: 'UsersResponse',
   definition(t) {
-    t.list.field("users", { type: "User" })
-    t.list.field("errors", { type: "Error" })
+    t.list.field('users', { type: 'User' })
+    t.list.field('errors', { type: 'Error' })
   },
 })
 
-export const userById = queryField("userById", {
-  type: "UserResponse",
+export const userById = queryField('userById', {
+  type: 'UserResponse',
   args: {
     id: nonNull(idArg()),
   },
@@ -227,7 +227,7 @@ export const userById = queryField("userById", {
     if (!user) {
       return {
         errors: [
-          { key: "notFound", message: `No user matching the id: ${args.id} was found` },
+          { key: 'notFound', message: `No user matching the id: ${args.id} was found` },
         ],
       }
     }
@@ -236,8 +236,8 @@ export const userById = queryField("userById", {
   },
 })
 
-export const users = queryField("users", {
-  type: "UsersResponse",
+export const users = queryField('users', {
+  type: 'UsersResponse',
   async resolve() {
     return { users: data }
   },
@@ -327,16 +327,16 @@ We then need to write a codegen.yml config file at the root of the project.
 
 ```yaml
 overwrite: true
-schema: "src/schema.graphql"
-documents: "graphql/**/*.ts"
+schema: 'src/schema.graphql'
+documents: 'graphql/**/*.ts'
 watch:
-  - "graphql/**/*.ts"
+  - 'graphql/**/*.ts'
 generates:
   gql-gen/index.tsx:
     plugins:
-      - "typescript"
-      - "typescript-operations"
-      - "typescript-react-apollo"
+      - 'typescript'
+      - 'typescript-operations'
+      - 'typescript-react-apollo'
     config:
       withHOC: false
       withComponent: false
@@ -369,7 +369,7 @@ We now need to create at least one graphql operation. So we will create two simp
 
 ```typescript
 // in graphql/user/queries.ts
-import gql from "graphql-tag"
+import gql from 'graphql-tag'
 
 export const GET_USER_BY_ID = gql`
   query UserById($id: ID!) {
@@ -520,8 +520,8 @@ export type UsersQueryResult = Apollo.QueryResult<UsersQuery, UsersQueryVariable
 And we can now simply use them in our React components this way :
 
 ```typescript
-import { useUsersQuery } from "gql-gen"
-import Head from "next/head"
+import { useUsersQuery } from 'gql-gen'
+import Head from 'next/head'
 
 export default function Home() {
   const { data } = useUsersQuery()
@@ -551,7 +551,7 @@ Let's imagine we made a typo in our graphql query like this one : missing the l 
 
 ```typescript
 // in graphql/user/queries.ts
-import gql from "graphql-tag"
+import gql from 'graphql-tag'
 
 export const GET_USER_BY_ID = gql`
   query UserById($id: ID!) {

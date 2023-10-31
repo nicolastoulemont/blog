@@ -1,11 +1,11 @@
-import { render, screen, waitFor } from "@testing-library/react"
-import userEvent from "@testing-library/user-event"
-import * as Accordion from "../Accordion"
+import { render, screen, waitFor } from '@testing-library/react'
+import userEvent from '@testing-library/user-event'
+import * as Accordion from '../Accordion'
 
-jest.spyOn(window, "scrollTo").mockImplementation()
+jest.spyOn(window, 'scrollTo').mockImplementation()
 
-describe("Accordion", () => {
-  test("should open and close correctly", async () => {
+describe('Accordion', () => {
+  test('should open and close correctly', async () => {
     render(
       <Accordion.Root>
         <Accordion.Header>
@@ -16,20 +16,20 @@ describe("Accordion", () => {
       </Accordion.Root>
     )
 
-    const header = screen.getByRole("button")
+    const header = screen.getByRole('button')
 
-    expect(screen.queryByRole("region")).toBe(null)
+    expect(screen.queryByRole('region')).toBe(null)
 
     userEvent.click(header)
 
     await waitFor(() => {
-      expect(screen.queryByRole("region")).toBeTruthy()
+      expect(screen.queryByRole('region')).toBeTruthy()
     })
 
     userEvent.click(header)
 
     await waitFor(() => {
-      expect(screen.queryByRole("region")).toBe(null)
+      expect(screen.queryByRole('region')).toBe(null)
     })
   })
 })

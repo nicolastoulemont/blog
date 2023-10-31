@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from "react"
+import { useEffect, useRef, useState } from 'react'
 
 function getHTMLElements(elementIds: Array<string>): Array<HTMLElement> {
   return elementIds.map((elementId) => document.getElementById(elementId) as HTMLElement)
@@ -39,9 +39,9 @@ export function useTableOfContent({
           }
           index += 1
         } else {
-          if (process.env.NODE_ENV !== "production") {
+          if (process.env.NODE_ENV !== 'production') {
             console.log(elements)
-            throw new Error("Invalid heading id in this page")
+            throw new Error('Invalid heading id in this page')
           }
         }
       }
@@ -58,8 +58,8 @@ export function useTableOfContent({
       }
     }
 
-    document.addEventListener("scroll", throttledUpdateActiveElement)
-    document.addEventListener("resize", throttledUpdateActiveElement)
+    document.addEventListener('scroll', throttledUpdateActiveElement)
+    document.addEventListener('resize', throttledUpdateActiveElement)
 
     updateActiveElement()
 
@@ -68,8 +68,8 @@ export function useTableOfContent({
         clearTimeout(timeoutRef.current)
         timeoutRef.current = null
       }
-      document.removeEventListener("scroll", throttledUpdateActiveElement)
-      document.removeEventListener("resize", throttledUpdateActiveElement)
+      document.removeEventListener('scroll', throttledUpdateActiveElement)
+      document.removeEventListener('resize', throttledUpdateActiveElement)
     }
   }, [])
 

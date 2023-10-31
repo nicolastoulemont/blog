@@ -1,7 +1,7 @@
-import { DatePickerProps } from "./DatePicker.types"
-import { DatePickerMobile, DatePickerDesktop, DatePickerProvider } from "./components"
+import { DatePickerProps } from './DatePicker.types'
+import { DatePickerMobile, DatePickerDesktop, DatePickerProvider } from './components'
 
-import { useIsMobile } from "./utils"
+import { useIsMobile } from './utils'
 
 export function DatePicker(props: DatePickerProps) {
   const isMobile = useIsMobile()

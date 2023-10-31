@@ -1,7 +1,7 @@
-import { getMonthDays } from "./getMonthDays"
+import { getMonthDays } from './getMonthDays'
 
-describe("getMonthDays", () => {
-  test("should returns all month days for given date and enough days to display 6 weeks", () => {
+describe('getMonthDays', () => {
+  test('should returns all month days for given date and enough days to display 6 weeks', () => {
     // Feb 2021 only has 26 days (4 weeks)
     const monthDays = getMonthDays(new Date(2021, 1, 2))
 
@@ -15,7 +15,7 @@ describe("getMonthDays", () => {
       new Date(2021, 2, 14)
     )
   })
-  test("should returns outside days for given month", () => {
+  test('should returns outside days for given month', () => {
     // April 2021 has outside days in the beginning and end of month
     const monthDays = getMonthDays(new Date(2021, 3, 2))
 

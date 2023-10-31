@@ -1,8 +1,8 @@
-import { createContext, useContext, useState } from "react"
+import { createContext, useContext, useState } from 'react'
 
-import type { AccordionRootProps } from "./Accordion.Root"
+import type { AccordionRootProps } from './Accordion.Root'
 
-interface AccordionContextValues extends Omit<AccordionRootProps, "children"> {
+interface AccordionContextValues extends Omit<AccordionRootProps, 'children'> {
   id: string
   isOpen: boolean
   onToggleChange: () => void
@@ -14,7 +14,7 @@ export const useAccordion = () => {
   const context = useContext(AccordionContext)
 
   if (!context) {
-    throw new Error("useAccordionContext must be used within a AccordionProvider")
+    throw new Error('useAccordionContext must be used within a AccordionProvider')
   }
 
   return context

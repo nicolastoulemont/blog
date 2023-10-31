@@ -1,4 +1,4 @@
-import { useWindowSize } from "react-use"
+import { useWindowSize } from 'react-use'
 
 export function useIsMobile() {
   const { width } = useWindowSize()

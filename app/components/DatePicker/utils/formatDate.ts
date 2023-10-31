@@ -1,4 +1,4 @@
-import type { Locale } from "../DatePicker.types"
+import type { Locale } from '../DatePicker.types'
 
 /**
  * @docs [MDN](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Intl/DateTimeFormat)

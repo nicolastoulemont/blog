@@ -1,17 +1,17 @@
-import React from "react"
-import { formatDate, getMonthDays, getWeekDaysName } from "../../../../utils"
-import { useDatePicker } from "../../../Provider"
-import { CalendarProps } from "../../Calendar"
-import { AnimatedViewWrapper } from "../AnimatedViewWrapper"
-import { DayCell, TableNavigationProvider } from "./components"
+import React from 'react'
+import { formatDate, getMonthDays, getWeekDaysName } from '../../../../utils'
+import { useDatePicker } from '../../../Provider'
+import { CalendarProps } from '../../Calendar'
+import { AnimatedViewWrapper } from '../AnimatedViewWrapper'
+import { DayCell, TableNavigationProvider } from './components'
 
-interface DayViewProps extends Pick<CalendarProps, "onClose" | "triggerRef"> {
+interface DayViewProps extends Pick<CalendarProps, 'onClose' | 'triggerRef'> {
   headerLastBtnRef: React.RefObject<HTMLButtonElement>
 }
 
 export function DayView({ onClose, headerLastBtnRef, triggerRef }: DayViewProps) {
   const { locale, state, dispatch } = useDatePicker()
-  const days = getWeekDaysName(locale, "short")
+  const days = getWeekDaysName(locale, 'short')
   const weeks = getMonthDays(state.calendarDate)
 
   return (
@@ -32,12 +32,12 @@ export function DayView({ onClose, headerLastBtnRef, triggerRef }: DayViewProps)
           motionKey={state.calendarDate.getMonth()}
           slideDir={state.slideDir}
           drag
-          onDragLeft={() => dispatch({ type: "DAY_VIEW_CHANGE", payload: "increment" })}
-          onDragRight={() => dispatch({ type: "DAY_VIEW_CHANGE", payload: "decrement" })}
+          onDragLeft={() => dispatch({ type: 'DAY_VIEW_CHANGE', payload: 'increment' })}
+          onDragRight={() => dispatch({ type: 'DAY_VIEW_CHANGE', payload: 'decrement' })}
         >
           <table className="table-auto border-separate border-spacing-1">
             <caption className="sr-only">
-              {formatDate(state.calendarDate, locale, { month: "long" })} days
+              {formatDate(state.calendarDate, locale, { month: 'long' })} days
             </caption>
             <thead
               className="sr-only"

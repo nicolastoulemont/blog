@@ -1,4 +1,4 @@
-export type Locale = "en-GB" | "fr-FR"
+export type Locale = 'en-GB' | 'fr-FR'
 
 export interface DatePickerProps {
   label: string
