@@ -75,6 +75,9 @@ To be able to perform these operations, a common operation is to traverse our tr
 To easily access all the nodes of our tree, we need a way to iterate over every node of the tree.
 But since our tree is not a native Javascript array, we cannot use built-in iterators like `forEach`, `for of`, etc.
 Let's handle this by building our custom iterator to handle our specific needs using a [generator function](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Iterators_and_Generators#generator_functions).
+There are multiple ways to traverse a tree, but let's look at the two most common ones: DFS (Depth-first) and BFS (Breadth-first).
+
+#### Depth-first search (DFS)
 
 ```tsx
 export class Tree {
@@ -95,8 +98,36 @@ export class Tree {
 }
 ```
 
-This generator function is pretty simple, it recursively iterates over every node of the tree, yielding _*("giving")*_ each one back
-to the function caller, before moving to each node children until it has yielded every leaf of the tree.
+This generator function traverse the tree recursivingly iteraterating over every node of a given subtree of the tree, yielding _*("giving")*_ each one back
+to the function caller, before moving to each node children until it has yielded every leaf of the subtree. It then moves to the next one until there are no more.
+
+#### Breadth-first search (BFS)
+
+```tsx
+export class Tree {
+  root: Node | null
+  constructor() {
+    this.root = null
+  }
+
+  *traverse(node = this.root): Iterable<Node> {
+    if(!node) return
+    const queue: Node[] = [node]
+    while(queue.length > 0) {
+      const current = queue.shift()
+      yield current
+      if(current.children.length > 0) {
+        queue.push(...current.children)
+      }
+    }
+  }
+}
+```
+
+The BFS one, on the other hand, traverse the tree one level at a time, yielding each node of a given level before moving to the next one.
+
+You can use either one depending on your use case.
+
 
 ### I/O methods
 
