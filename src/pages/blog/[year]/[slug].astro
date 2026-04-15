@@ -1,0 +1,68 @@
+---
+import { render } from 'astro:content'
+import { PostCard } from '~/components/PostCard'
+import TableOfContents from '~/components/TableOfContents.astro'
+import BaseLayout from '~/layouts/BaseLayout.astro'
+import { getAllPosts, getRelatedPosts, getTranslation } from '~/lib/blog'
+
+export async function getStaticPaths() {
+  const posts = await getAllPosts()
+
+  return posts
+    .filter((post) => post.locale === 'en')
+    .map((post) => ({
+      params: { year: post.year, slug: post.slug },
+      props: { post },
+    }))
+}
+
+const { post } = Astro.props
+const allPosts = await getAllPosts()
+const relatedPosts = getRelatedPosts(post, allPosts).slice(0, 3)
+const translation = getTranslation(post, allPosts)
+const { Content, headings } = await render(post.entry)
+---
+
+<BaseLayout
+  title={post.title}
+  description={post.description}
+  image={post.ogImage}
+  locale={post.locale}
+  ogType="article"
+  pathname={post.url}
+  publishedAt={post.publishedAt}
+  updatedAt={post.updatedAt}
+  alternates={translation ? [{ locale: translation.locale, url: translation.url }] : []}
+>
+  <main class="mx-auto max-w-[88rem] px-6 pb-16 pt-8 sm:px-10">
+    {translation ? (
+      <div class="mb-6 max-w-4xl rounded-full border border-sky-200 bg-sky-50 px-4 py-2 text-sm text-sky-900 dark:border-sky-900/60 dark:bg-sky-950/40 dark:text-sky-100">
+        This post is also available in{' '}
+        <a href={translation.url} class="font-medium underline decoration-sky-400 underline-offset-4">
+          {translation.localeLabel}
+        </a>
+        .
+      </div>
+    ) : null}
+
+    <div class="grid gap-8 xl:grid-cols-[minmax(0,1fr)_18rem]">
+      <article class="surface-card min-w-0 p-6 sm:p-10">
+        <div class="prose max-w-none">
+          <Content />
+        </div>
+      </article>
+      <TableOfContents headings={headings} />
+    </div>
+
+    {relatedPosts.length > 0 ? (
+      <section class="mt-10">
+        <h2 class="mb-4 text-2xl font-semibold text-slate-950 dark:text-slate-50">
+          Related posts
+        </h2>
+        <div class="grid grid-cols-1 gap-4 lg:grid-cols-3">
+          {relatedPosts.map((relatedPost) => <PostCard post={relatedPost} showLocale={false} />)}
+        </div>
+      </section>
+    ) : null}
+  </main>
+</BaseLayout>

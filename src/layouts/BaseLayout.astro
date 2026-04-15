@@ -1,0 +1,90 @@
+---
+import Header from '~/components/Header.astro'
+import { getAbsoluteUrl } from '~/lib/blog'
+import { SITE_DESCRIPTION, SITE_TITLE, type SiteLocale } from '~/lib/site'
+import '~/styles/global.css'
+
+interface AlternateLink {
+  locale: SiteLocale
+  url: string
+}
+
+interface Props {
+  description?: string
+  image?: string
+  locale?: SiteLocale
+  ogType?: 'article' | 'website'
+  pathname?: string
+  publishedAt?: string
+  title?: string
+  updatedAt?: string
+  alternates?: AlternateLink[]
+}
+
+const {
+  description = SITE_DESCRIPTION,
+  image,
+  locale = 'en',
+  ogType = 'website',
+  pathname = Astro.url.pathname,
+  publishedAt,
+  title,
+  updatedAt,
+  alternates = [],
+} = Astro.props
+
+const canonical = getAbsoluteUrl(pathname)
+const pageTitle = title ? `${title} | Nicolas Toulemont` : SITE_TITLE
+const imageUrl = image ? (image.startsWith('http') ? image : getAbsoluteUrl(image)) : undefined
+const themeBootScript = `
+  (() => {
+    const storageKey = 'theme'
+    const storedTheme = localStorage.getItem(storageKey)
+    const theme =
+      storedTheme === 'light' || storedTheme === 'dark'
+        ? storedTheme
+        : window.matchMedia('(prefers-color-scheme: dark)').matches
+          ? 'dark'
+          : 'light'
+
+    document.documentElement.classList.toggle('dark', theme === 'dark')
+    document.documentElement.style.colorScheme = theme
+  })()
+`
+---
+
+<!doctype html>
+<html lang={locale}>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{pageTitle}</title>
+    <meta name="description" content={description} />
+    <meta name="theme-color" content={locale === 'fr' ? '#082f49' : '#0f172a'} />
+    <link rel="canonical" href={canonical} />
+
+    <meta property="og:type" content={ogType} />
+    <meta property="og:site_name" content={SITE_TITLE} />
+    <meta property="og:title" content={pageTitle} />
+    <meta property="og:description" content={description} />
+    <meta property="og:url" content={canonical} />
+    <meta property="og:locale" content={locale === 'fr' ? 'fr_FR' : 'en_US'} />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={pageTitle} />
+    <meta name="twitter:description" content={description} />
+    <meta name="twitter:creator" content="@n_toulemont" />
+    <meta name="twitter:site" content="@n_toulemont" />
+    {imageUrl ? <meta property="og:image" content={imageUrl} /> : null}
+    {imageUrl ? <meta name="twitter:image" content={imageUrl} /> : null}
+    {publishedAt ? <meta property="article:published_time" content={publishedAt} /> : null}
+    {updatedAt ? <meta property="article:modified_time" content={updatedAt} /> : null}
+    {alternates.map((alternate) => (
+      <link rel="alternate" hreflang={alternate.locale} href={getAbsoluteUrl(alternate.url)} />
+    ))}
+    <script is:inline set:html={themeBootScript} />
+  </head>
+  <body>
+    <Header />
+    <slot />
+  </body>
+</html>

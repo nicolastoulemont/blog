@@ -1,6 +1,6 @@
-module.exports = {
+export default {
   printWidth: 90,
   semi: false,
   singleQuote: true,
-  plugins: [require('prettier-plugin-tailwindcss')],
+  plugins: ['prettier-plugin-astro', 'prettier-plugin-tailwindcss'],
 }

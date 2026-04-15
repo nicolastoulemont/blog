@@ -1,0 +1,42 @@
+---
+import ThemeToggle from './ThemeToggle.astro'
+import { SOCIAL_LINKS } from '~/lib/site'
+---
+
+<header class="sticky top-0 z-40 border-b border-white/70 bg-white/75 backdrop-blur dark:border-slate-800/80 dark:bg-slate-950/70">
+  <nav class="mx-auto flex max-w-6xl items-center justify-between px-6 py-4">
+    <a href="/" class="flex items-center gap-3">
+      <img src="/img/site-logo.svg" alt="Nicolas Toulemont" class="h-11 w-11 rounded-2xl" />
+      <div class="hidden sm:block">
+        <p class="text-sm uppercase tracking-[0.32em] text-slate-500 dark:text-slate-400">
+          Nicolas Toulemont
+        </p>
+        <p class="text-base font-semibold text-slate-950 dark:text-slate-50">
+          Engineering blog
+        </p>
+      </div>
+    </a>
+
+    <div class="flex items-center gap-3">
+      <a
+        href={SOCIAL_LINKS.twitter}
+        target="_blank"
+        rel="noreferrer"
+        class="inline-flex h-10 w-10 items-center justify-center rounded-full border border-transparent text-lg text-slate-500 transition hover:border-slate-200 hover:bg-white/80 hover:text-slate-950 dark:text-slate-400 dark:hover:border-slate-700 dark:hover:bg-slate-900 dark:hover:text-slate-50"
+        aria-label="Twitter profile"
+      >
+        𝕏
+      </a>
+      <a
+        href={SOCIAL_LINKS.github}
+        target="_blank"
+        rel="noreferrer"
+        class="inline-flex h-10 w-10 items-center justify-center rounded-full border border-transparent text-lg text-slate-500 transition hover:border-slate-200 hover:bg-white/80 hover:text-slate-950 dark:text-slate-400 dark:hover:border-slate-700 dark:hover:bg-slate-900 dark:hover:text-slate-50"
+        aria-label="GitHub profile"
+      >
+        GH
+      </a>
+      <ThemeToggle />
+    </div>
+  </nav>
+</header>

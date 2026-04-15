@@ -1,0 +1,42 @@
+<button
+  type="button"
+  data-theme-toggle
+  class="inline-flex items-center gap-2 rounded-full border border-slate-200/80 bg-white/80 px-3 py-2 text-sm font-medium text-slate-700 shadow-sm backdrop-blur transition hover:border-slate-300 hover:text-slate-950 dark:border-slate-700 dark:bg-slate-950/80 dark:text-slate-200 dark:hover:border-slate-600 dark:hover:text-slate-50"
+  aria-label="Toggle theme"
+>
+  <span data-theme-icon aria-hidden="true">◐</span>
+  <span data-theme-label>Theme</span>
+</button>
+
+<script is:inline>
+  (() => {
+    const button = document.querySelector('[data-theme-toggle]')
+    if (!(button instanceof HTMLButtonElement)) return
+
+    const storageKey = 'theme'
+    const icon = button.querySelector('[data-theme-icon]')
+    const label = button.querySelector('[data-theme-label]')
+
+    const applyTheme = (theme) => {
+      document.documentElement.classList.toggle('dark', theme === 'dark')
+      document.documentElement.style.colorScheme = theme
+      localStorage.setItem(storageKey, theme)
+      if (icon) icon.textContent = theme === 'dark' ? '☀' : '☾'
+      if (label) label.textContent = theme === 'dark' ? 'Light' : 'Dark'
+      button.setAttribute('aria-pressed', String(theme === 'dark'))
+    }
+
+    const initialTheme =
+      localStorage.getItem(storageKey) ||
+      (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light')
+
+    applyTheme(initialTheme)
+
+    button.addEventListener('click', () => {
+      const nextTheme = document.documentElement.classList.contains('dark')
+        ? 'light'
+        : 'dark'
+      applyTheme(nextTheme)
+    })
+  })()
+</script>
