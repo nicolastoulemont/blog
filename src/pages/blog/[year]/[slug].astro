@@ -2,6 +2,7 @@
 import { render } from 'astro:content'
 import { PostCard } from '~/components/PostCard'
 import TableOfContents from '~/components/TableOfContents.astro'
+import { CATEGORY_COLOR_REGISTRY } from '~/lib/categories'
 import BaseLayout from '~/layouts/BaseLayout.astro'
 import { getAllPosts, getRelatedPosts, getTranslation } from '~/lib/blog'
 
@@ -21,6 +22,7 @@ const allPosts = await getAllPosts()
 const relatedPosts = getRelatedPosts(post, allPosts).slice(0, 3)
 const translation = getTranslation(post, allPosts)
 const { Content, headings } = await render(post.entry)
+const activeColor = post.categories.length > 0 ? CATEGORY_COLOR_REGISTRY[post.categories[0]] : 'gray'
 ---
 
 <BaseLayout
@@ -34,29 +36,27 @@ const { Content, headings } = await render(post.entry)
   updatedAt={post.updatedAt}
   alternates={translation ? [{ locale: translation.locale, url: translation.url }] : []}
 >
-  <main class="mx-auto max-w-[88rem] px-6 pb-16 pt-8 sm:px-10">
+  <main class="mx-auto max-w-6xl px-6 pb-16 pt-8 md:px-12">
     {translation ? (
-      <div class="mb-6 max-w-4xl rounded-full border border-sky-200 bg-sky-50 px-4 py-2 text-sm text-sky-900 dark:border-sky-900/60 dark:bg-sky-950/40 dark:text-sky-100">
+      <div class="mb-6 text-sm text-slate-700 dark:text-slate-300">
         This post is also available in{' '}
-        <a href={translation.url} class="font-medium underline decoration-sky-400 underline-offset-4">
+        <a href={translation.url} class="font-medium underline decoration-blue-400 underline-offset-4">
           {translation.localeLabel}
         </a>
         .
       </div>
     ) : null}
 
-    <div class="grid gap-8 xl:grid-cols-[minmax(0,1fr)_18rem]">
-      <article class="surface-card min-w-0 p-6 sm:p-10">
-        <div class="prose max-w-none">
-          <Content />
-        </div>
+    <div class="relative">
+      <article class="prose m-0 mx-auto w-full px-0 py-6 lg:max-w-[calc(100%-250px)]">
+        <Content />
       </article>
-      <TableOfContents headings={headings} />
+      <TableOfContents headings={headings} activeColor={activeColor} />
     </div>
 
     {relatedPosts.length > 0 ? (
       <section class="mt-10">
-        <h2 class="mb-4 text-2xl font-semibold text-slate-950 dark:text-slate-50">
+        <h2 class="mb-4 text-2xl font-semibold text-slate-800 dark:text-white">
           Related posts
         </h2>
         <div class="grid grid-cols-1 gap-4 lg:grid-cols-3">

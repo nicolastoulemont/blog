@@ -30,9 +30,6 @@ html {
 
 body {
   @apply min-h-screen bg-[rgb(var(--surface))] text-[rgb(var(--text))];
-  background-image:
-    radial-gradient(circle at top, rgb(125 211 252 / 0.14), transparent 30%),
-    linear-gradient(180deg, rgb(var(--surface-strong) / 0.55), transparent 24rem);
 }
 
 a {
@@ -62,9 +59,9 @@ h6 {
 }
 
 .prose {
-  @apply prose-slate max-w-none prose-headings:font-semibold prose-headings:text-slate-950 prose-p:text-slate-700 prose-li:text-slate-700 prose-strong:text-slate-950 prose-a:text-sky-700 prose-a:decoration-sky-300 prose-a:underline-offset-4 prose-code:rounded prose-code:bg-slate-100 prose-code:px-1.5 prose-code:py-0.5 prose-code:text-sm prose-code:text-slate-900 prose-code:before:content-none prose-code:after:content-none prose-pre:overflow-x-auto prose-pre:rounded-3xl prose-pre:border prose-pre:border-slate-800 prose-pre:bg-slate-950 prose-img:rounded-3xl prose-blockquote:border-l-sky-300 prose-blockquote:text-slate-700 dark:prose-invert dark:prose-headings:text-slate-50 dark:prose-p:text-slate-300 dark:prose-li:text-slate-300 dark:prose-strong:text-slate-100 dark:prose-a:text-sky-300 dark:prose-a:decoration-sky-700 dark:prose-code:bg-slate-900 dark:prose-code:text-slate-100 dark:prose-blockquote:text-slate-300;
+  @apply prose-slate max-w-none prose-headings:font-semibold prose-headings:text-slate-800 prose-p:text-slate-700 prose-li:text-slate-700 prose-strong:text-slate-900 prose-a:text-blue-700 prose-a:decoration-blue-300 prose-a:underline-offset-4 prose-code:rounded prose-code:bg-slate-100 prose-code:px-1.5 prose-code:py-0.5 prose-code:text-sm prose-code:text-slate-900 prose-code:before:content-none prose-code:after:content-none prose-pre:overflow-x-auto prose-pre:rounded-lg prose-pre:border prose-pre:border-slate-800 prose-pre:bg-slate-950 prose-img:rounded-lg prose-blockquote:border-l-blue-300 prose-blockquote:text-slate-700 dark:prose-invert dark:prose-headings:text-white dark:prose-p:text-slate-300 dark:prose-li:text-slate-300 dark:prose-strong:text-white dark:prose-a:text-blue-300 dark:prose-a:decoration-blue-700 dark:prose-code:bg-slate-900 dark:prose-code:text-slate-100 dark:prose-blockquote:text-slate-300;
 }
 
 .surface-card {
-  @apply rounded-[2rem] border border-white/70 bg-white/85 shadow-xl shadow-slate-200/70 backdrop-blur dark:border-slate-800/80 dark:bg-slate-950/75 dark:shadow-none;
+  @apply rounded-lg bg-white shadow-xl dark:bg-slate-800 dark:shadow-2xl;
 }

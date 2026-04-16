@@ -1,11 +1,10 @@
 <button
   type="button"
   data-theme-toggle
-  class="inline-flex items-center gap-2 rounded-full border border-slate-200/80 bg-white/80 px-3 py-2 text-sm font-medium text-slate-700 shadow-sm backdrop-blur transition hover:border-slate-300 hover:text-slate-950 dark:border-slate-700 dark:bg-slate-950/80 dark:text-slate-200 dark:hover:border-slate-600 dark:hover:text-slate-50"
+  class="inline-flex h-10 w-10 items-center justify-center rounded-full text-slate-700 transition hover:bg-slate-200 dark:text-white dark:hover:bg-slate-600"
   aria-label="Toggle theme"
 >
-  <span data-theme-icon aria-hidden="true">◐</span>
-  <span data-theme-label>Theme</span>
+  <span data-theme-icon aria-hidden="true">☾</span>
 </button>
 
 <script is:inline>
@@ -15,14 +14,13 @@
 
     const storageKey = 'theme'
     const icon = button.querySelector('[data-theme-icon]')
-    const label = button.querySelector('[data-theme-label]')
 
     const applyTheme = (theme) => {
       document.documentElement.classList.toggle('dark', theme === 'dark')
       document.documentElement.style.colorScheme = theme
       localStorage.setItem(storageKey, theme)
       if (icon) icon.textContent = theme === 'dark' ? '☀' : '☾'
-      if (label) label.textContent = theme === 'dark' ? 'Light' : 'Dark'
+      button.setAttribute('aria-label', theme === 'dark' ? 'Switch to light theme' : 'Switch to dark theme')
       button.setAttribute('aria-pressed', String(theme === 'dark'))
     }
 

@@ -9,15 +9,13 @@ interface PostIntroProps {
 
 export function PostIntro({ publishedAt, editedAt, categories }: PostIntroProps) {
   return (
-    <div className="mb-6 flex flex-col gap-3 border-y border-slate-200/80 py-4 text-sm text-slate-600 dark:border-slate-800 dark:text-slate-300 sm:flex-row sm:items-center sm:justify-between">
+    <div className="mb-3 flex w-full flex-col justify-center text-center text-sm text-slate-600 dark:text-slate-300 sm:flex-row sm:justify-between sm:text-left md:mb-6">
       <p>
-        Nicolas Toulemont
-        {' · '}
-        {editedAt ? `${editedAt} · Edited` : publishedAt}
+        Nicolas Toulemont - {editedAt ? editedAt : publishedAt} {editedAt ? '- Edited' : ''}
       </p>
-      <div className="flex flex-wrap gap-2">
+      <div className="flex items-center justify-center gap-2">
         {categories.map((category) => (
-          <Tag key={category} category={category} size="sm" />
+          <Tag key={category} category={category} className="mt-3 sm:mt-0" />
         ))}
       </div>
     </div>

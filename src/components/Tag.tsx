@@ -8,17 +8,15 @@ interface TagProps {
 
 export function Tag({ category, className = '', size = 'md' }: TagProps) {
   const activeColor = CATEGORY_COLOR_REGISTRY[category]
-  const { bg, text, border } = CATEGORY_COLOR_VARIANTS[activeColor]
+  const { bg, text } = CATEGORY_COLOR_VARIANTS[activeColor]
 
   const sizes = {
-    sm: 'px-2 py-1 text-xs',
-    md: 'px-2.5 py-1 text-sm',
+    sm: 'p-1 text-xs',
+    md: 'px-2 py-1 text-sm',
   } as const
 
   return (
-    <span
-      className={`inline-flex items-center rounded-full border ${sizes[size]} ${bg} ${text} ${border} ${className}`}
-    >
+    <span className={`inline-flex items-center rounded-lg ${sizes[size]} ${bg} ${text} ${className}`}>
       {category}
     </span>
   )

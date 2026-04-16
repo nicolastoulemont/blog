@@ -1,57 +1,65 @@
 ---
 import type { MarkdownHeading } from 'astro'
+import { CATEGORY_COLOR_VARIANTS, type CategoryColor } from '~/lib/categories'
 
 interface Props {
   headings: MarkdownHeading[]
+  activeColor?: CategoryColor
 }
 
-const { headings } = Astro.props
+const { headings, activeColor = 'gray' } = Astro.props
 const items = headings.filter((heading) => heading.depth >= 2 && heading.depth <= 4)
 const tocId = `toc-${Math.random().toString(36).slice(2)}`
+const { bg, text, hoverBg, hoverText } = CATEGORY_COLOR_VARIANTS[activeColor]
+const activeClasses = `${bg} ${text}`
 ---
 
 {
   items.length > 0 ? (
-    <aside data-toc-root={tocId} class="xl:sticky xl:top-28 xl:h-fit">
+    <aside
+      data-toc-root={tocId}
+      class="lg:fixed lg:right-0 lg:top-20 lg:w-auto lg:max-w-[280px] lg:rounded-lg lg:p-6 lg:pr-3"
+    >
       <button
         type="button"
         data-toc-toggle
-        class="surface-card fixed bottom-5 right-5 z-30 inline-flex items-center gap-2 px-4 py-3 text-sm font-medium text-slate-700 dark:text-slate-200 xl:hidden"
+        class="fixed bottom-10 right-3 z-30 flex rounded-full bg-blue-500 p-3 shadow-lg dark:bg-blue-800 lg:hidden"
       >
-        On this page
+        Menu
       </button>
 
       <div
         data-toc-panel
-        class="surface-card fixed inset-x-4 bottom-20 z-30 hidden max-h-[60vh] overflow-auto p-5 xl:static xl:block xl:max-h-none xl:w-72"
+        class="fixed inset-x-0 bottom-0 z-30 hidden max-h-[70vh] overflow-auto rounded-t-xl bg-white px-6 pb-6 pt-2 shadow-lg dark:bg-slate-900 lg:static lg:block lg:max-h-[80vh] lg:w-auto lg:rounded-none lg:bg-transparent lg:p-0 lg:shadow-none"
       >
-        <div class="mb-4 flex items-center justify-between">
-          <h2 class="text-sm font-semibold uppercase tracking-[0.24em] text-slate-500 dark:text-slate-400">
-            On this page
-          </h2>
+        <div class="flex w-full justify-end p-3 lg:hidden">
           <button
             type="button"
             data-toc-close
-            class="rounded-full px-2 py-1 text-slate-500 xl:hidden dark:text-slate-400"
+            class="flex h-[35px] w-[35px] items-center justify-center text-slate-700 dark:text-white"
           >
             Close
           </button>
         </div>
-        <nav>
+        <nav class="max-h-[70vh] overflow-scroll lg:max-h-[80vh]">
+          <h2 class="mb-2 text-lg font-semibold text-gray-700 dark:text-white">
+            On this page
+          </h2>
           <ol class="space-y-2">
             {
-              items.map((heading) => (
+              items.map((heading, index) => (
                 <li class:list={[
-                  'text-sm leading-6',
-                  heading.depth === 3 && 'ml-4',
-                  heading.depth === 4 && 'ml-8',
+                  'my-3 flex',
+                  heading.depth === 2 && 'ml-4',
+                  heading.depth === 3 && 'ml-8',
+                  heading.depth === 4 && 'ml-12',
                 ]}>
                   <a
                     href={`#${heading.slug}`}
                     data-toc-link
-                    class="block rounded-xl px-3 py-2 text-slate-600 transition hover:bg-slate-100 hover:text-slate-950 dark:text-slate-300 dark:hover:bg-slate-900 dark:hover:text-slate-50"
+                    class={`w-full rounded-md p-2 text-sm font-normal text-gray-700 transition-colors duration-300 ease-in-out dark:text-white ${hoverBg} ${hoverText}`}
                   >
-                    {heading.text}
+                    {index === 0 ? 'Top' : heading.text}
                   </a>
                 </li>
               ))
@@ -63,7 +71,7 @@ const tocId = `toc-${Math.random().toString(36).slice(2)}`
   ) : null
 }
 
-<script is:inline define:vars={{ tocId }}>
+<script is:inline define:vars={{ tocId, activeClasses }}>
   (() => {
     const root = document.querySelector(`[data-toc-root="${tocId}"]`)
     if (!(root instanceof HTMLElement)) return
@@ -110,10 +118,12 @@ const tocId = `toc-${Math.random().toString(36).slice(2)}`
 
         links.forEach((link) => {
           const isActive = link.getAttribute('href') === `#${activeId}`
-          link.classList.toggle('bg-slate-100', isActive)
-          link.classList.toggle('text-slate-950', isActive)
-          link.classList.toggle('dark:bg-slate-900', isActive)
-          link.classList.toggle('dark:text-slate-50', isActive)
+          link.classList.toggle('is-active', isActive)
+          if (isActive) {
+            link.classList.add(...activeClasses.split(' '))
+          } else {
+            link.classList.remove(...activeClasses.split(' '))
+          }
         })
       },
       { rootMargin: '-20% 0px -70% 0px', threshold: [0, 1] }

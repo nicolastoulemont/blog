@@ -8,40 +8,14 @@ const searchIndex = toSearchIndex(posts)
 ---
 
 <BaseLayout pathname="/">
-  <main class="mx-auto max-w-6xl px-6 pb-16 pt-10 sm:px-10">
-    <section class="mb-10 grid gap-8 lg:grid-cols-[1.25fr_0.75fr] lg:items-end">
-      <div class="space-y-5">
-        <p class="text-sm uppercase tracking-[0.4em] text-sky-700 dark:text-sky-300">
-          Personal engineering notes
-        </p>
-        <h1 class="max-w-3xl text-4xl font-semibold tracking-tight text-slate-950 dark:text-slate-50 sm:text-6xl">
-          Writing about React, GraphQL, TypeScript, architecture, and the parts of frontend work that stay interesting.
-        </h1>
-        <p class="max-w-2xl text-lg leading-8 text-slate-600 dark:text-slate-300">
-          I am Nicolas Toulemont, a French full-stack software engineer. This site keeps the archive in MDX, now rebuilt as a static Astro blog with React used only where interaction earns its keep.
-        </p>
-      </div>
-
-      <div class="surface-card overflow-hidden p-5 sm:p-6">
-        <div class="flex items-center gap-4">
-          <img
-            src="/img/personal_picture.jpg"
-            alt="Portrait of Nicolas Toulemont"
-            class="h-20 w-20 rounded-3xl object-cover"
-          />
-          <div>
-            <p class="text-sm uppercase tracking-[0.28em] text-slate-500 dark:text-slate-400">
-              Based in France
-            </p>
-            <p class="mt-2 text-lg font-semibold text-slate-950 dark:text-slate-50">
-              Full-stack engineer
-            </p>
-          </div>
-        </div>
-        <p class="mt-5 text-sm leading-7 text-slate-600 dark:text-slate-300">
-          The archive keeps both English and French posts. Search is local and static, so the whole site still deploys as plain files.
-        </p>
-      </div>
+  <main class="mx-auto min-h-full w-full max-w-6xl px-6 pb-10 md:px-12">
+    <section>
+      <h1 class="my-6 text-center text-3xl font-bold text-slate-800 dark:text-white sm:mt-12 sm:text-5xl md:text-left">
+        Hi, I'm Nicolas Toulemont
+      </h1>
+      <p class="mb-9 text-center text-lg font-bold text-slate-600 dark:text-white sm:text-2xl md:mb-12 md:text-left">
+        I'm a french full stack software engineer. I mainly use and enjoy Typescript, Node, React and GraphQL at the moment.
+      </p>
     </section>
 
     <SearchPosts client:load posts={searchIndex} />

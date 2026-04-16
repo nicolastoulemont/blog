@@ -23,10 +23,12 @@ export function SearchPosts({ posts }: SearchPostsProps) {
         })
 
   return (
-    <section className="space-y-6">
-      <div className="surface-card p-5 sm:p-6">
-        <label htmlFor="search" className="mb-3 block text-sm font-medium text-slate-700 dark:text-slate-200">
-          Search all posts
+    <section>
+      <div className="py-6">
+        <label htmlFor="search">
+          <h2 className="mb-6 text-xl font-bold text-slate-800 dark:text-white sm:text-3xl">
+            Posts
+          </h2>
         </label>
         <input
           id="search"
@@ -34,8 +36,8 @@ export function SearchPosts({ posts }: SearchPostsProps) {
           type="search"
           autoComplete="off"
           value={query}
-          placeholder="Search by title, category, locale, or description"
-          className="w-full rounded-2xl border border-slate-200 bg-white/90 px-4 py-3 text-base text-slate-950 shadow-sm outline-none transition focus:border-sky-400 focus:ring-4 focus:ring-sky-200/70 dark:border-slate-700 dark:bg-slate-950/80 dark:text-slate-50 dark:focus:border-sky-500 dark:focus:ring-sky-500/20"
+          placeholder="Search posts"
+          className="w-full rounded-lg bg-white text-slate-800 placeholder:text-slate-800 outline-none dark:bg-slate-900 dark:text-white dark:placeholder:text-white"
           onChange={(event) => {
             const nextValue = event.currentTarget.value
             startTransition(() => setQuery(nextValue))
@@ -43,12 +45,14 @@ export function SearchPosts({ posts }: SearchPostsProps) {
         />
       </div>
 
+      <div aria-hidden className="mb-6 h-0.5 w-full rounded bg-slate-200 dark:bg-slate-900" />
+
       {filteredPosts.length === 0 ? (
-        <div className="surface-card p-8 text-center text-slate-600 dark:text-slate-300">
+        <div className="py-8 text-center text-slate-600 dark:text-slate-300">
           No posts match <span className="font-medium text-slate-950 dark:text-slate-50">{query}</span>.
         </div>
       ) : (
-        <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
+        <div className="grid grid-cols-1 gap-2 md:grid-cols-2 md:gap-4">
           {filteredPosts.map((post) => (
             <PostCard key={post.url} post={post} />
           ))}
