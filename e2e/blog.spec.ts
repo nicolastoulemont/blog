@@ -21,6 +21,15 @@ test('english posts render at cleaned urls', async ({ page }) => {
   await expect(page.getByRole('heading', { name: 'Related posts' })).toBeVisible()
 })
 
+test('fenced code keeps syntax highlighting styles', async ({ page }) => {
+  await page.goto('/blog/2022/the-tree')
+
+  const code = page.locator('pre').first().locator('code')
+
+  await expect(code).toHaveCSS('background-color', 'rgba(0, 0, 0, 0)')
+  await expect(code).toHaveCSS('padding', '0px')
+})
+
 test('french posts render at localized urls', async ({ page }) => {
   await page.goto('/fr/blog/2021/retraining-web-development-online')
 
