@@ -30,6 +30,75 @@ test('fenced code keeps syntax highlighting styles', async ({ page }) => {
   await expect(code).toHaveCSS('padding', '0px')
 })
 
+test('table of contents labels and tracks the active section', async ({ page }) => {
+  await page.goto('/blog/2022/the-tree')
+
+  const links = page.locator('[data-toc-link]')
+  const labels = await links.allTextContents()
+
+  expect(labels).toHaveLength(12)
+  expect(labels[0]).toBe('Top')
+  expect(labels).toContain('What is a Tree ?')
+  expect(labels.every((label) => !label.trim().endsWith('#'))).toBe(true)
+
+  await page.evaluate(() => {
+    const heading = document.getElementById('get-method')
+    if (!(heading instanceof HTMLElement)) throw new Error('Get method heading not found')
+
+    window.scrollTo(0, heading.getBoundingClientRect().top + window.scrollY - 40)
+  })
+
+  await expect(page.getByRole('link', { name: 'Get method', exact: true })).toHaveClass(
+    /bg-cyan-200/
+  )
+})
+
+test('blog layout makes room for the table of contents responsively', async ({
+  page,
+}) => {
+  await page.setViewportSize({ width: 1024, height: 768 })
+  await page.goto('/blog/2022/the-tree')
+
+  const desktopLayout = await page.evaluate(() => {
+    const article = document.querySelector('article')?.getBoundingClientRect()
+    const toc = document.querySelector('[data-toc-root]')?.getBoundingClientRect()
+
+    return {
+      articleRight: article?.right ?? 0,
+      tocLeft: toc?.left ?? 0,
+      overflow: document.documentElement.scrollWidth - window.innerWidth,
+    }
+  })
+
+  expect(desktopLayout.overflow).toBe(0)
+  expect(desktopLayout.articleRight - desktopLayout.tocLeft).toBeLessThanOrEqual(4)
+
+  await page.setViewportSize({ width: 768, height: 768 })
+  await page.reload()
+
+  const mobileLayout = await page.evaluate(() => ({
+    articleRight: document.querySelector('article')?.getBoundingClientRect().right ?? 0,
+    overflow: document.documentElement.scrollWidth - window.innerWidth,
+    tocToggle: getComputedStyle(document.querySelector('[data-toc-toggle]')!).display,
+  }))
+
+  expect(mobileLayout.overflow).toBe(0)
+  expect(mobileLayout.articleRight).toBeLessThanOrEqual(768)
+  expect(mobileLayout.tocToggle).toBe('flex')
+
+  const tocPanel = page.locator('[data-toc-panel]')
+  await page.getByRole('button', { name: 'Open table of contents' }).click()
+  await expect
+    .poll(() => tocPanel.evaluate((panel) => panel.getAnimations().length))
+    .toBeGreaterThan(0)
+  await expect(page.getByRole('button', { name: 'Close table of contents' })).toBeVisible()
+  await page.getByRole('button', { name: 'Close table of contents' }).click()
+  await expect
+    .poll(() => tocPanel.evaluate((panel) => panel.getAnimations().length))
+    .toBeGreaterThan(0)
+  await expect(page.getByRole('button', { name: 'Close table of contents' })).toBeHidden()
+})
+
 test('related posts show the full vertical list', async ({ page }) => {
   await page.goto('/blog/2022/the-tree')
 

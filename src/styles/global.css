@@ -62,6 +62,45 @@ h6 {
   @apply prose-slate max-w-none prose-headings:font-semibold prose-headings:text-slate-800 prose-p:text-slate-700 prose-li:text-slate-700 prose-strong:text-slate-900 prose-a:text-blue-700 prose-a:decoration-blue-300 prose-a:underline-offset-4 prose-code:rounded prose-code:bg-slate-100 prose-code:px-1.5 prose-code:py-0.5 prose-code:text-sm prose-code:text-slate-900 prose-code:before:content-none prose-code:after:content-none prose-pre:overflow-x-auto prose-pre:rounded-lg prose-pre:border prose-pre:border-slate-800 prose-pre:bg-slate-950 prose-img:rounded-lg prose-blockquote:border-l-blue-300 prose-blockquote:text-slate-700 dark:prose-invert dark:prose-headings:text-white dark:prose-p:text-slate-300 dark:prose-li:text-slate-300 dark:prose-strong:text-white dark:prose-a:text-blue-300 dark:prose-a:decoration-blue-700 dark:prose-code:bg-slate-900 dark:prose-code:text-slate-100 dark:prose-blockquote:text-slate-300;
 }
 
+.toc-overlay {
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 300ms ease-in-out;
+}
+
+.toc-overlay.is-open {
+  opacity: 0.6;
+  pointer-events: auto;
+}
+
+.toc-panel {
+  height: 0;
+  opacity: 0;
+  overflow: hidden;
+  pointer-events: none;
+  transition: height 300ms ease-in-out, opacity 300ms ease-in-out;
+  will-change: height, opacity;
+}
+
+.toc-panel.is-open {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+@media (min-width: 64rem) {
+  .toc-overlay {
+    opacity: 0;
+    pointer-events: none;
+  }
+
+  .toc-panel {
+    height: auto;
+    opacity: 1;
+    overflow: visible;
+    pointer-events: auto;
+  }
+}
+
 .post-article {
   max-width: 65ch;
 }
