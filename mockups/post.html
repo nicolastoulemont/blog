@@ -1,0 +1,361 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>The Tree · Nicolas Toulemont</title>
+  <meta name="description" content="Typescript implementation of a tree." />
+  <script>
+    (() => {
+      const stored = localStorage.getItem('theme')
+      const theme = stored === 'light' || stored === 'dark'
+        ? stored
+        : (matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light')
+      document.documentElement.dataset.theme = theme
+    })()
+  </script>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="./mockup.css" />
+</head>
+<body>
+<div class="page">
+<div class="frame">
+
+  <header class="site-header">
+    <a href="./home.html" class="brand">Nicolas Toulemont</a>
+    <nav class="nav-links" aria-label="Site">
+      <a href="https://github.com/nicolastoulemont" target="_blank" rel="noreferrer">GitHub</a>
+      <a href="https://twitter.com/n_toulemont" target="_blank" rel="noreferrer">Twitter</a>
+    </nav>
+    <div class="nav-actions">
+      <button type="button" class="icon-btn" data-theme-toggle aria-label="Toggle theme">
+        <svg class="icon-sun" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41"/></svg>
+        <svg class="icon-moon" viewBox="0 0 24 24" aria-hidden="true"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+      </button>
+    </div>
+  </header>
+
+  <section class="band cols post-hero">
+    <div class="title">
+      <a class="back" href="./home.html">← Writing</a>
+      <div class="tags">
+        <span class="tag" data-cat="data">Data structures</span>
+        <span class="muted">TypeScript</span>
+      </div>
+      <h1>The Tree</h1>
+      <p class="lede">A TypeScript tree with generator-based traversal, and the set, get, update and remove methods built on top of it.</p>
+    </div>
+    <div class="meta-row" style="grid-column: 1 / -1">
+      <div><span class="v">Dec 23, 2022</span><span class="k">Published</span></div>
+      <div><span class="v">8 min</span><span class="k">Reading time</span></div>
+    </div>
+  </section>
+
+  <section class="band cols post-body">
+    <article class="article">
+
+      <details class="toc-mobile">
+        <summary>On this page<svg viewBox="0 0 24 24" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg></summary>
+        <nav class="toc" aria-label="On this page (mobile)">
+          <h2>On this page</h2>
+          <ul>
+            <li data-depth="2"><a href="#what-is-a-tree">What is a tree?</a></li>
+            <li data-depth="2"><a href="#build">How to build a tree in TypeScript</a></li>
+            <li data-depth="3"><a href="#classes">The Tree and Node classes</a></li>
+            <li data-depth="3"><a href="#traversal">Tree traversal</a></li>
+            <li data-depth="4"><a href="#dfs">Depth-first search</a></li>
+            <li data-depth="4"><a href="#bfs">Breadth-first search</a></li>
+            <li data-depth="3"><a href="#io">I/O methods</a></li>
+            <li data-depth="4"><a href="#set">Set</a></li>
+            <li data-depth="4"><a href="#get">Get</a></li>
+            <li data-depth="2"><a href="#wrap-up">Wrap up</a></li>
+          </ul>
+        </nav>
+      </details>
+
+      <div class="prose">
+        <h2 id="what-is-a-tree" style="margin-top:0;padding-top:0;border-top:0">What is a tree?<a class="anchor" href="#what-is-a-tree" aria-label="Link to section">#</a></h2>
+        <p>
+          A tree is a data structure that represents a hierarchical relationship between a set of connected nodes.
+          Each node can be connected to many children, depending on the kind of tree, but must be connected to exactly
+          one parent. The exception is the root node, which has no parent.
+        </p>
+        <p>
+          Trees have many uses. One of the better known is the binary search tree, which gives logarithmic search over
+          its nodes. In this post we build a plain tree instead, which lets us explore how
+          <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Iterators_and_Generators#generator_functions">JavaScript generator functions</a>
+          help build custom iterators for tree-shaped data.
+        </p>
+
+        <figure>
+          <span class="tab">fig. 01</span>
+          <img src="../public/img/tree.png" alt="A root node with three children, one of which has two children of its own." width="480" />
+          <figcaption>A root, three children, and one grandchild pair. Every node except the root has exactly one parent.</figcaption>
+        </figure>
+
+        <h2 id="build">How to build a tree in TypeScript<a class="anchor" href="#build" aria-label="Link to section">#</a></h2>
+        <p>Let's start with the building blocks: the <code>Node</code> and <code>Tree</code> classes.</p>
+
+        <h3 id="classes">The Tree and Node classes<a class="anchor" href="#classes" aria-label="Link to section">#</a></h3>
+        <p>Our <code>Node</code> class has two properties:</p>
+        <ul>
+          <li>A <code>name</code> to identify it.</li>
+          <li><code>children</code>, the nodes it points to.</li>
+        </ul>
+        <p>Our <code>Tree</code> class starts with a single <code>root</code> property, the top of the tree.</p>
+
+        <div class="code">
+          <div class="tabs"><span class="tab tab--lang">tree.ts</span><span class="tab">typescript</span></div>
+          <header>
+            <button type="button" aria-label="Copy code">
+              <svg viewBox="0 0 24 24" aria-hidden="true"><rect x="9" y="9" width="11" height="11" rx="1"/><path d="M5 15V5a2 2 0 0 1 2-2h10"/></svg>
+              Copy
+            </button>
+          </header>
+<pre><code><span class="line"><span class="tk-kw">class</span> <span class="tk-ty">Node</span> <span class="tk-pn">{</span></span>
+<span class="line">  name<span class="tk-pn">:</span> <span class="tk-ty">string</span></span>
+<span class="line">  children<span class="tk-pn">:</span> <span class="tk-ty">Node</span><span class="tk-pn">[]</span></span>
+<span class="line">  <span class="tk-fn">constructor</span><span class="tk-pn">({</span> name<span class="tk-pn">,</span> children <span class="tk-pn">}:</span> <span class="tk-pn">{</span> name<span class="tk-pn">:</span> <span class="tk-ty">string</span><span class="tk-pn">;</span> children<span class="tk-pn">:</span> <span class="tk-ty">Node</span><span class="tk-pn">[]</span> <span class="tk-pn">})</span> <span class="tk-pn">{</span></span>
+<span class="line">    <span class="tk-kw">this</span><span class="tk-pn">.</span>name <span class="tk-pn">=</span> name</span>
+<span class="line">    <span class="tk-kw">this</span><span class="tk-pn">.</span>children <span class="tk-pn">=</span> children</span>
+<span class="line">  <span class="tk-pn">}</span></span>
+<span class="line"><span class="tk-pn">}</span></span>
+<span class="line"></span>
+<span class="line"><span class="tk-kw">class</span> <span class="tk-ty">Tree</span> <span class="tk-pn">{</span></span>
+<span class="line">  root<span class="tk-pn">:</span> <span class="tk-ty">Node</span> <span class="tk-pn">|</span> <span class="tk-pr">null</span> <span class="tk-pn">=</span> <span class="tk-pr">null</span></span>
+<span class="line"><span class="tk-pn">}</span></span></code></pre>
+        </div>
+
+        <p>
+          Later we will add methods to <code>Tree</code> to make it useful, most likely I/O operations:
+          <code>get</code>, <code>set</code>, <code>update</code>, <code>remove</code>. All of them share one need:
+          walking the tree from the root to the leaves.
+        </p>
+
+        <h3 id="traversal">Tree traversal<a class="anchor" href="#traversal" aria-label="Link to section">#</a></h3>
+        <p>
+          To reach every node we need a way to iterate over the tree. Since a tree is not a native array, the built-in
+          iterators like <code>forEach</code> or <code>for of</code> do not apply. A generator function gives us a
+          custom iterator with almost no ceremony. There are several ways to traverse a tree. Let's look at the two most
+          common: depth-first and breadth-first.
+        </p>
+
+        <h4 id="dfs">Depth-first search (DFS)<a class="anchor" href="#dfs" aria-label="Link to section">#</a></h4>
+
+        <div class="code">
+          <div class="tabs"><span class="tab tab--lang">tree.ts</span><span class="tab">typescript</span></div>
+          <header>
+            <button type="button" aria-label="Copy code">
+              <svg viewBox="0 0 24 24" aria-hidden="true"><rect x="9" y="9" width="11" height="11" rx="1"/><path d="M5 15V5a2 2 0 0 1 2-2h10"/></svg>
+              Copy
+            </button>
+          </header>
+<pre><code><span class="line"><span class="tk-kw">export class</span> <span class="tk-ty">Tree</span> <span class="tk-pn">{</span></span>
+<span class="line">  root<span class="tk-pn">:</span> <span class="tk-ty">Node</span> <span class="tk-pn">|</span> <span class="tk-pr">null</span> <span class="tk-pn">=</span> <span class="tk-pr">null</span></span>
+<span class="line"></span>
+<span class="line hl">  <span class="tk-pn">*</span><span class="tk-fn">traverse</span><span class="tk-pn">(</span>node <span class="tk-pn">=</span> <span class="tk-kw">this</span><span class="tk-pn">.</span>root<span class="tk-pn">):</span> <span class="tk-ty">Iterable</span><span class="tk-pn">&lt;</span><span class="tk-ty">Node</span><span class="tk-pn">&gt;</span> <span class="tk-pn">{</span></span>
+<span class="line">    <span class="tk-kw">if</span> <span class="tk-pn">(!</span>node<span class="tk-pn">)</span> <span class="tk-kw">return</span></span>
+<span class="line hl">    <span class="tk-kw">yield</span> node</span>
+<span class="line">    <span class="tk-kw">for</span> <span class="tk-pn">(</span><span class="tk-kw">const</span> child <span class="tk-kw">of</span> node<span class="tk-pn">.</span>children<span class="tk-pn">)</span> <span class="tk-pn">{</span></span>
+<span class="line hl">      <span class="tk-kw">yield*</span> <span class="tk-kw">this</span><span class="tk-pn">.</span><span class="tk-fn">traverse</span><span class="tk-pn">(</span>child<span class="tk-pn">)</span></span>
+<span class="line">    <span class="tk-pn">}</span></span>
+<span class="line">  <span class="tk-pn">}</span></span>
+<span class="line"><span class="tk-pn">}</span></span></code></pre>
+        </div>
+
+        <p>
+          This generator walks the tree recursively. It yields each node back to the caller, then descends into that
+          node's children until every leaf of the subtree has been yielded, and only then moves on to the next sibling.
+        </p>
+
+        <h4 id="bfs">Breadth-first search (BFS)<a class="anchor" href="#bfs" aria-label="Link to section">#</a></h4>
+
+        <div class="code">
+          <div class="tabs"><span class="tab tab--lang">tree.ts</span><span class="tab">typescript</span></div>
+          <header>
+            <button type="button" aria-label="Copy code">
+              <svg viewBox="0 0 24 24" aria-hidden="true"><rect x="9" y="9" width="11" height="11" rx="1"/><path d="M5 15V5a2 2 0 0 1 2-2h10"/></svg>
+              Copy
+            </button>
+          </header>
+<pre><code><span class="line"><span class="tk-pn">*</span><span class="tk-fn">traverse</span><span class="tk-pn">(</span>node <span class="tk-pn">=</span> <span class="tk-kw">this</span><span class="tk-pn">.</span>root<span class="tk-pn">):</span> <span class="tk-ty">Iterable</span><span class="tk-pn">&lt;</span><span class="tk-ty">Node</span><span class="tk-pn">&gt;</span> <span class="tk-pn">{</span></span>
+<span class="line">  <span class="tk-kw">if</span> <span class="tk-pn">(!</span>node<span class="tk-pn">)</span> <span class="tk-kw">return</span></span>
+<span class="line">  <span class="tk-kw">const</span> queue<span class="tk-pn">:</span> <span class="tk-ty">Node</span><span class="tk-pn">[]</span> <span class="tk-pn">=</span> <span class="tk-pn">[</span>node<span class="tk-pn">]</span></span>
+<span class="line">  <span class="tk-kw">while</span> <span class="tk-pn">(</span>queue<span class="tk-pn">.</span>length <span class="tk-pn">&gt;</span> <span class="tk-pr">0</span><span class="tk-pn">)</span> <span class="tk-pn">{</span></span>
+<span class="line">    <span class="tk-kw">const</span> current <span class="tk-pn">=</span> queue<span class="tk-pn">.</span><span class="tk-fn">shift</span><span class="tk-pn">()!</span></span>
+<span class="line">    <span class="tk-kw">yield</span> current</span>
+<span class="line">    queue<span class="tk-pn">.</span><span class="tk-fn">push</span><span class="tk-pn">(...</span>current<span class="tk-pn">.</span>children<span class="tk-pn">)</span></span>
+<span class="line">  <span class="tk-pn">}</span></span>
+<span class="line"><span class="tk-pn">}</span></span></code></pre>
+        </div>
+
+        <p>
+          The breadth-first version walks the tree one level at a time. It yields every node of a level before moving
+          to the next. Pick whichever suits your use case; the rest of the post works with either.
+        </p>
+
+        <div class="callout">
+          <span class="tab">Why a generator?</span>
+          <p>A generator is lazy. Callers can stop after the first match, so a <code>get</code> over a large tree does
+          not have to visit every node. The same method also plugs straight into <code>for of</code>, spread, and
+          <code>Array.from</code>.</p>
+        </div>
+
+        <h3 id="io">I/O methods<a class="anchor" href="#io" aria-label="Link to section">#</a></h3>
+        <p>With a way to iterate over the tree in hand, the I/O methods become short.</p>
+
+        <h4 id="set">Set<a class="anchor" href="#set" aria-label="Link to section">#</a></h4>
+        <p>Inserting a node has two cases:</p>
+        <ul>
+          <li>The tree has no root yet. The new node becomes the root and no address is needed.</li>
+          <li>The tree already has a root. We need an address for the parent, and here we use the parent's name.</li>
+        </ul>
+
+        <div class="code">
+          <div class="tabs"><span class="tab tab--lang">tree.ts</span><span class="tab">typescript</span></div>
+          <header>
+            <button type="button" aria-label="Copy code">
+              <svg viewBox="0 0 24 24" aria-hidden="true"><rect x="9" y="9" width="11" height="11" rx="1"/><path d="M5 15V5a2 2 0 0 1 2-2h10"/></svg>
+              Copy
+            </button>
+          </header>
+<pre><code><span class="line"><span class="tk-kw">type</span> <span class="tk-ty">IOResult</span> <span class="tk-pn">=</span> <span class="tk-ty">Node</span><span class="tk-pn">[]</span> <span class="tk-pn">|</span> <span class="tk-pr">null</span></span>
+<span class="line"></span>
+<span class="line"><span class="tk-fn">set</span><span class="tk-pn">(</span>node<span class="tk-pn">:</span> <span class="tk-ty">Node</span><span class="tk-pn">,</span> parentName<span class="tk-pn">?:</span> <span class="tk-ty">string</span><span class="tk-pn">):</span> <span class="tk-ty">IOResult</span> <span class="tk-pn">{</span></span>
+<span class="line">  <span class="tk-kw">if</span> <span class="tk-pn">(!</span><span class="tk-kw">this</span><span class="tk-pn">.</span>root<span class="tk-pn">)</span> <span class="tk-pn">{</span></span>
+<span class="line">    <span class="tk-kw">this</span><span class="tk-pn">.</span>root <span class="tk-pn">=</span> node</span>
+<span class="line">    <span class="tk-kw">return</span> <span class="tk-pn">[</span>node<span class="tk-pn">]</span></span>
+<span class="line">  <span class="tk-pn">}</span></span>
+<span class="line">  <span class="tk-kw">for</span> <span class="tk-pn">(</span><span class="tk-kw">const</span> current <span class="tk-kw">of</span> <span class="tk-kw">this</span><span class="tk-pn">.</span><span class="tk-fn">traverse</span><span class="tk-pn">())</span> <span class="tk-pn">{</span></span>
+<span class="line">    <span class="tk-kw">if</span> <span class="tk-pn">(</span>current<span class="tk-pn">.</span>name <span class="tk-pn">===</span> parentName<span class="tk-pn">)</span> <span class="tk-pn">{</span></span>
+<span class="line">      current<span class="tk-pn">.</span>children<span class="tk-pn">.</span><span class="tk-fn">push</span><span class="tk-pn">(</span>node<span class="tk-pn">)</span></span>
+<span class="line">      <span class="tk-kw">return</span> current<span class="tk-pn">.</span>children</span>
+<span class="line">    <span class="tk-pn">}</span></span>
+<span class="line">  <span class="tk-pn">}</span></span>
+<span class="line">  <span class="tk-kw">return</span> <span class="tk-pr">null</span> <span class="tk-cm">// parent not found</span></span>
+<span class="line"><span class="tk-pn">}</span></span></code></pre>
+        </div>
+
+        <h4 id="get">Get<a class="anchor" href="#get" aria-label="Link to section">#</a></h4>
+        <p>
+          Reading a node is the same loop without the mutation. Because <code>traverse</code> is lazy, returning early
+          stops the walk right there.
+        </p>
+
+        <div class="code">
+          <div class="tabs"><span class="tab tab--lang">tree.ts</span><span class="tab">typescript</span></div>
+          <header>
+            <button type="button" aria-label="Copy code">
+              <svg viewBox="0 0 24 24" aria-hidden="true"><rect x="9" y="9" width="11" height="11" rx="1"/><path d="M5 15V5a2 2 0 0 1 2-2h10"/></svg>
+              Copy
+            </button>
+          </header>
+<pre><code><span class="line"><span class="tk-fn">get</span><span class="tk-pn">(</span>name<span class="tk-pn">:</span> <span class="tk-ty">string</span><span class="tk-pn">):</span> <span class="tk-ty">Node</span> <span class="tk-pn">|</span> <span class="tk-pr">undefined</span> <span class="tk-pn">{</span></span>
+<span class="line">  <span class="tk-kw">for</span> <span class="tk-pn">(</span><span class="tk-kw">const</span> node <span class="tk-kw">of</span> <span class="tk-kw">this</span><span class="tk-pn">.</span><span class="tk-fn">traverse</span><span class="tk-pn">())</span> <span class="tk-pn">{</span></span>
+<span class="line">    <span class="tk-kw">if</span> <span class="tk-pn">(</span>node<span class="tk-pn">.</span>name <span class="tk-pn">===</span> name<span class="tk-pn">)</span> <span class="tk-kw">return</span> node</span>
+<span class="line">  <span class="tk-pn">}</span></span>
+<span class="line"><span class="tk-pn">}</span></span></code></pre>
+        </div>
+
+        <blockquote>
+          Names as addresses are a simplification. In a real tree you would key on an id, or return the path from the
+          root so that duplicates stay reachable.
+        </blockquote>
+
+        <h2 id="wrap-up">Wrap up<a class="anchor" href="#wrap-up" aria-label="Link to section">#</a></h2>
+        <p>
+          A tree is a small amount of code once traversal is a generator. The <code>update</code> and
+          <code>remove</code> methods follow the same shape as <code>set</code>: walk, match on the name, mutate,
+          return. The full implementation with tests is in the
+          <a href="https://github.com/nicolastoulemont">repository</a>.
+        </p>
+      </div>
+
+      <footer class="post-end">
+        <h2>More on data structures</h2>
+        <div class="post-list">
+          <a class="card card--compact" href="#">
+            <div class="tabs"><span class="tab tag" data-cat="data">Data structures</span></div>
+            <div class="body"><h3>The Hashtable</h3><p class="desc">Insert, get and remove on a basic hashtable.</p></div>
+            <div class="meta"><span class="v">Dec 2020</span><span class="k">6 min read</span></div>
+            <div class="go"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></div>
+          </a>
+          <a class="card card--compact" href="#">
+            <div class="tabs"><span class="tab tag" data-cat="data">Data structures</span></div>
+            <div class="body"><h3>The Linked list</h3><p class="desc">Singly, doubly and circular linked lists.</p></div>
+            <div class="meta"><span class="v">May 2020</span><span class="k">7 min read</span></div>
+            <div class="go"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></div>
+          </a>
+          <a class="card card--compact" href="#">
+            <div class="tabs"><span class="tab tag" data-cat="data">Data structures</span></div>
+            <div class="body"><h3>The Queue</h3><p class="desc">A basic queue and a priority queue.</p></div>
+            <div class="meta"><span class="v">May 2020</span><span class="k">5 min read</span></div>
+            <div class="go"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></div>
+          </a>
+        </div>
+
+        <nav class="pager" aria-label="Adjacent posts">
+          <a href="#"><span class="k">← Previous</span><span class="v">The compound component pattern</span></a>
+          <a href="./home.html"><span class="k">Next →</span><span class="v">Back to all writing</span></a>
+        </nav>
+      </footer>
+    </article>
+
+    <aside class="rail">
+      <nav class="toc" aria-label="On this page">
+        <h2>On this page</h2>
+        <ul>
+          <li data-depth="2"><a href="#what-is-a-tree">What is a tree?</a></li>
+          <li data-depth="2"><a href="#build">How to build a tree in TypeScript</a></li>
+          <li data-depth="3"><a href="#classes">The Tree and Node classes</a></li>
+          <li data-depth="3"><a href="#traversal">Tree traversal</a></li>
+          <li data-depth="4"><a href="#dfs">Depth-first search</a></li>
+          <li data-depth="4"><a href="#bfs">Breadth-first search</a></li>
+          <li data-depth="3"><a href="#io">I/O methods</a></li>
+          <li data-depth="4"><a href="#set">Set</a></li>
+          <li data-depth="4"><a href="#get">Get</a></li>
+          <li data-depth="2"><a href="#wrap-up">Wrap up</a></li>
+        </ul>
+      </nav>
+    </aside>
+  </section>
+
+  <footer class="site-footer">
+    <span>© 2026 Nicolas Toulemont</span>
+  </footer>
+
+</div>
+</div>
+
+<script>
+  document.querySelector('[data-theme-toggle]').addEventListener('click', () => {
+    const next = document.documentElement.dataset.theme === 'dark' ? 'light' : 'dark'
+    document.documentElement.dataset.theme = next
+    localStorage.setItem('theme', next)
+  })
+
+  const links = [...document.querySelectorAll('.toc a')]
+  const headings = [...document.querySelectorAll('.prose :is(h2, h3, h4)[id]')]
+  const update = () => {
+    let active = headings[0]
+    for (const h of headings) {
+      if (h.getBoundingClientRect().top - 96 <= 0) active = h
+    }
+    if (window.innerHeight + window.scrollY >= document.body.scrollHeight - 2) active = headings.at(-1)
+    for (const link of links) link.classList.toggle('is-active', link.getAttribute('href') === `#${active.id}`)
+  }
+  document.addEventListener('scroll', update, { passive: true })
+  update()
+
+  for (const button of document.querySelectorAll('.code button')) {
+    button.addEventListener('click', async () => {
+      await navigator.clipboard.writeText(button.closest('.code').querySelector('code').innerText)
+      button.lastChild.textContent = ' Copied'
+      setTimeout(() => (button.lastChild.textContent = ' Copy'), 1500)
+    })
+  }
+</script>
+</body>
+</html>

@@ -1,0 +1,277 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Nicolas Toulemont · Engineering blog</title>
+  <meta name="description" content="Writing about TypeScript, React, GraphQL, Node and software architecture." />
+  <script>
+    (() => {
+      const stored = localStorage.getItem('theme')
+      const theme = stored === 'light' || stored === 'dark'
+        ? stored
+        : (matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light')
+      document.documentElement.dataset.theme = theme
+    })()
+  </script>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="./mockup.css" />
+</head>
+<body>
+<div class="page">
+<div class="frame">
+
+  <header class="site-header">
+    <a href="./home.html" class="brand">Nicolas Toulemont</a>
+    <nav class="nav-links" aria-label="Site">
+      <a href="https://github.com/nicolastoulemont" target="_blank" rel="noreferrer">GitHub</a>
+      <a href="https://twitter.com/n_toulemont" target="_blank" rel="noreferrer">Twitter</a>
+    </nav>
+    <div class="nav-actions">
+      <button type="button" class="icon-btn" data-theme-toggle aria-label="Toggle theme">
+        <svg class="icon-sun" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41"/></svg>
+        <svg class="icon-moon" viewBox="0 0 24 24" aria-hidden="true"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+      </button>
+    </div>
+  </header>
+
+  <section class="band cols intro">
+    <div class="cell who">
+      <div>
+        <h1 class="visually-hidden">Nicolas Toulemont, engineering blog</h1>
+        <p>Full stack engineer in France. I write about React, GraphQL, Node and the data structures and patterns underneath them.</p>
+      </div>
+    </div>
+
+
+    <div class="featured">
+      <a class="card card--featured" href="./post.html">
+        <div class="tabs">
+          <span class="tab tab--accent">New</span>
+          <span class="tab tag" data-cat="data">Data structures</span>
+        </div>
+        <div class="head">
+          <h2>The Tree</h2>
+          <p>A TypeScript tree with generator-based traversal, and the set, get, update and remove methods built on top of it.</p>
+        </div>
+        <div class="stats">
+          <div><span class="v">Dec 23</span><span class="k">Published</span></div>
+          <div><span class="v">8 min</span><span class="k">Reading time</span></div>
+          <div class="go"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></div>
+        </div>
+      </a>
+    </div>
+  </section>
+
+  <section class="band toolbar">
+    <div class="chips" role="group" aria-label="Filter by topic">
+      <button type="button" class="chip" data-filter="" aria-pressed="true">All</button>
+      <button type="button" class="chip" data-cat="react" data-filter="react" aria-pressed="false"><span class="dot"></span>React</button>
+      <button type="button" class="chip" data-cat="graphql" data-filter="graphql" aria-pressed="false"><span class="dot"></span>GraphQL</button>
+      <button type="button" class="chip" data-cat="data" data-filter="data" aria-pressed="false"><span class="dot"></span>Data structures</button>
+      <button type="button" class="chip" data-cat="architecture" data-filter="architecture" aria-pressed="false"><span class="dot"></span>Architecture</button>
+      <button type="button" class="chip" data-cat="animations" data-filter="animations" aria-pressed="false"><span class="dot"></span>Animations</button>
+      <button type="button" class="chip" data-cat="career" data-filter="career" aria-pressed="false"><span class="dot"></span>Career</button>
+      <button type="button" class="chip" data-cat="general" data-filter="general" aria-pressed="false"><span class="dot"></span>General</button>
+    </div>
+    <div class="search">
+      <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg>
+      <label for="search" class="visually-hidden">Search posts</label>
+      <input id="search" type="search" placeholder="Search" autocomplete="off" data-search />
+      <kbd>/</kbd>
+    </div>
+  </section>
+
+  <section class="band post-grid" data-posts>
+
+    <a class="card post-card" href="./post.html" data-cats="data" data-text="the tree typescript implementation of a tree data structures">
+      <div class="tabs"><span class="tab tag" data-cat="data">Data structures</span></div>
+      <div class="body"><h3>The Tree</h3><p class="desc">Typescript implementation of a tree, with generator-based DFS and BFS traversal.</p></div>
+      <div class="stats">
+        <div><span class="v">Dec 2022</span><span class="k">Published</span></div>
+        <div><span class="v">8 min</span><span class="k">Reading time</span></div>
+        <div class="go"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></div>
+      </div>
+    </a>
+
+    <a class="card post-card" href="#" data-cats="react architecture" data-text="the compound component pattern a flexible component authoring pattern to give consumers a composition-based api react architecture">
+      <div class="tabs"><span class="tab tag" data-cat="react">React</span><span class="tab tag" data-cat="architecture">Architecture</span></div>
+      <div class="body"><h3>The compound component pattern</h3><p class="desc">A flexible component authoring pattern to give consumers a composition-based API.</p></div>
+      <div class="stats">
+        <div><span class="v">Dec 2022</span><span class="k">Published</span></div>
+        <div><span class="v">11 min</span><span class="k">Reading time</span></div>
+        <div class="go"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></div>
+      </div>
+    </a>
+
+    <a class="card post-card" href="#" data-cats="react animations" data-text="how to build a datepicker from scratch building a nice datepicker with animations and gesture support react animations">
+      <div class="tabs"><span class="tab tag" data-cat="react">React</span><span class="tab tag" data-cat="animations">Animations</span></div>
+      <div class="body"><h3>How to build a datepicker from scratch</h3><p class="desc">Building a datepicker with animations and gesture support, desktop and mobile.</p></div>
+      <div class="stats">
+        <div><span class="v">Nov 2022</span><span class="k">Published</span></div>
+        <div><span class="v">14 min</span><span class="k">Reading time</span></div>
+        <div class="go"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></div>
+      </div>
+    </a>
+
+    <a class="card post-card" href="#" data-cats="general" data-text="the rise of multiframeworks paradigm in the frontend oss looking at the rising trend of library developed with support to many ui frameworks general">
+      <div class="tabs"><span class="tab tag" data-cat="general">General</span></div>
+      <div class="body"><h3>The rise of the multi-framework paradigm in frontend OSS</h3><p class="desc">Looking at the rising trend of libraries shipping with support for many UI frameworks.</p></div>
+      <div class="stats">
+        <div><span class="v">Aug 2022</span><span class="k">Published</span></div>
+        <div><span class="v">6 min</span><span class="k">Reading time</span></div>
+        <div class="go"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></div>
+      </div>
+    </a>
+
+    <a class="card post-card" href="#" data-cats="general react" data-text="immutable vs mutable a recent use-case where purity and immutability caused performance issues using a mutable approach may lead to enormous performance gains general react">
+      <div class="tabs"><span class="tab tag" data-cat="general">General</span><span class="tab tag" data-cat="react">React</span></div>
+      <div class="body"><h3>Immutable vs mutable: when purity caused a performance problem</h3><p class="desc">A real case where a mutable approach led to enormous performance gains.</p></div>
+      <div class="stats">
+        <div><span class="v">May 2022</span><span class="k">Published</span></div>
+        <div><span class="v">7 min</span><span class="k">Reading time</span></div>
+        <div class="go"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></div>
+      </div>
+    </a>
+
+    <a class="card post-card" href="#" data-cats="career" data-text="retraining for a web development career this post explain how i would retrain as a web developer in late 2021 career français french">
+      <div class="tabs"><span class="tab tag" data-cat="career">Career</span></div>
+      <div class="body"><h3>Retraining for a web development career</h3><p class="desc">How I would retrain as a web developer in late 2021, from scratch and online.</p></div>
+      <div class="stats">
+        <div><span class="v">Oct 2021</span><span class="k">Published</span></div>
+        <div><span class="v">9 min</span><span class="k">Reading time</span></div>
+        <div class="go"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></div>
+      </div>
+    </a>
+
+    <a class="card post-card" href="#" data-cats="graphql" data-text="graphql typeguards exploring a few helpful graphql focus typeguards such as istype iseither isnot istypeintuple graphql">
+      <div class="tabs"><span class="tab tag" data-cat="graphql">GraphQL</span></div>
+      <div class="body"><h3>GraphQL typeguards</h3><p class="desc">A few helpful GraphQL-focused typeguards: isType, isEither, isNot, isTypeInTuple.</p></div>
+      <div class="stats">
+        <div><span class="v">May 2021</span><span class="k">Published</span></div>
+        <div><span class="v">5 min</span><span class="k">Reading time</span></div>
+        <div class="go"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></div>
+      </div>
+    </a>
+
+    <a class="card post-card" href="#" data-cats="graphql" data-text="how to build custom plugins for graphql nexus building typesafe field level plugins to run field level middlewares with the graphql nexus framework graphql">
+      <div class="tabs"><span class="tab tag" data-cat="graphql">GraphQL</span></div>
+      <div class="body"><h3>How to build custom plugins for GraphQL Nexus</h3><p class="desc">Building typesafe field-level plugins to run middlewares with the Nexus framework.</p></div>
+      <div class="stats">
+        <div><span class="v">Apr 2021</span><span class="k">Published</span></div>
+        <div><span class="v">10 min</span><span class="k">Reading time</span></div>
+        <div class="go"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></div>
+      </div>
+    </a>
+
+    <a class="card post-card" href="#" data-cats="graphql" data-text="full stack typescript graphql automate the data layer leverage graphql typescript codegen documentation and observability across the stack graphql">
+      <div class="tabs"><span class="tab tag" data-cat="graphql">GraphQL</span></div>
+      <div class="body"><h3>Full stack TypeScript and GraphQL: automate the data layer</h3><p class="desc">Use GraphQL and TypeScript codegen for documentation and observability across the stack.</p></div>
+      <div class="stats">
+        <div><span class="v">Jan 2021</span><span class="k">Published</span></div>
+        <div><span class="v">12 min</span><span class="k">Reading time</span></div>
+        <div class="go"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></div>
+      </div>
+    </a>
+
+    <a class="card post-card" href="#" data-cats="data" data-text="the hashtable typescript implementation of a basic hashtable with insert get and remove methods data structures">
+      <div class="tabs"><span class="tab tag" data-cat="data">Data structures</span></div>
+      <div class="body"><h3>The Hashtable</h3><p class="desc">Typescript implementation of a basic hashtable with insert, get and remove methods.</p></div>
+      <div class="stats">
+        <div><span class="v">Dec 2020</span><span class="k">Published</span></div>
+        <div><span class="v">6 min</span><span class="k">Reading time</span></div>
+        <div class="go"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></div>
+      </div>
+    </a>
+
+    <a class="card post-card" href="#" data-cats="data" data-text="the linked list typescript implementation of a linked-list data structures">
+      <div class="tabs"><span class="tab tag" data-cat="data">Data structures</span></div>
+      <div class="body"><h3>The Linked list</h3><p class="desc">Typescript implementation of singly, doubly and circular linked lists.</p></div>
+      <div class="stats">
+        <div><span class="v">May 2020</span><span class="k">Published</span></div>
+        <div><span class="v">7 min</span><span class="k">Reading time</span></div>
+        <div class="go"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></div>
+      </div>
+    </a>
+
+    <a class="card post-card" href="#" data-cats="data" data-text="the queue typescript implementation of a basic queue and of a priority queue data structures">
+      <div class="tabs"><span class="tab tag" data-cat="data">Data structures</span></div>
+      <div class="body"><h3>The Queue</h3><p class="desc">Typescript implementation of a basic queue and of a priority queue.</p></div>
+      <div class="stats">
+        <div><span class="v">May 2020</span><span class="k">Published</span></div>
+        <div><span class="v">5 min</span><span class="k">Reading time</span></div>
+        <div class="go"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></div>
+      </div>
+    </a>
+
+    <a class="card post-card" href="#" data-cats="data" data-text="the stack typescript implementation of a stack data structures">
+      <div class="tabs"><span class="tab tag" data-cat="data">Data structures</span></div>
+      <div class="body"><h3>The Stack</h3><p class="desc">Typescript implementation of a stack.</p></div>
+      <div class="stats">
+        <div><span class="v">May 2020</span><span class="k">Published</span></div>
+        <div><span class="v">4 min</span><span class="k">Reading time</span></div>
+        <div class="go"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></div>
+      </div>
+    </a>
+
+    <p class="empty" data-empty>No posts match <strong data-empty-query></strong>.</p>
+  </section>
+
+  <footer class="site-footer">
+    <span>© 2026 Nicolas Toulemont</span>
+  </footer>
+
+</div>
+</div>
+
+<script>
+  document.querySelector('[data-theme-toggle]').addEventListener('click', () => {
+    const next = document.documentElement.dataset.theme === 'dark' ? 'light' : 'dark'
+    document.documentElement.dataset.theme = next
+    localStorage.setItem('theme', next)
+  })
+
+  const input = document.querySelector('[data-search]')
+  const chips = [...document.querySelectorAll('.chip')]
+  const cards = [...document.querySelectorAll('.post-card')]
+  const empty = document.querySelector('[data-empty]')
+  const emptyQuery = document.querySelector('[data-empty-query]')
+  let category = ''
+
+  const apply = () => {
+    const q = input.value.trim().toLowerCase()
+    let visible = 0
+    for (const card of cards) {
+      const cats = card.dataset.cats.split(' ')
+      const matches = (!category || cats.includes(category)) && (!q || card.dataset.text.includes(q))
+      card.classList.toggle('is-hidden', !matches)
+      if (matches) visible += 1
+    }
+    empty.classList.toggle('is-visible', visible === 0)
+    emptyQuery.textContent = q || 'this filter'
+  }
+
+  input.addEventListener('input', apply)
+  for (const chip of chips) {
+    chip.addEventListener('click', () => {
+      category = chip.dataset.filter
+      for (const c of chips) c.setAttribute('aria-pressed', String(c === chip))
+      apply()
+    })
+  }
+  document.addEventListener('keydown', (e) => {
+    if (e.key === '/' && document.activeElement !== input) {
+      e.preventDefault()
+      input.focus()
+    }
+    if (e.key === 'Escape' && document.activeElement === input) {
+      input.value = ''
+      apply()
+      input.blur()
+    }
+  })
+</script>
+</body>
+</html>
