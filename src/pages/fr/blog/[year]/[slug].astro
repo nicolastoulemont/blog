@@ -36,9 +36,9 @@ const activeColor = post.categories.length > 0 ? CATEGORY_COLOR_REGISTRY[post.ca
   updatedAt={post.updatedAt}
   alternates={translation ? [{ locale: translation.locale, url: translation.url }] : []}
 >
-  <main class="mx-auto max-w-6xl px-6 pb-16 pt-8 md:px-12">
+  <main class="relative pb-16">
     {translation ? (
-      <div class="mb-6 text-sm text-slate-700 dark:text-slate-300">
+      <div class="mb-6 px-6 pt-8 text-sm text-slate-700 dark:text-slate-300 md:px-12">
         Version anglaise disponible{' '}
         <a href={translation.url} class="font-medium underline decoration-blue-400 underline-offset-4">
           ici
@@ -47,24 +47,22 @@ const activeColor = post.categories.length > 0 ? CATEGORY_COLOR_REGISTRY[post.ca
       </div>
     ) : null}
 
-    <div class="relative">
-      <article class="prose m-0 mx-auto w-full px-0 py-6 lg:max-w-[calc(100%-250px)]">
-        <Content />
+    <article class="post-article prose m-0 mx-auto w-full px-6 py-10 dark:prose-invert lg:prose-lg lg:mx-0 lg:px-12">
+      <Content />
 
-        {relatedPosts.length > 0 ? (
-          <section class="not-prose mt-12">
-            <h2 class="mb-3 text-xl font-bold text-slate-800 dark:text-white sm:text-3xl">
-              {post.categories.length > 1
-                ? 'Articles des mêmes catégories'
-                : 'Articles de la même catégorie'}
-            </h2>
-            <div>
-              {relatedPosts.map((relatedPost) => <PostCard post={relatedPost} showLocale={false} />)}
-            </div>
-          </section>
-        ) : null}
-      </article>
-      <TableOfContents headings={headings} activeColor={activeColor} />
-    </div>
+      {relatedPosts.length > 0 ? (
+        <section class="not-prose mt-12">
+          <h2 class="mb-3 text-xl font-bold text-slate-800 dark:text-white sm:text-3xl">
+            {post.categories.length > 1
+              ? 'Articles des mêmes catégories'
+              : 'Articles de la même catégorie'}
+          </h2>
+          <div>
+            {relatedPosts.map((relatedPost) => <PostCard post={relatedPost} showLocale={false} />)}
+          </div>
+        </section>
+      ) : null}
+    </article>
+    <TableOfContents headings={headings} activeColor={activeColor} />
   </main>
 </BaseLayout>
