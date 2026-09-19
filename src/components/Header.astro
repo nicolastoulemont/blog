@@ -1,34 +1,37 @@
 ---
-import { FiGithub, FiTwitter } from 'react-icons/fi'
-import ThemeToggle from './ThemeToggle'
+import ThemeToggle from './ThemeToggle.astro'
 import { SOCIAL_LINKS } from '~/lib/site'
 ---
 
-<header class="sticky top-0 z-40 flex w-full items-center justify-center bg-white shadow-lg dark:bg-slate-800">
-  <nav class="flex w-full max-w-6xl items-center justify-between px-6 py-2 md:px-12">
-    <a href="/" class="flex items-center justify-center">
-      <img src="/img/site-logo.svg" alt="home page" class="w-11" />
+<header class="sticky top-0 z-40 grid h-[3.25rem] grid-cols-[auto_1fr_auto] items-stretch border-b border-line bg-bg min-[56.01rem]:grid-cols-[1fr_1fr_1fr_1fr_auto]">
+  <a
+    href="/"
+    class="flex items-center whitespace-nowrap border-r border-line px-4 text-[0.7rem] font-bold tracking-[0.04em] uppercase min-[40.01rem]:text-[0.8125rem] min-[56.01rem]:px-6"
+  >
+    Nicolas Toulemont
+  </a>
+  <nav
+    class="flex items-center justify-end gap-1 px-2 min-[56.01rem]:col-span-3 min-[56.01rem]:pr-3"
+    aria-label="Site"
+  >
+    <a
+      class="px-[0.4rem] py-[0.35rem] text-[0.8125rem] text-muted hover:text-fg min-[40.01rem]:px-[0.6rem]"
+      href={SOCIAL_LINKS.github}
+      target="_blank"
+      rel="noreferrer"
+    >
+      GitHub
     </a>
-    <div class="flex items-center gap-3">
-      <a
-        href={SOCIAL_LINKS.twitter}
-        target="_blank"
-        rel="noreferrer"
-        class="flex h-10 w-10 items-center justify-center rounded-full transition hover:bg-blue-200 dark:hover:bg-slate-600"
-        aria-label="Twitter profile"
-      >
-        <FiTwitter size="1rem" className="stroke-blue-900 dark:stroke-white" />
-      </a>
-      <a
-        href={SOCIAL_LINKS.github}
-        target="_blank"
-        rel="noreferrer"
-        class="flex h-10 w-10 items-center justify-center rounded-full transition hover:bg-purple-200 dark:hover:bg-slate-600"
-        aria-label="GitHub profile"
-      >
-        <FiGithub size="1rem" className="stroke-purple-900 dark:stroke-white" />
-      </a>
-      <ThemeToggle client:load />
-    </div>
+    <a
+      class="px-[0.4rem] py-[0.35rem] text-[0.8125rem] text-muted hover:text-fg min-[40.01rem]:px-[0.6rem]"
+      href={SOCIAL_LINKS.twitter}
+      target="_blank"
+      rel="noreferrer"
+    >
+      Twitter
+    </a>
   </nav>
+  <div class="flex items-center pr-4 min-[56.01rem]:pr-6">
+    <ThemeToggle />
+  </div>
 </header>

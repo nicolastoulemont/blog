@@ -1,87 +1,163 @@
 ---
-import type { BlogPostSummary } from '~/lib/blog-core'
+import type { BlogPostSummary, SearchIndexItem } from '~/lib/blog-core'
+import { CATEGORY_NAMES, CATEGORY_SLUGS } from '~/lib/categories'
 import { PostCard } from './PostCard'
-
 interface Props {
   posts: BlogPostSummary[]
 }
-
 const { posts } = Astro.props
+const categories = CATEGORY_NAMES.filter((category) =>
+  posts.some((post) => post.categories.includes(category)),
+)
+const index: SearchIndexItem[] = posts.map(
+  ({ id, title, description, localeLabel, categories, readingMinutes }) => ({
+    id,
+    title,
+    description,
+    localeLabel,
+    categories,
+    readingMinutes,
+  }),
+)
 ---
 
 <section data-post-search>
-  <div class="py-6">
-    <h2 class="mb-6 text-xl font-bold text-slate-800 sm:text-3xl dark:text-white">
-      Posts
-    </h2>
-    <div data-search-controls hidden>
-      <label for="search" class="sr-only">Search posts</label>
+  <div
+    class="grid items-center gap-4 border-b border-line px-5 py-4 min-[56.01rem]:grid-cols-2 min-[56.01rem]:px-6"
+    data-search-controls
+    hidden
+  >
+    <div class="flex flex-wrap gap-[0.35rem]" role="group" aria-label="Filter by topic">
+      <button class="chip" data-filter="" aria-pressed="true">
+        All
+      </button>
+      {categories.map((category) => (
+        <button
+          class="chip"
+          data-cat={CATEGORY_SLUGS[category]}
+          data-filter={CATEGORY_SLUGS[category]}
+          aria-pressed="false"
+        >
+          <span class="size-[0.4rem] bg-[var(--cat)]" aria-hidden="true"></span>
+          {category}
+        </button>
+      ))}
+    </div>
+    <div class="relative">
+      <svg
+        class="pointer-events-none absolute top-1/2 left-3 size-[0.9rem] -translate-y-1/2 fill-none stroke-faint stroke-[1.75]"
+        viewBox="0 0 24 24"
+        aria-hidden="true"
+      >
+        <circle cx="11" cy="11" r="7" />
+        <path d="m20 20-3.5-3.5" />
+      </svg>
+      <label for="search" class="sr-only">
+        Search posts
+      </label>
       <input
+        class="h-[2.125rem] w-full border border-line bg-panel-2 pr-12 pl-9 text-xs text-fg placeholder:text-faint focus:border-fg"
         id="search"
-        name="search"
         type="search"
-        autocomplete="off"
         placeholder="Search posts"
-        class="w-full rounded-lg bg-white text-slate-800 outline-none placeholder:text-slate-800 dark:border-black dark:bg-slate-900 dark:text-white dark:placeholder:text-white"
+        autocomplete="off"
       />
+      <kbd
+        class="absolute top-1/2 right-2 -translate-y-1/2 border border-line px-[0.35rem] font-mono text-[0.6rem] text-faint"
+        aria-hidden="true"
+      >
+        /
+      </kbd>
     </div>
   </div>
-
-  <div
-    aria-hidden="true"
-    class="mb-6 h-0.5 w-full rounded bg-slate-200 dark:bg-slate-900"
-  >
-  </div>
   <p role="status" class="sr-only"></p>
-  <p data-no-results hidden class="py-8 text-center text-slate-600 dark:text-slate-300">
-    No posts match <span class="font-medium text-slate-950 dark:text-slate-50"></span>.
-  </p>
-  <div class="grid grid-cols-1 gap-2 md:grid-cols-2 md:gap-4">
-    {
-      posts.map((post) => (
-        <div
-          data-post
-          data-search={[
-            post.title,
-            post.description,
-            post.localeLabel,
-            ...post.categories,
-          ]
-            .map((field) => field.toLowerCase())
-            .join('\n')}
-        >
-          <PostCard post={post} showLocale={false} />
-        </div>
-      ))
-    }
+  <div class="grid grid-cols-1 gap-6 px-5 pt-6 pb-10 min-[40.01rem]:grid-cols-2 min-[56.01rem]:px-6 min-[68.01rem]:grid-cols-3">
+    {posts.map((post) => (
+      <div class="flex min-w-0 flex-col" data-post={post.id}>
+        <PostCard post={post} />
+      </div>
+    ))}
+    <p data-no-results hidden class="col-span-full py-12 text-center text-sm text-muted">
+      No posts match <span></span>.
+    </p>
   </div>
+  <script
+    type="application/json"
+    data-search-index
+    set:html={JSON.stringify(index).replace(/</g, '\u003c')}
+  ></script>
 </section>
-
 <script>
+  import { filterPosts, type SearchIndexItem } from '~/lib/blog-core'
+  import { CATEGORY_SLUGS, type CategorySlug } from '~/lib/categories'
   document.addEventListener('astro:page-load', () => {
     const root = document.querySelector<HTMLElement>('[data-post-search]')
     if (!root) return
+    // This index is emitted by this component from validated content at build time.
+    const posts: SearchIndexItem[] = JSON.parse(
+      root.querySelector('[data-search-index]')!.textContent!,
+    )
     const input = root.querySelector<HTMLInputElement>('input')!
     const cards = Array.from(root.querySelectorAll<HTMLElement>('[data-post]'))
+    const chips = Array.from(root.querySelectorAll<HTMLButtonElement>('[data-filter]'))
     const empty = root.querySelector<HTMLElement>('[data-no-results]')!
     const status = root.querySelector<HTMLElement>('[role="status"]')!
-
-    function filterPosts() {
-      const query = input.value.trim().toLowerCase()
-      let count = 0
-
-      for (const card of cards) {
-        card.hidden = !card.dataset.search!.includes(query)
-        if (!card.hidden) count++
-      }
-
-      empty.hidden = count > 0
+    let category: CategorySlug | null = null
+    function update() {
+      const matches = new Set(
+        filterPosts(posts, { query: input.value, category }).map((post) => post.id),
+      )
+      cards.forEach((card) => {
+        card.hidden = !matches.has(card.dataset.post!)
+      })
+      chips.forEach((chip) =>
+        chip.setAttribute(
+          'aria-pressed',
+          String(chip.dataset.filter === (category ?? '')),
+        ),
+      )
+      empty.hidden = matches.size > 0
       empty.querySelector('span')!.textContent = input.value
-      status.textContent = `${count} ${count === 1 ? 'post' : 'posts'} found.`
+      status.textContent = `${matches.size} ${matches.size === 1 ? 'post' : 'posts'} found.`
     }
-
-    input.addEventListener('input', filterPosts)
+    chips.forEach((chip) =>
+      chip.addEventListener('click', () => {
+        category =
+          Object.values(CATEGORY_SLUGS).find((value) => value === chip.dataset.filter) ??
+          null
+        update()
+      }),
+    )
+    input.addEventListener('input', update)
+    const controller = new AbortController()
+    document.addEventListener('astro:before-swap', () => controller.abort(), {
+      once: true,
+    })
+    document.addEventListener(
+      'keydown',
+      (event) => {
+        const target = event.target
+        if (
+          event.key === '/' &&
+          !event.metaKey &&
+          !event.ctrlKey &&
+          !event.altKey &&
+          !(
+            target instanceof HTMLElement &&
+            (target.isContentEditable || target.closest('input, textarea, select'))
+          )
+        ) {
+          event.preventDefault()
+          input.focus()
+        } else if (event.key === 'Escape' && target === input) {
+          input.value = ''
+          update()
+          input.blur()
+        }
+      },
+      { signal: controller.signal },
+    )
     root.querySelector<HTMLElement>('[data-search-controls]')!.hidden = false
-    filterPosts()
+    update()
   })
 </script>

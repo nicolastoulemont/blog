@@ -1,22 +1,37 @@
 ---
 import { render } from 'astro:content'
+import { PostSearch } from '~/components/PostSearch'
 import { PostCard } from '~/components/PostCard'
+import { Tag } from '~/components/Tag'
 import TableOfContents from '~/components/TableOfContents.astro'
-import { CATEGORY_COLOR_REGISTRY } from '~/lib/categories'
 import BaseLayout from '~/layouts/BaseLayout.astro'
 import { getAllPosts, getRelatedPosts, getTranslation, type BlogPost } from '~/lib/blog'
-
+import { formatDisplayDate } from '~/lib/date'
+import { UI_STRINGS } from '~/lib/site'
 interface Props {
   post: BlogPost
 }
-
 const { post } = Astro.props
 const allPosts = await getAllPosts()
+const searchPosts = allPosts
+  .filter((candidate) => candidate.locale === 'en' && candidate.url !== post.url)
+  .map(({ url, title, description, categories }) => ({
+    url,
+    title,
+    description,
+    categories,
+  }))
 const relatedPosts = getRelatedPosts(post, allPosts)
 const translation = getTranslation(post, allPosts)
 const { Content, headings } = await render(post.entry)
-const activeColor =
-  post.categories.length > 0 ? CATEGORY_COLOR_REGISTRY[post.categories[0]] : 'gray'
+const ui = UI_STRINGS[post.locale]
+const chronological = allPosts
+  .filter((candidate) => candidate.locale === post.locale)
+  .sort((a, b) => a.publishedAt.localeCompare(b.publishedAt) || a.id.localeCompare(b.id))
+const index = chronological.findIndex((candidate) => candidate.id === post.id)
+const previous = chronological[index - 1]
+const next = chronological[index + 1]
+const hasContents = headings.some((heading) => heading.depth >= 2 && heading.depth <= 4)
 ---
 
 <BaseLayout
@@ -30,48 +45,132 @@ const activeColor =
   updatedAt={post.updatedAt}
   alternates={translation ? [{ locale: translation.locale, url: translation.url }] : []}
 >
-  <main class="relative pb-16">
-    {
-      translation ? (
-        <div class="mb-6 px-6 pt-8 text-sm text-slate-700 md:px-12 dark:text-slate-300">
-          {post.locale === 'fr'
-            ? 'Version anglaise disponible'
-            : 'This post is also available in'}{' '}
-          <a
-            href={translation.url}
-            class="font-medium underline decoration-blue-400 underline-offset-4"
-          >
-            {post.locale === 'fr' ? 'ici' : translation.localeLabel}
-          </a>
-          .
+  <main class="relative">
+    <section class="border-b border-line">
+      <div class="grid grid-cols-1 bg-bg px-5 py-8 min-[56.01rem]:grid-cols-[1fr_auto] min-[56.01rem]:px-6">
+        <div class="order-4 mt-4 flex min-w-0 flex-wrap items-center gap-3 text-[0.7rem] min-[56.01rem]:order-1 min-[56.01rem]:mt-0 min-[56.01rem]:mb-4">
+          {post.categories.map((category) => (
+            <Tag category={category} />
+          ))}
         </div>
-      ) : null
-    }
-
-    <article
-      class="post-article prose dark:prose-invert lg:prose-lg m-0 mx-auto w-full px-6 py-10 lg:mx-0 lg:px-12"
-    >
-      <Content />
-
-      {
-        relatedPosts.length > 0 ? (
-          <section class="not-prose mt-12">
-            <h2 class="mb-3 text-xl font-bold text-slate-800 sm:text-3xl dark:text-white">
-              {post.locale === 'fr'
-                ? post.categories.length > 1
-                  ? 'Articles des mêmes catégories'
-                  : 'Articles de la même catégorie'
-                : `From the same ${post.categories.length > 1 ? 'categories' : 'category'}`}
-            </h2>
-            <div>
-              {relatedPosts.map((relatedPost) => (
-                <PostCard post={relatedPost} showLocale={false} />
-              ))}
-            </div>
-          </section>
-        ) : null
-      }
-    </article>
-    <TableOfContents headings={headings} activeColor={activeColor} />
+        <div class="order-1 mb-4 min-[56.01rem]:order-2">
+          <PostSearch posts={searchPosts} locale={post.locale} client:load />
+        </div>
+        <h1 class="order-2 text-[clamp(1.75rem,4vw,2.75rem)] leading-[1.15] font-bold tracking-[-0.02em] text-balance min-[56.01rem]:order-3 min-[56.01rem]:col-span-2">
+          {post.title}
+        </h1>
+        <p class="order-3 mt-4 text-[0.9375rem] text-muted min-[56.01rem]:order-4 min-[56.01rem]:col-span-2">
+          {post.description}
+        </p>
+        {translation && (
+          <p class="order-5 mt-5 border border-line-strong bg-panel px-4 py-3 text-sm text-muted min-[56.01rem]:col-span-2">
+            {ui.translation}{' '}
+            <a class="text-accent underline underline-offset-4" href={translation.url}>
+              {translation.localeLabel}
+            </a>
+            .
+          </p>
+        )}
+      </div>
+      <div class="meta-row grid grid-cols-2 border-t border-line min-[56.01rem]:grid-cols-4 [&>div]:border-r [&>div]:border-line [&>div]:px-5 [&>div]:py-[0.85rem] min-[56.01rem]:[&>div]:px-6">
+        <div>
+          <time class="block font-semibold" datetime={post.publishedAt}>
+            {formatDisplayDate(post.publishedAt, post.locale)}
+          </time>
+          <span class="block text-[0.625rem] text-muted">{ui.published}</span>
+        </div>
+        <div>
+          <span class="block font-semibold">{post.readingMinutes} min</span>
+          <span class="block text-[0.625rem] text-muted">{ui.reading}</span>
+        </div>
+      </div>
+    </section>
+    <section class="grid min-[56.01rem]:grid-cols-4">
+      <article
+        class="article min-w-0 bg-bg px-5 pt-10 pb-12 min-[56.01rem]:col-span-3 min-[56.01rem]:border-r min-[56.01rem]:border-line min-[56.01rem]:px-6"
+        data-copy={ui.copy}
+        data-copied={ui.copied}
+        data-copy-failed={ui.copyFailed}
+      >
+        {hasContents && (
+          <details class="toc-mobile">
+            <summary>
+              {ui.contents}
+              <svg viewBox="0 0 24 24" aria-hidden="true">
+                <path d="m6 9 6 6 6-6" />
+              </svg>
+            </summary>
+            <TableOfContents headings={headings} label={ui.contents} />
+          </details>
+        )}
+        <div class="prose">
+          <Content />
+        </div>
+        <footer class="mt-16">
+          {relatedPosts.length > 0 && (
+            <section aria-labelledby="related-title">
+              <h2
+                class="mb-7 text-xs font-semibold tracking-[0.04em] uppercase before:text-accent before:content-['▪_']"
+                id="related-title"
+              >
+                {ui.more} {post.categories.join(', ')}
+              </h2>
+              <div class="flex flex-col gap-3">
+                {relatedPosts.map((relatedPost) => (
+                  <PostCard post={relatedPost} variant="compact" />
+                ))}
+              </div>
+            </section>
+          )}
+          {(previous || next) && (
+            <nav
+              class="mt-10 grid border border-line-strong bg-panel [&>a]:flex [&>a]:flex-col [&>a]:gap-1 [&>a]:px-4 [&>a]:py-3.5 [&>a:hover]:bg-panel-2 [&>a+a]:border-t [&>a+a]:border-line min-[56.01rem]:[&>a+a]:border-t-0 min-[56.01rem]:[&>a+a]:border-l min-[56.01rem]:[&>a+a]:text-right"
+              class:list={{ 'min-[56.01rem]:grid-cols-2': previous && next }}
+              aria-label={ui.adjacent}
+            >
+              {previous && (
+                <a href={previous.url}>
+                  <span class="block text-[0.625rem] text-muted">← {ui.previous}</span>
+                  <span class="block font-semibold">{previous.title}</span>
+                </a>
+              )}
+              {next && (
+                <a href={next.url}>
+                  <span class="block text-[0.625rem] text-muted">{ui.next} →</span>
+                  <span class="block font-semibold">{next.title}</span>
+                </a>
+              )}
+            </nav>
+          )}
+        </footer>
+      </article>
+      <aside class="rail hidden px-6 py-10 min-[56.01rem]:block">
+        {hasContents && <TableOfContents headings={headings} label={ui.contents} />}
+      </aside>
+    </section>
   </main>
 </BaseLayout>
+<script>
+  document.addEventListener('astro:page-load', () => {
+    const article = document.querySelector<HTMLElement>('[data-copy]')
+    if (!article) return
+    for (const pre of article.querySelectorAll('pre')) {
+      const code = pre.querySelector('code')
+      if (!code || pre.querySelector('button')) continue
+      const button = document.createElement('button')
+      button.type = 'button'
+      button.className = 'copy-code'
+      button.textContent = article.dataset.copy!
+      button.setAttribute('aria-label', article.dataset.copy!)
+      button.addEventListener('click', async () => {
+        try {
+          await navigator.clipboard.writeText(code.textContent ?? '')
+          button.textContent = article.dataset.copied!
+        } catch {
+          button.textContent = article.dataset.copyFailed!
+        }
+      })
+      pre.append(button)
+    }
+  })
+</script>

@@ -8,12 +8,6 @@ locale: "en"
 ogImage: "/img/thumbnail-ts-gql.png"
 ---
 
-import { PostIntro } from '~/components'
-
-# GraphQL Typeguards
-
-<PostIntro publishedAt="May 10th 2021" categories={['GraphQL']} />
-
 When working with GraphQL, one will sometimes need to assert the type of the response.
 Sometimes it is because of the response is a union type, sometimes because the response is a nullable result.
 This usually forces the developer into asserting the response type quite often which can cause a bit of noise. To handle these assertions we will have a look at a few helpful typeguards functions:

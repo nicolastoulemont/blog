@@ -1,289 +1,71 @@
 ---
 import type { MarkdownHeading } from 'astro'
-import { CATEGORY_COLOR_VARIANTS, type CategoryColor } from '~/lib/categories'
-
 interface Props {
   headings: MarkdownHeading[]
-  activeColor?: CategoryColor
+  label: string
 }
-
-const { headings, activeColor = 'gray' } = Astro.props
-const items = headings.filter((heading) => heading.depth >= 1 && heading.depth <= 4)
-const tocId = `toc-${Math.random().toString(36).slice(2)}`
-const { bg, text, hoverBg, hoverText } = CATEGORY_COLOR_VARIANTS[activeColor]
-const activeClasses = `${bg} ${text}`
+const { headings, label } = Astro.props
+const items = headings.filter((heading) => heading.depth >= 2 && heading.depth <= 4)
 ---
 
-{
-  items.length > 0 ? (
-    <aside
-      data-toc-root={tocId}
-      data-toc-active-classes={activeClasses}
-      class="lg:fixed lg:right-0 lg:top-20 lg:w-auto lg:max-w-[280px] lg:rounded-lg lg:p-6 lg:pr-3"
-    >
-      <button
-        type="button"
-        data-toc-toggle
-        aria-label="Open table of contents"
-        aria-controls={`${tocId}-panel`}
-        aria-expanded="false"
-        class="fixed bottom-10 right-3 flex rounded-full bg-blue-500 p-3 shadow-lg dark:bg-blue-800 lg:hidden"
-      >
-        <svg
-          viewBox="0 0 24 24"
-          fill="none"
-          stroke="currentColor"
-          stroke-width="2"
-          stroke-linecap="round"
-          stroke-linejoin="round"
-          class="h-4 w-4 text-white"
-          aria-hidden="true"
-        >
-          <line x1="3" y1="12" x2="21" y2="12"></line>
-          <line x1="3" y1="6" x2="21" y2="6"></line>
-          <line x1="3" y1="18" x2="21" y2="18"></line>
-        </svg>
-      </button>
-
-      <div
-        data-toc-overlay
-        aria-hidden="true"
-        class="toc-overlay fixed inset-0 z-30 hidden h-screen w-screen bg-gray-800 lg:hidden"
-      ></div>
-
-      <div
-        id={`${tocId}-panel`}
-        data-toc-panel
-        class="toc-panel fixed bottom-0 z-50 hidden w-full rounded-t-xl bg-white shadow-lg dark:bg-slate-900 lg:static lg:block lg:max-h-[80vh] lg:w-auto lg:rounded-none lg:bg-transparent lg:shadow-none"
-      >
-        <div class="flex w-full justify-end p-3 lg:hidden">
-          <button
-            type="button"
-            data-toc-close
-            aria-label="Close table of contents"
-            class="flex h-[35px] w-[35px] items-center justify-center text-slate-700 dark:text-white"
-          >
-            <svg
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="currentColor"
-              stroke-width="2"
-              stroke-linecap="round"
-              stroke-linejoin="round"
-              class="h-6 w-6"
-              aria-hidden="true"
-            >
-              <line x1="18" y1="6" x2="6" y2="18"></line>
-              <line x1="6" y1="6" x2="18" y2="18"></line>
-            </svg>
-          </button>
-        </div>
-        <nav class="max-h-[70vh] overflow-scroll px-6 pb-6 pt-2 lg:max-h-[80vh] lg:px-0 lg:pb-0 lg:pt-0">
-          <h2 class="mb-2 text-lg font-semibold text-gray-700 dark:text-white">
-            On this page
-          </h2>
-          <ul>
-            {
-              items.map((heading, index) => (
-                <li class:list={[
-                  'my-3 flex list-disc',
-                  heading.depth === 1 && 'ml-0',
-                  heading.depth === 2 && 'ml-4',
-                  heading.depth === 3 && 'ml-8',
-                  heading.depth === 4 && 'ml-12',
-                ]}>
-                  <a
-                    href={`#${heading.slug}`}
-                    data-toc-link
-                    class={`w-full rounded-md p-2 text-xs font-normal text-gray-700 transition-colors duration-300 ease-in-out dark:text-white ${hoverBg} ${hoverText}`}
-                  >
-                    {index === 0 ? 'Top' : heading.text.replace(/\s*#$/, '')}
-                  </a>
-                </li>
-              ))
-            }
-          </ul>
-        </nav>
-      </div>
-    </aside>
-  ) : null
-}
-
+<nav class="toc" aria-label={label} data-toc-root>
+  <h2>{label}</h2>
+  <ul>
+    {items.map((heading) => (
+      <li data-depth={heading.depth}>
+        <a href={`#${heading.slug}`} data-toc-link>
+          {heading.text.replace(/\s*#$/, '')}
+        </a>
+      </li>
+    ))}
+  </ul>
+</nav>
 <script>
   document.addEventListener('astro:page-load', () => {
-    const root = document.querySelector<HTMLElement>('[data-toc-root]')
-    if (!(root instanceof HTMLElement)) return
-
-    const panel = root.querySelector<HTMLElement>('[data-toc-panel]')
-    const overlay = root.querySelector<HTMLElement>('[data-toc-overlay]')
-    const toggle = root.querySelector('[data-toc-toggle]')
-    const close = root.querySelector('[data-toc-close]')
-    const links = Array.from(root.querySelectorAll('[data-toc-link]'))
-    const mobileBreakpoint = 1024
-    const animationDuration = 300
-    let isOpen = false
-    let animationFrame: number | null = null
-    let closeTimeout: number | null = null
-
-    let updateTimeout: number | null = null
+    const links = Array.from(
+      document.querySelectorAll<HTMLAnchorElement>('[data-toc-link]'),
+    )
+    if (!links.length) return
+    const headings = Array.from(
+      document.querySelectorAll<HTMLElement>('.prose :is(h2, h3, h4)[id]'),
+    )
     const controller = new AbortController()
-    const { signal } = controller
+    let frame = 0
     document.addEventListener(
       'astro:before-swap',
       () => {
         controller.abort()
-        cancelAnimation()
-        if (closeTimeout !== null) window.clearTimeout(closeTimeout)
-        if (updateTimeout !== null) window.clearTimeout(updateTimeout)
+        cancelAnimationFrame(frame)
       },
       { once: true },
     )
-
-    const cancelAnimation = () => {
-      if (animationFrame === null) return
-      window.cancelAnimationFrame(animationFrame)
-      animationFrame = null
-    }
-
-    const finishClosed = () => {
-      panel?.classList.add('hidden')
-      overlay?.classList.add('hidden')
-      panel?.style.removeProperty('height')
-      closeTimeout = null
-    }
-
-    const setOpen = (open: boolean) => {
-      if (!(panel instanceof HTMLElement)) return
-
-      const isMobile = window.innerWidth < mobileBreakpoint
-      if (!isMobile) {
-        cancelAnimation()
-        if (closeTimeout !== null) window.clearTimeout(closeTimeout)
-        closeTimeout = null
-        isOpen = false
-        panel.classList.remove('hidden', 'is-open')
-        panel.style.removeProperty('height')
-        overlay?.classList.add('hidden')
-        overlay?.classList.remove('is-open')
-        panel.setAttribute('aria-hidden', 'false')
-        toggle?.setAttribute('aria-expanded', 'false')
-        document.body.classList.remove('overflow-hidden')
-        return
+    function update() {
+      frame = 0
+      let active: HTMLElement | undefined = headings[0]
+      for (const heading of headings) {
+        if (heading.getBoundingClientRect().top >= 90) break
+        active = heading
       }
-
-      panel.setAttribute('aria-hidden', String(!open))
-      toggle?.setAttribute('aria-expanded', String(open))
-      document.body.classList.toggle('overflow-hidden', open)
-
-      if (open === isOpen && (open || panel.classList.contains('hidden'))) return
-
-      cancelAnimation()
-      if (closeTimeout !== null) window.clearTimeout(closeTimeout)
-      closeTimeout = null
-      isOpen = open
-
-      panel.classList.remove('hidden')
-      overlay?.classList.remove('hidden')
-
-      if (open) {
-        animationFrame = window.requestAnimationFrame(() => {
-          panel.classList.add('is-open')
-          panel.style.height = `${panel.scrollHeight}px`
-          overlay?.classList.add('is-open')
-          animationFrame = null
-        })
-        return
-      }
-
-      animationFrame = window.requestAnimationFrame(() => {
-        panel.classList.remove('is-open')
-        panel.style.height = '0px'
-        overlay?.classList.remove('is-open')
-        animationFrame = null
-      })
-      closeTimeout = window.setTimeout(finishClosed, animationDuration)
-    }
-
-    if (toggle instanceof HTMLButtonElement) {
-      toggle.addEventListener('click', () => setOpen(true))
-    }
-
-    if (close instanceof HTMLButtonElement) {
-      close.addEventListener('click', () => setOpen(false))
-    }
-
-    if (overlay instanceof HTMLElement) {
-      overlay.addEventListener('click', () => setOpen(false))
-    }
-
-    document.addEventListener(
-      'keydown',
-      (event) => {
-        if (event.key === 'Escape') setOpen(false)
-      },
-      { signal },
-    )
-
-    for (const link of links) {
-      link.addEventListener('click', () => setOpen(false))
-    }
-
-    const headings = links
-      .map((link) => {
-        const href = link.getAttribute('href')
-        return href?.startsWith('#') ? document.getElementById(href.slice(1)) : null
-      })
-      .filter((heading) => heading instanceof HTMLElement)
-
-    if (headings.length === 0) return
-
-    const activeClassNames = root.dataset.tocActiveClasses?.split(' ').filter(Boolean) ?? []
-
-    const updateActiveLink = () => {
-      const offsetTop = 90
-      const pageHeight = document.documentElement.scrollHeight
-      const scrollPosition = window.scrollY + window.innerHeight
-      let activeIndex = 0
-
-      if (pageHeight - scrollPosition <= offsetTop) {
-        activeIndex = headings.length - 1
-      } else {
-        for (let index = 0; index < headings.length; index += 1) {
-          const { top } = headings[index].getBoundingClientRect()
-          if (top >= offsetTop) break
-          activeIndex = index
-        }
-      }
-
-      links.forEach((link, index) => {
-        const isActive = index === activeIndex
-        link.classList.toggle('is-active', isActive)
-        if (isActive) {
-          link.classList.add(...activeClassNames)
-        } else {
-          link.classList.remove(...activeClassNames)
-        }
+      if (
+        document.documentElement.scrollHeight - window.scrollY - window.innerHeight <=
+        90
+      )
+        active = headings.at(-1)
+      links.forEach((link) => {
+        const selected = link.hash === `#${active?.id}`
+        link.classList.toggle('is-active', selected)
+        if (selected) link.setAttribute('aria-current', 'location')
+        else link.removeAttribute('aria-current')
       })
     }
-
-    const scheduleActiveLinkUpdate = () => {
-      if (updateTimeout !== null) return
-      updateTimeout = window.setTimeout(() => {
-        updateTimeout = null
-        updateActiveLink()
-      }, 100)
+    function schedule() {
+      if (!frame) frame = requestAnimationFrame(update)
     }
-
-    document.addEventListener('scroll', scheduleActiveLinkUpdate, { passive: true, signal })
-    window.addEventListener(
-      'resize',
-      () => {
-        if (window.innerWidth >= mobileBreakpoint) setOpen(false)
-        scheduleActiveLinkUpdate()
-      },
-      { signal },
-    )
-    setOpen(false)
-    updateActiveLink()
+    document.addEventListener('scroll', schedule, {
+      passive: true,
+      signal: controller.signal,
+    })
+    window.addEventListener('resize', schedule, { signal: controller.signal })
+    update()
   })
 </script>

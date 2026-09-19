@@ -1,5 +1,6 @@
 ---
 import { ClientRouter } from 'astro:transitions'
+import Footer from '~/components/Footer.astro'
 import Header from '~/components/Header.astro'
 import { getAbsoluteUrl } from '~/lib/blog'
 import { SITE_DESCRIPTION, SITE_TITLE, type SiteLocale } from '~/lib/site'
@@ -36,7 +37,11 @@ const {
 
 const canonical = getAbsoluteUrl(pathname)
 const pageTitle = title ? `${title} | Nicolas Toulemont` : SITE_TITLE
-const imageUrl = image ? (image.startsWith('http') ? image : getAbsoluteUrl(image)) : undefined
+const imageUrl = image
+  ? image.startsWith('http')
+    ? image
+    : getAbsoluteUrl(image)
+  : undefined
 const themeBootScript = `
   (() => {
     const storageKey = 'theme'
@@ -60,9 +65,11 @@ const themeBootScript = `
     <ClientRouter />
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <title>{pageTitle}</title>
     <meta name="description" content={description} />
-    <meta name="theme-color" content={locale === 'fr' ? '#082f49' : '#0f172a'} />
+    <meta name="theme-color" content="#1e3fa8" />
     <link rel="canonical" href={canonical} />
 
     <meta property="og:type" content={ogType} />
@@ -78,16 +85,27 @@ const themeBootScript = `
     <meta name="twitter:site" content="@n_toulemont" />
     {imageUrl ? <meta property="og:image" content={imageUrl} /> : null}
     {imageUrl ? <meta name="twitter:image" content={imageUrl} /> : null}
-    {publishedAt ? <meta property="article:published_time" content={publishedAt} /> : null}
+    {publishedAt ? (
+      <meta property="article:published_time" content={publishedAt} />
+    ) : null}
     {updatedAt ? <meta property="article:modified_time" content={updatedAt} /> : null}
     {alternates.map((alternate) => (
-      <link rel="alternate" hreflang={alternate.locale} href={getAbsoluteUrl(alternate.url)} />
+      <link
+        rel="alternate"
+        hreflang={alternate.locale}
+        href={getAbsoluteUrl(alternate.url)}
+      />
     ))}
-    <script is:inline set:html={themeBootScript} />
+    <script is:inline set:html={themeBootScript}></script>
   </head>
-  <body class="min-h-screen bg-white dark:bg-slate-800">
-    <Header />
-    <slot />
+  <body>
+    <div class="relative mx-auto flex min-h-dvh max-w-[82rem] flex-col p-3 min-[56.01rem]:p-5">
+      <div class="frame relative flex flex-1 flex-col border border-line bg-bg [&>main]:flex-1">
+        <Header />
+        <slot />
+        <Footer />
+      </div>
+    </div>
   </body>
 </html>
 

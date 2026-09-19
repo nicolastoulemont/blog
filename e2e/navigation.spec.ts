@@ -13,16 +13,21 @@ test('cards prefetch and navigate without replacing the document', async ({ page
     }
   })
 
-  await page.getByRole('button', { name: 'Open theme menu' }).click()
-  await page.getByRole('menuitemradio', { name: 'Dark' }).click()
+  await page.getByRole('button', { name: 'Toggle theme' }).click()
   const prefetched = page.waitForResponse(
     (response) =>
       new URL(response.url()).pathname === '/blog/2022/the-tree' &&
       response.request().resourceType() !== 'document',
   )
-  await page.getByRole('link', { name: 'The Tree', exact: true }).hover()
+  await page
+    .locator('[data-post-search]')
+    .getByRole('link', { name: 'The Tree', exact: true })
+    .hover()
   expect((await prefetched).ok()).toBe(true)
-  await page.getByRole('link', { name: 'The Tree', exact: true }).click()
+  await page
+    .locator('[data-post-search]')
+    .getByRole('link', { name: 'The Tree', exact: true })
+    .click()
   await expect(page).toHaveURL(/\/blog\/2022\/the-tree$/)
   await expect(page).toHaveTitle('The Tree | Nicolas Toulemont')
   await expect(page.locator('link[rel="canonical"]')).toHaveAttribute(
@@ -33,21 +38,24 @@ test('cards prefetch and navigate without replacing the document', async ({ page
 
   await page.getByRole('link', { name: 'Get method', exact: true }).click()
   await expect(page.getByRole('link', { name: 'Get method', exact: true })).toHaveClass(
-    /bg-cyan-200/,
+    /is-active/,
   )
-  await page.getByRole('link', { name: 'home page' }).click()
+  await page.getByRole('link', { name: 'Nicolas Toulemont', exact: true }).click()
   await page.getByRole('searchbox').fill('graphql')
   await expect(
     page.getByRole('link', { name: 'GraphQL Typeguards', exact: true }),
   ).toBeVisible()
-  await expect(page.getByRole('link', { name: 'The Tree', exact: true })).toBeHidden()
+  await expect(
+    page
+      .locator('[data-post-search]')
+      .getByRole('link', { name: 'The Tree', exact: true }),
+  ).toBeHidden()
 
   await page.goBack()
   await expect(page.getByRole('heading', { level: 1 })).toContainText('The Tree')
   await page.goForward()
   await expect(page.getByRole('searchbox')).toBeVisible()
-  await page.getByRole('button', { name: 'Open theme menu' }).click()
-  await page.getByRole('menuitemradio', { name: 'Light' }).click()
+  await page.getByRole('button', { name: 'Toggle theme' }).click()
   await expect(page.locator('html')).not.toHaveClass(/dark/)
   expect(await page.evaluate(() => performance.timeOrigin)).toBe(timeOrigin)
   expect(documents).toEqual([])
@@ -60,13 +68,16 @@ test('mobile contents and search work across repeated article and home visits', 
   await page.setViewportSize({ width: 390, height: 844 })
   await page.goto('/blog/2022/the-tree')
   for (let visit = 0; visit < 2; visit++) {
-    await page.getByRole('button', { name: 'Open table of contents' }).click()
+    await page.locator('summary').click()
     await page.getByRole('link', { name: 'Get method', exact: true }).click()
     await expect(page.locator('body')).not.toHaveClass(/overflow-hidden/)
-    await page.getByRole('link', { name: 'home page' }).click()
+    await page.getByRole('link', { name: 'Nicolas Toulemont', exact: true }).click()
     await page.getByRole('searchbox').fill('the tree')
     await expect(page.getByRole('status')).toHaveText('1 post found.')
-    await page.getByRole('link', { name: 'The Tree', exact: true }).click()
+    await page
+      .locator('[data-post-search]')
+      .getByRole('link', { name: 'The Tree', exact: true })
+      .click()
     await expect(page.getByRole('heading', { level: 1 })).toContainText('The Tree')
   }
 })

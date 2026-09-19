@@ -1,0 +1,24 @@
+<button
+  type="button"
+  class="inline-grid size-8 cursor-pointer place-items-center border border-line bg-panel-2 text-muted hover:border-line-strong hover:text-fg [&_svg]:size-[0.95rem] [&_svg]:fill-none [&_svg]:stroke-current [&_svg]:stroke-[1.75]"
+  data-theme-toggle
+  aria-label="Toggle theme"
+>
+  <svg class="dark:hidden" viewBox="0 0 24 24" aria-hidden="true">
+    <circle cx="12" cy="12" r="4" />
+    <path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41" />
+  </svg>
+  <svg class="hidden dark:block" viewBox="0 0 24 24" aria-hidden="true">
+    <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z" />
+  </svg>
+</button>
+<script>
+  document.addEventListener('astro:page-load', () => {
+    document.querySelector('[data-theme-toggle]')?.addEventListener('click', () => {
+      const dark = document.documentElement.classList.toggle('dark')
+      const theme = dark ? 'dark' : 'light'
+      document.documentElement.style.colorScheme = theme
+      localStorage.setItem('theme', theme)
+    })
+  })
+</script>

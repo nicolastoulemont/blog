@@ -1,6 +1,13 @@
 import { describe, expect, it } from 'vitest'
 import type { BlogPostSummary } from './blog-core'
-import { getPostUrl, getTranslation, parseEntryId, toBlogSummary } from './blog-core'
+import {
+  filterPosts,
+  readingMinutes,
+  getPostUrl,
+  getTranslation,
+  parseEntryId,
+  toBlogSummary,
+} from './blog-core'
 import { formatDisplayDate } from './date'
 
 function makePost(overrides: Partial<BlogPostSummary>): BlogPostSummary {
@@ -15,6 +22,7 @@ function makePost(overrides: Partial<BlogPostSummary>): BlogPostSummary {
     publishedAt: '2022-01-01',
     categories: ['React'],
     localeLabel: 'English',
+    readingMinutes: 1,
     ...overrides,
   }
 }
@@ -45,8 +53,8 @@ describe('blog metadata', () => {
   })
 
   it('formats publication dates as calendar dates in either locale', () => {
-    expect(formatDisplayDate('2022-01-01', 'en')).toBe('January 1, 2022')
-    expect(formatDisplayDate('2022-01-01', 'fr')).toBe('1 janvier 2022')
+    expect(formatDisplayDate('2022-01-01', 'en')).toBe('Jan 1, 2022')
+    expect(formatDisplayDate('2022-01-01', 'fr')).toBe('1 janv. 2022')
   })
 })
 
@@ -93,5 +101,40 @@ describe('getTranslation', () => {
     })
 
     expect(getTranslation(englishPost, [englishPost, frenchPost])).toEqual(frenchPost)
+  })
+})
+
+describe('readingMinutes', () => {
+  it.each([
+    [0, 1],
+    [200, 1],
+    [201, 2],
+    [600, 3],
+  ])('counts %i words as %i minutes', (words, minutes) => {
+    expect(readingMinutes('word '.repeat(words))).toBe(minutes)
+  })
+})
+
+describe('filterPosts', () => {
+  const posts = [
+    makePost({}),
+    makePost({
+      id: 'fr/2022/tree',
+      title: 'Tree',
+      description: 'Traversal',
+      localeLabel: 'Francais',
+      categories: ['Data Structures'],
+    }),
+  ]
+  it.each(['tree', 'Traversal', ' FRANCAIS ', 'data structures'])(
+    'searches each field with %s',
+    (query) => {
+      expect(filterPosts(posts, { query, category: null })).toEqual([posts[1]])
+    },
+  )
+  it('combines query and category', () => {
+    expect(filterPosts(posts, { query: 'tree', category: 'react' })).toEqual([])
+    expect(filterPosts(posts, { query: '', category: 'react' })).toEqual([posts[0]])
+    expect(filterPosts(posts, { query: '', category: null })).toEqual(posts)
   })
 })

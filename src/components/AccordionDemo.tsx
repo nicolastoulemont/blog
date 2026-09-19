@@ -41,7 +41,7 @@ export function AccordionDemo() {
                 href={post.href}
                 className="flex w-full items-start justify-between gap-4"
               >
-                <div className="space-y-1">
+                <div className="min-w-0 flex-1 space-y-1">
                   <h4 className="text-md font-medium text-slate-900 dark:text-slate-100">
                     {post.title}
                   </h4>
@@ -49,7 +49,7 @@ export function AccordionDemo() {
                     {post.description}
                   </p>
                 </div>
-                <span className="rounded-full border border-slate-200 bg-slate-100 px-2 py-1 text-sm text-slate-700 dark:border-slate-700 dark:bg-slate-800 dark:text-slate-200">
+                <span className="shrink-0 whitespace-nowrap rounded-full border border-slate-200 bg-slate-100 px-2 py-1 text-sm text-slate-700 dark:border-slate-700 dark:bg-slate-800 dark:text-slate-200">
                   {post.category}
                 </span>
               </a>

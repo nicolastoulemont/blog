@@ -13,13 +13,26 @@ export default defineConfig({
   devToolbar: {
     enabled: process.env.BLOG_E2E !== '1',
   },
-  integrations: [react(), mdx()],
+  integrations: [
+    react(),
+    mdx(),
+    {
+      name: 'isolate-dependency-cache',
+      hooks: {
+        'astro:config:setup'({ command, updateConfig }) {
+          const cache =
+            command === 'dev' && process.env.BLOG_E2E === '1' ? 'e2e' : command
+          updateConfig({ vite: { cacheDir: `node_modules/.vite-${cache}` } })
+        },
+      },
+    },
+  ],
   vite: {
-    cacheDir: process.env.BLOG_E2E === '1' ? 'node_modules/.vite-e2e' : undefined,
     optimizeDeps: {
       include: [
-        '@base-ui/react/menu',
         '@headlessui/react',
+        '@base-ui/react/dialog',
+        'cmdk',
         'clsx',
         'date-fns',
         'framer-motion',
@@ -37,6 +50,7 @@ export default defineConfig({
     processor: unified({
       rehypePlugins: [
         rehypeSlug,
+        rehypeFigures,
         [
           rehypeAutolinkHeadings,
           {
@@ -55,3 +69,28 @@ export default defineConfig({
     }),
   },
 })
+
+function rehypeFigures() {
+  return (tree) => {
+    let figure = 0
+    function visit(node) {
+      if (
+        node.type === 'element' &&
+        node.tagName === 'p' &&
+        node.children.length === 1 &&
+        node.children[0].tagName === 'img'
+      ) {
+        figure += 1
+        node.tagName = 'figure'
+        node.children.unshift({
+          type: 'element',
+          tagName: 'span',
+          properties: { className: ['tab'], ariaHidden: 'true' },
+          children: [{ type: 'text', value: `fig. ${String(figure).padStart(2, '0')}` }],
+        })
+      }
+      node.children?.forEach(visit)
+    }
+    visit(tree)
+  }
+}

@@ -1,22 +1,26 @@
 ---
 import SearchPosts from '~/components/SearchPosts.astro'
+import { PostCard } from '~/components/PostCard'
 import BaseLayout from '~/layouts/BaseLayout.astro'
 import { getAllPosts } from '~/lib/blog'
-
-const posts = await getAllPosts()
+const posts = (await getAllPosts()).filter((post) => post.locale === 'en')
+const newest = [...posts].sort((a, b) => b.publishedAt.localeCompare(a.publishedAt))[0]
 ---
 
 <BaseLayout pathname="/">
-  <main class="mx-auto min-h-full w-full max-w-6xl px-6 pb-10 md:px-12">
-    <section>
-      <h1 class="my-6 text-center text-3xl font-bold text-slate-800 dark:text-white sm:mt-12 sm:text-5xl md:text-left">
-        Hi, I'm Nicolas Toulemont
-      </h1>
-      <p class="mb-9 text-center text-lg font-bold text-slate-600 dark:text-white sm:text-2xl md:mb-12 md:text-left">
-        I'm a french full stack software engineer. I mainly use and enjoy Typescript, Node, React and GraphQL at the moment.
-      </p>
+  <main class="relative">
+    <section class="grid border-b border-line min-[56.01rem]:grid-cols-2">
+      <div class="border-b border-line bg-bg px-5 py-5 min-[56.01rem]:border-r min-[56.01rem]:border-b-0 min-[56.01rem]:px-6">
+        <h1 class="sr-only">Nicolas Toulemont, engineering blog</h1>
+        <p class="max-w-xl text-[1.0625rem] leading-[1.7]">
+          Full stack engineer in France. I write about React, GraphQL, Node and the data
+          structures and patterns underneath them.
+        </p>
+      </div>
+      <div class="flex flex-col px-5 py-6 min-[56.01rem]:pr-6 min-[56.01rem]:pl-0">
+        {newest && <PostCard post={newest} variant="featured" />}
+      </div>
     </section>
-
     <SearchPosts posts={posts} />
   </main>
 </BaseLayout>

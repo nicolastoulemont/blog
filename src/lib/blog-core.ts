@@ -1,4 +1,4 @@
-import type { CategoryName } from './categories'
+import { CATEGORY_SLUGS, type CategorySlug, type CategoryName } from './categories'
 import { LOCALE_LABELS, SITE_URL, type SiteLocale } from './site'
 
 export interface BlogPostSummary {
@@ -14,6 +14,7 @@ export interface BlogPostSummary {
   categories: CategoryName[]
   ogImage?: string
   translationKey?: string
+  readingMinutes: number
   localeLabel: string
 }
 
@@ -49,10 +50,9 @@ export function getAbsoluteUrl(pathname: string) {
   return new URL(pathname, SITE_URL).toString()
 }
 
-export function getRelatedPosts<T extends Pick<BlogPostSummary, 'id' | 'locale' | 'categories'>>(
-  post: T,
-  posts: T[]
-) {
+export function getRelatedPosts<
+  T extends Pick<BlogPostSummary, 'id' | 'locale' | 'categories'>,
+>(post: T, posts: T[]) {
   return posts.filter((candidate) => {
     if (candidate.id === post.id || candidate.locale !== post.locale) {
       return false
@@ -62,10 +62,9 @@ export function getRelatedPosts<T extends Pick<BlogPostSummary, 'id' | 'locale' 
   })
 }
 
-export function getTranslation<T extends Pick<BlogPostSummary, 'locale' | 'translationKey'>>(
-  post: T,
-  posts: T[]
-) {
+export function getTranslation<
+  T extends Pick<BlogPostSummary, 'locale' | 'translationKey'>,
+>(post: T, posts: T[]) {
   if (!post.translationKey) {
     return undefined
   }
@@ -90,6 +89,7 @@ export function toBlogSummary<
       translationKey?: string
     }
     id: string
+    body?: string
   },
 >(entry: T): BlogPostSummary {
   const { locale, year, slug } = parseEntryId(entry.id)
@@ -112,5 +112,30 @@ export function toBlogSummary<
     ogImage: entry.data.ogImage,
     translationKey: entry.data.translationKey,
     localeLabel: LOCALE_LABELS[locale],
+    readingMinutes: readingMinutes(entry.body ?? ''),
   }
+}
+
+export type SearchIndexItem = Pick<
+  BlogPostSummary,
+  'id' | 'title' | 'description' | 'localeLabel' | 'categories' | 'readingMinutes'
+>
+
+export function readingMinutes(body: string) {
+  return Math.max(1, Math.ceil((body.match(/\S+/g)?.length ?? 0) / 200))
+}
+
+export function filterPosts<T extends SearchIndexItem>(
+  posts: T[],
+  { query, category }: { query: string; category: CategorySlug | null },
+) {
+  const search = query.trim().toLowerCase()
+  return posts.filter(
+    (post) =>
+      (category === null ||
+        post.categories.some((value) => CATEGORY_SLUGS[value] === category)) &&
+      [post.title, post.description, post.localeLabel, ...post.categories].some((value) =>
+        value.toLowerCase().includes(search),
+      ),
+  )
 }
