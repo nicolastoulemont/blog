@@ -54,6 +54,7 @@ test('accordion demo becomes interactive when scrolled into view', async ({ page
   await page.getByRole('link', { name: 'The compound component pattern', exact: true }).click()
   const toggle = page.getByRole('button', { name: 'Other posts that might interest you' })
   await toggle.scrollIntoViewIfNeeded()
+  await page.locator('astro-island[ssr]').waitFor({ state: 'detached' })
   await toggle.click()
   await expect(toggle).toHaveAttribute('aria-expanded', 'true')
   await expect(
@@ -80,6 +81,7 @@ for (const width of [1280, 390]) {
     }
     const input = page.getByLabel('Your birthday', { exact: true })
     await input.scrollIntoViewIfNeeded()
+    await page.locator('astro-island[ssr]').waitFor({ state: 'detached' })
     await expect(input).toHaveValue('')
     await input.click()
     await page.getByRole('button', { name: '6/20/2030', exact: true }).click()
@@ -111,12 +113,12 @@ test('table of contents labels and tracks the active section', async ({ page }) 
   await page.goto('/blog/2022/the-tree')
 
   const links = page.locator('[data-toc-link]')
-  const labels = await links.allTextContents()
+  const labels = (await links.allTextContents()).map((label) => label.trim())
 
   expect(labels).toHaveLength(12)
   expect(labels[0]).toBe('Top')
   expect(labels).toContain('What is a Tree ?')
-  expect(labels.every((label) => !label.trim().endsWith('#'))).toBe(true)
+  expect(labels.every((label) => !label.endsWith('#'))).toBe(true)
 
   await page.evaluate(() => {
     const heading = document.getElementById('get-method')

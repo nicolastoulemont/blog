@@ -10,6 +10,10 @@ English and French routes use `src/layouts/PostLayout.astro`. Posts live in `src
 
 Images currently retain their published `/img/` URLs in `public/img`. They are copied unchanged, so they do not receive Astro image optimization.
 
+Astro 7 uses the explicit `unified()` Markdown processor from `@astrojs/markdown-remark` to retain the heading-link plugins. HTML compression retains HTML whitespace rules with `compressHTML: true`.
+
+Use Node 22.12+, 24, or 26+. TypeScript remains on 6.0.3 because `@astrojs/check` requires the JavaScript compiler API missing from TypeScript 7. Track support in [Astro's TypeScript 7 discussion](https://github.com/withastro/roadmap/discussions/1321).
+
 ## Stack
 
 - Astro
@@ -25,4 +29,4 @@ Images currently retain their published `/img/` URLs in `public/img`. They are c
 - `pnpm preview` serves the built output locally.
 - `pnpm check` runs Astro's type/content checks.
 - `pnpm test` runs the Vitest suite.
-- `pnpm e2e` builds the site and runs Playwright against its static preview, including search, navigation without JavaScript, and desktop/mobile demos.
+- `pnpm e2e` runs the browser suite against both the built static preview and a fresh development server, including search, navigation without JavaScript, and desktop/mobile demos.
