@@ -9,7 +9,6 @@ const items = headings.filter((heading) => heading.depth >= 2 && heading.depth <
 ---
 
 <nav class="toc" aria-label={label} data-toc-root>
-  <h2>{label}</h2>
   <ul>
     {items.map((heading) => (
       <li data-depth={heading.depth}>

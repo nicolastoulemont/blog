@@ -115,7 +115,7 @@ test('english posts render at cleaned urls', async ({ page }) => {
   )
   await expect(
     page.locator('.rail').getByRole('heading', { name: 'On this page' }),
-  ).toBeVisible()
+  ).toHaveCount(0)
   await expect(page.getByRole('heading', { name: /More on/ })).toBeVisible()
 })
 
