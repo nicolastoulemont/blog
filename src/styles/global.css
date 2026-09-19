@@ -1,0 +1,135 @@
+@import 'tailwindcss';
+@plugin '@tailwindcss/forms';
+@plugin '@tailwindcss/typography';
+@custom-variant dark (&:where(.dark, .dark *));
+
+:root {
+  color-scheme: light;
+  --surface: 255 255 255;
+  --surface-strong: 241 245 249;
+  --text: 15 23 42;
+  --text-soft: 71 85 105;
+  --ring: 148 163 184;
+}
+
+:root.dark {
+  color-scheme: dark;
+  --surface: 30 41 59;
+  --surface-strong: 15 23 42;
+  --text: 226 232 240;
+  --text-soft: 148 163 184;
+  --ring: 51 65 85;
+}
+
+html {
+  scroll-behavior: smooth;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
+}
+
+body {
+  @apply min-h-screen bg-[rgb(var(--surface))] text-[rgb(var(--text))];
+}
+
+a {
+  @apply transition-colors;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  scroll-margin-top: 7rem;
+}
+
+::selection {
+  @apply bg-sky-200 text-sky-950;
+}
+
+.heading-anchor {
+  @apply ml-2 text-sm text-slate-400 no-underline opacity-0 transition-opacity;
+}
+
+.prose :is(h2, h3, h4):hover .heading-anchor,
+.prose :is(h2, h3, h4):focus-within .heading-anchor {
+  @apply opacity-100;
+}
+
+.prose {
+  @apply prose-slate max-w-none prose-headings:font-semibold prose-headings:text-slate-800 prose-p:text-slate-700 prose-li:text-slate-700 prose-strong:text-slate-900 prose-a:text-blue-700 prose-a:decoration-blue-300 prose-a:underline-offset-4 prose-code:rounded prose-code:bg-slate-100 prose-code:px-1.5 prose-code:py-0.5 prose-code:text-sm prose-code:text-slate-900 prose-code:before:content-none prose-code:after:content-none prose-pre:overflow-x-auto prose-pre:rounded-lg prose-pre:border prose-pre:border-slate-800 prose-pre:bg-slate-950 prose-img:rounded-lg prose-blockquote:border-l-blue-300 prose-blockquote:text-slate-700 dark:prose-invert dark:prose-headings:text-white dark:prose-p:text-slate-300 dark:prose-li:text-slate-300 dark:prose-strong:text-white dark:prose-a:text-blue-300 dark:prose-a:decoration-blue-700 dark:prose-code:bg-slate-900 dark:prose-code:text-slate-100 dark:prose-blockquote:text-slate-300;
+}
+
+.toc-overlay {
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 300ms ease-in-out;
+}
+
+.toc-overlay.is-open {
+  opacity: 0.6;
+  pointer-events: auto;
+}
+
+.toc-panel {
+  height: 0;
+  opacity: 0;
+  overflow: hidden;
+  pointer-events: none;
+  transition: height 300ms ease-in-out, opacity 300ms ease-in-out;
+  will-change: height, opacity;
+}
+
+.toc-panel.is-open {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+@media (min-width: 64rem) {
+  .toc-overlay {
+    opacity: 0;
+    pointer-events: none;
+  }
+
+  .toc-panel {
+    height: auto;
+    opacity: 1;
+    overflow: visible;
+    pointer-events: auto;
+  }
+}
+
+.post-article {
+  max-width: 65ch;
+}
+
+@media (min-width: 64rem) {
+  .post-article {
+    max-width: calc(100% - 250px);
+  }
+}
+
+@media (min-width: 96rem) {
+  .post-article {
+    max-width: 72rem;
+    margin-inline: auto;
+  }
+}
+
+.prose :where(pre code):not(:where([class~='not-prose'], [class~='not-prose'] *)) {
+  background-color: transparent;
+  border-radius: 0;
+  border-width: 0;
+  color: inherit;
+  font-family: inherit;
+  font-size: inherit;
+  font-weight: inherit;
+  line-height: inherit;
+  padding: 0;
+}
+
+.surface-card {
+  @apply rounded-lg bg-white shadow-xl dark:bg-slate-800 dark:shadow-2xl;
+}

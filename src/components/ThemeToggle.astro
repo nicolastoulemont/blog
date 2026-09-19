@@ -1,0 +1,132 @@
+<div class="relative">
+  <button
+    type="button"
+    data-theme-toggle
+    class="flex h-10 w-10 items-center justify-center rounded-full text-slate-800 hover:bg-gray-100 dark:text-white dark:hover:bg-slate-600"
+    aria-label="Open theme menu"
+    aria-controls="theme-menu"
+    aria-expanded="false"
+  >
+    <svg
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      stroke-width="2"
+      stroke-linecap="round"
+      stroke-linejoin="round"
+      class="h-[1.3rem] w-[1.3rem]"
+      aria-hidden="true"
+    >
+      <line x1="3" y1="12" x2="21" y2="12"></line>
+      <line x1="3" y1="6" x2="21" y2="6"></line>
+      <line x1="3" y1="18" x2="21" y2="18"></line>
+    </svg>
+  </button>
+
+  <div
+    id="theme-menu"
+    data-theme-menu
+    role="menu"
+    class="absolute right-0 top-12 z-20 hidden w-32 space-y-2 rounded-lg bg-white p-3 shadow-lg dark:bg-slate-800"
+  >
+    <button
+      type="button"
+      data-theme-choice="light"
+      role="menuitem"
+      class="flex items-center justify-start py-1 text-slate-800 dark:text-white"
+    >
+      <svg
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        stroke-width="2"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+        class="mr-6 h-[1.2rem] w-[1.2rem]"
+        aria-hidden="true"
+      >
+        <circle cx="12" cy="12" r="4"></circle>
+        <line x1="12" y1="2" x2="12" y2="4"></line>
+        <line x1="12" y1="20" x2="12" y2="22"></line>
+        <line x1="4.93" y1="4.93" x2="6.34" y2="6.34"></line>
+        <line x1="17.66" y1="17.66" x2="19.07" y2="19.07"></line>
+        <line x1="2" y1="12" x2="4" y2="12"></line>
+        <line x1="20" y1="12" x2="22" y2="12"></line>
+        <line x1="4.93" y1="19.07" x2="6.34" y2="17.66"></line>
+        <line x1="17.66" y1="6.34" x2="19.07" y2="4.93"></line>
+      </svg>
+      Light
+    </button>
+    <button
+      type="button"
+      data-theme-choice="dark"
+      role="menuitem"
+      class="flex items-center justify-start py-1 text-slate-800 dark:text-white"
+    >
+      <svg
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        stroke-width="2"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+        class="mr-6 h-[1.2rem] w-[1.2rem]"
+        aria-hidden="true"
+      >
+        <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+      </svg>
+      Dark
+    </button>
+  </div>
+</div>
+
+<script is:inline>
+  (() => {
+    const button = document.querySelector('[data-theme-toggle]')
+    if (!(button instanceof HTMLButtonElement)) return
+
+    const menu = document.querySelector('[data-theme-menu]')
+    if (!(menu instanceof HTMLElement)) return
+
+    const storageKey = 'theme'
+
+    const setMenuOpen = (open) => {
+      menu.classList.toggle('hidden', !open)
+      button.setAttribute('aria-expanded', String(open))
+    }
+
+    const applyTheme = (theme) => {
+      document.documentElement.classList.toggle('dark', theme === 'dark')
+      document.documentElement.style.colorScheme = theme
+      localStorage.setItem(storageKey, theme)
+    }
+
+    const initialTheme =
+      localStorage.getItem(storageKey) ||
+      (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light')
+
+    applyTheme(initialTheme)
+
+    button.addEventListener('click', () => {
+      setMenuOpen(menu.classList.contains('hidden'))
+    })
+
+    menu.querySelectorAll('[data-theme-choice]').forEach((choice) => {
+      choice.addEventListener('click', () => {
+        const theme = choice.getAttribute('data-theme-choice')
+        if (theme === 'light' || theme === 'dark') applyTheme(theme)
+        setMenuOpen(false)
+      })
+    })
+
+    document.addEventListener('click', (event) => {
+      if (event.target instanceof Node && !button.parentElement?.contains(event.target)) {
+        setMenuOpen(false)
+      }
+    })
+
+    document.addEventListener('keydown', (event) => {
+      if (event.key === 'Escape') setMenuOpen(false)
+    })
+  })()
+</script>
