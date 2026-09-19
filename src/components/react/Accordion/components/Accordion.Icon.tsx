@@ -1,5 +1,5 @@
 import { motion } from 'framer-motion'
-import { ChevronDownIcon } from '@heroicons/react/24/solid'
+import { HiChevronDown } from 'react-icons/hi2'
 import clsx from 'clsx'
 import { forwardRef } from 'react'
 import type { ComponentProps } from 'react'
@@ -24,7 +24,7 @@ export const Icon = forwardRef<HTMLSpanElement, AccordionIconProps>(function (
       className={clsx('inline-flex', className)}
       {...props}
     >
-      <ChevronDownIcon className="h-4 w-4 text-slate-800 dark:text-white" />
+      <HiChevronDown className="h-4 w-4 text-slate-800 dark:text-white" />
     </motion.span>
   )
 })
