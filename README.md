@@ -30,3 +30,5 @@ Use Node 22.12+, 24, or 26+. TypeScript remains on 6.0.3 because `@astrojs/check
 - `pnpm check` runs Astro's type/content checks.
 - `pnpm test` runs the Vitest suite.
 - `pnpm e2e` runs the browser suite against both the built static preview and a fresh development server, including search, navigation without JavaScript, and desktop/mobile demos.
+
+Playwright sets `BLOG_E2E=1` for its development server to disable Astro's dev toolbar and use a separate Vite cache in `node_modules/.vite-e2e`. Vite prebundles the React islands' dependencies up front to avoid invalidating loaded chunks when another island hydrates. Console-error assertions remain enabled, and regular `pnpm dev` sessions keep the toolbar.
