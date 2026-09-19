@@ -5,6 +5,7 @@ test('homepage combines search, topic filters and keyboard shortcuts', async ({
 }) => {
   await page.goto('/')
   const grid = page.locator('[data-post-search]')
+  await expect(page.getByRole('link', { name: 'The Tree', exact: true })).toHaveCount(1)
   await expect(
     grid.getByRole('link', { name: /Reconversion dans une carrière/ }),
   ).toHaveCount(0)
@@ -30,8 +31,8 @@ test('homepage combines search, topic filters and keyboard shortcuts', async ({
   await expect(page.getByRole('searchbox')).toHaveValue('')
   await expect(page.getByRole('searchbox')).not.toBeFocused()
   await page.getByRole('button', { name: 'Data Structures', exact: true }).click()
-  await expect(page.getByRole('status')).toHaveText('5 posts found.')
-  await expect(grid.getByRole('link', { name: 'The Tree', exact: true })).toBeVisible()
+  await expect(page.getByRole('status')).toHaveText('4 posts found.')
+  await expect(grid.getByRole('link', { name: 'The Tree', exact: true })).toHaveCount(0)
   await expect(
     grid.getByRole('link', { name: 'GraphQL Typeguards', exact: true }),
   ).toBeHidden()

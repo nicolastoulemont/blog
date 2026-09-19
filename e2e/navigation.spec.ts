@@ -19,15 +19,9 @@ test('cards prefetch and navigate without replacing the document', async ({ page
       new URL(response.url()).pathname === '/blog/2022/the-tree' &&
       response.request().resourceType() !== 'document',
   )
-  await page
-    .locator('[data-post-search]')
-    .getByRole('link', { name: 'The Tree', exact: true })
-    .hover()
+  await page.getByRole('link', { name: 'The Tree', exact: true }).hover()
   expect((await prefetched).ok()).toBe(true)
-  await page
-    .locator('[data-post-search]')
-    .getByRole('link', { name: 'The Tree', exact: true })
-    .click()
+  await page.getByRole('link', { name: 'The Tree', exact: true }).click()
   await expect(page).toHaveURL(/\/blog\/2022\/the-tree$/)
   await expect(page).toHaveTitle('The Tree | Nicolas Toulemont')
   await expect(page.locator('link[rel="canonical"]')).toHaveAttribute(
@@ -73,11 +67,13 @@ test('mobile contents and search work across repeated article and home visits', 
     await expect(page.locator('body')).not.toHaveClass(/overflow-hidden/)
     await page.getByRole('link', { name: 'Nicolas Toulemont', exact: true }).click()
     await page.getByRole('searchbox').fill('the tree')
-    await expect(page.getByRole('status')).toHaveText('1 post found.')
-    await page
-      .locator('[data-post-search]')
-      .getByRole('link', { name: 'The Tree', exact: true })
-      .click()
+    await expect(page.getByRole('status')).toHaveText('0 posts found.')
+    await expect(
+      page
+        .locator('[data-post-search]')
+        .getByRole('link', { name: 'The Tree', exact: true }),
+    ).toHaveCount(0)
+    await page.getByRole('link', { name: 'The Tree', exact: true }).click()
     await expect(page.getByRole('heading', { level: 1 })).toContainText('The Tree')
   }
 })

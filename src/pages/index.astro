@@ -5,6 +5,7 @@ import BaseLayout from '~/layouts/BaseLayout.astro'
 import { getAllPosts } from '~/lib/blog'
 const posts = (await getAllPosts()).filter((post) => post.locale === 'en')
 const newest = [...posts].sort((a, b) => b.publishedAt.localeCompare(a.publishedAt))[0]
+const searchPosts = newest ? posts.filter((post) => post.id !== newest.id) : posts
 ---
 
 <BaseLayout pathname="/">
@@ -21,6 +22,6 @@ const newest = [...posts].sort((a, b) => b.publishedAt.localeCompare(a.published
         {newest && <PostCard post={newest} variant="featured" />}
       </div>
     </section>
-    <SearchPosts posts={posts} />
+    <SearchPosts posts={searchPosts} />
   </main>
 </BaseLayout>
