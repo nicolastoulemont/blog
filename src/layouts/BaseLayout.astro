@@ -1,4 +1,5 @@
 ---
+import { ClientRouter } from 'astro:transitions'
 import Header from '~/components/Header.astro'
 import { getAbsoluteUrl } from '~/lib/blog'
 import { SITE_DESCRIPTION, SITE_TITLE, type SiteLocale } from '~/lib/site'
@@ -54,8 +55,9 @@ const themeBootScript = `
 ---
 
 <!doctype html>
-<html lang={locale}>
+<html lang={locale} transition:animate="none">
   <head>
+    <ClientRouter />
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>{pageTitle}</title>
@@ -88,3 +90,11 @@ const themeBootScript = `
     <slot />
   </body>
 </html>
+
+<script>
+  document.addEventListener('astro:before-swap', (event) => {
+    const root = event.newDocument.documentElement
+    root.classList.toggle('dark', document.documentElement.classList.contains('dark'))
+    root.style.colorScheme = document.documentElement.style.colorScheme
+  })
+</script>

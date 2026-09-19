@@ -80,8 +80,8 @@
   </div>
 </div>
 
-<script is:inline>
-  (() => {
+<script>
+  document.addEventListener('astro:page-load', () => {
     const button = document.querySelector('[data-theme-toggle]')
     if (!(button instanceof HTMLButtonElement)) return
 
@@ -90,22 +90,20 @@
 
     const storageKey = 'theme'
 
-    const setMenuOpen = (open) => {
+    const setMenuOpen = (open: boolean) => {
       menu.classList.toggle('hidden', !open)
       button.setAttribute('aria-expanded', String(open))
     }
 
-    const applyTheme = (theme) => {
+    const applyTheme = (theme: 'light' | 'dark') => {
       document.documentElement.classList.toggle('dark', theme === 'dark')
       document.documentElement.style.colorScheme = theme
       localStorage.setItem(storageKey, theme)
     }
 
-    const initialTheme =
-      localStorage.getItem(storageKey) ||
-      (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light')
-
-    applyTheme(initialTheme)
+    const controller = new AbortController()
+    const { signal } = controller
+    document.addEventListener('astro:before-swap', () => controller.abort(), { once: true })
 
     button.addEventListener('click', () => {
       setMenuOpen(menu.classList.contains('hidden'))
@@ -119,14 +117,22 @@
       })
     })
 
-    document.addEventListener('click', (event) => {
-      if (event.target instanceof Node && !button.parentElement?.contains(event.target)) {
-        setMenuOpen(false)
-      }
-    })
+    document.addEventListener(
+      'click',
+      (event) => {
+        if (event.target instanceof Node && !button.parentElement?.contains(event.target)) {
+          setMenuOpen(false)
+        }
+      },
+      { signal },
+    )
 
-    document.addEventListener('keydown', (event) => {
-      if (event.key === 'Escape') setMenuOpen(false)
-    })
-  })()
+    document.addEventListener(
+      'keydown',
+      (event) => {
+        if (event.key === 'Escape') setMenuOpen(false)
+      },
+      { signal },
+    )
+  })
 </script>

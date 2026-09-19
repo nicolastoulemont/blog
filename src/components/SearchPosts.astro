@@ -58,27 +58,30 @@ const { posts } = Astro.props
 </section>
 
 <script>
-  const root = document.querySelector<HTMLElement>('[data-post-search]')!
-  const input = root.querySelector<HTMLInputElement>('input')!
-  const cards = Array.from(root.querySelectorAll<HTMLElement>('[data-post]'))
-  const empty = root.querySelector<HTMLElement>('[data-no-results]')!
-  const status = root.querySelector<HTMLElement>('[role="status"]')!
+  document.addEventListener('astro:page-load', () => {
+    const root = document.querySelector<HTMLElement>('[data-post-search]')
+    if (!root) return
+    const input = root.querySelector<HTMLInputElement>('input')!
+    const cards = Array.from(root.querySelectorAll<HTMLElement>('[data-post]'))
+    const empty = root.querySelector<HTMLElement>('[data-no-results]')!
+    const status = root.querySelector<HTMLElement>('[role="status"]')!
 
-  function filterPosts() {
-    const query = input.value.trim().toLowerCase()
-    let count = 0
+    function filterPosts() {
+      const query = input.value.trim().toLowerCase()
+      let count = 0
 
-    for (const card of cards) {
-      card.hidden = !card.dataset.search!.includes(query)
-      if (!card.hidden) count++
+      for (const card of cards) {
+        card.hidden = !card.dataset.search!.includes(query)
+        if (!card.hidden) count++
+      }
+
+      empty.hidden = count > 0
+      empty.querySelector('span')!.textContent = input.value
+      status.textContent = `${count} ${count === 1 ? 'post' : 'posts'} found.`
     }
 
-    empty.hidden = count > 0
-    empty.querySelector('span')!.textContent = input.value
-    status.textContent = `${count} ${count === 1 ? 'post' : 'posts'} found.`
-  }
-
-  input.addEventListener('input', filterPosts)
-  root.querySelector<HTMLElement>('[data-search-controls]')!.hidden = false
-  filterPosts()
+    input.addEventListener('input', filterPosts)
+    root.querySelector<HTMLElement>('[data-search-controls]')!.hidden = false
+    filterPosts()
+  })
 </script>

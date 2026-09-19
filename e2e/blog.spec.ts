@@ -50,7 +50,8 @@ test('posts remain readable and navigable without JavaScript', async ({ browser 
 })
 
 test('accordion demo becomes interactive when scrolled into view', async ({ page }) => {
-  await page.goto('/blog/2022/compound-component-pattern')
+  await page.goto('/')
+  await page.getByRole('link', { name: 'The compound component pattern', exact: true }).click()
   const toggle = page.getByRole('button', { name: 'Other posts that might interest you' })
   await toggle.scrollIntoViewIfNeeded()
   await toggle.click()
@@ -71,7 +72,12 @@ for (const width of [1280, 390]) {
     })
     await page.setViewportSize({ width, height: 800 })
     await page.clock.setFixedTime(new Date('2030-06-15T12:00:00Z'))
-    await page.goto('/blog/2022/how-to-build-datepicker')
+    if (width === 390) {
+      await page.goto('/')
+      await page.getByRole('link', { name: 'How to build a datepicker from scratch', exact: true }).click()
+    } else {
+      await page.goto('/blog/2022/how-to-build-datepicker')
+    }
     const input = page.getByLabel('Your birthday', { exact: true })
     await input.scrollIntoViewIfNeeded()
     await expect(input).toHaveValue('')

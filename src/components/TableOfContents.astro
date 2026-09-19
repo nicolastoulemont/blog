@@ -109,21 +109,35 @@ const activeClasses = `${bg} ${text}`
   ) : null
 }
 
-<script is:inline define:vars={{ tocId }}>
-  (() => {
-    const root = document.querySelector(`[data-toc-root="${tocId}"]`)
+<script>
+  document.addEventListener('astro:page-load', () => {
+    const root = document.querySelector<HTMLElement>('[data-toc-root]')
     if (!(root instanceof HTMLElement)) return
 
-    const panel = root.querySelector('[data-toc-panel]')
-    const overlay = root.querySelector('[data-toc-overlay]')
+    const panel = root.querySelector<HTMLElement>('[data-toc-panel]')
+    const overlay = root.querySelector<HTMLElement>('[data-toc-overlay]')
     const toggle = root.querySelector('[data-toc-toggle]')
     const close = root.querySelector('[data-toc-close]')
     const links = Array.from(root.querySelectorAll('[data-toc-link]'))
     const mobileBreakpoint = 1024
     const animationDuration = 300
     let isOpen = false
-    let animationFrame = null
-    let closeTimeout = null
+    let animationFrame: number | null = null
+    let closeTimeout: number | null = null
+
+    let updateTimeout: number | null = null
+    const controller = new AbortController()
+    const { signal } = controller
+    document.addEventListener(
+      'astro:before-swap',
+      () => {
+        controller.abort()
+        cancelAnimation()
+        if (closeTimeout !== null) window.clearTimeout(closeTimeout)
+        if (updateTimeout !== null) window.clearTimeout(updateTimeout)
+      },
+      { once: true },
+    )
 
     const cancelAnimation = () => {
       if (animationFrame === null) return
@@ -138,7 +152,7 @@ const activeClasses = `${bg} ${text}`
       closeTimeout = null
     }
 
-    const setOpen = (open) => {
+    const setOpen = (open: boolean) => {
       if (!(panel instanceof HTMLElement)) return
 
       const isMobile = window.innerWidth < mobileBreakpoint
@@ -202,9 +216,13 @@ const activeClasses = `${bg} ${text}`
       overlay.addEventListener('click', () => setOpen(false))
     }
 
-    document.addEventListener('keydown', (event) => {
-      if (event.key === 'Escape') setOpen(false)
-    })
+    document.addEventListener(
+      'keydown',
+      (event) => {
+        if (event.key === 'Escape') setOpen(false)
+      },
+      { signal },
+    )
 
     for (const link of links) {
       link.addEventListener('click', () => setOpen(false))
@@ -248,7 +266,6 @@ const activeClasses = `${bg} ${text}`
       })
     }
 
-    let updateTimeout = null
     const scheduleActiveLinkUpdate = () => {
       if (updateTimeout !== null) return
       updateTimeout = window.setTimeout(() => {
@@ -257,12 +274,16 @@ const activeClasses = `${bg} ${text}`
       }, 100)
     }
 
-    document.addEventListener('scroll', scheduleActiveLinkUpdate, { passive: true })
-    window.addEventListener('resize', () => {
-      if (window.innerWidth >= mobileBreakpoint) setOpen(false)
-      scheduleActiveLinkUpdate()
-    })
+    document.addEventListener('scroll', scheduleActiveLinkUpdate, { passive: true, signal })
+    window.addEventListener(
+      'resize',
+      () => {
+        if (window.innerWidth >= mobileBreakpoint) setOpen(false)
+        scheduleActiveLinkUpdate()
+      },
+      { signal },
+    )
     setOpen(false)
     updateActiveLink()
-  })()
+  })
 </script>
