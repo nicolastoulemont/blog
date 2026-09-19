@@ -14,7 +14,7 @@ test('cards prefetch and navigate without replacing the document', async ({ page
   })
 
   await page.getByRole('button', { name: 'Open theme menu' }).click()
-  await page.getByRole('menuitem', { name: 'Dark' }).click()
+  await page.getByRole('menuitemradio', { name: 'Dark' }).click()
   const prefetched = page.waitForResponse(
     (response) =>
       new URL(response.url()).pathname === '/blog/2022/the-tree' &&
@@ -47,7 +47,7 @@ test('cards prefetch and navigate without replacing the document', async ({ page
   await page.goForward()
   await expect(page.getByRole('searchbox')).toBeVisible()
   await page.getByRole('button', { name: 'Open theme menu' }).click()
-  await page.getByRole('menuitem', { name: 'Light' }).click()
+  await page.getByRole('menuitemradio', { name: 'Light' }).click()
   await expect(page.locator('html')).not.toHaveClass(/dark/)
   expect(await page.evaluate(() => performance.timeOrigin)).toBe(timeOrigin)
   expect(documents).toEqual([])

@@ -8,7 +8,7 @@ test('homepage search and theme toggle work', async ({ page }) => {
   )
   await expect(page.getByText('EN', { exact: true })).toHaveCount(0)
   await page.getByLabel('Open theme menu').click()
-  await page.getByRole('menuitem', { name: 'Dark' }).click()
+  await page.getByRole('menuitemradio', { name: 'Dark' }).click()
   await expect(page.locator('html')).toHaveClass(/dark/)
   await expect(page.locator('body')).toHaveCSS('background-color', 'rgb(30, 41, 59)')
   await expect(page.getByLabel('Open theme menu')).toHaveCSS(
@@ -54,7 +54,7 @@ test('accordion demo becomes interactive when scrolled into view', async ({ page
   await page.getByRole('link', { name: 'The compound component pattern', exact: true }).click()
   const toggle = page.getByRole('button', { name: 'Other posts that might interest you' })
   await toggle.scrollIntoViewIfNeeded()
-  await page.locator('astro-island[ssr]').waitFor({ state: 'detached' })
+  await page.locator('astro-island[ssr]').filter({ has: toggle }).waitFor({ state: 'detached' })
   await toggle.click()
   await expect(toggle).toHaveAttribute('aria-expanded', 'true')
   await expect(
@@ -81,7 +81,7 @@ for (const width of [1280, 390]) {
     }
     const input = page.getByLabel('Your birthday', { exact: true })
     await input.scrollIntoViewIfNeeded()
-    await page.locator('astro-island[ssr]').waitFor({ state: 'detached' })
+    await page.locator('astro-island[ssr]').filter({ has: input }).waitFor({ state: 'detached' })
     await expect(input).toHaveValue('')
     await input.click()
     await page.getByRole('button', { name: '6/20/2030', exact: true }).click()

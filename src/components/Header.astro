@@ -1,6 +1,6 @@
 ---
 import { FiGithub, FiTwitter } from 'react-icons/fi'
-import ThemeToggle from './ThemeToggle.astro'
+import ThemeToggle from './ThemeToggle'
 import { SOCIAL_LINKS } from '~/lib/site'
 ---
 
@@ -28,7 +28,7 @@ import { SOCIAL_LINKS } from '~/lib/site'
       >
         <FiGithub size="1rem" className="stroke-purple-900 dark:stroke-white" />
       </a>
-      <ThemeToggle />
+      <ThemeToggle client:load />
     </div>
   </nav>
 </header>
