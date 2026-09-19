@@ -18,7 +18,7 @@ test('english posts render at cleaned urls', async ({ page }) => {
     'How to build a datepicker from scratch'
   )
   await expect(page.getByRole('heading', { name: 'On this page' })).toBeVisible()
-  await expect(page.getByRole('heading', { name: 'Related posts' })).toBeVisible()
+  await expect(page.getByRole('heading', { name: /From the same categories?/ })).toBeVisible()
 })
 
 test('fenced code keeps syntax highlighting styles', async ({ page }) => {
@@ -28,6 +28,27 @@ test('fenced code keeps syntax highlighting styles', async ({ page }) => {
 
   await expect(code).toHaveCSS('background-color', 'rgba(0, 0, 0, 0)')
   await expect(code).toHaveCSS('padding', '0px')
+})
+
+test('related posts show the full vertical list', async ({ page }) => {
+  await page.goto('/blog/2022/the-tree')
+
+  const section = page.locator('section').filter({
+    has: page.getByRole('heading', { name: 'From the same category' }),
+  })
+  const cards = section.locator(':scope > div > a')
+
+  await expect(cards).toHaveCount(4)
+
+  const positions = await cards.evaluateAll((elements) => {
+    return elements.map((element) => {
+      const { x, y } = element.getBoundingClientRect()
+      return { x, y }
+    })
+  })
+
+  expect(positions.every(({ x }) => x === positions[0]?.x)).toBe(true)
+  expect(positions.every(({ y }, index) => index === 0 || y > positions[index - 1].y)).toBe(true)
 })
 
 test('french posts render at localized urls', async ({ page }) => {
