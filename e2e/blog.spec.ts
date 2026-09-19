@@ -4,7 +4,8 @@ test('homepage search and theme toggle work', async ({ page }) => {
   await page.goto('/')
 
   await expect(page.getByRole('heading', { level: 1 })).toContainText('Writing about')
-  await page.getByLabel('Toggle theme').click()
+  await page.getByLabel('Open theme menu').click()
+  await page.getByRole('menuitem', { name: 'Dark' }).click()
   await expect(page.locator('html')).toHaveClass(/dark/)
 
   await page.getByLabel('Search all posts').fill('graphql')
