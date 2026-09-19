@@ -9,14 +9,17 @@ export type CategoryColor =
   | 'red'
   | 'yellow'
 
-export type CategoryName =
-  | 'Animations'
-  | 'Architecture'
-  | 'Career'
-  | 'Data Structures'
-  | 'General'
-  | 'GraphQL'
-  | 'React'
+export const CATEGORY_NAMES = [
+  'Animations',
+  'Architecture',
+  'Career',
+  'Data Structures',
+  'General',
+  'GraphQL',
+  'React',
+] as const
+
+export type CategoryName = (typeof CATEGORY_NAMES)[number]
 
 export const CATEGORY_COLOR_REGISTRY: Record<CategoryName, CategoryColor> = {
   'Data Structures': 'cyan',

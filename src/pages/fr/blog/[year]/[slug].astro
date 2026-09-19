@@ -1,10 +1,6 @@
 ---
-import { render } from 'astro:content'
-import { PostCard } from '~/components/PostCard'
-import TableOfContents from '~/components/TableOfContents.astro'
-import { CATEGORY_COLOR_REGISTRY } from '~/lib/categories'
-import BaseLayout from '~/layouts/BaseLayout.astro'
-import { getAllPosts, getRelatedPosts, getTranslation } from '~/lib/blog'
+import PostLayout from '~/layouts/PostLayout.astro'
+import { getAllPosts } from '~/lib/blog'
 
 export async function getStaticPaths() {
   const posts = await getAllPosts()
@@ -16,53 +12,6 @@ export async function getStaticPaths() {
       props: { post },
     }))
 }
-
-const { post } = Astro.props
-const allPosts = await getAllPosts()
-const relatedPosts = getRelatedPosts(post, allPosts)
-const translation = getTranslation(post, allPosts)
-const { Content, headings } = await render(post.entry)
-const activeColor = post.categories.length > 0 ? CATEGORY_COLOR_REGISTRY[post.categories[0]] : 'gray'
 ---
 
-<BaseLayout
-  title={post.title}
-  description={post.description}
-  image={post.ogImage}
-  locale={post.locale}
-  ogType="article"
-  pathname={post.url}
-  publishedAt={post.publishedAt}
-  updatedAt={post.updatedAt}
-  alternates={translation ? [{ locale: translation.locale, url: translation.url }] : []}
->
-  <main class="relative pb-16">
-    {translation ? (
-      <div class="mb-6 px-6 pt-8 text-sm text-slate-700 dark:text-slate-300 md:px-12">
-        Version anglaise disponible{' '}
-        <a href={translation.url} class="font-medium underline decoration-blue-400 underline-offset-4">
-          ici
-        </a>
-        .
-      </div>
-    ) : null}
-
-    <article class="post-article prose m-0 mx-auto w-full px-6 py-10 dark:prose-invert lg:prose-lg lg:mx-0 lg:px-12">
-      <Content />
-
-      {relatedPosts.length > 0 ? (
-        <section class="not-prose mt-12">
-          <h2 class="mb-3 text-xl font-bold text-slate-800 dark:text-white sm:text-3xl">
-            {post.categories.length > 1
-              ? 'Articles des mêmes catégories'
-              : 'Articles de la même catégorie'}
-          </h2>
-          <div>
-            {relatedPosts.map((relatedPost) => <PostCard post={relatedPost} showLocale={false} />)}
-          </div>
-        </section>
-      ) : null}
-    </article>
-    <TableOfContents headings={headings} activeColor={activeColor} />
-  </main>
-</BaseLayout>
+<PostLayout post={Astro.props.post} />

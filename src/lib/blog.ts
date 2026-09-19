@@ -6,9 +6,7 @@ import {
   getTranslation,
   parseEntryId,
   toBlogSummary,
-  toSearchIndex,
   type BlogPostSummary,
-  type SearchIndexItem,
 } from './blog-core'
 
 export type BlogEntry = CollectionEntry<'blog'>
@@ -17,8 +15,7 @@ export interface BlogPost extends BlogPostSummary {
   entry: BlogEntry
 }
 
-export { getAbsoluteUrl, getPostUrl, getRelatedPosts, getTranslation, parseEntryId, toSearchIndex }
-export type { SearchIndexItem }
+export { getAbsoluteUrl, getPostUrl, getRelatedPosts, getTranslation, parseEntryId }
 
 export function toBlogPost(entry: BlogEntry): BlogPost {
   return {

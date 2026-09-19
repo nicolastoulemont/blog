@@ -6,5 +6,6 @@ export function formatDisplayDate(input: Date | string, locale: SiteLocale) {
     year: 'numeric',
     month: 'long',
     day: 'numeric',
+    timeZone: 'UTC',
   }).format(date)
 }

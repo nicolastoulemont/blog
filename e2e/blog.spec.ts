@@ -3,17 +3,84 @@ import { expect, test } from '@playwright/test'
 test('homepage search and theme toggle work', async ({ page }) => {
   await page.goto('/')
 
-  await expect(page.getByRole('heading', { level: 1 })).toContainText("Hi, I'm Nicolas Toulemont")
+  await expect(page.getByRole('heading', { level: 1 })).toContainText(
+    "Hi, I'm Nicolas Toulemont",
+  )
   await expect(page.getByText('EN', { exact: true })).toHaveCount(0)
   await page.getByLabel('Open theme menu').click()
   await page.getByRole('menuitem', { name: 'Dark' }).click()
   await expect(page.locator('html')).toHaveClass(/dark/)
   await expect(page.locator('body')).toHaveCSS('background-color', 'rgb(30, 41, 59)')
-  await expect(page.getByLabel('Open theme menu')).toHaveCSS('color', 'rgb(255, 255, 255)')
+  await expect(page.getByLabel('Open theme menu')).toHaveCSS(
+    'color',
+    'rgb(255, 255, 255)',
+  )
 
   await page.getByPlaceholder('Search posts').fill('graphql')
   await expect(page.getByText('GraphQL Typeguards', { exact: true })).toBeVisible()
+  await expect(page.getByRole('link', { name: /How to build a datepicker/ })).toBeHidden()
+
+  await page.getByRole('searchbox', { name: 'Search posts' }).fill('no such post')
+  await expect(page.getByText('No posts match no such post.')).toBeVisible()
+  await expect(page.getByRole('status')).toHaveText('0 posts found.')
+
+  await page.getByRole('searchbox', { name: 'Search posts' }).fill('  FRANCAIS  ')
+  await expect(
+    page.getByRole('link', { name: /Reconversion dans une carrière/ }),
+  ).toBeVisible()
+  await expect(page.getByRole('status')).toHaveText('1 post found.')
+
+  await page.getByRole('searchbox', { name: 'Search posts' }).fill('')
+  await expect(
+    page.getByRole('link', { name: /How to build a datepicker/ }),
+  ).toBeVisible()
+  await expect(page.getByText('No posts match', { exact: false })).toBeHidden()
 })
+
+test('posts remain readable and navigable without JavaScript', async ({ browser }) => {
+  const context = await browser.newContext({ javaScriptEnabled: false })
+  const page = await context.newPage()
+  await page.goto('/')
+  await expect(page.getByRole('searchbox')).toBeHidden()
+  await page.getByRole('link', { name: /GraphQL Typeguards/ }).click()
+  await expect(page.getByRole('heading', { level: 1 })).toContainText(
+    'GraphQL Typeguards',
+  )
+  await context.close()
+})
+
+test('accordion demo becomes interactive when scrolled into view', async ({ page }) => {
+  await page.goto('/blog/2022/compound-component-pattern')
+  const toggle = page.getByRole('button', { name: 'Other posts that might interest you' })
+  await toggle.scrollIntoViewIfNeeded()
+  await toggle.click()
+  await expect(toggle).toHaveAttribute('aria-expanded', 'true')
+  await expect(
+    page.getByRole('link', { name: /How to build a datepicker/ }).first(),
+  ).toBeVisible()
+  await toggle.click()
+  await expect(toggle).toHaveAttribute('aria-expanded', 'false')
+})
+
+for (const width of [1280, 390]) {
+  test(`datepicker hydrates and selects a date at ${width}px`, async ({ page }) => {
+    const errors: string[] = []
+    page.on('pageerror', (error) => errors.push(error.message))
+    page.on('console', (message) => {
+      if (message.type() === 'error') errors.push(message.text())
+    })
+    await page.setViewportSize({ width, height: 800 })
+    await page.clock.setFixedTime(new Date('2030-06-15T12:00:00Z'))
+    await page.goto('/blog/2022/how-to-build-datepicker')
+    const input = page.getByLabel('Your birthday', { exact: true })
+    await input.scrollIntoViewIfNeeded()
+    await expect(input).toHaveValue('')
+    await input.click()
+    await page.getByRole('button', { name: '6/20/2030', exact: true }).click()
+    await expect(input).toHaveValue('Thursday, 20 June 2030')
+    expect(errors).toEqual([])
+  })
+}
 
 test('english posts render at cleaned urls', async ({ page }) => {
   await page.goto('/blog/2022/how-to-build-datepicker')

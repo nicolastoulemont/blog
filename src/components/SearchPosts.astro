@@ -1,0 +1,84 @@
+---
+import type { BlogPostSummary } from '~/lib/blog-core'
+import { PostCard } from './PostCard'
+
+interface Props {
+  posts: BlogPostSummary[]
+}
+
+const { posts } = Astro.props
+---
+
+<section data-post-search>
+  <div class="py-6">
+    <h2 class="mb-6 text-xl font-bold text-slate-800 sm:text-3xl dark:text-white">
+      Posts
+    </h2>
+    <div data-search-controls hidden>
+      <label for="search" class="sr-only">Search posts</label>
+      <input
+        id="search"
+        name="search"
+        type="search"
+        autocomplete="off"
+        placeholder="Search posts"
+        class="w-full rounded-lg bg-white text-slate-800 outline-none placeholder:text-slate-800 dark:border-black dark:bg-slate-900 dark:text-white dark:placeholder:text-white"
+      />
+    </div>
+  </div>
+
+  <div
+    aria-hidden="true"
+    class="mb-6 h-0.5 w-full rounded bg-slate-200 dark:bg-slate-900"
+  >
+  </div>
+  <p role="status" class="sr-only"></p>
+  <p data-no-results hidden class="py-8 text-center text-slate-600 dark:text-slate-300">
+    No posts match <span class="font-medium text-slate-950 dark:text-slate-50"></span>.
+  </p>
+  <div class="grid grid-cols-1 gap-2 md:grid-cols-2 md:gap-4">
+    {
+      posts.map((post) => (
+        <div
+          data-post
+          data-search={[
+            post.title,
+            post.description,
+            post.localeLabel,
+            ...post.categories,
+          ]
+            .map((field) => field.toLowerCase())
+            .join('\n')}
+        >
+          <PostCard post={post} showLocale={false} />
+        </div>
+      ))
+    }
+  </div>
+</section>
+
+<script>
+  const root = document.querySelector<HTMLElement>('[data-post-search]')!
+  const input = root.querySelector<HTMLInputElement>('input')!
+  const cards = Array.from(root.querySelectorAll<HTMLElement>('[data-post]'))
+  const empty = root.querySelector<HTMLElement>('[data-no-results]')!
+  const status = root.querySelector<HTMLElement>('[role="status"]')!
+
+  function filterPosts() {
+    const query = input.value.trim().toLowerCase()
+    let count = 0
+
+    for (const card of cards) {
+      card.hidden = !card.dataset.search!.includes(query)
+      if (!card.hidden) count++
+    }
+
+    empty.hidden = count > 0
+    empty.querySelector('span')!.textContent = input.value
+    status.textContent = `${count} ${count === 1 ? 'post' : 'posts'} found.`
+  }
+
+  input.addEventListener('input', filterPosts)
+  root.querySelector<HTMLElement>('[data-search-controls]')!.hidden = false
+  filterPosts()
+</script>

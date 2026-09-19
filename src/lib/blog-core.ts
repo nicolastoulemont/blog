@@ -17,22 +17,16 @@ export interface BlogPostSummary {
   localeLabel: string
 }
 
-export interface SearchIndexItem {
-  categories: CategoryName[]
-  description: string
-  locale: SiteLocale
-  localeLabel: string
-  publishedAt: string
-  title: string
-  url: string
-  ogImage?: string
-}
-
 export function parseEntryId(id: string) {
   const [locale, year, ...slugParts] = id.split('/')
   const slug = slugParts.join('/')
 
-  if ((locale !== 'en' && locale !== 'fr') || !year || !slug) {
+  if (
+    (locale !== 'en' && locale !== 'fr') ||
+    !/^\d{4}$/.test(year ?? '') ||
+    !slug ||
+    slugParts.length !== 1
+  ) {
     throw new Error(`Invalid blog entry id: ${id}`)
   }
 
@@ -83,23 +77,11 @@ export function getTranslation<T extends Pick<BlogPostSummary, 'locale' | 'trans
   })
 }
 
-export function toSearchIndex(posts: BlogPostSummary[]): SearchIndexItem[] {
-  return posts.map((post) => ({
-    categories: post.categories,
-    description: post.description,
-    locale: post.locale,
-    localeLabel: post.localeLabel,
-    publishedAt: post.publishedAt,
-    title: post.title,
-    url: post.url,
-    ogImage: post.ogImage,
-  }))
-}
-
 export function toBlogSummary<
   T extends {
     data: {
       title: string
+      locale: SiteLocale
       description: string
       publishedAt: string
       updatedAt?: string
@@ -111,6 +93,10 @@ export function toBlogSummary<
   },
 >(entry: T): BlogPostSummary {
   const { locale, year, slug } = parseEntryId(entry.id)
+
+  if (entry.data.locale !== locale) {
+    throw new Error(`Blog locale does not match its directory: ${entry.id}`)
+  }
 
   return {
     id: entry.id,

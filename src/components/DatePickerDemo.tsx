@@ -2,7 +2,7 @@ import { useState } from 'react'
 import { DatePicker } from './react/DatePicker/DatePicker'
 
 export function DatePickerDemo() {
-  const [value, setValue] = useState<Date>(new Date())
+  const [value, setValue] = useState<Date>()
 
   return (
     <div className="h-auto w-[300px]">

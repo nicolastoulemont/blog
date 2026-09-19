@@ -1,10 +1,9 @@
 ---
-import { SearchPosts } from '~/components/SearchPosts'
+import SearchPosts from '~/components/SearchPosts.astro'
 import BaseLayout from '~/layouts/BaseLayout.astro'
-import { getAllPosts, toSearchIndex } from '~/lib/blog'
+import { getAllPosts } from '~/lib/blog'
 
 const posts = await getAllPosts()
-const searchIndex = toSearchIndex(posts)
 ---
 
 <BaseLayout pathname="/">
@@ -18,6 +17,6 @@ const searchIndex = toSearchIndex(posts)
       </p>
     </section>
 
-    <SearchPosts client:load posts={searchIndex} />
+    <SearchPosts posts={posts} />
   </main>
 </BaseLayout>
