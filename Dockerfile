@@ -1,55 +1,18 @@
-# base node image
-FROM node:22-bullseye-slim as base
+FROM node:22-bullseye-slim AS build
 
-RUN npm install -g pnpm
+RUN npm install --global pnpm
 
-# Install all node_modules, including dev dependencies
-FROM base as deps
-
-RUN mkdir /app
 WORKDIR /app
 
-ADD package.json pnpm-lock.yaml ./
-RUN pnpm i --prefer-offline
+COPY package.json pnpm-lock.yaml ./
+RUN pnpm install --frozen-lockfile
 
-# Setup production node_modules
-FROM base as production-deps
-
-RUN mkdir /app
-WORKDIR /app
-
-COPY --from=deps /app/node_modules /app/node_modules
-ADD package.json pnpm-lock.yaml ./
-RUN pnpm prune --prod
-
-# Build the app
-FROM base as build
-
-ENV NODE_ENV=production
-
-RUN mkdir /app
-WORKDIR /app
-
-COPY --from=deps /app/node_modules /app/node_modules
-
-ADD . .
+COPY . .
 RUN pnpm build
 
-# Finally, build the production image with minimal footprint
-FROM base
+FROM nginx:alpine AS runtime
 
-ENV NODE_ENV=production
+COPY nginx/nginx.conf /etc/nginx/nginx.conf
+COPY --from=build /app/dist /usr/share/nginx/html
 
-RUN mkdir /app
-WORKDIR /app
-
-COPY --from=production-deps /app/node_modules /app/node_modules
-
-# Uncomment if using Prisma
-# COPY --from=build /app/node_modules/.prisma /app/node_modules/.prisma
-
-COPY --from=build /app/build /app/build
-COPY --from=build /app/public /app/public
-ADD . .
-
-CMD ["pnpm", "start"]
+EXPOSE 8080
