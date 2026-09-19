@@ -37,7 +37,7 @@ export function SearchPosts({ posts }: SearchPostsProps) {
           autoComplete="off"
           value={query}
           placeholder="Search posts"
-          className="w-full rounded-lg bg-white text-slate-800 placeholder:text-slate-800 outline-none dark:bg-slate-900 dark:text-white dark:placeholder:text-white"
+          className="w-full rounded-lg bg-white text-slate-800 placeholder:text-slate-800 outline-none dark:border-black dark:bg-slate-900 dark:text-white dark:placeholder:text-white"
           onChange={(event) => {
             const nextValue = event.currentTarget.value
             startTransition(() => setQuery(nextValue))
@@ -54,7 +54,7 @@ export function SearchPosts({ posts }: SearchPostsProps) {
       ) : (
         <div className="grid grid-cols-1 gap-2 md:grid-cols-2 md:gap-4">
           {filteredPosts.map((post) => (
-            <PostCard key={post.url} post={post} />
+            <PostCard key={post.url} post={post} showLocale={false} />
           ))}
         </div>
       )}

@@ -3,13 +3,16 @@ import { expect, test } from '@playwright/test'
 test('homepage search and theme toggle work', async ({ page }) => {
   await page.goto('/')
 
-  await expect(page.getByRole('heading', { level: 1 })).toContainText('Writing about')
+  await expect(page.getByRole('heading', { level: 1 })).toContainText("Hi, I'm Nicolas Toulemont")
+  await expect(page.getByText('EN', { exact: true })).toHaveCount(0)
   await page.getByLabel('Open theme menu').click()
   await page.getByRole('menuitem', { name: 'Dark' }).click()
   await expect(page.locator('html')).toHaveClass(/dark/)
+  await expect(page.locator('body')).toHaveCSS('background-color', 'rgb(30, 41, 59)')
+  await expect(page.getByLabel('Open theme menu')).toHaveCSS('color', 'rgb(255, 255, 255)')
 
-  await page.getByLabel('Search all posts').fill('graphql')
-  await expect(page.getByRole('link', { name: /GraphQL Typeguards/i })).toBeVisible()
+  await page.getByPlaceholder('Search posts').fill('graphql')
+  await expect(page.getByText('GraphQL Typeguards', { exact: true })).toBeVisible()
 })
 
 test('english posts render at cleaned urls', async ({ page }) => {

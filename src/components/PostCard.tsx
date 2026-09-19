@@ -29,7 +29,7 @@ export function PostCard({ post, showLocale = true }: PostCardProps) {
             </div>
             <span className="text-xs">{formatDisplayDate(post.publishedAt, post.locale)}</span>
           </div>
-          <p className="text-sm text-slate-700 dark:text-slate-300">{post.description}</p>
+          <p className="text-sm">{post.description}</p>
         </div>
         {post.ogImage ? (
           <div className="my-6 flex w-full items-center justify-center md:w-14 md:py-0">
