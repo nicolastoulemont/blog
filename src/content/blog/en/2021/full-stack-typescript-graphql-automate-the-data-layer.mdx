@@ -398,7 +398,7 @@ It will generate a file in `gql-gen/index.tsx` that will contains our custom ful
 
 Right now as the queries perfectly match the graphql schema the script will successfully execute and will print the following to the console :
 
-![successful code generation console log prints](/img/gql-code-gen-success-min.png)
+![successful code generation console log prints](~/assets/gql-code-gen-success-min.png)
 
 And now we can verify that we have our custom in the generated files where we have all our types and our custom hooks :
 
@@ -527,8 +527,8 @@ export default function Home() {
 
 And we will also get some nice autocompletion and errors without having to manually write (and maintain) any Typescript types :
 
-![autocomplete from custom hook](/img/custom-hook-autocompletion-one-min.png)
-![autocomplete from custom hook](/img/custom-hook-autocompletion-two-min.png)
+![autocomplete from custom hook](~/assets/custom-hook-autocompletion-one-min.png)
+![autocomplete from custom hook](~/assets/custom-hook-autocompletion-two-min.png)
 
 But what if their is a mismatch between one of the queries and the graphql schema ?
 
@@ -560,7 +560,7 @@ export const GET_USER_BY_ID = gql`
 This would usually lead to a graphql validation error in development or in production if it's not catched before deployment.
 In our case, our script will error out and give us the following error in the console:
 
-![unsuccessfull code generation console log prints](/img/gql-code-gen-error-min.png)
+![unsuccessfull code generation console log prints](~/assets/gql-code-gen-error-min.png)
 
 This will allow us to find and fix the bug without even having to switch back to our app and see that their is something wrong.
 

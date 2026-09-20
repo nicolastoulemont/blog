@@ -19,7 +19,7 @@ Over the last 12 years, we've seen a lot of new general purpose UI rendering lib
 The frontend ecosystem experimented a lot with each of these frameworks, re-inventing the wheel many times (how many framework specific routers, datepickers and selects/multi-selects were built in the last 12 years?).
 For a time, the tight coupling between UI frameworks and their surrounding ecosystem became the norm.
 
-![tightly coupled](/img/tight-coupling-framework-lib.png)
+![tightly coupled](~/assets/tight-coupling-framework-lib.png)
 
 A short while after, and maybe has a response to this tight coupling, the concept of [headless ui](https://www.merrickchristensen.com/articles/headless-user-interface-components/) got some traction.
 
@@ -48,7 +48,7 @@ Some other were built from the start with a multiframework goal [Zagjs](https://
 
 Design pattern wise, for these frontend libraries, the most common one I've seen adopted to serve these multiframework is, unsurprisingly, the [adapter pattern](https://en.wikipedia.org/wiki/Adapter_pattern).
 
-![core-adapter-framework](/img/core-adapters-consumers.png)
+![core-adapter-framework](~/assets/core-adapters-consumers.png)
 
 Now let's take a look at a few of these multiframework tools:
 
@@ -85,7 +85,7 @@ Instead, it has a different implementation for each framework.
 
 ### The Tan stack
 
-![tan stack](/img/tan-stack.png)
+![tan stack](~/assets/tan-stack.png)
 
 The "[Tan Stack](https://tanstack.com/)" is a great example for the rise of a multiframework approach (supporting pretty much every UI rendering framework except Angular).
 Built by [Tanner Linsley](https://twitter.com/tannerlinsley), it's a small set of libraries ([query](https://tanstack.com/query/v4), [table](https://tanstack.com/table/v8), [virtual](https://tanstack.com/virtual/v3), [router](https://tanstack.com/router/v4)) but originally around react that have (or are in the process of) migrated to a multiframework approach.

@@ -13,6 +13,7 @@ export default defineConfig({
     '/blog/fr/[year]/[slug]': '/fr/blog/[year]/[slug]',
   },
   compressHTML: true,
+  image: { layout: 'constrained' },
   devToolbar: {
     enabled: process.env.BLOG_E2E !== '1',
   },
