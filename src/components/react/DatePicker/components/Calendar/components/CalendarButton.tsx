@@ -15,12 +15,12 @@ export const CalendarButton = forwardRef<HTMLButtonElement, CalendarButtonProps>
           isSelected
             ? 'dark:hover-bg-blue-900 bg-blue-500 hover:bg-blue-500 dark:bg-blue-900'
             : '',
-          className
+          className,
         )}
         {...restProps}
       >
         {children}
       </button>
     )
-  }
+  },
 )

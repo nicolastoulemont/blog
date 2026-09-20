@@ -1,11 +1,11 @@
 ---
-title: "Full Stack Typescript GraphQL - Automate the data layer"
-description: "Leverage GraphQL & Typescript codegen, documentation and observability across the stack"
-publishedAt: "2021-01-18"
+title: 'Full Stack Typescript GraphQL - Automate the data layer'
+description: 'Leverage GraphQL & Typescript codegen, documentation and observability across the stack'
+publishedAt: '2021-01-18'
 categories:
-  - "GraphQL"
-locale: "en"
-ogImage: "/img/thumbnail-ts-gql.png"
+  - 'GraphQL'
+locale: 'en'
+ogImage: '/img/thumbnail-ts-gql.png'
 ---
 
 Building a modern web application usually means building both an API and a client side application.
@@ -437,19 +437,19 @@ export const UserByIdDocument = gql`
  * });
  */
 export function useUserByIdQuery(
-  baseOptions: Apollo.QueryHookOptions<UserByIdQuery, UserByIdQueryVariables>
+  baseOptions: Apollo.QueryHookOptions<UserByIdQuery, UserByIdQueryVariables>,
 ) {
   return Apollo.useQuery<UserByIdQuery, UserByIdQueryVariables>(
     UserByIdDocument,
-    baseOptions
+    baseOptions,
   )
 }
 export function useUserByIdLazyQuery(
-  baseOptions?: Apollo.LazyQueryHookOptions<UserByIdQuery, UserByIdQueryVariables>
+  baseOptions?: Apollo.LazyQueryHookOptions<UserByIdQuery, UserByIdQueryVariables>,
 ) {
   return Apollo.useLazyQuery<UserByIdQuery, UserByIdQueryVariables>(
     UserByIdDocument,
-    baseOptions
+    baseOptions,
   )
 }
 export type UserByIdQueryHookResult = ReturnType<typeof useUserByIdQuery>
@@ -490,12 +490,12 @@ export const UsersDocument = gql`
  * });
  */
 export function useUsersQuery(
-  baseOptions?: Apollo.QueryHookOptions<UsersQuery, UsersQueryVariables>
+  baseOptions?: Apollo.QueryHookOptions<UsersQuery, UsersQueryVariables>,
 ) {
   return Apollo.useQuery<UsersQuery, UsersQueryVariables>(UsersDocument, baseOptions)
 }
 export function useUsersLazyQuery(
-  baseOptions?: Apollo.LazyQueryHookOptions<UsersQuery, UsersQueryVariables>
+  baseOptions?: Apollo.LazyQueryHookOptions<UsersQuery, UsersQueryVariables>,
 ) {
   return Apollo.useLazyQuery<UsersQuery, UsersQueryVariables>(UsersDocument, baseOptions)
 }

@@ -2,7 +2,7 @@ export const currentYear = new Date().getFullYear()
 
 export function getYearsRange(
   from: number = currentYear - 80,
-  to: number = currentYear + 80
+  to: number = currentYear + 80,
 ) {
   const years: number[] = []
 

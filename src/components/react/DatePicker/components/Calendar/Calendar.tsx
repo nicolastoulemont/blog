@@ -26,7 +26,7 @@ export function Calendar({ onClose, calendarInitialRef, triggerRef }: CalendarPr
       initial={false}
       animate={{ height: state.view === 'days' ? heights.days : heights.others }}
       transition={{ bounce: 0, duration: 0.3, ease: 'circOut' }}
-      className="w-[360px] overflow-hidden rounded-2xl bg-white p-4 dark:bg-slate-900 sm:w-[330px]"
+      className="w-[360px] overflow-hidden rounded-2xl bg-white p-4 sm:w-[330px] dark:bg-slate-900"
     >
       <Header
         calendarInitialRef={calendarInitialRef}

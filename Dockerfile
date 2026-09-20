@@ -1,10 +1,9 @@
-FROM node:22-bullseye-slim AS build
-
-RUN npm install --global pnpm
+FROM node:24-bookworm-slim AS build
 
 WORKDIR /app
 
 COPY package.json pnpm-lock.yaml pnpm-workspace.yaml ./
+RUN npm install --global "$(node --print 'require("./package.json").packageManager')"
 RUN pnpm install --frozen-lockfile
 
 COPY . .

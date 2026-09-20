@@ -1,0 +1,16 @@
+{
+  "$schema": "./node_modules/oxlint/configuration_schema.json",
+  "plugins": ["typescript", "unicorn", "oxc", "react"],
+  "categories": {
+    "correctness": "error"
+  },
+  "ignorePatterns": ["dist/**", ".astro/**", "playwright-report/**", "test-results/**"],
+  "options": {
+    "typeAware": true
+  },
+  "rules": {
+    "typescript/no-floating-promises": "error",
+    "typescript/no-misused-promises": "error",
+    "typescript/await-thenable": "error"
+  }
+}

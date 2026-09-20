@@ -1,12 +1,12 @@
 ---
-title: "The compound component pattern"
-description: "A flexible component authoring pattern to give consumers a composition-based API"
-publishedAt: "2022-12-19"
+title: 'The compound component pattern'
+description: 'A flexible component authoring pattern to give consumers a composition-based API'
+publishedAt: '2022-12-19'
 categories:
-  - "React"
-  - "Architecture"
-locale: "en"
-ogImage: "/img/couches.png"
+  - 'React'
+  - 'Architecture'
+locale: 'en'
+ogImage: '/img/couches.png'
 ---
 
 import { Container, AccordionDemo } from '~/components'
@@ -128,7 +128,7 @@ export interface AccordionRootProps extends WrapperDivProps {
 
 export const Root = forwardRef<HTMLDivElement, AccordionRootProps>(function Root(
   { children, isOpen, onChange, className, ...props },
-  ref
+  ref,
 ) {
   const id = useId()
 
@@ -139,7 +139,7 @@ export const Root = forwardRef<HTMLDivElement, AccordionRootProps>(function Root
         {...props}
         className={clsx(
           'rounded-2xl border border-solid border-gray-200 shadow-sm transition-shadow duration-300 hover:shadow-md',
-          className
+          className,
         )}
       >
         {children}
@@ -169,7 +169,7 @@ export type AccordionHeaderProps = ComponentProps<'button'>
 
 export const Header = forwardRef<HTMLButtonElement, AccordionHeaderProps>(function Header(
   { children, className, ...props },
-  ref
+  ref,
 ) {
   const { isOpen, onToggleChange, id } = useAccordion()
 
@@ -182,10 +182,10 @@ export const Header = forwardRef<HTMLButtonElement, AccordionHeaderProps>(functi
         aria-expanded={isOpen}
         onClick={onToggleChange}
         className={clsx(
-          'flex w-full flex-grow items-center justify-between rounded-t-2xl p-4 ',
+          'flex w-full flex-grow items-center justify-between rounded-t-2xl p-4',
           isOpen && 'border-b border-gray-200',
           !isOpen && 'rounded-b-2xl',
-          className
+          className,
         )}
         {...props}
       >
@@ -218,7 +218,7 @@ const MotionChevronDownIcon = motion(ChevronDownIcon)
 
 export const Icon = forwardRef<SVGSVGElement, AccordionIconProps>(function (
   { className, ...props },
-  ref
+  ref,
 ) {
   const { isOpen } = useAccordion()
 
@@ -257,7 +257,7 @@ const variants = {
 
 export const Panel = forwardRef<HTMLDivElement, AccordionPanelProps>(function Panel(
   { children, className, ...props },
-  ref
+  ref,
 ) {
   const { isOpen, id } = useAccordion()
 

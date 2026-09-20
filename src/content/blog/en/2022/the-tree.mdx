@@ -1,11 +1,11 @@
 ---
-title: "The Tree"
-description: "Typescript implementation of a tree."
-publishedAt: "2022-12-23"
+title: 'The Tree'
+description: 'Typescript implementation of a tree.'
+publishedAt: '2022-12-23'
 categories:
-  - "Data Structures"
-locale: "en"
-ogImage: "/img/hierarchical-structure.png"
+  - 'Data Structures'
+locale: 'en'
+ogImage: '/img/hierarchical-structure.png'
 ---
 
 ## What is a Tree ?
@@ -98,12 +98,12 @@ export class Tree {
   }
 
   *traverse(node = this.root): Iterable<Node> {
-    if(!node) return
+    if (!node) return
     const queue: Node[] = [node]
-    while(queue.length > 0) {
+    while (queue.length > 0) {
       const current = queue.shift()
       yield current
-      if(current.children.length > 0) {
+      if (current.children.length > 0) {
         queue.push(...current.children)
       }
     }

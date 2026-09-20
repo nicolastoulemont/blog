@@ -1,11 +1,11 @@
 ---
-title: "How to build custom plugins for GraphQL Nexus"
-description: "Buiding typesafe field level plugins  to run field level middlewares with the graphql nexus framework."
-publishedAt: "2021-04-19"
+title: 'How to build custom plugins for GraphQL Nexus'
+description: 'Buiding typesafe field level plugins  to run field level middlewares with the graphql nexus framework.'
+publishedAt: '2021-04-19'
 categories:
-  - "GraphQL"
-locale: "en"
-ogImage: "/img/thumbnail-ts-nexus.png"
+  - 'GraphQL'
+locale: 'en'
+ogImage: '/img/thumbnail-ts-nexus.png'
 ---
 
 Most, if not all, API layers end up needing some way to create, manage and execute some form of abstract logic during the request and response cycle.
@@ -51,7 +51,7 @@ export const OperationLoggerPlugin = plugin({
       console.log(
         `${info.operation.operation} ${info.operation.name.value} took ${
           endTimeMs - startTimeMs
-        } ms`
+        } ms`,
       )
       return value
     }
@@ -132,8 +132,8 @@ export const fieldAuthorizationPlugin = plugin({
         new Error(
           `The auth property provided to ${config.fieldConfig.name} with type ${
             config.fieldConfig.type
-          } should be a function, saw ${typeof authorization}`
-        )
+          } should be a function, saw ${typeof authorization}`,
+        ),
       )
       return
     }

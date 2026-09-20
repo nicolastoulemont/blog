@@ -35,7 +35,11 @@ export function AccordionDemo() {
           {SUGGESTED_POSTS.map((post, index) => (
             <li
               key={post.href}
-              className={index === SUGGESTED_POSTS.length - 1 ? 'p-4' : 'border-b border-slate-200 p-4 dark:border-slate-800'}
+              className={
+                index === SUGGESTED_POSTS.length - 1
+                  ? 'p-4'
+                  : 'border-b border-slate-200 p-4 dark:border-slate-800'
+              }
             >
               <a
                 href={post.href}
@@ -49,7 +53,7 @@ export function AccordionDemo() {
                     {post.description}
                   </p>
                 </div>
-                <span className="shrink-0 whitespace-nowrap rounded-full border border-slate-200 bg-slate-100 px-2 py-1 text-sm text-slate-700 dark:border-slate-700 dark:bg-slate-800 dark:text-slate-200">
+                <span className="shrink-0 rounded-full border border-slate-200 bg-slate-100 px-2 py-1 text-sm whitespace-nowrap text-slate-700 dark:border-slate-700 dark:bg-slate-800 dark:text-slate-200">
                   {post.category}
                 </span>
               </a>

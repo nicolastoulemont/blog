@@ -1,12 +1,12 @@
 ---
-title: "Immutable vs mutable, a recent use-case where purity and immutability caused performance issues"
-description: "Using a mutable approach may lead to enormous performance gains."
-publishedAt: "2022-05-01"
+title: 'Immutable vs mutable, a recent use-case where purity and immutability caused performance issues'
+description: 'Using a mutable approach may lead to enormous performance gains.'
+publishedAt: '2022-05-01'
 categories:
-  - "General"
-  - "React"
-locale: "en"
-ogImage: "/img/growth.png"
+  - 'General'
+  - 'React'
+locale: 'en'
+ogImage: '/img/growth.png'
 ---
 
 ## A bit of context
@@ -31,7 +31,7 @@ These functions would be called with the `<Box />` props and return the desired 
 function mapPropsToMargin({ margin, marginLeft, marginRight, marginTop, marginBottom }) {
   return {
     margin: transformToken(
-      margin || marginLeft || marginRight || marginTop || marginBottom
+      margin || marginLeft || marginRight || marginTop || marginBottom,
     ),
     marginLeft: transformToken(marginLeft),
     marginRight: transformToken(marginRight),

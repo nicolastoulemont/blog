@@ -60,9 +60,9 @@ export function AnimatedViewWrapper({
 
   const handleDrag = (_: MouseEvent | TouchEvent | PointerEvent, info: PanInfo) => {
     if (info.offset.x < -75) {
-      onDragLeft && onDragLeft()
+      onDragLeft?.()
     } else if (info.offset.x > 75) {
-      onDragRight && onDragRight()
+      onDragRight?.()
     }
   }
 

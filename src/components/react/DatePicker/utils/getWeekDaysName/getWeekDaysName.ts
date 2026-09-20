@@ -11,17 +11,17 @@ const tue = new Date(1970, 0, 6)
 const wed = new Date(1970, 0, 7)
 
 export function getWeekDaysName(locale: Locale = 'en-GB', weekday: WeekDay = 'long') {
-  const { format } = new Intl.DateTimeFormat(locale, {
+  const formatter = new Intl.DateTimeFormat(locale, {
     weekday,
   })
 
   return [
-    format(mon),
-    format(tue),
-    format(wed),
-    format(thu),
-    format(fri),
-    format(sat),
-    format(sun),
+    formatter.format(mon),
+    formatter.format(tue),
+    formatter.format(wed),
+    formatter.format(thu),
+    formatter.format(fri),
+    formatter.format(sat),
+    formatter.format(sun),
   ]
 }

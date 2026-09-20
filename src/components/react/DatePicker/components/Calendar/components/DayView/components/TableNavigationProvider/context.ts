@@ -6,7 +6,7 @@ export interface TableNavigationValues {
   handleKeyboardNavigation: (
     event: KeyboardEvent<HTMLButtonElement>,
     rowIndex: number,
-    colIndex: number
+    colIndex: number,
   ) => void
 }
 

@@ -22,7 +22,7 @@ ${urls
     <loc>${entry.loc}</loc>
     <lastmod>${entry.lastmod}</lastmod>
     <priority>1.0</priority>
-  </url>`
+  </url>`,
   )
   .join('\n')}
 </urlset>`

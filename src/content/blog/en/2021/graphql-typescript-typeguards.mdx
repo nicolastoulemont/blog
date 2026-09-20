@@ -1,11 +1,11 @@
 ---
-title: "GraphQL Typeguards"
-description: "Exploring a few helpful graphql focus typeguards such as isType, isEither, isNot, isTypeInTuple"
-publishedAt: "2021-05-10"
+title: 'GraphQL Typeguards'
+description: 'Exploring a few helpful graphql focus typeguards such as isType, isEither, isNot, isTypeInTuple'
+publishedAt: '2021-05-10'
 categories:
-  - "GraphQL"
-locale: "en"
-ogImage: "/img/thumbnail-ts-gql.png"
+  - 'GraphQL'
+locale: 'en'
+ogImage: '/img/thumbnail-ts-gql.png'
 ---
 
 When working with GraphQL, one will sometimes need to assert the type of the response.
@@ -126,7 +126,7 @@ type ValueOfTypename<T extends GraphQLResult> = T['__typename']
 
 function isType<Result extends GraphQLResult, Typename extends ValueOfTypename<Result>>(
   result: Result,
-  typename: Typename
+  typename: Typename,
 ): result is Extract<Result, { __typename: Typename }> {
   return result?.__typename === typename
 }
@@ -205,7 +205,7 @@ Whose GraphQL return type is :
 
 ```graphql
 union UserResult =
-    ActiveUser
+  | ActiveUser
   | BannedUser
   | DeletedUser
   | InvalidArgumentsError
@@ -270,7 +270,7 @@ const [changeUserStatus] = useChangeUserStatusMutation({
         (changeUserStatus.__typename === 'ActiveUser' ||
           changeUserStatus.__typename === 'DeletedUser' ||
           changeUserStatus.__typename === 'BannedUser') &&
-        user.id !== changeUserStatus.id
+        user.id !== changeUserStatus.id,
     )
 
     cache.writeQuery({
@@ -297,7 +297,7 @@ const [changeUserStatus] = useChangeUserStatusMutation({
         (isType(changeUserStatus, 'ActiveUser') ||
           isType(changeUserStatus, 'DeletedUser') ||
           isType(changeUserStatus, 'BannedUser')) &&
-        user.id !== changeUserStatus.id
+        user.id !== changeUserStatus.id,
     )
 
     cache.writeQuery({
@@ -324,10 +324,10 @@ type ValueOfTypename<T extends GraphQLResult> = T['__typename']
 function isEither<
   Result extends GraphQLResult,
   Typename extends ValueOfTypename<Result>,
-  PossibleTypes extends Array<Typename>
+  PossibleTypes extends Array<Typename>,
 >(
   result: Result,
-  typenames: PossibleTypes
+  typenames: PossibleTypes,
 ): result is Extract<Result, { __typename: (typeof typenames)[number] }> {
   const types = typenames?.filter((type) => isType(result, type))
   return types ? types.length > 0 : false
@@ -353,7 +353,7 @@ const [changeUserStatus] = useChangeUserStatusMutation({
       (user) =>
         isEither(user, ['ActiveUser', 'BannedUser', 'DeletedUser']) &&
         isEither(changeUserStatus, ['ActiveUser', 'BannedUser', 'DeletedUser']) &&
-        user.id !== changeUserStatus.id
+        user.id !== changeUserStatus.id,
     )
 
     cache.writeQuery({
@@ -377,10 +377,10 @@ type ValueOfTypename<T extends GraphQLResult> = T['__typename']
 function isNot<
   Result extends GraphQLResult,
   Typename extends ValueOfTypename<Result>,
-  ExcludedTypes extends Array<Typename>
+  ExcludedTypes extends Array<Typename>,
 >(
   result: Result,
-  typenames: ExcludedTypes
+  typenames: ExcludedTypes,
 ): result is Exclude<Result, { __typename: (typeof typenames)[number] }> {
   const types = typenames?.filter((type) => isType(result, type))
   return types ? types.length === 0 : false
@@ -398,7 +398,7 @@ const [changeUserStatus] = useChangeUserStatusMutation({
       (user) =>
         isNot(user, ['UserAuthenticationError', 'InvalidArgumentsError']) &&
         isNot(changeUserStatus, ['UserAuthenticationError', 'InvalidArgumentsError']) &&
-        user.id !== changeUserStatus.id
+        user.id !== changeUserStatus.id,
     )
 
     cache.writeQuery({
@@ -422,7 +422,7 @@ In order to do that we will need to filter our users into three different arrays
 const { data, loading } = useUsersQuery()
 const activeUsers = useMemo(
   () => data?.users?.filter((user) => isType(user, 'ActiveUser')) ?? [],
-  [data]
+  [data],
 )
 ```
 
@@ -437,14 +437,14 @@ type ValueOfTypename<T extends GraphQLResult> = T['__typename']
 
 export function isTypeInTuple<
   ResultItem extends GraphQLResult,
-  Typename extends ValueOfTypename<ResultItem>
+  Typename extends ValueOfTypename<ResultItem>,
 >(
-  typename: Typename
+  typename: Typename,
 ): (
-  resultItem: ResultItem
+  resultItem: ResultItem,
 ) => resultItem is Extract<ResultItem, { __typename: Typename }> {
   return function (
-    resultItem: ResultItem
+    resultItem: ResultItem,
   ): resultItem is Extract<ResultItem, { __typename: Typename }> {
     return isType(resultItem, typename)
   }
@@ -463,7 +463,7 @@ This tell typescript what to expect from it. Now we can use it as follow:
 ```typescript
 const activeUsers = useMemo(
   () => data?.users?.filter(isTypeInTuple('ActiveUser')) ?? [],
-  [data]
+  [data],
 )
 ```
 

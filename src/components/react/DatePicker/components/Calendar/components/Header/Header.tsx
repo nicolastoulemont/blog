@@ -23,12 +23,12 @@ export function Header({ calendarInitialRef, headerLastBtnRef }: HeaderProps) {
   const previousMonthLabel = `Show ${formatDate(
     new Date(state.calendarDate.getFullYear(), state.calendarDate.getMonth() - 1, 1),
     locale,
-    { month: 'long' }
+    { month: 'long' },
   )}`
   const nextMonthLabel = `Show ${formatDate(
     new Date(state.calendarDate.getFullYear(), state.calendarDate.getMonth() + 1, 1),
     locale,
-    { month: 'long' }
+    { month: 'long' },
   )}`
 
   const currentMonth = currentMonthRaw.charAt(0).toUpperCase() + currentMonthRaw.slice(1)

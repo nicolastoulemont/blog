@@ -13,7 +13,7 @@ export type AccordionIconProps = Omit<
 
 export const Icon = forwardRef<HTMLSpanElement, AccordionIconProps>(function (
   { className, ...props },
-  ref
+  ref,
 ) {
   const { isOpen } = useAccordion()
 

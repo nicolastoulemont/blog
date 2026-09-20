@@ -1,12 +1,12 @@
 ---
-title: "How to build a datepicker from scratch"
-description: "Building a nice datepicker with animations and gesture support"
-publishedAt: "2022-11-20"
+title: 'How to build a datepicker from scratch'
+description: 'Building a nice datepicker with animations and gesture support'
+publishedAt: '2022-11-20'
 categories:
-  - "React"
-  - "Animations"
-locale: "en"
-ogImage: "/img/calendrier.png"
+  - 'React'
+  - 'Animations'
+locale: 'en'
+ogImage: '/img/calendrier.png'
 ---
 
 import { Container, DatePickerDemo } from '~/components'
@@ -187,7 +187,7 @@ export function DatePickerMobile() {
             leaveFrom="opacity-100"
             leaveTo="opacity-0"
           >
-            <div aria-hidden="true" className="fixed inset-0 bg-gray-800 bg-opacity-25" />
+            <div aria-hidden="true" className="bg-opacity-25 fixed inset-0 bg-gray-800" />
           </Transition.Child>
           <div className="fixed inset-0 overflow-y-auto">
             <div className="flex min-h-full items-end justify-center text-center">
@@ -305,12 +305,12 @@ export function Header({ calendarInitialRef }: HeaderProps) {
   const previousMonthLabel = `Show ${formatDate(
     new Date(state.calendarDate.getFullYear(), state.calendarDate.getMonth() - 1, 1),
     locale,
-    { month: 'long' }
+    { month: 'long' },
   )}`
   const nextMonthLabel = `Show ${formatDate(
     new Date(state.calendarDate.getFullYear(), state.calendarDate.getMonth() + 1, 1),
     locale,
-    { month: 'long' }
+    { month: 'long' },
   )}`
 
   const currentMonth = currentMonthRaw.charAt(0).toUpperCase() + currentMonthRaw.slice(1)
@@ -399,7 +399,7 @@ export function DayView({ onClose }: DayViewProps) {
             <div
               key={day}
               aria-hidden
-              className="flex h-10 w-10 items-center justify-center text-sm font-normal text-slate-600 dark:text-gray-400 sm:h-9 sm:w-9"
+              className="flex h-10 w-10 items-center justify-center text-sm font-normal text-slate-600 sm:h-9 sm:w-9 dark:text-gray-400"
             >
               {day}
             </div>
@@ -486,7 +486,7 @@ export function TableNavigationProvider({
   function handleKeyboardNavigation(
     event: KeyboardEvent<HTMLButtonElement>,
     rowIndex: number,
-    colIndex: number
+    colIndex: number,
   ) {
     event.preventDefault()
     switch (event.code) {

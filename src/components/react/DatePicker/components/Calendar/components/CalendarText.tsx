@@ -18,7 +18,7 @@ export function CalendarText({
     <span
       className={clsx(
         'text-base font-medium transition-colors sm:text-sm',
-        TEXT_VARIANTS[variant]
+        TEXT_VARIANTS[variant],
       )}
     >
       {children}

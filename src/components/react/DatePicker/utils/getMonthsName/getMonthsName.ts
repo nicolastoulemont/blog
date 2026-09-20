@@ -6,11 +6,11 @@ type Local = Locale
 type Month = 'numeric' | '2-digit' | 'long' | 'short' | 'narrow' | undefined
 
 export function getMonthsName(local: Local = 'en-GB', month: Month = 'long') {
-  const { format } = new Intl.DateTimeFormat(local, {
+  const formatter = new Intl.DateTimeFormat(local, {
     month,
   })
 
   return Array(12)
     .fill(null)
-    .map((_, index) => format(new Date(currentYear, index, 1)))
+    .map((_, index) => formatter.format(new Date(currentYear, index, 1)))
 }

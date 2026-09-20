@@ -1,17 +1,9 @@
 node_modules
 
-.cache
 .astro
 .env
-.output
 dist
 playwright-report
 test-results
 
-/build/
-/public/build
-
 .DS_Store
-
-## Chromatic
-storybook-static

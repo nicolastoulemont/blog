@@ -32,7 +32,7 @@ export const Provider = ({
 
   const onToggleChange = () => {
     setIsOpen((isOpen) => {
-      onChange && onChange(!isOpen)
+      onChange?.(!isOpen)
 
       return !isOpen
     })

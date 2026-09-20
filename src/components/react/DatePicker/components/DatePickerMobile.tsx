@@ -47,7 +47,7 @@ export function DatePickerMobile() {
             leaveFrom="opacity-100"
             leaveTo="opacity-0"
           >
-            <div aria-hidden="true" className="fixed inset-0 bg-gray-800 bg-opacity-25" />
+            <div aria-hidden="true" className="bg-opacity-25 fixed inset-0 bg-gray-800" />
           </Transition.Child>
           <div className="fixed inset-0 overflow-y-auto">
             <div className="flex min-h-full items-end justify-center text-center">

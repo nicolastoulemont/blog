@@ -17,7 +17,7 @@ const variants = {
 
 export const Panel = forwardRef<HTMLDivElement, AccordionPanelProps>(function Panel(
   { children, className, ...props },
-  ref
+  ref,
 ) {
   const { isOpen, id } = useAccordion()
 

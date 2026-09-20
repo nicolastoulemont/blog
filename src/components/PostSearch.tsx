@@ -28,6 +28,7 @@ export function PostSearch({ posts, locale }: Props) {
   const ui = UI_STRINGS[locale]
 
   useEffect(() => {
+    // oxlint-disable-next-line react/set-state-in-effect -- Keep the server-rendered trigger disabled until hydration.
     setReady(true)
     function onKeyDown(event: KeyboardEvent) {
       if (

@@ -12,7 +12,6 @@ export default defineConfig({
     '/blog/en/[year]/[slug]': '/blog/[year]/[slug]',
     '/blog/fr/[year]/[slug]': '/fr/blog/[year]/[slug]',
   },
-  output: 'static',
   compressHTML: true,
   devToolbar: {
     enabled: process.env.BLOG_E2E !== '1',

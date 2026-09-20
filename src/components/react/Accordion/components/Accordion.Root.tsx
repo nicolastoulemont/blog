@@ -14,7 +14,7 @@ export interface AccordionRootProps extends WrapperDivProps {
 
 export const Root = forwardRef<HTMLDivElement, AccordionRootProps>(function Root(
   { children, isOpen, onChange, className, ...props },
-  ref
+  ref,
 ) {
   const id = useId()
 
@@ -25,7 +25,7 @@ export const Root = forwardRef<HTMLDivElement, AccordionRootProps>(function Root
         {...props}
         className={clsx(
           'rounded-2xl border border-solid border-gray-200 shadow-sm transition-shadow duration-300 hover:shadow-md',
-          className
+          className,
         )}
       >
         {children}

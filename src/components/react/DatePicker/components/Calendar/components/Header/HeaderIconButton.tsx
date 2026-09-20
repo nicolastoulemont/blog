@@ -8,14 +8,14 @@ interface HeaderIconButtonProps extends React.ButtonHTMLAttributes<HTMLButtonEle
 }
 
 export const HeaderIconButton = forwardRef<HTMLButtonElement, HeaderIconButtonProps>(
-  function HeaderIconButton({ children, className, variant, ...props }, ref) {
+  function HeaderIconButton({ children: _children, className, variant, ...props }, ref) {
     return (
       <button
         ref={ref}
         className={clsx(
-          'flex h-9 w-9 items-center justify-center rounded-xl border-none bg-blue-50 font-medium text-slate-700 dark:bg-slate-800 dark:text-white sm:h-8 sm:w-8',
+          'flex h-9 w-9 items-center justify-center rounded-xl border-none bg-blue-50 font-medium text-slate-700 sm:h-8 sm:w-8 dark:bg-slate-800 dark:text-white',
           props.disabled ? 'text-slate-400' : '',
-          className
+          className,
         )}
         {...props}
       >
@@ -26,5 +26,5 @@ export const HeaderIconButton = forwardRef<HTMLButtonElement, HeaderIconButtonPr
         )}
       </button>
     )
-  }
+  },
 )

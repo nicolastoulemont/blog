@@ -23,7 +23,7 @@ export function TableNavigationProvider({
   function handleKeyboardNavigation(
     event: KeyboardEvent<HTMLButtonElement>,
     rowIndex: number,
-    colIndex: number
+    colIndex: number,
   ) {
     event.preventDefault()
     switch (event.code) {
