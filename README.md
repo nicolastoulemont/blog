@@ -15,9 +15,13 @@ Posts live in `src/content/blog/<locale>/<year>/<slug>.mdx`. The frontmatter `lo
 
 English posts are served at `/blog/<year>/<slug>`, French posts at `/fr/blog/<year>/<slug>`.
 
+Use fenced `mermaid` code blocks for diagrams. Light and dark SVGs render during the build; CSS selects the one matching the blog's theme. Set `accTitle` and `accDescr` in each diagram to give it an accessible name and description. Diagrams share the image figure numbering, with `accTitle` displayed as the caption.
+
 ## Commands
 
 Requires Node 24 and pnpm 12 (see `packageManager`).
+
+After `pnpm install`, run `pnpm exec playwright install chromium` before starting the dev server or building. On Linux, use `pnpm exec playwright install --with-deps chromium` to install the browser's system dependencies too.
 
 | Command        | Purpose                               |
 | -------------- | ------------------------------------- |

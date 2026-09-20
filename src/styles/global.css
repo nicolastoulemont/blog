@@ -317,6 +317,25 @@
   color: var(--fg-muted);
 }
 
+.prose figure.diagram {
+  background: var(--panel);
+}
+
+.prose .mermaid > svg {
+  height: auto;
+  padding: 1.5rem;
+  margin-inline: auto;
+}
+
+.mermaid > svg[id^='mermaid-dark-'],
+.dark .mermaid > svg[id^='mermaid-light-'] {
+  display: none;
+}
+
+.dark .mermaid > svg[id^='mermaid-dark-'] {
+  display: block;
+}
+
 .prose blockquote:not(:where(.not-prose, .not-prose *)) {
   margin: 1.5em 0;
   padding: 0.75rem 1rem;

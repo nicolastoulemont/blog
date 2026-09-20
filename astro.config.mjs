@@ -5,6 +5,7 @@ import react from '@astrojs/react'
 import tailwindcss from '@tailwindcss/vite'
 import rehypeAutolinkHeadings from 'rehype-autolink-headings'
 import rehypeSlug from 'rehype-slug'
+import mermaid from './src/lib/mermaid.mjs'
 
 export default defineConfig({
   site: 'https://nicolastoulemont.dev',
@@ -58,14 +59,26 @@ export default defineConfig({
     plugins: [tailwindcss()],
   },
   markdown: {
+    syntaxHighlight: { type: 'shiki', excludeLangs: ['mermaid'] },
     shikiConfig: {
       theme: 'dark-plus',
       wrap: true,
     },
     processor: unified({
       rehypePlugins: [
+        [
+          mermaid,
+          {
+            css: import.meta.resolve('@fontsource-variable/jetbrains-mono/index.css'),
+            mermaidConfig: {
+              look: 'handDrawn',
+              handDrawnSeed: 1,
+              fontFamily: 'var(--font-jetbrains, "JetBrains Mono Variable", monospace)',
+            },
+          },
+        ],
         rehypeSlug,
-        rehypeUnwrapImages,
+        rehypeFigures,
         [
           rehypeAutolinkHeadings,
           {
@@ -85,9 +98,7 @@ export default defineConfig({
   },
 })
 
-// Lift a lone image out of its paragraph so the Figure component can render a
-// <figure> without the HTML parser splitting the surrounding <p>.
-function rehypeUnwrapImages() {
+function rehypeFigures() {
   return (tree) => {
     function visit(node) {
       node.children?.forEach((child, index) => {
@@ -98,6 +109,38 @@ function rehypeUnwrapImages() {
           child.children[0].tagName === 'img'
         ) {
           node.children[index] = child.children[0]
+        } else if (
+          child.type === 'element' &&
+          child.tagName === 'div' &&
+          child.properties.className?.includes('mermaid')
+        ) {
+          const title = child.children[0].children.find(
+            (node) => node.tagName === 'title',
+          )
+          node.children[index] = {
+            type: 'element',
+            tagName: 'figure',
+            properties: { className: ['diagram'] },
+            children: [
+              {
+                type: 'element',
+                tagName: 'span',
+                properties: { className: ['tab'], ariaHidden: 'true' },
+                children: [],
+              },
+              child,
+              ...(title
+                ? [
+                    {
+                      type: 'element',
+                      tagName: 'figcaption',
+                      properties: {},
+                      children: title.children,
+                    },
+                  ]
+                : []),
+            ],
+          }
         } else {
           visit(child)
         }

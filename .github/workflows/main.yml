@@ -21,6 +21,7 @@ jobs:
           cache: true
           install: false
       - run: pnpm install --frozen-lockfile
+      - run: pnpm exec playwright install --with-deps chromium
       - run: pnpm format:check
       - run: pnpm lint
       - run: pnpm check

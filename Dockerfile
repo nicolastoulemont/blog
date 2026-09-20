@@ -6,6 +6,7 @@ WORKDIR /app
 
 COPY package.json pnpm-lock.yaml pnpm-workspace.yaml ./
 RUN --mount=type=cache,id=blog-pnpm,target=/pnpm/store pnpm install --frozen-lockfile
+RUN pnpm exec playwright install --with-deps chromium
 
 COPY . .
 RUN pnpm build
