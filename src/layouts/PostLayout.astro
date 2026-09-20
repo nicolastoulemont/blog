@@ -3,6 +3,7 @@ import { render } from 'astro:content'
 import { PostPalette } from '~/components/PostPalette'
 import { PostCard } from '~/components/PostCard'
 import { Tag } from '~/components/Tag'
+import Figure from '~/components/Figure.astro'
 import TableOfContents from '~/components/TableOfContents.astro'
 import BaseLayout from '~/layouts/BaseLayout.astro'
 import { getAllPosts, getRelatedPosts, getTranslation, type BlogPost } from '~/lib/posts'
@@ -104,7 +105,7 @@ const hasContents = headings.some((heading) => heading.depth >= 2 && heading.dep
           </details>
         )}
         <div class="prose">
-          <Content />
+          <Content components={{ img: Figure }} />
         </div>
         <footer class="mt-16">
           {relatedPosts.length > 0 && (

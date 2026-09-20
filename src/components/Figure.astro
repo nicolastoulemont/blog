@@ -1,0 +1,18 @@
+---
+import { Image } from 'astro:assets'
+import type { ImageMetadata } from 'astro'
+
+// Rendered for every markdown image in a post. The intrinsic width lets the
+// stylesheet cap how far a small drawing is upscaled to fill the frame.
+interface Props {
+  src: ImageMetadata
+  alt?: string
+}
+const { src, alt = '' } = Astro.props
+---
+
+<figure style={`--figure-w: ${src.width}px`}>
+  <span class="tab" aria-hidden="true"></span>
+  <Image src={src} alt={alt} />
+  {alt.trim() && <figcaption>{alt}</figcaption>}
+</figure>

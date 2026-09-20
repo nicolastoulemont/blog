@@ -118,9 +118,6 @@
   .tab {
     @apply border-line-strong bg-panel text-fg inline-flex h-[1.375rem] items-center border border-b-0 px-2 text-[0.65rem] whitespace-nowrap;
   }
-  .tab:has(+ .tab) {
-    border-right: 0;
-  }
   .tab + .tab {
     border-left: 0;
   }
@@ -167,6 +164,7 @@
 .prose {
   font-size: 0.9375rem;
   line-height: 1.8;
+  counter-reset: figure;
 }
 
 .prose > * + * {
@@ -285,6 +283,9 @@
 .prose figure:not(:where(.not-prose, .not-prose *)) {
   position: relative;
   margin: 2em 0;
+  /* The image fills the frame; small drawings get a narrower frame rather than upscaling past 1.5x */
+  width: min(100%, calc(var(--figure-w) * 1.5 + 3rem + 2px));
+  counter-increment: figure;
   border: 1px solid var(--line-strong);
   background: var(--figure-bg);
 }
@@ -296,9 +297,13 @@
   translate: 0 -100%;
 }
 
+.prose figure .tab::before {
+  content: 'fig. ' counter(figure, decimal-leading-zero);
+}
+
 .prose figure img:not(:where(.not-prose, .not-prose *)) {
+  width: 100%;
   padding: 1.5rem;
-  margin-inline: auto;
 }
 
 .prose figcaption:not(:where(.not-prose, .not-prose *)) {

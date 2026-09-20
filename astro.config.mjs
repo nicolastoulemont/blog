@@ -65,7 +65,7 @@ export default defineConfig({
     processor: unified({
       rehypePlugins: [
         rehypeSlug,
-        rehypeFigures,
+        rehypeUnwrapImages,
         [
           rehypeAutolinkHeadings,
           {
@@ -85,35 +85,23 @@ export default defineConfig({
   },
 })
 
-function rehypeFigures() {
+// Lift a lone image out of its paragraph so the Figure component can render a
+// <figure> without the HTML parser splitting the surrounding <p>.
+function rehypeUnwrapImages() {
   return (tree) => {
-    let figure = 0
     function visit(node) {
-      if (
-        node.type === 'element' &&
-        node.tagName === 'p' &&
-        node.children.length === 1 &&
-        node.children[0].tagName === 'img'
-      ) {
-        node.tagName = 'figure'
-        const alt = node.children[0].properties.alt
-        figure += 1
-        node.children.unshift({
-          type: 'element',
-          tagName: 'span',
-          properties: { className: ['tab'], ariaHidden: 'true' },
-          children: [{ type: 'text', value: `fig. ${String(figure).padStart(2, '0')}` }],
-        })
-        if (typeof alt === 'string' && alt.trim()) {
-          node.children.push({
-            type: 'element',
-            tagName: 'figcaption',
-            properties: {},
-            children: [{ type: 'text', value: alt }],
-          })
+      node.children?.forEach((child, index) => {
+        if (
+          child.type === 'element' &&
+          child.tagName === 'p' &&
+          child.children.length === 1 &&
+          child.children[0].tagName === 'img'
+        ) {
+          node.children[index] = child.children[0]
+        } else {
+          visit(child)
         }
-      }
-      node.children?.forEach(visit)
+      })
     }
     visit(tree)
   }
