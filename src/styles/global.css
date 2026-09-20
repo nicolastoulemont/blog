@@ -118,6 +118,9 @@
   .tab {
     @apply border-line-strong bg-panel text-fg inline-flex h-[1.375rem] items-center border border-b-0 px-2 text-[0.65rem] whitespace-nowrap;
   }
+  .tab:has(+ .tab) {
+    border-right: 0;
+  }
   .tab + .tab {
     border-left: 0;
   }
