@@ -8,6 +8,10 @@ import rehypeSlug from 'rehype-slug'
 
 export default defineConfig({
   site: 'https://nicolastoulemont.dev',
+  redirects: {
+    '/blog/en/[year]/[slug]': '/blog/[year]/[slug]',
+    '/blog/fr/[year]/[slug]': '/fr/blog/[year]/[slug]',
+  },
   output: 'static',
   compressHTML: true,
   devToolbar: {

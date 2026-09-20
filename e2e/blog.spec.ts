@@ -239,7 +239,16 @@ test('french posts render at localized urls', async ({ page }) => {
   )
 })
 
-test('legacy locale-prefixed english urls redirect', async ({ page }) => {
-  await page.goto('/blog/en/2022/the-tree')
-  await expect(page).toHaveURL(/\/blog\/2022\/the-tree\/?$/)
-})
+for (const [locale, legacy, destination] of [
+  ['english', '/blog/en/2022/the-tree', /\/blog\/2022\/the-tree\/?$/],
+  [
+    'french',
+    '/blog/fr/2021/retraining-web-development-online',
+    /\/fr\/blog\/2021\/retraining-web-development-online\/?$/,
+  ],
+] as const) {
+  test(`legacy locale-prefixed ${locale} urls redirect`, async ({ page }) => {
+    await page.goto(legacy)
+    await expect(page).toHaveURL(destination)
+  })
+}
