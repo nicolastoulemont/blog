@@ -9,16 +9,12 @@ const { posts } = Astro.props
 const categories = CATEGORY_NAMES.filter((category) =>
   posts.some((post) => post.categories.includes(category)),
 )
-const index: SearchIndexItem[] = posts.map(
-  ({ id, title, description, localeLabel, categories, readingMinutes }) => ({
-    id,
-    title,
-    description,
-    localeLabel,
-    categories,
-    readingMinutes,
-  }),
-)
+const index: SearchIndexItem[] = posts.map(({ id, title, description, categories }) => ({
+  id,
+  title,
+  description,
+  categories,
+}))
 ---
 
 <section data-post-search>

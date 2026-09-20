@@ -119,14 +119,13 @@ describe('filterPosts', () => {
   const posts = [
     makePost({}),
     makePost({
-      id: 'fr/2022/tree',
+      id: 'en/2022/tree',
       title: 'Tree',
       description: 'Traversal',
-      localeLabel: 'Francais',
       categories: ['Data Structures'],
     }),
   ]
-  it.each(['tree', 'Traversal', ' FRANCAIS ', 'data structures'])(
+  it.each(['tree', 'Traversal', ' TREE ', 'data structures'])(
     'searches each field with %s',
     (query) => {
       expect(filterPosts(posts, { query, category: null })).toEqual([posts[1]])

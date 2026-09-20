@@ -118,7 +118,7 @@ export function toBlogSummary<
 
 export type SearchIndexItem = Pick<
   BlogPostSummary,
-  'id' | 'title' | 'description' | 'localeLabel' | 'categories' | 'readingMinutes'
+  'id' | 'title' | 'description' | 'categories'
 >
 
 export function readingMinutes(body: string) {
@@ -134,7 +134,7 @@ export function filterPosts<T extends SearchIndexItem>(
     (post) =>
       (category === null ||
         post.categories.some((value) => CATEGORY_SLUGS[value] === category)) &&
-      [post.title, post.description, post.localeLabel, ...post.categories].some((value) =>
+      [post.title, post.description, ...post.categories].some((value) =>
         value.toLowerCase().includes(search),
       ),
   )
