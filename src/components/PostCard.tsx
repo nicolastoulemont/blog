@@ -46,8 +46,10 @@ export function PostCard({ post, variant = 'large' }: PostCardProps) {
       <div
         className={clsx(
           'min-w-0',
+          featured &&
+            (post.title.length > 40 ? 'grid-cols-1 gap-3' : 'grid-cols-2 gap-6'),
           featured
-            ? 'grid flex-1 grid-cols-2 items-center gap-6 px-6 py-8'
+            ? 'grid flex-1 items-center px-6 py-8'
             : compact
               ? 'px-4 py-[0.85rem]'
               : 'flex min-h-44 flex-1 flex-col justify-center p-6',
