@@ -283,8 +283,6 @@
 .prose figure:not(:where(.not-prose, .not-prose *)) {
   position: relative;
   margin: 2em 0;
-  /* The image fills the frame; small drawings get a narrower frame rather than upscaling past 1.5x */
-  width: min(100%, calc(var(--figure-w) * 1.5 + 3rem + 2px));
   counter-increment: figure;
   border: 1px solid var(--line-strong);
   background: var(--figure-bg);
@@ -302,8 +300,10 @@
 }
 
 .prose figure img:not(:where(.not-prose, .not-prose *)) {
-  width: 100%;
+  /* Fill the frame, but never upscale a small drawing past 1.5x; center it instead */
+  width: min(100%, calc(var(--figure-w) * 1.5 + 3rem));
   padding: 1.5rem;
+  margin-inline: auto;
 }
 
 .prose figcaption:not(:where(.not-prose, .not-prose *)) {
