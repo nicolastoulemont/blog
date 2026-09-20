@@ -313,7 +313,7 @@
   font-size: 0.875rem;
 }
 
-/* leave room for the tab labels that hang above these blocks */
+/* Leave room for the labels above the borders. */
 .prose .callout:not(:where(.not-prose, .not-prose *)),
 .prose figure:not(:where(.not-prose, .not-prose *)) {
   margin-top: calc(1.75em + 1.5rem);

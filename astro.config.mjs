@@ -95,14 +95,23 @@ function rehypeFigures() {
         node.children.length === 1 &&
         node.children[0].tagName === 'img'
       ) {
-        figure += 1
         node.tagName = 'figure'
+        const alt = node.children[0].properties.alt
+        figure += 1
         node.children.unshift({
           type: 'element',
           tagName: 'span',
           properties: { className: ['tab'], ariaHidden: 'true' },
           children: [{ type: 'text', value: `fig. ${String(figure).padStart(2, '0')}` }],
         })
+        if (typeof alt === 'string' && alt.trim()) {
+          node.children.push({
+            type: 'element',
+            tagName: 'figcaption',
+            properties: {},
+            children: [{ type: 'text', value: alt }],
+          })
+        }
       }
       node.children?.forEach(visit)
     }
