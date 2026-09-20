@@ -1,8 +1,8 @@
 ---
-import SearchPosts from '~/components/SearchPosts.astro'
+import PostFilter from '~/components/PostFilter.astro'
 import { PostCard } from '~/components/PostCard'
 import BaseLayout from '~/layouts/BaseLayout.astro'
-import { getAllPosts } from '~/lib/blog'
+import { getAllPosts } from '~/lib/posts'
 const posts = (await getAllPosts()).filter((post) => post.locale === 'en')
 const newest = [...posts].sort((a, b) => b.publishedAt.localeCompare(a.publishedAt))[0]
 const searchPosts = newest ? posts.filter((post) => post.id !== newest.id) : posts
@@ -22,6 +22,6 @@ const searchPosts = newest ? posts.filter((post) => post.id !== newest.id) : pos
         {newest && <PostCard post={newest} variant="featured" />}
       </div>
     </section>
-    <SearchPosts posts={searchPosts} />
+    <PostFilter posts={searchPosts} />
   </main>
 </BaseLayout>

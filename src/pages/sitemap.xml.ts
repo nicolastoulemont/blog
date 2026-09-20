@@ -1,4 +1,4 @@
-import { getAllPosts, getAbsoluteUrl } from '~/lib/blog'
+import { getAllPosts, getAbsoluteUrl } from '~/lib/posts'
 
 export async function GET() {
   const posts = await getAllPosts()

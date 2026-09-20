@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest'
-import type { BlogPostSummary } from './blog-core'
+import type { BlogPostSummary } from './post'
 import {
   filterPosts,
   readingMinutes,
@@ -7,7 +7,7 @@ import {
   getTranslation,
   parseEntryId,
   toBlogSummary,
-} from './blog-core'
+} from './post'
 import { formatDisplayDate } from './date'
 
 function makePost(overrides: Partial<BlogPostSummary>): BlogPostSummary {

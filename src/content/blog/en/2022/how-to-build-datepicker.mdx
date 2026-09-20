@@ -28,7 +28,7 @@ It will not allow users to type a date within the input as well as use the calen
   <DatePickerDemo client:visible={{ rootMargin: '200px' }} />
 </Container>
 
-[Source code if you want to skip the post](https://github.com/nicolastoulemont/blog/tree/main/src/components/react/DatePicker/DatePicker.tsx)
+[Source code if you want to skip the post](https://github.com/nicolastoulemont/blog/tree/main/src/components/demos/DatePicker/DatePicker.tsx)
 
 ## Overall structure
 
@@ -39,7 +39,7 @@ It also has three main sub-components:
 - a read-only input to show an easily readable date value to the user once one has been selected
 - a Calendar UI to enable the user to navigate easily across months and years to pick a date.
 
-We will mostly focus on the UI code _(it would be too long otherwise)_, for the utility functions please read the [source](https://github.com/nicolastoulemont/blog/tree/main/src/components/react/DatePicker/DatePicker.tsx).
+We will mostly focus on the UI code _(it would be too long otherwise)_, for the utility functions please read the [source](https://github.com/nicolastoulemont/blog/tree/main/src/components/demos/DatePicker/DatePicker.tsx).
 
 ### Adaptive behavior
 
@@ -251,15 +251,15 @@ export function init({ value }: Partial<DatePickerProviderProps>): State {
 ```
 
 There isn't so much added value into copy-pasting the `Provider` complete code,
-so for the curious here are the [reducer](https://github.com/nicolastoulemont/blog/tree/main/src/components/react/DatePicker/components/Provider/reducer.ts),
-[context](https://github.com/nicolastoulemont/blog/tree/main/src/components/react/DatePicker/components/Provider/context.ts)
-and [Provider](https://github.com/nicolastoulemont/blog/tree/main/src/components/react/DatePicker/components/Provider/Provider.tsx) files.
+so for the curious here are the [reducer](https://github.com/nicolastoulemont/blog/tree/main/src/components/demos/DatePicker/components/Provider/reducer.ts),
+[context](https://github.com/nicolastoulemont/blog/tree/main/src/components/demos/DatePicker/components/Provider/context.ts)
+and [Provider](https://github.com/nicolastoulemont/blog/tree/main/src/components/demos/DatePicker/components/Provider/Provider.tsx) files.
 
 ### Input
 
 The input is really simple as it's a presentational component to show a value to the user.
 In the same manner, as above, there is little added value in showing you the code here, so instead
-feel free to take a look at it [yourself](https://github.com/nicolastoulemont/blog/tree/main/src/components/react/DatePicker/components/Input/Input.tsx)
+feel free to take a look at it [yourself](https://github.com/nicolastoulemont/blog/tree/main/src/components/demos/DatePicker/components/Input/Input.tsx)
 
 Our only **_unusual_** stuff in the `Input` is that we use a `hidden` input with a value in the `YYYY-MM-DD` ISO8601 string format if a `name` property is provided to the datepicker
 aside from the read-only input. This enables the datepicker to be used in an uncontrolled way as well.

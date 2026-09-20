@@ -5,7 +5,7 @@ import {
   getTranslation,
   toBlogSummary,
   type BlogPostSummary,
-} from './blog-core'
+} from './post'
 
 type BlogEntry = CollectionEntry<'blog'>
 

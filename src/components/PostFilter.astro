@@ -1,5 +1,5 @@
 ---
-import type { BlogPostSummary, SearchIndexItem } from '~/lib/blog-core'
+import type { BlogPostSummary, SearchIndexItem } from '~/lib/post'
 import { CATEGORY_NAMES, CATEGORY_SLUGS } from '~/lib/categories'
 import { PostCard } from './PostCard'
 interface Props {
@@ -88,7 +88,7 @@ const index: SearchIndexItem[] = posts.map(
   ></script>
 </section>
 <script>
-  import { filterPosts, type SearchIndexItem } from '~/lib/blog-core'
+  import { filterPosts, type SearchIndexItem } from '~/lib/post'
   import { CATEGORY_SLUGS, type CategorySlug } from '~/lib/categories'
   document.addEventListener('astro:page-load', () => {
     const root = document.querySelector<HTMLElement>('[data-post-search]')

@@ -1,11 +1,11 @@
 ---
 import { render } from 'astro:content'
-import { PostSearch } from '~/components/PostSearch'
+import { PostPalette } from '~/components/PostPalette'
 import { PostCard } from '~/components/PostCard'
 import { Tag } from '~/components/Tag'
 import TableOfContents from '~/components/TableOfContents.astro'
 import BaseLayout from '~/layouts/BaseLayout.astro'
-import { getAllPosts, getRelatedPosts, getTranslation, type BlogPost } from '~/lib/blog'
+import { getAllPosts, getRelatedPosts, getTranslation, type BlogPost } from '~/lib/posts'
 import { formatDisplayDate } from '~/lib/date'
 import { UI_STRINGS } from '~/lib/site'
 interface Props {
@@ -54,7 +54,7 @@ const hasContents = headings.some((heading) => heading.depth >= 2 && heading.dep
           ))}
         </div>
         <div class="order-1 mb-4 min-[56.01rem]:order-2">
-          <PostSearch posts={searchPosts} locale={post.locale} client:load />
+          <PostPalette posts={searchPosts} locale={post.locale} client:load />
         </div>
         <h1 class="order-2 text-[clamp(1.75rem,4vw,2.75rem)] leading-[1.15] font-bold tracking-[-0.02em] text-balance min-[56.01rem]:order-3 min-[56.01rem]:col-span-2">
           {post.title}

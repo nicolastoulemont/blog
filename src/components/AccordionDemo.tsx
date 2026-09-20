@@ -1,4 +1,4 @@
-import * as Accordion from './react/Accordion'
+import * as Accordion from './demos/Accordion'
 
 const SUGGESTED_POSTS = [
   {

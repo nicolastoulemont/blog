@@ -10,7 +10,7 @@ import {
   CommandItem,
   CommandList,
 } from './ui/command'
-import type { BlogPostSummary } from '~/lib/blog-core'
+import type { BlogPostSummary } from '~/lib/post'
 import { UI_STRINGS, type SiteLocale } from '~/lib/site'
 
 type SearchPost = Pick<BlogPostSummary, 'url' | 'title' | 'description' | 'categories'>
@@ -20,7 +20,7 @@ interface Props {
   locale: SiteLocale
 }
 
-export function PostSearch({ posts, locale }: Props) {
+export function PostPalette({ posts, locale }: Props) {
   const [open, setOpen] = useState(false)
   const [ready, setReady] = useState(false)
   const input = useRef<HTMLInputElement>(null)

@@ -1,5 +1,5 @@
 import clsx from 'clsx'
-import type { BlogPostSummary } from '~/lib/blog-core'
+import type { BlogPostSummary } from '~/lib/post'
 import { formatMonthYear } from '~/lib/date'
 import { UI_STRINGS } from '~/lib/site'
 import { Tag } from './Tag'

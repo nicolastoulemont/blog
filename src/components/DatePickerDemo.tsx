@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { DatePicker } from './react/DatePicker/DatePicker'
+import { DatePicker } from './demos/DatePicker/DatePicker'
 
 export function DatePickerDemo() {
   const [value, setValue] = useState<Date>()
