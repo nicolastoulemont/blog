@@ -32,6 +32,9 @@
   --code-line: #2a2a2e;
   --code-fg: #e8e8ea;
 
+  /* Figures are ink drawings on transparent or white, so they always need a light matte */
+  --figure-bg: var(--panel);
+
   --cat-react: #e11d48;
   --cat-graphql: #db2777;
   --cat-data: #0891b2;
@@ -57,6 +60,8 @@
   --accent: #5b7be0;
   --accent-ink: #0b1230;
   --accent-soft: rgba(91, 123, 224, 0.18);
+
+  --figure-bg: #eeeae2;
 
   --cat-react: #fb7185;
   --cat-graphql: #f472b6;
@@ -278,7 +283,7 @@
   position: relative;
   margin: 2em 0;
   border: 1px solid var(--line-strong);
-  background: var(--panel);
+  background: var(--figure-bg);
 }
 
 .prose figure .tab:not(:where(.not-prose, .not-prose *)) {
@@ -293,13 +298,10 @@
   margin-inline: auto;
 }
 
-.dark .prose figure img:not(:where(.not-prose, .not-prose *)) {
-  background: #f2f2ef;
-}
-
 .prose figcaption:not(:where(.not-prose, .not-prose *)) {
   padding: 0.6rem 1rem;
   border-top: 1px solid var(--line);
+  background: var(--panel);
   font-size: 0.7rem;
   color: var(--fg-muted);
 }
