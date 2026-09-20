@@ -26,6 +26,9 @@ interface UiStrings {
   copy: string
   copied: string
   copyFailed: string
+  searchLoading: string
+  searchFailed: string
+  browsePosts: string
   searchPosts: string
   searchPlaceholder: string
   searchHelp: string
@@ -47,6 +50,9 @@ export const UI_STRINGS: Record<SiteLocale, UiStrings> = {
     copied: 'Copied',
     copyFailed: 'Copy failed. Try again',
     adjacent: 'Adjacent posts',
+    searchLoading: 'Loading search…',
+    searchFailed: 'Search could not load.',
+    browsePosts: 'Browse all posts',
     searchPosts: 'Search posts',
     searchPlaceholder: 'Search by title or topic…',
     searchHelp: '↑ ↓ to select · Enter to open · Esc to close',
@@ -66,6 +72,9 @@ export const UI_STRINGS: Record<SiteLocale, UiStrings> = {
     copied: 'Copié',
     copyFailed: 'Échec de la copie. Réessayer',
     adjacent: 'Articles adjacents',
+    searchLoading: 'Chargement de la recherche…',
+    searchFailed: 'Impossible de charger la recherche.',
+    browsePosts: 'Voir tous les articles',
     searchPosts: 'Rechercher un article',
     searchPlaceholder: 'Rechercher par titre ou sujet…',
     searchHelp: '↑ ↓ pour sélectionner · Entrée pour ouvrir · Échap pour fermer',

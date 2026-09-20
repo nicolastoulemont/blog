@@ -1,31 +1,33 @@
-import { useEffect, useRef, useState } from 'react'
-import { Dialog } from '@base-ui/react/dialog'
-import { defaultFilter } from 'cmdk'
-import { navigate } from 'astro:transitions/client'
-import { Tag } from './Tag'
-import {
-  Command,
-  CommandEmpty,
-  CommandInput,
-  CommandItem,
-  CommandList,
-} from './ui/command'
+import { useCallback, useEffect, useRef, useState } from 'react'
 import type { BlogPostSummary } from '~/lib/post'
 import { UI_STRINGS, type SiteLocale } from '~/lib/site'
 
-type SearchPost = Pick<BlogPostSummary, 'url' | 'title' | 'description' | 'categories'>
-
-interface Props {
-  posts: SearchPost[]
+export interface SearchProps {
+  posts: Pick<BlogPostSummary, 'url' | 'title' | 'description' | 'categories'>[]
   locale: SiteLocale
 }
 
-export function PostPalette({ posts, locale }: Props) {
+type Search =
+  | { status: 'idle' | 'loading' | 'failed' }
+  | { status: 'ready'; Dialog: typeof import('./PostDialog').PostDialog }
+
+export function PostPalette({ posts, locale }: SearchProps) {
   const [open, setOpen] = useState(false)
   const [ready, setReady] = useState(false)
-  const input = useRef<HTMLInputElement>(null)
+  const [search, setSearch] = useState<Search>({ status: 'idle' })
   const trigger = useRef<HTMLButtonElement>(null)
   const ui = UI_STRINGS[locale]
+
+  const toggle = useCallback(() => {
+    setOpen((value) => !value)
+    if (search.status === 'idle') {
+      setSearch({ status: 'loading' })
+      void import('./PostDialog').then(
+        ({ PostDialog }) => setSearch({ status: 'ready', Dialog: PostDialog }),
+        () => setSearch({ status: 'failed' }),
+      )
+    }
+  }, [search.status])
 
   useEffect(() => {
     // oxlint-disable-next-line react/set-state-in-effect -- Keep the server-rendered trigger disabled until hydration.
@@ -40,7 +42,7 @@ export function PostPalette({ posts, locale }: Props) {
       )
         return
       event.preventDefault()
-      setOpen((value) => !value)
+      toggle()
     }
     function onSwap() {
       setOpen(false)
@@ -51,18 +53,18 @@ export function PostPalette({ posts, locale }: Props) {
       document.removeEventListener('keydown', onKeyDown)
       document.removeEventListener('astro:before-swap', onSwap)
     }
-  }, [])
-
-  function select(url: string) {
-    setOpen(false)
-    void navigate(url)
-  }
+  }, [toggle])
 
   return (
-    <Dialog.Root open={open} onOpenChange={setOpen}>
-      <Dialog.Trigger
+    <>
+      <button
         ref={trigger}
+        type="button"
         disabled={!ready}
+        onClick={toggle}
+        aria-haspopup="dialog"
+        aria-expanded={open}
+        aria-busy={search.status === 'loading'}
         aria-keyshortcuts="Meta+K Control+K"
         className="border-line-strong bg-panel text-muted hover:text-fg inline-flex w-full cursor-pointer items-center justify-between gap-3 border px-3 py-2 text-xs disabled:opacity-50 min-[56.01rem]:w-auto"
       >
@@ -73,68 +75,29 @@ export function PostPalette({ posts, locale }: Props) {
         >
           ⌘ K
         </kbd>
-      </Dialog.Trigger>
-      <Dialog.Portal>
-        <Dialog.Backdrop className="fixed inset-0 z-50 bg-black/50" />
-        <Dialog.Popup
-          initialFocus={input}
-          finalFocus={trigger}
-          className="border-line-strong bg-panel text-fg fixed top-[10dvh] left-1/2 z-50 w-[calc(100%-2rem)] max-w-xl -translate-x-1/2 overflow-hidden border shadow-xl outline-none"
-        >
-          <div className="border-line flex items-center justify-between gap-4 border-b px-4 py-3">
-            <Dialog.Title className="text-xs font-semibold uppercase">
-              {ui.searchPosts}
-            </Dialog.Title>
-            <Dialog.Close
-              aria-label={ui.closeSearch}
-              className="border-line text-muted hover:text-fg cursor-pointer border px-2 py-1 text-xs"
-            >
-              Esc
-            </Dialog.Close>
-          </div>
-          <Dialog.Description className="sr-only">{ui.searchHelp}</Dialog.Description>
-          <Command
-            label={ui.searchPosts}
-            loop
-            filter={(_url, search, keywords = []) =>
-              Math.max(
-                0,
-                ...keywords.map(
-                  (keyword, index) =>
-                    defaultFilter(keyword, search) * (index === 0 ? 1 : 0.5),
-                ),
-              )
-            }
-          >
-            <CommandInput
-              ref={input}
-              placeholder={ui.searchPlaceholder}
-              aria-label={ui.searchPosts}
-            />
-            <CommandList label={ui.posts}>
-              <CommandEmpty>{ui.noPosts}</CommandEmpty>
-              {posts.map((post) => (
-                <CommandItem
-                  key={post.url}
-                  value={post.url}
-                  keywords={[post.title, post.description, ...post.categories]}
-                  onSelect={() => select(post.url)}
-                >
-                  <span className="block font-semibold">{post.title}</span>
-                  <span className="text-muted mt-1 flex flex-wrap gap-x-3 gap-y-1 text-xs">
-                    {post.categories.map((category) => (
-                      <Tag key={category} category={category} />
-                    ))}
-                  </span>
-                </CommandItem>
-              ))}
-            </CommandList>
-          </Command>
-          <p className="border-line text-muted border-t px-4 py-2 text-[0.65rem]">
-            {ui.searchHelp}
-          </p>
-        </Dialog.Popup>
-      </Dialog.Portal>
-    </Dialog.Root>
+      </button>
+      {open && search.status === 'loading' && (
+        <p role="status" className="text-muted mt-2 text-xs">
+          {ui.searchLoading}
+        </p>
+      )}
+      {open && search.status === 'failed' && (
+        <p role="alert" className="mt-2 text-xs">
+          {ui.searchFailed}{' '}
+          <a href="/" className="underline">
+            {ui.browsePosts}
+          </a>
+        </p>
+      )}
+      {search.status === 'ready' && (
+        <search.Dialog
+          posts={posts}
+          locale={locale}
+          open={open}
+          onOpenChange={setOpen}
+          trigger={trigger}
+        />
+      )}
+    </>
   )
 }

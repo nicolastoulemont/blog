@@ -40,3 +40,38 @@ for (const width of [1280, 390]) {
     await expect(trigger).toBeFocused()
   })
 }
+
+test('search opens after its code finishes loading', async ({ page }) => {
+  let release!: () => void
+  const pending = new Promise<void>((resolve) => {
+    release = resolve
+  })
+  await page.route(
+    (url) => url.pathname.includes('/PostDialog.'),
+    async (route) => {
+      await pending
+      await route.continue()
+    },
+  )
+  await page.goto('/blog/2022/the-tree')
+  const trigger = page.getByRole('button', { name: 'Search posts', exact: true })
+  await expect(trigger).toBeEnabled()
+  await trigger.click()
+  await expect(page.getByRole('status')).toHaveText('Loading search…')
+  release()
+  await expect(page.getByRole('combobox', { name: 'Search posts' })).toBeFocused()
+  await page.keyboard.press('Escape')
+  await expect(trigger).toBeFocused()
+})
+
+test('readers can browse posts if search fails to load', async ({ page }) => {
+  await page.route(
+    (url) => url.pathname.includes('/PostDialog.'),
+    (route) => route.abort(),
+  )
+  await page.goto('/blog/2022/the-tree')
+  await page.getByRole('button', { name: 'Search posts', exact: true }).click()
+  await expect(page.getByRole('alert')).toContainText('Search could not load.')
+  await page.getByRole('link', { name: 'Browse all posts' }).click()
+  await expect(page.getByRole('searchbox')).toBeVisible()
+})

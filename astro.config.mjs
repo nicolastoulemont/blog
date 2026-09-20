@@ -1,4 +1,4 @@
-import { defineConfig } from 'astro/config'
+import { defineConfig, fontProviders } from 'astro/config'
 import mdx from '@astrojs/mdx'
 import { unified } from '@astrojs/markdown-remark'
 import react from '@astrojs/react'
@@ -14,6 +14,17 @@ export default defineConfig({
   },
   compressHTML: true,
   image: { layout: 'constrained' },
+  fonts: [
+    {
+      provider: fontProviders.fontsource(),
+      name: 'JetBrains Mono',
+      cssVariable: '--font-jetbrains',
+      weights: ['100 800'],
+      styles: ['normal'],
+      subsets: ['latin', 'latin-ext'],
+      fallbacks: ['monospace'],
+    },
+  ],
   devToolbar: {
     enabled: process.env.BLOG_E2E !== '1',
   },

@@ -1,8 +1,7 @@
 @import 'tailwindcss';
-@import '@fontsource-variable/jetbrains-mono';
 @custom-variant dark (&:where(.dark, .dark *));
 @theme inline {
-  --font-mono: 'JetBrains Mono Variable', ui-monospace, monospace;
+  --font-mono: var(--font-jetbrains);
   --color-bg: var(--bg);
   --color-panel: var(--panel);
   --color-panel-2: var(--panel-2);
