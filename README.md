@@ -12,7 +12,7 @@ Images currently retain their published `/img/` URLs in `public/img`. They are c
 
 Astro 7 uses the explicit `unified()` Markdown processor from `@astrojs/markdown-remark` to retain the heading-link plugins. HTML compression retains HTML whitespace rules with `compressHTML: true`.
 
-Use Node 24 (see `.node-version`) and pnpm 12.3.4 (pinned in `package.json`). CI and the Docker build use the same Node major and pnpm version. TypeScript remains on 6.0.3 because `@astrojs/check` requires the JavaScript compiler API missing from TypeScript 7. Track support in [Astro's TypeScript 7 discussion](https://github.com/withastro/roadmap/discussions/1321).
+Use Node 24 (see `.node-version`) and pnpm 12.3.4 (pinned in `package.json`). CI uses `pnpm/setup` to install pnpm and Node. The Docker build uses the official `ghcr.io/pnpm/pnpm:12.3.4` image, installs Node 24 through pnpm, and caches the dependency store with BuildKit. Keep the image tag aligned with `packageManager`; keep the CI and Docker runtime selections aligned with `.node-version`. TypeScript remains on 6.0.3 because `@astrojs/check` requires the JavaScript compiler API missing from TypeScript 7. Track support in [Astro's TypeScript 7 discussion](https://github.com/withastro/roadmap/discussions/1321).
 
 ## Stack
 

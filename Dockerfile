@@ -1,10 +1,11 @@
-FROM node:24-bookworm-slim AS build
+FROM ghcr.io/pnpm/pnpm:12.3.4 AS build
+
+RUN pnpm runtime set node 24 -g
 
 WORKDIR /app
 
 COPY package.json pnpm-lock.yaml pnpm-workspace.yaml ./
-RUN npm install --global "$(node --print 'require("./package.json").packageManager')"
-RUN pnpm install --frozen-lockfile
+RUN --mount=type=cache,id=blog-pnpm,target=/pnpm/store pnpm install --frozen-lockfile
 
 COPY . .
 RUN pnpm build
