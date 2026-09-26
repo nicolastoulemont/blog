@@ -1,0 +1,19 @@
+{
+  "$schema": "./node_modules/fallow/schema.json",
+  // Demo components mirror the code printed in blog posts, so they keep the
+  // posts' exports and structure.
+  "ignoreExports": [{ "file": "src/components/demos/**", "exports": ["*"] }],
+  "health": { "ignore": ["src/components/demos/**"] },
+  "ignoreDependencies": [
+    // Astro's image service loads sharp without an import.
+    "sharp",
+    // astro.config.mjs loads the font through import.meta.resolve.
+    "@fontsource-variable/jetbrains-mono",
+    // The Claude Code commit gate runs the jq binary node-jq downloads.
+    "node-jq"
+  ],
+  "rules": {
+    // astro.config.mjs counts as tooling, but its integrations build the static site.
+    "test-only-dependencies": "off"
+  }
+}

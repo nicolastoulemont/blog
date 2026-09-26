@@ -58,7 +58,7 @@ test('search opens after its code finishes loading', async ({ page }) => {
   const trigger = page.getByRole('button', { name: 'Search posts', exact: true })
   await expect(trigger).toBeEnabled()
   await trigger.click()
-  await expect(page.getByRole('status')).toHaveText('Loading search…')
+  await expect(page.getByRole('dialog')).toBeHidden()
   release()
   await expect(page.getByRole('combobox', { name: 'Search posts' })).toBeFocused()
   await page.keyboard.press('Escape')

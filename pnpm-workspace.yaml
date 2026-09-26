@@ -1,3 +1,4 @@
 allowBuilds:
   esbuild: true
+  node-jq: true
   sharp: true

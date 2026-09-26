@@ -23,15 +23,16 @@ Requires Node 24 and pnpm 12 (see `packageManager`).
 
 After `pnpm install`, run `pnpm exec playwright install chromium` before starting the dev server or building. On Linux, use `pnpm exec playwright install --with-deps chromium` to install the browser's system dependencies too.
 
-| Command        | Purpose                               |
-| -------------- | ------------------------------------- |
-| `pnpm dev`     | Start the dev server                  |
-| `pnpm build`   | Build the static site into `dist/`    |
-| `pnpm preview` | Serve the built output                |
-| `pnpm check`   | Astro type and content checks         |
-| `pnpm lint`    | Oxlint                                |
-| `pnpm format`  | Prettier                              |
-| `pnpm test`    | Vitest unit tests                     |
-| `pnpm e2e`     | Playwright browser tests (local only) |
+| Command        | Purpose                                                |
+| -------------- | ------------------------------------------------------ |
+| `pnpm dev`     | Start the dev server                                   |
+| `pnpm build`   | Build the static site into `dist/`                     |
+| `pnpm preview` | Serve the built output                                 |
+| `pnpm check`   | Astro type and content checks                          |
+| `pnpm lint`    | Oxlint                                                 |
+| `pnpm fallow`  | Fallow unused-code, duplication, and complexity checks |
+| `pnpm format`  | Prettier                                               |
+| `pnpm test`    | Vitest unit tests                                      |
+| `pnpm e2e`     | Playwright browser tests (local only)                  |
 
 Pushes to `main` run the checks and deploy to Fly.
