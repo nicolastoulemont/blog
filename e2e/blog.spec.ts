@@ -5,6 +5,13 @@ test('homepage combines search, topic filters and keyboard shortcuts', async ({
 }) => {
   await page.goto('/')
   const grid = page.locator('[data-post-search]')
+  const shown = grid.getByRole('link').filter({ visible: true })
+  // Derive the count from the cards on screen so new posts don't break the test.
+  async function expectStatusToCountShownPosts() {
+    await expect(page.getByRole('status')).toHaveText(
+      new RegExp(`^${await shown.count()} posts? found\\.$`),
+    )
+  }
   await expect(page.getByRole('link', { name: 'The Tree', exact: true })).toHaveCount(1)
   await expect(page.getByRole('searchbox')).toBeVisible()
   await page.keyboard.press('/')
@@ -14,14 +21,23 @@ test('homepage combines search, topic filters and keyboard shortcuts', async ({
     grid.getByRole('link', { name: 'GraphQL Typeguards', exact: true }),
   ).toBeVisible()
   await page.getByRole('button', { name: 'React', exact: true }).click()
-  await expect(page.getByRole('status')).toHaveText('0 posts found.')
+  await expect(
+    grid.getByRole('link', { name: 'GraphQL Typeguards', exact: true }),
+  ).toBeHidden()
+  await expectStatusToCountShownPosts()
   await page.getByRole('button', { name: 'All', exact: true }).click()
   await page.getByRole('searchbox').fill('no such post')
   await expect(page.getByText('No posts match no such post.')).toBeVisible()
   await page.keyboard.press('Escape')
   await expect(page.getByRole('searchbox')).toHaveValue('')
   await page.getByRole('button', { name: 'Data Structures', exact: true }).click()
-  await expect(page.getByRole('status')).toHaveText('4 posts found.')
+  await expect(grid.getByRole('link', { name: 'The Tree', exact: true })).toBeVisible()
+  await expect(
+    grid.getByRole('link', { name: 'GraphQL Typeguards', exact: true }),
+  ).toBeHidden()
+  for (const card of await shown.all())
+    await expect(card).toContainText('Data Structures')
+  await expectStatusToCountShownPosts()
 })
 
 test('posts remain readable and navigable without JavaScript', async ({ browser }) => {

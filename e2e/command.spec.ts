@@ -13,9 +13,10 @@ for (const width of [1280, 390]) {
     await expect(input).toBeFocused()
     await page.keyboard.press('ArrowDown')
     await page.keyboard.press('ArrowUp')
-    await expect(
-      dialog.getByRole('option', { name: /The compound component pattern/ }),
-    ).toHaveAttribute('aria-selected', 'true')
+    await expect(dialog.getByRole('option').first()).toHaveAttribute(
+      'aria-selected',
+      'true',
+    )
     await input.fill('zzzzzzzzzz')
     await expect(dialog.getByText('No posts found.')).toBeVisible()
     await input.fill('graphql')
