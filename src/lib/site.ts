@@ -19,6 +19,7 @@ interface UiStrings {
   published: string
   reading: string
   contents: string
+  progress: string
   more: string
   previous: string
   next: string
@@ -42,6 +43,7 @@ export const UI_STRINGS: Record<SiteLocale, UiStrings> = {
     published: 'Published',
     reading: 'Reading time',
     contents: 'On this page',
+    progress: 'Reading progress',
     more: 'More on',
     previous: 'Previous',
     next: 'Next',
@@ -64,6 +66,7 @@ export const UI_STRINGS: Record<SiteLocale, UiStrings> = {
     published: 'Publié le',
     reading: 'Temps de lecture',
     contents: 'Sur cette page',
+    progress: 'Progression de la lecture',
     more: 'À lire aussi sur',
     previous: 'Précédent',
     next: 'Suivant',

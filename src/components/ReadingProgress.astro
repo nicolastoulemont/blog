@@ -1,0 +1,77 @@
+---
+interface Props {
+  label: string
+}
+const { label } = Astro.props
+---
+
+<div
+  class="reading-progress"
+  role="progressbar"
+  aria-label={label}
+  aria-valuemin="0"
+  aria-valuemax="100"
+  aria-valuenow="0"
+  data-reading-progress
+></div>
+<script>
+  document.addEventListener('astro:page-load', () => {
+    const root = document.querySelector<HTMLElement>('[data-reading-progress]')
+    const prose = document.querySelector<HTMLElement>('.prose')
+    if (!root || !prose) return
+    const headings = Array.from(
+      prose.querySelectorAll<HTMLElement>(':is(h2, h3, h4)[id]'),
+    )
+    // Each anchor starts a section; text before the first heading is its own section.
+    const anchors =
+      headings[0] === prose.firstElementChild ? headings : [prose, ...headings]
+    let cells: HTMLElement[] = []
+    const controller = new AbortController()
+    const observer = new ResizeObserver(schedule)
+    let frame = 0
+    document.addEventListener(
+      'astro:before-swap',
+      () => {
+        controller.abort()
+        observer.disconnect()
+        cancelAnimationFrame(frame)
+      },
+      { once: true },
+    )
+    function update() {
+      frame = 0
+      const { top, height } = prose!.getBoundingClientRect()
+      const starts = anchors.map((anchor) => anchor.getBoundingClientRect().top - top)
+      const lengths = starts.map((start, index) => (starts[index + 1] ?? height) - start)
+      const gap = parseFloat(getComputedStyle(root!).columnGap)
+      const width = root!.clientWidth - gap * (lengths.length - 1)
+      // A section narrower than a pixel can't show, so draw one bar for the whole post.
+      const sections = (width * Math.min(...lengths)) / height >= 1 ? lengths : [height]
+      if (cells.length !== sections.length) {
+        cells = sections.map(() => document.createElement('span'))
+        root!.replaceChildren(...cells)
+      }
+      const range = height - window.innerHeight
+      const ratio = range > 0 ? Math.min(Math.max(-top / range, 0), 1) : 1
+      const line = ratio * height
+      let start = 0
+      sections.forEach((length, index) => {
+        const fill = Math.min(Math.max((line - start) / length, 0), 1)
+        cells[index]!.style.flexGrow = String(length)
+        cells[index]!.style.setProperty('--fill', `${fill * 100}%`)
+        start += length
+      })
+      root!.setAttribute('aria-valuenow', String(Math.round(ratio * 100)))
+    }
+    function schedule() {
+      if (!frame) frame = requestAnimationFrame(update)
+    }
+    document.addEventListener('scroll', schedule, {
+      passive: true,
+      signal: controller.signal,
+    })
+    window.addEventListener('resize', schedule, { signal: controller.signal })
+    observer.observe(prose)
+    update()
+  })
+</script>

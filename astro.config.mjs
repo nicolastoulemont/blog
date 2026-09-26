@@ -98,8 +98,41 @@ export default defineConfig({
   },
 })
 
+// Wraps each lone image and Mermaid diagram in a numbered figure. The id lets
+// prose link to it with [fig. 01](#fig-01), and the tab links to itself.
 function rehypeFigures() {
   return (tree) => {
+    let count = 0
+
+    function figure(media, { caption, className }) {
+      count += 1
+      const number = String(count).padStart(2, '0')
+      return {
+        type: 'element',
+        tagName: 'figure',
+        properties: { id: `fig-${number}`, className },
+        children: [
+          {
+            type: 'element',
+            tagName: 'a',
+            properties: { className: ['tab'], href: `#fig-${number}` },
+            children: [{ type: 'text', value: `fig. ${number}` }],
+          },
+          media,
+          ...(caption.length
+            ? [
+                {
+                  type: 'element',
+                  tagName: 'figcaption',
+                  properties: {},
+                  children: caption,
+                },
+              ]
+            : []),
+        ],
+      }
+    }
+
     function visit(node) {
       node.children?.forEach((child, index) => {
         if (
@@ -108,7 +141,11 @@ function rehypeFigures() {
           child.children.length === 1 &&
           child.children[0].tagName === 'img'
         ) {
-          node.children[index] = child.children[0]
+          const image = child.children[0]
+          const alt = image.properties.alt?.trim()
+          node.children[index] = figure(image, {
+            caption: alt ? [{ type: 'text', value: alt }] : [],
+          })
         } else if (
           child.type === 'element' &&
           child.tagName === 'div' &&
@@ -117,30 +154,10 @@ function rehypeFigures() {
           const title = child.children[0].children.find(
             (node) => node.tagName === 'title',
           )
-          node.children[index] = {
-            type: 'element',
-            tagName: 'figure',
-            properties: { className: ['diagram'] },
-            children: [
-              {
-                type: 'element',
-                tagName: 'span',
-                properties: { className: ['tab'], ariaHidden: 'true' },
-                children: [],
-              },
-              child,
-              ...(title
-                ? [
-                    {
-                      type: 'element',
-                      tagName: 'figcaption',
-                      properties: {},
-                      children: title.children,
-                    },
-                  ]
-                : []),
-            ],
-          }
+          node.children[index] = figure(child, {
+            caption: title?.children ?? [],
+            className: ['diagram'],
+          })
         } else {
           visit(child)
         }

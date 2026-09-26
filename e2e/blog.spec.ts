@@ -103,6 +103,50 @@ test('table of contents labels and tracks the active section', async ({ page }) 
   ).toHaveClass(/is-active/)
 })
 
+test('figure tabs link to their figure', async ({ page }) => {
+  await page.goto(
+    '/blog/2026/shipping-a-2-0-redesigning-10-years-old-product-one-milestone-at-a-time',
+  )
+  await page.getByRole('link', { name: 'fig. 03', exact: true }).click()
+  await expect(page).toHaveURL(/#fig-03$/)
+  await expect(
+    page.getByRole('figure', {
+      name: 'From the first milestone to general availability',
+    }),
+  ).toBeInViewport()
+})
+
+test('reading progress fills as the article scrolls', async ({ page }) => {
+  await page.goto('/blog/2022/the-tree')
+  const progress = page
+    .locator('.rail')
+    .getByRole('progressbar', { name: 'Reading progress' })
+  await expect(progress).toHaveAttribute('aria-valuenow', '0')
+
+  await page.evaluate(() =>
+    window.scrollTo({ top: document.documentElement.scrollHeight, behavior: 'instant' }),
+  )
+
+  await expect(progress).toHaveAttribute('aria-valuenow', '100')
+})
+
+test('reading progress stays inside the rail on posts with many sections', async ({
+  page,
+}) => {
+  await page.goto('/blog/2021/retraining-web-development-online')
+  const rail = await page.locator('.rail').boundingBox()
+  const progress = await page
+    .locator('.rail')
+    .getByRole('progressbar', { name: 'Reading progress' })
+    .evaluate((bar) => ({
+      right: bar.getBoundingClientRect().right,
+      overflow: bar.scrollWidth - bar.clientWidth,
+    }))
+
+  expect(progress.overflow).toBe(0)
+  expect(progress.right).toBeLessThanOrEqual(rail!.x + rail!.width)
+})
+
 test('mobile contents opens to section links', async ({ page }) => {
   await page.setViewportSize({ width: 390, height: 844 })
   await page.goto('/blog/2022/the-tree')
