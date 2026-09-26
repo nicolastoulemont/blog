@@ -8,13 +8,22 @@ for (const width of [1280, 390]) {
     await page.emulateMedia({ colorScheme: 'dark' })
     await page.goto('/')
     const toggle = page.getByRole('button', { name: 'Toggle theme' })
-    await expect(page.locator('body')).toHaveCSS('background-color', 'rgb(19, 19, 19)')
+    const html = page.locator('html')
+    const body = page.locator('body')
+    await expect(html).toHaveClass(/dark/)
+    // Compare against the dark background instead of pinning palette values.
+    const dark = await body.evaluate(
+      (element) => getComputedStyle(element).backgroundColor,
+    )
     await toggle.focus()
     await page.keyboard.press('Enter')
-    await expect(page.locator('body')).toHaveCSS('background-color', 'rgb(227, 221, 210)')
+    await expect(html).not.toHaveClass(/dark/)
+    await expect(body).not.toHaveCSS('background-color', dark)
     await page.reload()
-    await expect(page.locator('body')).toHaveCSS('background-color', 'rgb(227, 221, 210)')
+    await expect(html).not.toHaveClass(/dark/)
+    await expect(body).not.toHaveCSS('background-color', dark)
     await toggle.click()
-    await expect(page.locator('html')).toHaveClass(/dark/)
+    await expect(html).toHaveClass(/dark/)
+    await expect(body).toHaveCSS('background-color', dark)
   })
 }
