@@ -8,9 +8,7 @@
     // Astro's image service loads sharp without an import.
     "sharp",
     // astro.config.mjs loads the font through import.meta.resolve.
-    "@fontsource-variable/jetbrains-mono",
-    // The Claude Code commit gate runs the jq binary node-jq downloads.
-    "node-jq"
+    "@fontsource-variable/jetbrains-mono"
   ],
   "rules": {
     // astro.config.mjs counts as tooling, but its integrations build the static site.
