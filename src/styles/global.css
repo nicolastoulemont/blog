@@ -92,6 +92,20 @@
   button {
     font: inherit;
   }
+  /* Draw the native clear button like the search icon: thin, square-capped, faint. */
+  input[type='search']::-webkit-search-cancel-button {
+    appearance: none;
+    width: 0.75rem;
+    height: 0.75rem;
+    margin-left: 0.5rem;
+    background-color: var(--fg-faint);
+    mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='2'%3E%3Cpath d='M5 5l14 14M19 5 5 19'/%3E%3C/svg%3E")
+      center / contain no-repeat;
+    cursor: pointer;
+  }
+  input[type='search']::-webkit-search-cancel-button:hover {
+    background-color: var(--fg);
+  }
 }
 .frame::before {
   content: '';
