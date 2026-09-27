@@ -1,5 +1,6 @@
 // Wraps each lone image and Mermaid diagram in a numbered figure. The id lets
-// prose link to it with [fig. 01](#fig-01), and the tab links to itself.
+// prose link to it with [fig. 01](#fig-01), and the tab links to itself. Chart
+// components draw their own figure, so they only receive their number.
 export default function figures() {
   return (tree) => {
     let count = 0
@@ -10,6 +11,13 @@ export default function figures() {
         if (found) {
           count += 1
           node.children[index] = figure(found, count)
+        } else if (chart(child)) {
+          count += 1
+          child.attributes.push({
+            type: 'mdxJsxAttribute',
+            name: 'figure',
+            value: pad(count),
+          })
         } else {
           visit(child)
         }
@@ -35,12 +43,21 @@ function diagram(node) {
   return { media: node, caption: title?.children ?? [], className: ['diagram'] }
 }
 
+// An MDX chart component, such as <BarChart />.
+function chart(node) {
+  return node.type === 'mdxJsxFlowElement' && Boolean(node.name?.endsWith('Chart'))
+}
+
+function pad(count) {
+  return String(count).padStart(2, '0')
+}
+
 function isElement(node, tagName) {
   return node.type === 'element' && node.tagName === tagName
 }
 
 function figure({ media, caption, className }, count) {
-  const number = String(count).padStart(2, '0')
+  const number = pad(count)
   return {
     type: 'element',
     tagName: 'figure',

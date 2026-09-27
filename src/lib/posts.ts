@@ -16,7 +16,11 @@ export interface BlogPost extends BlogPostSummary {
 export { getAbsoluteUrl, getRelatedPosts, getTranslation }
 
 export async function getAllPosts() {
-  const entries = await getCollection('blog', ({ data }) => !data.draft)
+  // Drafts render in dev so they can be previewed, and never ship.
+  const entries = await getCollection(
+    'blog',
+    ({ data }) => import.meta.env.DEV || !data.draft,
+  )
 
   return entries.map(toBlogPost).sort((left, right) => {
     return (

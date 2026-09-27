@@ -43,6 +43,15 @@
   --cat-architecture: #7c3aed;
   --cat-general: #16a34a;
 
+  /* Chart series, in the order a chart assigns them. Validated for colorblind
+     separation and contrast against --panel. */
+  --chart-1: #2563eb;
+  --chart-2: #ea580c;
+  --chart-3: #0891b2;
+  --chart-4: #e11d48;
+  --chart-5: #7c3aed;
+  --chart-6: #16a34a;
+
   --header-h: 3.25rem;
   color-scheme: light;
 }
@@ -70,6 +79,10 @@
   --cat-career: #60a5fa;
   --cat-architecture: #a78bfa;
   --cat-general: #4ade80;
+
+  /* The light blue and violet sit too dark on the dark panel; the rest carry over. */
+  --chart-1: #5b7be0;
+  --chart-5: #8b5cf6;
   color-scheme: dark;
 }
 
@@ -335,7 +348,7 @@
   color: var(--fg-muted);
 }
 
-.prose figure.diagram {
+.prose figure:is(.diagram, .chart) {
   background: var(--panel);
 }
 
@@ -352,6 +365,154 @@
 
 .dark .mermaid > svg[id^='mermaid-dark-'] {
   display: block;
+}
+
+/* chart */
+
+.chart-plot {
+  height: 16rem;
+  padding: 1.25rem 1.25rem 0.5rem 0.5rem;
+  font-size: 0.65rem;
+}
+
+.chart-plot.square {
+  height: 18rem;
+  padding: 1rem;
+}
+
+.chart-plot text {
+  fill: var(--fg-muted);
+}
+
+.chart-plot .recharts-line {
+  /* Set by Figure from the charts' shared animation clock. */
+  transition: opacity var(--chart-duration) ease-out;
+}
+
+/* A hidden line fades out in place, and fades back in when shown. */
+.chart-plot .recharts-line.faded {
+  opacity: 0;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .chart-plot .recharts-line {
+    transition: none;
+  }
+}
+
+.chart-plot :is(svg, .recharts-wrapper):focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+}
+
+.chart-head {
+  display: flex;
+  align-items: flex-start;
+  gap: 1rem;
+  padding: 1rem 1.25rem 0;
+}
+
+.chart-legend {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.35rem 1.25rem;
+  padding-top: 0.3rem;
+  font-size: 0.7rem;
+  color: var(--fg-muted);
+}
+
+/* The chip sits at the row's end, even when the legend is hidden. */
+.chart-filter {
+  flex-shrink: 0;
+  margin-left: auto;
+  height: 1.5rem;
+}
+
+.chart-filter svg {
+  width: 0.8rem;
+  height: 0.8rem;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1.75;
+}
+
+.chart-filter[data-popup-open] {
+  border-color: var(--fg);
+  color: var(--fg);
+}
+
+.chart-filter[data-popup-open] svg {
+  rotate: 180deg;
+}
+
+.chart-menu {
+  min-width: 10rem;
+  padding: 0.25rem;
+  border: 1px solid var(--line-strong);
+  background: var(--panel);
+  font-size: 0.7rem;
+  color: var(--fg-muted);
+  outline: none;
+}
+
+.chart-menu-item {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  padding: 0.35rem 0.5rem;
+  cursor: pointer;
+  outline: none;
+  user-select: none;
+}
+
+.chart-menu-item[data-highlighted] {
+  background: var(--panel-2);
+  color: var(--fg);
+}
+
+.chart-menu-item[data-disabled] {
+  cursor: not-allowed;
+}
+
+/* The legend's square swatch as a checkbox: outlined when hidden, filled when shown. */
+.chart-check {
+  flex-shrink: 0;
+  width: 0.55rem;
+  height: 0.55rem;
+  border: 1px solid var(--cat);
+}
+
+.chart-menu-item[data-checked] .chart-check {
+  background: var(--cat);
+}
+
+.chart-tooltip {
+  min-width: 9rem;
+  padding: 0.5rem 0.65rem;
+  border: 1px solid var(--line-strong);
+  background: var(--panel);
+  font-size: 0.7rem;
+  line-height: 1.6;
+  color: var(--fg-muted);
+}
+
+.chart-tooltip dl {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 0 1rem;
+}
+
+.chart-tooltip dd {
+  color: var(--fg);
+  font-variant-numeric: tabular-nums;
+  text-align: right;
+}
+
+.chart-tooltip > p {
+  margin-bottom: 0.25rem;
+  padding-bottom: 0.25rem;
+  border-bottom: 1px solid var(--line);
+  color: var(--fg);
 }
 
 .prose blockquote:not(:where(.not-prose, .not-prose *)) {

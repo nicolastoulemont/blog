@@ -1,0 +1,132 @@
+---
+title: 'Charts'
+description: 'Every chart component the blog ships, with its styling in light and dark.'
+publishedAt: '2026-09-27'
+categories:
+  - 'General'
+locale: 'en'
+draft: true
+---
+
+import {
+  AreaChart,
+  BarChart,
+  LineChart,
+  PieChart,
+  RadarChart,
+  RadialChart,
+} from '~/components/charts'
+
+A preview of the chart components. Every chart here sets `filterable`, which adds a menu to hide series or values. Charts share the figure numbering with images and diagrams, so [fig. 01](#fig-01) links to the first one.
+
+## Area
+
+<AreaChart
+  client:visible
+  filterable
+  title="Weekly readers by source"
+  index="week"
+  series={{ search: 'Search', direct: 'Direct', social: 'Social' }}
+  stacked
+  data={[
+    { week: 'W1', search: 820, direct: 310, social: 120 },
+    { week: 'W2', search: 860, direct: 290, social: 480 },
+    { week: 'W3', search: 910, direct: 340, social: 260 },
+    { week: 'W4', search: 980, direct: 360, social: 190 },
+    { week: 'W5', search: 1040, direct: 390, social: 150 },
+    { week: 'W6', search: 1120, direct: 420, social: 610 },
+    { week: 'W7', search: 1180, direct: 450, social: 300 },
+  ]}
+/>
+
+## Bar
+
+<BarChart
+  client:visible
+  filterable
+  title="Gzipped bundle size by route"
+  index="route"
+  unit="kB"
+  series={{ js: 'JavaScript', css: 'CSS' }}
+  data={[
+    { route: '/', js: 42, css: 9 },
+    { route: '/blog', js: 38, css: 8 },
+    { route: '/blog/[slug]', js: 71, css: 12 },
+    { route: '/rss.xml', js: 0, css: 0 },
+  ]}
+/>
+
+## Stacked bar
+
+<BarChart
+  client:visible
+  filterable
+  stacked
+  title="CI time per stage"
+  index="week"
+  unit="s"
+  series={{ install: 'Install', build: 'Build', test: 'Test' }}
+  data={[
+    { week: 'W1', install: 42, build: 96, test: 130 },
+    { week: 'W2', install: 40, build: 90, test: 126 },
+    { week: 'W3', install: 18, build: 88, test: 124 },
+    { week: 'W4', install: 17, build: 61, test: 118 },
+    { week: 'W5', install: 17, build: 58, test: 84 },
+  ]}
+/>
+
+## Line
+
+<LineChart
+  client:visible
+  filterable
+  title="p75 largest contentful paint per release"
+  index="release"
+  unit="ms"
+  series={{ mobile: 'Mobile', desktop: 'Desktop' }}
+  data={[
+    { release: '1.0', mobile: 2900, desktop: 1400 },
+    { release: '1.1', mobile: 2650, desktop: 1320 },
+    { release: '1.2', mobile: 2710, desktop: 1290 },
+    { release: '1.3', mobile: 2180, desktop: 1100 },
+    { release: '2.0', mobile: 1720, desktop: 940 },
+  ]}
+/>
+
+## Pie
+
+<PieChart
+  client:visible
+  filterable
+  title="Where readers come from"
+  unit="%"
+  data={{ Search: 48, Direct: 27, Social: 15, Newsletter: 10 }}
+/>
+
+## Radar
+
+<RadarChart
+  client:visible
+  filterable
+  title="How two state libraries compare"
+  index="trait"
+  series={{ store: 'Global store', atoms: 'Atoms' }}
+  data={[
+    { trait: 'Learning curve', store: 3, atoms: 4 },
+    { trait: 'Devtools', store: 5, atoms: 3 },
+    { trait: 'Bundle size', store: 3, atoms: 5 },
+    { trait: 'Boilerplate', store: 2, atoms: 4 },
+    { trait: 'Server state', store: 4, atoms: 2 },
+  ]}
+/>
+
+## Radial
+
+<RadialChart
+  client:visible
+  filterable
+  title="Test coverage by package"
+  unit="%"
+  max={100}
+  data={{ core: 92, ui: 78, api: 64 }}
+/>

@@ -4,6 +4,8 @@ import figures from './figures.mjs'
 interface Node {
   type: string
   tagName?: string
+  name?: string
+  attributes?: Array<{ type: string; name: string; value: string }>
   value?: string
   properties?: Record<string, unknown>
   children?: Node[]
@@ -25,6 +27,10 @@ function diagram(title = 'Request flow') {
   return element('div', { className: ['mermaid'] }, [
     element('svg', {}, [element('title', {}, [text(title)])]),
   ])
+}
+
+function chart(name = 'BarChart') {
+  return { type: 'mdxJsxFlowElement', name, attributes: [], children: [] }
 }
 
 function run(...children: Node[]) {
@@ -68,6 +74,17 @@ describe('figures', () => {
     )
     expect(first.properties?.id).toBe('fig-01')
     expect(section.children?.[0].properties?.id).toBe('fig-02')
+  })
+
+  it('numbers a chart component in sequence with the other figures', () => {
+    const [, numbered] = run(element('p', {}, [image()]), chart())
+    expect(numbered.attributes).toEqual([
+      { type: 'mdxJsxAttribute', name: 'figure', value: '02' },
+    ])
+  })
+
+  it('leaves other components unnumbered', () => {
+    expect(run(chart('Callout'))).toEqual([chart('Callout')])
   })
 
   it('leaves an image that shares its paragraph with text', () => {
