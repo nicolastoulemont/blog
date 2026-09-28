@@ -8,15 +8,15 @@ locale: 'en'
 ogImage: '/img/thumbnail-stack.jpeg'
 ---
 
-## What is a Stack ?
+## What is a Stack?
 
 A Stack is a "last in, first out" (LIFO) data structure where the last inserted element is the first removed.
-It has two core operations :
+It has two core operations:
 
-- Push : insert an element to the collection
-- Pop : remove the most recently inserted element
+- Push: insert an element to the collection
+- Pop: remove the most recently inserted element
 
-The Stack also has what is commonly called a "Top" and a "Bottom" :
+The Stack also has what is commonly called a "Top" and a "Bottom":
 
 ![Push and pop operations on a stack](~/assets/basic-stack-operations.jpeg)
 
@@ -29,8 +29,8 @@ Therefore push and pop operations are O(1).
 
 ### Downsides
 
-A searching a stack is not efficient as it requires to pop elements of collection until the search target is found.
-Such operation can then be O(n) is the search target is at the bottom.
+Searching a stack is not efficient as it requires to pop elements of collection until the search target is found.
+Such operation can then be O(n) if the search target is at the bottom.
 
 ### Practical uses in web development
 
@@ -53,7 +53,7 @@ export class Stack<T> {
 
 - Push()
 
-The push insert the given value in the object with a key equal to the current length of the stack (therefore, at the very top of it) and increment the stack length.
+The push inserts the given value in the object with a key equal to the current length of the stack (therefore, at the very top of it) and increments the stack length.
 
 ```typescript
  push(value: T) {
@@ -64,7 +64,7 @@ The push insert the given value in the object with a key equal to the current le
 
 - Pop()
 
-The pop get the last index, test its validity, find and store the current last item, delete it from the stack, then decrement the stack length and return the stored last item
+The pop gets the last index, tests its validity, finds and stores the current last item, deletes it from the stack, then decrements the stack length and returns the stored last item
 
 ```typescript
  pop() {
@@ -79,7 +79,7 @@ The pop get the last index, test its validity, find and store the current last i
 
 - Peek()
 
-The peek get the last item and return correspond item in storage or undefined if none is found
+The peek gets the last item and returns the corresponding item in storage or undefined if none is found
 
 ```typescript
 peek() {
@@ -120,9 +120,9 @@ Helpers methods such as clear, isEmpty, and print can also be added.
 
 - Sort()
 
-This method sort the stack using a recursion during which we recursively traverse the stack and store the top value. This value is then inserted at the top of the stack if is empty or its value is above the current top value.
+This method sorts the stack using a recursion during which we recursively traverse the stack and store the top value. This value is then inserted at the top of the stack if it is empty or its value is above the current top value.
 
-If the value cannot be pushed at the top of the stack, the current top value (temp) is popped out, the insert function is then recursively called to continue traversing the stack (without its current top value) with the given value to find its position. The current (temps) top value is then pushed back into the stack.
+If the value cannot be pushed at the top of the stack, the current top value (temp) is popped out, the insert function is then recursively called to continue traversing the stack (without its current top value) with the given value to find its position. The current (temp) top value is then pushed back into the stack.
 
 ```typescript
   sort(stack: Stack<T>) {
@@ -146,7 +146,7 @@ If the value cannot be pushed at the top of the stack, the current top value (te
 
 - Reverse()
 
-This method uses a recursive insertAtBottom function and follow a similar logic that the sort function, except is doesn't perform a value check in the insertAtBottom function.
+This method uses a recursive insertAtBottom function and follows a similar logic that the sort function, except it doesn't perform a value check in the insertAtBottom function.
 
 ```typescript
 reverse(stack: Stack<T>) {

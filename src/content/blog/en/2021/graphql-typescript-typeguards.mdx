@@ -9,13 +9,13 @@ ogImage: '/img/thumbnail-ts-gql.png'
 ---
 
 When working with GraphQL, one will sometimes need to assert the type of the response.
-Sometimes it is because of the response is a union type, sometimes because the response is a nullable result.
+Sometimes it is because the response is a union type, sometimes because the response is a nullable result.
 This usually forces the developer into asserting the response type quite often which can cause a bit of noise. To handle these assertions we will have a look at a few helpful typeguards functions:
 isType, isEither, isNot, isTypeInTuple.
 
 ## Simple case
 
-For example, when asserting the result of the following mutation response, the developer will need to handle three different cases: an ActiveUser, a UserAuthenticationError and a InvalidArgumentsError.
+For example, when asserting the result of the following mutation response, the developer will need to handle three different cases: an ActiveUser, a UserAuthenticationError and an InvalidArgumentsError.
 
 ```graphql
 mutation CreateUser($name: String!, $email: String!) {
@@ -82,8 +82,8 @@ function UserForm() {
 }
 ```
 
-And for that simple use case, it would be fine. But what if we also want to update our client side apollo client cache to include the newly created user into it ?
-Then our handleSubmit function would look this:
+And for that simple use case, it would be fine. But what if we also want to update our client side apollo client cache to include the newly created user into it?
+Then our handleSubmit function would look like this:
 
 ```typescript
 async function handleSubmit(event) {
@@ -115,8 +115,8 @@ async function handleSubmit(event) {
 }
 ```
 
-And that would fine too, but we are starting to have multiple .\_\_typename assertion. And this can get out of hand quite quickly. That is when a utility type-guard function can come in.
-Let's make a simple isType typeguard base on the \_\_typename property:
+And that would be fine too, but we are starting to have multiple .\_\_typename assertions. And this can get out of hand quite quickly. That is when a utility type-guard function can come in.
+Let's make a simple isType typeguard based on the \_\_typename property:
 
 ### isType
 
@@ -135,7 +135,7 @@ function isType<Result extends GraphQLResult, Typename extends ValueOfTypename<R
 With this typeguard we use the Typescript [Extract](https://www.typescriptlang.org/docs/handbook/utility-types.html#extracttype-union) utility type with the `is` expression
 to tell the Typescript compiler which type our result is.
 
-And now our submit function would look this :
+And now our submit function would look like this:
 
 ```typescript
 async function handleSubmit(event) {
@@ -164,11 +164,11 @@ async function handleSubmit(event) {
 }
 ```
 
-That a bit better, we get some type safety, the typename parameter of the isType has some nice autocomplete and the logic is easily readable and explicite.
+That's a bit better, we get some type safety, the typename parameter of the isType has some nice autocomplete and the logic is easily readable and explicit.
 
-Admittedly this isn't a major improvement, but the isType function can be composed is many different ways to handle more complexe cases.
+Admittedly this isn't a major improvement, but the isType function can be composed in many different ways to handle more complex cases.
 
-## More complexe cases
+## More complex cases
 
 Now, let's say that our GET_USERS query is the following:
 
@@ -201,7 +201,7 @@ query Users {
 }
 ```
 
-Whose GraphQL return type is :
+Whose GraphQL return type is:
 
 ```graphql
 union UserResult =
@@ -212,7 +212,7 @@ union UserResult =
   | UserAuthenticationError
 ```
 
-And that we want to be able to change the status of the users and then update our cache accordingly so that it reflect the updated status of the user.
+And that we want to be able to change the status of the users and then update our cache accordingly so that it reflects the updated status of the user.
 We would have a mutation like this:
 
 ```graphql
@@ -310,8 +310,8 @@ const [changeUserStatus] = useChangeUserStatusMutation({
 })
 ```
 
-But that is still not that good. Maybe we should try build a typeguard that help us figure out if the user and the mutation result are either an ActiveUser, a DeletedUser or a BannedUser.
-Or maybe we should have a function to exclude types to assert that the user and the mutation result are not an UserAuthenticationError or a InvalidArgumentsError.
+But that is still not that good. Maybe we should try to build a typeguard that helps us figure out if the user and the mutation result are either an ActiveUser, a DeletedUser or a BannedUser.
+Or maybe we should have a function to exclude types to assert that the user and the mutation result are not a UserAuthenticationError or an InvalidArgumentsError.
 
 Let's start with the isEither function.
 
@@ -341,9 +341,9 @@ The type assertion is based on:
 result is Extract<Result, { __typename: typeof typenames[number] }>
 ```
 
-Which assert that the result is one of an union of the indexed values of the typenames array.
+Which asserts that the result is one of a union of the indexed values of the typenames array.
 
-And now our changeUserStatus mutation and cache update can be refactor like this:
+And now our changeUserStatus mutation and cache update can be refactored like this:
 
 ```typescript
 const [changeUserStatus] = useChangeUserStatusMutation({
@@ -366,7 +366,7 @@ const [changeUserStatus] = useChangeUserStatusMutation({
 })
 ```
 
-A bit better ! Now let's have a go at the isNot function.
+A bit better! Now let's have a go at the isNot function.
 
 ### isNot
 
@@ -415,7 +415,7 @@ Finally let's have a go at the isTypeInTuple function that will help us with fil
 
 ### isTypeInTuple
 
-Now let's imaging we have our same query but we want to render our ActiveUsers, DeletedUsers and BannedUsers in diffent lists.
+Now let's imagine we have our same query but we want to render our ActiveUsers, DeletedUsers and BannedUsers in different lists.
 In order to do that we will need to filter our users into three different arrays.
 
 ```typescript
@@ -426,10 +426,10 @@ const activeUsers = useMemo(
 )
 ```
 
-One could think that the previous filtering is enough to get the correct users and at runtime it is. But sadly Typescript doesn't understand that now activeUsers is an array ActiveUsers only.
+One could think that the previous filtering is enough to get the correct users and at runtime it is. But sadly Typescript doesn't understand that now activeUsers is an array of ActiveUsers only.
 So we will get annoying and unwarranted type errors when consuming the activeUsers array.
 
-In order to handle that, we could need to cast the activeUsers array as `Array<ActiveUser>` but if we can avoid type casting, why not do it ? That's when the isTypeInTuple come in.
+In order to handle that, we could need to cast the activeUsers array as `Array<ActiveUser>` but if we can avoid type casting, why not do it? That's when the isTypeInTuple comes in.
 
 ```typescript
 type GraphQLResult = { __typename: string }
@@ -451,14 +451,14 @@ export function isTypeInTuple<
 }
 ```
 
-This function by returning a callback allow us to tell typescript that the call return is the given type.
-The way the type is asserted is similar to our other functions.But instead of only asserting our typeguard return type we assert the type of the callback itself:
+This function by returning a callback allows us to tell typescript that the call return is the given type.
+The way the type is asserted is similar to our other functions. But instead of only asserting our typeguard return type we assert the type of the callback itself:
 
 ```typescript
 (resultItem: ResultItem) => resultItem is Extract<ResultItem, { __typename: Typename }>
 ```
 
-This tell typescript what to expect from it. Now we can use it as follow:
+This tells typescript what to expect from it. Now we can use it as follows:
 
 ```typescript
 const activeUsers = useMemo(
@@ -469,4 +469,4 @@ const activeUsers = useMemo(
 
 And we will get a correctly typed ActiveUser array.
 
-If you found this helpful and want to use these functions, I have packaged them in a npm package called [gql-typeguards](https://www.npmjs.com/package/gql-typeguards).
+If you found this helpful and want to use these functions, I have packaged them in an npm package called [gql-typeguards](https://www.npmjs.com/package/gql-typeguards).

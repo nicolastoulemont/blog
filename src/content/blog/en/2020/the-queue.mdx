@@ -8,21 +8,21 @@ locale: 'en'
 ogImage: '/img/thumbnail-queue.png'
 ---
 
-## What is a Queue ?
+## What is a Queue?
 
-A Queue is a "First in, First out" (FIFO) data structure where the first inserted elemen is the first removed.
-It has two core operations :
+A Queue is a "First in, First out" (FIFO) data structure where the first inserted element is the first removed.
+It has two core operations:
 
 - Enqueue: Insert an element at the back of the queue.
 - Dequeue: Remove the element at the front of the queue.
 
-The queue has a "Front" and a "Back". We enqueue elements at the back of the queue and dequeue elements at the front of the queue :
+The queue has a "Front" and a "Back". We enqueue elements at the back of the queue and dequeue elements at the front of the queue:
 
 ![A first-in, first-out queue](~/assets/simple-queue.png)
 
-A Queue can have different purpose and therefore different implementations, for example :
+A Queue can have different purposes and therefore different implementations, for example:
 
-- Priority Queue where the insertion index of the element is based on its priority or up to the dequeuing process (for unsorted queues). In such case the queue would always dequeue the item with the highest or lowest (depending of the sorting implementation) priority.
+- Priority Queue where the insertion index of the element is based on its priority or up to the dequeuing process (for unsorted queues). In such case the queue would always dequeue the item with the highest or lowest (depending on the sorting implementation) priority.
 
 ![An unsorted priority queue](~/assets/unsorted-priority-queue.png)
 
@@ -30,7 +30,7 @@ A Queue can have different purpose and therefore different implementations, for 
 
 ![A circular queue](~/assets/circular-queue.jpg)
 
-In this post we will implement both a simple queue and then a priorty queue.
+In this post we will implement both a simple queue and then a priority queue.
 
 ### Benefits
 
@@ -48,7 +48,7 @@ A good example of a queue usage is rate limiting to ensure the consistent servic
 
 ### Basic methods
 
-We will implement our simple Queue using Typescript class syntax and an empty array to store out data. The beginning of our array we be our queue back, and the end of our array will be our queue front.
+We will implement our simple Queue using Typescript class syntax and an empty array to store our data. The beginning of our array will be our queue back, and the end of our array will be our queue front.
 
 ```typescript
 export class Queue<T> {
@@ -61,7 +61,7 @@ export class Queue<T> {
 
 - Enqueue()
 
-The enqueue insert an element at the back of our queue and therefore at the beginning of our array, we will implement this operations with the [unshift() array method](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/unshift).
+The enqueue inserts an element at the back of our queue and therefore at the beginning of our array, we will implement this operation with the [unshift() array method](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/unshift).
 
 ```typescript
 enqueue(value: T) {
@@ -71,7 +71,7 @@ enqueue(value: T) {
 
 - Dequeue()
 
-The dequeue get the queue last index, test its validity, and leverage the [pop() array method](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/pop) to return and remove the item at the front of the queue.
+The dequeue gets the queue last index, tests its validity, and leverages the [pop() array method](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/pop) to return and remove the item at the front of the queue.
 
 ```typescript
 dequeue() {
@@ -82,7 +82,7 @@ dequeue() {
 
 - Peek()
 
-The peek get the last item and return correspond item in the queue or null if none is found
+The peek gets the last item and returns the corresponding item in the queue or null if none is found
 
 ```typescript
 peek() {
@@ -121,7 +121,7 @@ print() {
 
 - Reverse()
 
-The reverse method we will implement uses a recursion. Our function will get the item at the front of the queue, dequeue it, recursively call itself to keep traversing the queue and then adding back our item at the back of queue.
+The reverse method we will implement uses a recursion. Our function will get the item at the front of the queue, dequeue it, recursively call itself to keep traversing the queue and then adding back our item at the back of the queue.
 
 ```typescript
 reverse(queue: Queue<T>): Queue<T> {
@@ -136,13 +136,13 @@ reverse(queue: Queue<T>): Queue<T> {
 
 ## Priority Queue
 
-One of the challenges of implementing a Priority Queue is handling the queue sorting because an unsorted priority queue would required additional operations to ensure the dequeuing of the highest priority element of the queue and therefore be slower. In this implementation we will enforce the queue sorting during the enqueuing of elements.
+One of the challenges of implementing a Priority Queue is handling the queue sorting because an unsorted priority queue would require additional operations to ensure the dequeuing of the highest priority element of the queue and therefore be slower. In this implementation we will enforce the queue sorting during the enqueuing of elements.
 
 ![A sorted priority queue](~/assets/sorted-priority-queue.png)
 
 ### Basic methods
 
-Our Priority Queue implementation will use Typescript class Syntax and an empty array to store out data. The queue elements will be sorted by priority : lowest at the back of the queue and highest at the front of the queue.
+Our Priority Queue implementation will use Typescript class Syntax and an empty array to store our data. The queue elements will be sorted by priority: lowest at the back of the queue and highest at the front of the queue.
 
 ```typescript
 interface BaseElement {
@@ -161,7 +161,7 @@ export class PriorityQueue<Element extends BaseElement> {
 
 Because our enqueue method enforces the queue sorting, it will be the most complex method we will implement in our priority queue.
 
-Our enqueue function will push a new element at the back of the queue if the queue is empty or if the new element priority is higher than the element at the front of the queue. If the new element priority is lower than the queue front element's, we need to find the correct insertion index of the new element in the queue using the [lowerbound function](https://github.com/nicolastoulemont/utilities/blob/master/src/lowerbound.ts). We then insert the new element in the queue using the [slice()](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/slice) array method.
+Our enqueue function will push a new element at the back of the queue if the queue is empty or if the new element priority is higher than the element at the front of the queue. If the new element priority is lower than the queue front element's, we need to find the correct insertion index of the new element in the queue using the [lowerbound function](https://github.com/nicolastoulemont/utilities/blob/master/src/lowerbound.ts). We then insert the new element in the queue using the [splice()](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/splice) array method.
 
 ```typescript
   enqueue(element: Element) {
@@ -196,7 +196,7 @@ The dequeue operation is really simple as we only pop() and return the last elem
 
 - Reverse()
 
-Our reverse methods is quite similar to the simple queue one, except that we don't re-enqueue the element at the front of the queue because our enqueue methods sorting logic. Instead we insert it at the back of the queue with [unshift()](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/unshift) array method.
+Our reverse method is quite similar to the simple queue one, except that we don't re-enqueue the element at the front of the queue because our enqueue methods sorting logic. Instead we insert it at the back of the queue with [unshift()](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/unshift) array method.
 
 ```typescript
 reverse(queue: PriorityQueue<Element>): PriorityQueue<Element> {

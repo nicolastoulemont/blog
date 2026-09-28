@@ -8,7 +8,7 @@ locale: 'en'
 ogImage: '/img/hierarchical-structure.png'
 ---
 
-## What is a Tree ?
+## What is a Tree?
 
 A tree is a data structure that represents
 a hierarchical structure between a set of connected nodes.
@@ -17,8 +17,8 @@ but must be connected to exactly one parent, except for the root node, which has
 
 It can have multiple uses, one of the better knowns is binary trees which enable logarithmic search operations on the nodes of the tree.
 
-In this post tho, we will focus on building a basic tree data structure, which allow us
-to explore how [Javascript generators functions](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Iterators_and_Generators#generator_functions)
+In this post tho, we will focus on building a basic tree data structure, which allows us
+to explore how [Javascript generator functions](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Iterators_and_Generators#generator_functions)
 can help build custom iterators for tree-based data structures.
 
 ![A tree with a root node and branching child nodes](~/assets/tree.png)
@@ -54,7 +54,7 @@ class Tree {
 }
 ```
 
-Later we will want to add so methods to our `Tree` class to make it useful, probably I/O operations (`get`, `set`, `update`, `remove`).
+Later we will want to add some methods to our `Tree` class to make it useful, probably I/O operations (`get`, `set`, `update`, `remove`).
 To be able to perform these operations, a common operation is to traverse our tree from the root to the leaves.
 
 ### Tree traversal
@@ -85,7 +85,7 @@ export class Tree {
 }
 ```
 
-This generator function traverse the tree recursivingly iteraterating over every node of a given subtree of the tree, yielding _*("giving")*_ each one back
+This generator function traverses the tree recursively iterating over every node of a given subtree of the tree, yielding _*("giving")*_ each one back
 to the function caller, before moving to each node children until it has yielded every leaf of the subtree. It then moves to the next one until there are no more.
 
 #### Breadth-first search (BFS)
@@ -111,7 +111,7 @@ export class Tree {
 }
 ```
 
-The BFS one, on the other hand, traverse the tree one level at a time, yielding each node of a given level before moving to the next one.
+The BFS one, on the other hand, traverses the tree one level at a time, yielding each node of a given level before moving to the next one.
 
 You can use either one depending on your use case.
 
@@ -121,11 +121,11 @@ Now that we have a method that easily iterates over our tree, we can add some I/
 
 #### Set method
 
-To set a node to our tree, we have to 2 cases:
+To set a node to our tree, we have 2 cases:
 
 - The tree doesn't have a root node yet, in this case, there is no need to give the tree a node name to insert the new node into.
 - The tree already has a root node, in this case, we need to provide an address for the node we need to insert,
-  here will use the node name as an address to find where to insert it.
+  here we will use the node name as an address to find where to insert it.
 
 With these two use cases in mind, and using our `traverse` function to iterate within our tree, our set function is fairly simple.
 
@@ -164,11 +164,11 @@ export class Tree {
 #### Get method
 
 To read a specific node from our tree, we will add a `get` method.
-Since our `traverse` function handle the iteration, this one is fairly simple, with only three
+Since our `traverse` function handles the iteration, this one is fairly simple, with only three
 possible results:
 
 - There is no root node, meaning that the only possible result is `null`.
-- There are one or more nodes with the queries name (we don't restrict the node names to be unique).
+- There are one or more nodes with the queried name (we don't restrict the node names to be unique).
   Therefore the result will be an array of nodes `Node[]`.
 - There is no matching node, meaning the queried name is `undefined`.
 
@@ -199,8 +199,8 @@ export class Tree {
 
 Let's now add an `update` method. It will be very similar to the `set` method, which
 in a way is about updating an existing node to add a new child node to it.
-To keep it simple, we will keep its signature to a `boolean` result, but we could
-have an array with the updated nodes instead if we wanted to.
+Like the other methods, it returns an `IOResult`: the updated nodes, `undefined`
+if no node matches, or `null` if the tree is empty.
 
 ```tsx
 type IOResult = Node[] | null | undefined
@@ -238,7 +238,7 @@ We will then do the following:
 
 - Hold a reference to the target node
 - Remove it from its parent children node array
-- Adds the target node children nodes to its parent children nodes array
+- Add the target node children nodes to its parent children nodes array
 
 ```tsx
 type IOResult = Node[] | null | undefined
