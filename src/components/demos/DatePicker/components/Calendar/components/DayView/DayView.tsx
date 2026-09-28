@@ -41,11 +41,11 @@ export function DayView({ onClose, headerLastBtnRef, triggerRef }: DayViewProps)
             </caption>
             <thead
               className="sr-only"
-              /** HTML table requires a clean table element only HTML tree hierarchy to apply their styles, 
-              /* this prevent us from inserting the AnimatedViewWrapper within the table, between the thead and the tbody
-              /* to only animate the movement of the days cells, keep the thead content (which doesn't change) static.
-              /* This is a work around, keeping the thead visible to screen reader only and using divs hidden from the screen readers
-              /* for the "table header" visible to non screen readers users.
+              /** HTML tables require a clean table-only element hierarchy to apply their styles.
+              /* This prevents us from inserting the AnimatedViewWrapper within the table, between the thead and the tbody,
+              /* to only animate the movement of the day cells and keep the thead content (which doesn't change) static.
+              /* This is a workaround: the thead stays visible to screen readers only, and divs hidden from screen readers
+              /* provide the "table header" for sighted users.
               */
             >
               <tr>

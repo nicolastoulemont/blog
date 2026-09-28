@@ -8,26 +8,26 @@ locale: 'en'
 ogImage: '/img/thumbnail-hashtable.png'
 ---
 
-## What is a Hashtable ?
+## What is a Hashtable?
 
-A hashtable is data structure allowing for key-value mapping using an [associative array](https://en.wikipedia.org/wiki/Associative_array) [abstract data type](https://en.wikipedia.org/wiki/Abstract_data_type).
-A hashtable uses a hash function to generate an index at which the key value pair will be inserted into the hashtable. Therefore, the hashing function should compute a unique and constant index for each value, but some hashing function can generate the same index for different keys.
+A hashtable is a data structure allowing for key-value mapping using an [associative array](https://en.wikipedia.org/wiki/Associative_array) [abstract data type](https://en.wikipedia.org/wiki/Abstract_data_type).
+A hashtable uses a hash function to generate an index at which the key value pair will be inserted into the hashtable. Therefore, the hashing function should compute a unique and constant index for each value, but some hashing functions can generate the same index for different keys.
 This is what is called a [hash collision](<https://en.wikipedia.org/wiki/Collision_(computer_science)#:~:text=In%20computer%20science%2C%20a%20collision,%2C%20fingerprint%2C%20or%20cryptographic%20digest.>) which we won't get into here as we will only implement a simple hashtable.
 
 ![A hash table mapping keys to values](~/assets/hashtable.png)
 
 ### Benefits
 
-The hashtable allow for a very efficient access to the data, as their is no need to interate on every items of the hashtable to find to target. This direct access makes it a good data structure for lookup objects in Javascript / Typescript to avoid nested loops.
+The hashtable allows for a very efficient access to the data, as there is no need to iterate on every items of the hashtable to find the target. This direct access makes it a good data structure for lookup objects in Javascript / Typescript to avoid nested loops.
 On each data access, only the required key is computed in order to retrieve the index.
 
 ### Practical uses in web development
 
-Hashtable have many uses in web development, one of my favourite is a lookup object to avoid nested loops are prevent performance issues. In Javascript and Typescript, object can be uses as a very basic hashtable to store values with uniques keys.
+Hashtables have many uses in web development, one of my favourite is a lookup object to avoid nested loops and prevent performance issues. In Javascript and Typescript, object can be used as a very basic hashtable to store values with unique keys.
 Such pattern is very helpful for query batching in the dataloader pattern to avoid n+1 issues with graphql relations.
 
-While not implemented as a Javascript hashtable in the following example the lookup object act as one and uses the item id as key for its value in the lookup object. This lookup is then uses for direct data access in the returned array.map fonction.
-This allow this batchQueries function to avoid using a nested loop in the return array map function. It means that we only interate on the data and ids arrays once.
+While not implemented as a Javascript hashtable in the following example the lookup object acts as one and uses the item id as key for its value in the lookup object. This lookup is then used for direct data access in the returned array.map function.
+This allows this batchQueries function to avoid using a nested loop in the return array map function. It means that we only iterate on the data and ids arrays once.
 
 ```typescript
 export async function batchQueries<T extends Document>(
@@ -43,11 +43,11 @@ export async function batchQueries<T extends Document>(
 }
 ```
 
-In Javascript and Typescript, the unique key constraint of the object makes it a good candidat for basic hashtable usages such as lookup objects.
+In Javascript and Typescript, the unique key constraint of the object makes it a good candidate for basic hashtable usages such as lookup objects.
 
 ## Basic hashtable
 
-We will now implement a hashtable using Typecript class syntax.
+We will now implement a hashtable using Typescript class syntax.
 
 First we need to create a hashing function that will output the same value for the same key:
 
@@ -61,7 +61,7 @@ function hashingFn(string: string, number: number) {
 }
 ```
 
-Then the queue properties and initialization. This hashtable will be given a size parameter used in the hashing function and hold the data in a storage array.
+Then the hashtable properties and initialization. This hashtable will be given a size parameter used in the hashing function and hold the data in a storage array.
 
 ```typescript
 export class HashTable<T> {
@@ -78,7 +78,7 @@ export class HashTable<T> {
 
 - Insert()
 
-The insert method first create an index for the given key and then insert the value at the given index in the storage as a [key, value] array.
+The insert method first creates an index for the given key and then inserts the value at the given index in the storage as a [key, value] array.
 
 ```typescript
 insert(key: string, value: T) {
@@ -93,7 +93,7 @@ insert(key: string, value: T) {
 
 - Get()
 
-The get method is quite simple as it first compute the index for target key, get the storage value reference at the given index and then interate on the array value to return nested array index 1 (the value).
+The get method is quite simple as it first computes the index for target key, gets the storage value reference at the given index and then iterates on the array value to return nested array index 1 (the value).
 
 ```typescript
 get(key: string) {
@@ -112,7 +112,7 @@ get(key: string) {
 
 - Remove()
 
-The remove method does the same as the get method but then delete the nested array whose key match the given key.
+The remove method does the same as the get method but then deletes the nested array whose key matches the given key.
 
 ```typescript
 remove(key: string) {

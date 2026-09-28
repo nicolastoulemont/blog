@@ -57,7 +57,7 @@ Scoped information sharing can be implemented in multiple ways but the core idea
 [ReactJS](https://beta.reactjs.org/) proposes a native API to handle such use cases: the [Context API](https://beta.reactjs.org/apis/react/useContext).
 
 In our case, we will use the context API to handle the accordion open/close state and make it available for subscriptions by
-others accordion components.
+other accordion components.
 
 ```tsx
 import { createContext, useContext, useState } from 'react'
@@ -109,7 +109,7 @@ export const Provider = ({
 ```
 
 We will then use it within our `Accordion.Root` component that will wrap our other components with the purpose of making the shared
-the information available for others and applying some container styles to the accordion.
+information available for others and applying some container styles to the accordion.
 
 ```tsx
 import { ReactNode, useId, forwardRef } from 'react'
@@ -152,7 +152,7 @@ export const Root = forwardRef<HTMLDivElement, AccordionRootProps>(function Root
 ## Small single-purpose components
 
 With the shared state handled by our `Accordion.Root` component, we need to make the other components that compose our Accordion.
-With composition, flexibility, and extensivity in mind, we will make these components as simple to use as possible, with some [basic accessibility in mind](https://www.w3.org/WAI/ARIA/apg/example-index/accordion/accordion).
+With composition, flexibility, and extensibility in mind, we will make these components as simple to use as possible, with some [basic accessibility in mind](https://www.w3.org/WAI/ARIA/apg/example-index/accordion/accordion).
 
 ### Header
 
@@ -313,7 +313,7 @@ To conclude, this authoring pattern makes a lot of sense for a lot of UI compone
 evolves quickly and the added flexibility and extensibility will avoid internalizing the product evolution
 over time.
 
-But it's a not solution that makes sense for all UI components.
+But it's not a solution that makes sense for all UI components.
 Some specific UI components (Datepickers for example) require so much tight coupling between the inner-components
 that adding too much flexibility provides a greater risk of the consumers shooting themselves in the foot than
 properly handling their needs by extending the component.

@@ -1,6 +1,6 @@
 ---
 title: 'How to build custom plugins for GraphQL Nexus'
-description: 'Buiding typesafe field level plugins  to run field level middlewares with the graphql nexus framework.'
+description: 'Building typesafe field level plugins to run field level middlewares with the graphql nexus framework.'
 publishedAt: '2021-04-19'
 categories:
   - 'GraphQL'
@@ -11,25 +11,25 @@ ogImage: '/img/thumbnail-ts-nexus.png'
 Most, if not all, API layers end up needing some way to create, manage and execute some form of abstract logic during the request and response cycle.
 A very well known example are express middleware functions that can be used for a large number of services: authentication or rate limiting to name a few.
 
-The [nexus graphql schema library](https://nexusjs.org/) ship with a plugin API which enable you to build your own abstractions when building your graphql schema. It ship several plugins out of the box that I encourage you to have a look at :
+The [nexus graphql schema library](https://nexusjs.org/) ships with a plugin API which enables you to build your own abstractions when building your graphql schema. It ships several plugins out of the box that I encourage you to have a look at:
 
 - [Connection Plugin](https://nexusjs.org/docs/plugins/connection)
 - [Field Authorize Plugin](https://nexusjs.org/docs/plugins/field-authorize)
 - [Nullability Guard Plugin](https://nexusjs.org/docs/plugins/nullability-guard)
 - [Query Complexity Plugin](https://nexusjs.org/docs/plugins/query-complexity)
 
-In short the plugin API allow us to :
+In short the plugin API allows us to:
 
 - Define new options for types and fields in a type-safe manner
 - Layer runtime execution before and after a resolver
 - Modify schema configuration
 
-This plugin API enable us to not only build schema wide abstract logic execution but also field level specific one as well.
+This plugin API enables us to not only build schema wide abstract logic execution but also field level specific one as well.
 
 In this piece we will focus on adding a small runtime layer of logic that will be executed before the resolver and that can be simply applied to any resolver.
-So while the plugin API expose a fairly large number of ["events" or "hooks"](https://nexusjs.org/docs/api/plugins) we will only use the `onCreateFieldResolver` one.
+So while the plugin API exposes a fairly large number of ["events" or "hooks"](https://nexusjs.org/docs/api/plugins) we will only use the `onCreateFieldResolver` one.
 
-This hooks is available on every `objectType` in the graphql schema. Indeed, every objectType is given a resolver.
+This hook is available on every `objectType` in the graphql schema. Indeed, every objectType is given a resolver.
 When a resolver is created for a type, it can optionally return a "middleware" function that wraps the resolver.
 Here is an illustration of an operations execute time logger that will execute on every operation:
 
@@ -59,7 +59,7 @@ export const OperationLoggerPlugin = plugin({
 })
 ```
 
-We then need to include this plugins into our schema definition within the makeSchema nexus function:
+We then need to include this plugin into our schema definition within the makeSchema nexus function:
 
 ```typescript
 import { makeSchema } from 'nexus'
@@ -76,9 +76,9 @@ export const schema = makeSchema({
 })
 ```
 
-And now, because we didn't specify any escape condition, this plugin will execute on every graphql operations.
-But what if we only want to execute a plugin on a specific objectType ?
-Let's imaging that we want to prevent anyone to create a new user and only allow logged user to create news one, we could handle the authentication handling in the resolver:
+And now, because we didn't specify any escape condition, this plugin will execute on every graphql operation.
+But what if we only want to execute a plugin on a specific objectType?
+Let's imagine that we want to prevent anyone to create a new user and only allow logged user to create new ones, we could handle the authentication handling in the resolver:
 
 ```typescript
 export const createUser = mutationField('createUser', {
@@ -96,7 +96,7 @@ export const createUser = mutationField('createUser', {
 })
 ```
 
-But authentication logic is usally common accross many fields and we should want to extract it away from the resolver function and into a plugin.
+But authentication logic is usually common across many fields and we should want to extract it away from the resolver function and into a plugin.
 We will do that in pretty much the same way we did with the OperationLoggerPlugin but with an escape condition and some additional types to help us use the plugin in a type safe way.
 
 ```typescript
@@ -147,12 +147,12 @@ export const fieldAuthorizationPlugin = plugin({
 })
 ```
 
-This snippet allow us to do just that:
+This snippet allows us to do just that:
 
 - The fieldDefTypes part is needed to "declare" the types of the authorization field.
 - The second part is the logic we want to execute.
 
-As you can see we set in place a few escapes : if there is no authorization or the authorization is not a function then we return out.
+As you can see we set in place a few escapes: if there is no authorization or the authorization is not a function then we return out.
 The logic in itself is very short:
 
 ```typescript
@@ -165,7 +165,7 @@ return async (root, args, context, info, next) => {
 
 We basically get potential errors from the given authorization function which we provide with the context (because in our case we would have set the authentication properties in the context before), if we get some errors, we return them, if not we continue by calling the `next` function.
 
-Now we only have to add an authorization property of the createUser mutation and to pass it the callback function that handle the authentication
+Now we only have to add an authorization property of the createUser mutation and to pass it the callback function that handles the authentication
 
 ```typescript
 export const createUser = mutationField('createUser', {
@@ -185,5 +185,5 @@ export const createUser = mutationField('createUser', {
 })
 ```
 
-We have now extracted our authorization logic from our resolver to a plugins that we provide with the needed authorization callback function.
-We could go even further and bypass the need for a callback authorization function and provided a hardcoded one if we wanted to but I like the flexibility of the callback in that case because it let's the consumer of the plugin handle the implementation details of the authorization which can evolve over time.
+We have now extracted our authorization logic from our resolver to a plugin that we provide with the needed authorization callback function.
+We could go even further and bypass the need for a callback authorization function and provide a hardcoded one if we wanted to but I like the flexibility of the callback in that case because it lets the consumer of the plugin handle the implementation details of the authorization which can evolve over time.

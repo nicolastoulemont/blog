@@ -11,7 +11,7 @@ export const handleYearChange = (currentDate: Date, nextYear: number) => {
    * the 29th of February 2020 to the 28th of February 2021
    */
   if (currentDate.getMonth() !== nextDate.getMonth()) {
-    // This trick allow us to the get the last day of the targeted month
+    // This trick allows us to get the last day of the targeted month
     return new Date(nextYear, currentDate.getMonth() + 1, 0)
   } else {
     return nextDate

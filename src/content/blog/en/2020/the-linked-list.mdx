@@ -8,7 +8,7 @@ locale: 'en'
 ogImage: '/img/thumbnail-linked-list.png'
 ---
 
-## What is a Linked List ?
+## What is a Linked List?
 
 A linked list is a series of nodes where each node points to the following node in the list. Each node must therefore have at least a data field and a pointer / reference to the next node in the list.
 
@@ -18,7 +18,7 @@ There are three common types of linked list:
 
 - Singly Linked List
 
-The singly linked list is the simpliest linked list as the nodes only have one pointer / reference to the next node in the list.
+The singly linked list is the simplest linked list as the nodes only have one pointer / reference to the next node in the list.
 
 ![A singly linked list](~/assets/singly-linked-list.jpg)
 
@@ -46,19 +46,19 @@ In the circular doubly linked list, the TAIL has a reference to the HEAD and the
 
 ### Benefits
 
-In a linked list, the insertion and deletion operations are easier than in an array. This is because, in a linked list, to insert or delete a node in the list, you only to change the previous node pointer. Furthermore, there is no need to re-index the whole list where as it a needed step with arrays.
+In a linked list, the insertion and deletion operations are easier than in an array. This is because, in a linked list, to insert or delete a node in the list, you only have to change the previous node pointer. Furthermore, there is no need to re-index the whole list whereas it is a needed step with arrays.
 
 ### Downsides
 
-The main downsides of linked list is the lack of direct node access via an index. This force a search operation on a linked list to traverse the list and thefore be an O(n) operation.
+The main downsides of linked list is the lack of direct node access via an index. This forces a search operation on a linked list to traverse the list and therefore be an O(n) operation.
 
 ### Practical uses in web development
 
-A linked list can be used in many scenarii, one of which the the web browser history back and forward operation that be implemented with a linked list of page visited (or with stacks). Drag and Drop item sorting is also a valid use case for a linked list.
+A linked list can be used in many scenarii, one of which is the web browser history back and forward operation that can be implemented with a linked list of page visited (or with stacks). Drag and Drop item sorting is also a valid use case for a linked list.
 
 ## Singly Linked List
 
-We will now implement a singly linked list using Typecript class syntax. In order to build our linked list we must first create our list and how our list nodes we will be represented.
+We will now implement a singly linked list using Typescript class syntax. In order to build our linked list we must first create our list and how our list nodes will be represented.
 
 - The list
 
@@ -92,7 +92,7 @@ We will now implement a few basic methods
 
 - insertFirst()
 
-Starting simply with the insertFirst() method that will insert the data as the new HEAD of the linked list. This method simply initiate a new Node with the passed data and set its pointer to the former head of the list and finally increment the list size.
+Starting simply with the insertFirst() method that will insert the data as the new HEAD of the linked list. This method simply initiates a new Node with the passed data and sets its pointer to the former head of the list and finally increment the list size.
 
 ```typescript
   insertFirst(data: T) {
@@ -104,8 +104,8 @@ Starting simply with the insertFirst() method that will insert the data as the n
 - insertLast()
 
 The insertLast method is barely more difficult.
-First we create a new Node with the data but don't set a next pointer so that is next property is null.
-Then we test if the list has a HEAD (if not, its an empty list and we insert the data as the list HEAD). If the list is not empty, we traverse the list until we find the TAIL node and set the TAIL next pointer to our new node and finally increment the list size.
+First we create a new Node with the data but don't set a next pointer so that its next property is null.
+Then we test if the list has a HEAD (if not, it's an empty list and we insert the data as the list HEAD). If the list is not empty, we traverse the list until we find the TAIL node and set the TAIL next pointer to our new node and finally increment the list size.
 
 ```typescript
   insertLast(data: T) {
@@ -127,7 +127,7 @@ Then we test if the list has a HEAD (if not, its an empty list and we insert the
 
 - getAt()
 
-The getAt method allow us to find a node by its position / index in the list. It will very useful for the insertAt method. The method itself is simple, we traverse the list until the count is equal to the provided index and return the found node.
+The getAt method allows us to find a node by its position / index in the list. It will be very useful for the insertAt method. The method itself is simple, we traverse the list until the count is equal to the provided index and return the found node.
 
 ```typescript
 getAt(index: number): Node<T> | null {
@@ -147,7 +147,7 @@ getAt(index: number): Node<T> | null {
 
 ### Helpers methods
 
-As with any other data structure implementation, we can implement some helper methods to monitor our list. Following in a basic print method that log the data field of each node of the list.
+As with any other data structure implementation, we can implement some helper methods to monitor our list. Following is a basic print method that logs the data field of each node of the list.
 
 - printList()
 
@@ -163,7 +163,7 @@ As with any other data structure implementation, we can implement some helper me
 
 - getListAsArray()
 
-This method simply uses a while loop to traverse our list and push each node data field in the array that we return after the while loop finish.
+This method simply uses a while loop to traverse our list and push each node data field in the array that we return after the while loop finishes.
 
 ```typescript
  getListAsArray(): Array<T> {
@@ -179,15 +179,15 @@ This method simply uses a while loop to traverse our list and push each node dat
 
 ### More advanced methods
 
-In the following methods we will build on our basic methods to implement sightly more advanced ones : insert at index, remove at index and clearList
+In the following methods we will build on our basic methods to implement slightly more advanced ones: insert at index, remove at index and clearList
 
 - insertAt()
 
-This method allow us to insert new node at a given index.
+This method allows us to insert new node at a given index.
 
 1. First, we check if the provided index is not out of bound.
 2. Then if the index is 0 or the list is empty, we use the insertFirst() method we previously created.
-3. If the index is another number then we have to find the previous node in the with the getAt() method.
+3. If the index is another number then we have to find the previous node in the list with the getAt() method.
 4. If we find a previous node, we create our new Node, set its next node pointer to the node that previously followed our previous node and set the previous node pointer to our new node.
 5. Finally we increment the size of the list.
 
@@ -218,12 +218,12 @@ This method allow us to insert new node at a given index.
 
 - removeAt()
 
-In order to remove a node at a given index, we need to :
+In order to remove a node at a given index, we need to:
 
 1. Verify the given index
 2. Initialize a current, previous and count.
 3. If the index is 0 we simply remove the old head by setting it to the following node in the list.
-4. Else we have to traverse the list, which we do here with a while loop until we react the target node.
+4. Else we have to traverse the list, which we do here with a while loop until we reach the target node.
 5. Then we set the target node previous node pointer to the target node following node, effectively cutting out the target out of the list.
 6. Finally we decrement the list size.
 
