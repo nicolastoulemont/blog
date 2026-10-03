@@ -524,6 +524,55 @@
   font-size: 0.875rem;
 }
 
+/* table */
+
+.prose .table-scroll:not(:where(.not-prose, .not-prose *)) {
+  margin: 2em 0;
+  overflow-x: auto;
+  border: 1px solid var(--line-strong);
+  background: var(--panel);
+}
+
+.prose table:not(:where(.not-prose, .not-prose *)) {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.8125rem;
+  line-height: 1.6;
+  font-variant-numeric: tabular-nums;
+}
+
+.prose :is(th, td):not(:where(.not-prose, .not-prose *)) {
+  padding: 0.6rem 0.9rem;
+  /* Markdown's column alignment arrives as an inline style and overrides this */
+  text-align: left;
+  vertical-align: top;
+  /* Size columns by whole words; past the column width, the box scrolls */
+  overflow-wrap: break-word;
+}
+
+.prose :is(th + th, td + td):not(:where(.not-prose, .not-prose *)) {
+  border-left: 1px solid var(--line);
+}
+
+.prose th:not(:where(.not-prose, .not-prose *)) {
+  border-bottom: 1px solid var(--line-strong);
+  background: var(--panel-2);
+  font-size: 0.7rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: var(--fg-muted);
+}
+
+.prose tr + tr:not(:where(.not-prose, .not-prose *)) {
+  border-top: 1px solid var(--line);
+}
+
+/* The first column names the row */
+.prose td:first-child:not(:where(.not-prose, .not-prose *)) {
+  font-weight: 600;
+}
+
 /* Leave room for the labels above the borders. */
 .prose .callout:not(:where(.not-prose, .not-prose *)),
 .prose figure:not(:where(.not-prose, .not-prose *)) {

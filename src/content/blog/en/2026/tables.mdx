@@ -1,0 +1,73 @@
+---
+title: 'Tables'
+description: 'Every shape of markdown table a post uses, with its styling in light and dark.'
+publishedAt: '2026-10-03'
+categories:
+  - 'General'
+locale: 'en'
+draft: true
+---
+
+A preview of markdown tables. Each table sits in a frame that scrolls sideways when it is wider than the column, so narrow the window to see the wide ones scroll.
+
+## Aligned columns
+
+The separator row sets each column's alignment: `---:` aligns right, `:---:` centers. Numbers use tabular figures, so digits line up.
+
+| Release | Date       | Bundle (kB) | Commits | Status  |
+| ------- | ---------- | ----------: | ------: | :-----: |
+| 1.0     | 2024-02-12 |       142.0 |     318 | Shipped |
+| 1.1     | 2024-05-30 |       138.4 |      96 | Shipped |
+| 2.0     | 2025-01-08 |        96.7 |     540 | Shipped |
+| 2.1     | 2025-06-19 |       101.2 |     121 |  Draft  |
+
+## Comparison
+
+An empty first header turns the first column into row labels.
+
+|                    | Polling                                          | Webhooks                                                     |
+| ------------------ | ------------------------------------------------ | ------------------------------------------------------------ |
+| Latency            | Up to one interval, 30 seconds by default        | A few hundred milliseconds after the event                   |
+| Load on the server | One request per client per interval, idle or not | One request per event                                        |
+| Missed events      | None: the next poll catches up                   | Lost unless the sender retries, so you need a reconciler job |
+| Local development  | Works out of the box                             | Needs a tunnel such as `ngrok` to reach your machine         |
+| Who maintains it   | The client team                                  | Both teams, plus whoever owns the queue                      |
+
+## Code in cells
+
+Inline code keeps its frame inside a cell.
+
+| Variable                  | Default      | Read by                                           |
+| ------------------------- | ------------ | ------------------------------------------------- |
+| `DATABASE_URL`            | none         | The server at boot; it exits without it           |
+| `CACHE_TTL_SECONDS`       | `300`        | `createCache()` in `src/server/cache.ts`          |
+| `FEATURE_FLAGS_SDK_KEY`   | none         | The flag client; every flag falls back to `false` |
+| `SHARED_WORKER_BUILD_URL` | `/worker.js` | The tab that boots first, to spawn the worker     |
+
+## Timeline
+
+| Date    | Event                                                                   |
+| ------- | ----------------------------------------------------------------------- |
+| 2023-01 | First commit: a crawler per brand and a back office                     |
+| 2023-06 | Move from Postgres to a hosted MySQL; first deployment                  |
+| 2024-04 | Move to SQLite at the edge, with a new ORM and a rewrite of every query |
+| 2024-11 | Last commit                                                             |
+
+## Wide table
+
+Six columns of prose. On a phone this one scrolls inside its frame instead of widening the page.
+
+| Stage   | Trigger             | Runs on            | Duration | Output                         | Fails when                                          |
+| ------- | ------------------- | ------------------ | -------: | ------------------------------ | --------------------------------------------------- |
+| Lint    | Every push          | Shared runners     |    1 min | Annotations on the diff        | A rule reports an error                             |
+| Test    | Every push          | Four sharded nodes |   12 min | JUnit report and coverage      | A test fails twice in a row                         |
+| Build   | Pull request events | One large node     |    6 min | Static assets in the bucket    | The bundle grows past its budget                    |
+| Preview | After build         | Edge workers       |   40 sec | A link in the pull request     | The health check fails three times                  |
+| Release | Merge to main       | One large node     |    9 min | A tagged release and changelog | A migration does not apply cleanly on a DB snapshot |
+
+## Small table
+
+| Key   | Value |
+| ----- | :---: |
+| Width | 100%  |
+| Gap   |   0   |

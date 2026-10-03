@@ -7,6 +7,7 @@ import rehypeAutolinkHeadings from 'rehype-autolink-headings'
 import rehypeSlug from 'rehype-slug'
 import figures from './src/lib/figures.mjs'
 import mermaid from './src/lib/mermaid.mjs'
+import tables from './src/lib/tables.mjs'
 
 export default defineConfig({
   site: 'https://nicolastoulemont.dev',
@@ -82,6 +83,7 @@ export default defineConfig({
         ],
         rehypeSlug,
         figures,
+        tables,
         [
           rehypeAutolinkHeadings,
           {
