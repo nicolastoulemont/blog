@@ -1,0 +1,39 @@
+---
+title: 'Callouts'
+description: 'Each callout variant, with its default label and color.'
+---
+
+import { Callout } from '~/components'
+
+A callout sets a passage apart from the prose. The variant picks the color and the label, and `label` overrides the label, such as in a French post.
+
+## Note
+
+<Callout>
+  A note adds context the reader can skip. It is the default variant, so `<Callout>` needs
+  no props.
+</Callout>
+
+## Definition
+
+<Callout variant="definition">
+  A definition states what a term means before the post uses it.
+</Callout>
+
+## Tip
+
+<Callout variant="tip">
+  A tip suggests a better way to do what the post describes.
+</Callout>
+
+## Warning
+
+<Callout variant="warning">
+  A warning flags a trap the reader can fall into, such as a breaking change or data loss.
+</Callout>
+
+## Custom label
+
+<Callout variant="definition" label="Définition">
+  `label` replaces the variant's label and keeps its color.
+</Callout>

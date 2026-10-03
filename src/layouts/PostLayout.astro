@@ -3,7 +3,7 @@ import { render } from 'astro:content'
 import { PostPalette } from '~/components/PostPalette'
 import { PostCard } from '~/components/PostCard'
 import { Tag } from '~/components/Tag'
-import FigureImage from '~/components/FigureImage.astro'
+import Prose from '~/components/Prose.astro'
 import ReadingProgress from '~/components/ReadingProgress.astro'
 import TableOfContents from '~/components/TableOfContents.astro'
 import BaseLayout from '~/layouts/BaseLayout.astro'
@@ -88,12 +88,7 @@ const hasContents = headings.some((heading) => heading.depth >= 2 && heading.dep
       </div>
     </section>
     <section class="grid min-[56.01rem]:grid-cols-4">
-      <article
-        class="article min-w-0 bg-bg px-5 pt-10 pb-12 min-[56.01rem]:col-span-3 min-[56.01rem]:border-r min-[56.01rem]:border-line min-[56.01rem]:px-6"
-        data-copy={ui.copy}
-        data-copied={ui.copied}
-        data-copy-failed={ui.copyFailed}
-      >
+      <article class="article min-w-0 bg-bg px-5 pt-10 pb-12 min-[56.01rem]:col-span-3 min-[56.01rem]:border-r min-[56.01rem]:border-line min-[56.01rem]:px-6">
         {hasContents && (
           <details class="toc-mobile">
             <summary>
@@ -105,9 +100,7 @@ const hasContents = headings.some((heading) => heading.depth >= 2 && heading.dep
             <TableOfContents headings={headings} label={ui.contents} />
           </details>
         )}
-        <div class="prose">
-          <Content components={{ img: FigureImage }} />
-        </div>
+        <Prose content={Content} locale={post.locale} />
         <footer class="mt-16">
           {relatedPosts.length > 0 && (
             <section aria-labelledby="related-title">
@@ -155,27 +148,3 @@ const hasContents = headings.some((heading) => heading.depth >= 2 && heading.dep
     </section>
   </main>
 </BaseLayout>
-<script>
-  document.addEventListener('astro:page-load', () => {
-    const article = document.querySelector<HTMLElement>('[data-copy]')
-    if (!article) return
-    for (const pre of article.querySelectorAll('pre')) {
-      const code = pre.querySelector('code')
-      if (!code || pre.querySelector('button')) continue
-      const button = document.createElement('button')
-      button.type = 'button'
-      button.className = 'copy-code'
-      button.textContent = article.dataset.copy!
-      button.setAttribute('aria-label', article.dataset.copy!)
-      button.addEventListener('click', async () => {
-        try {
-          await navigator.clipboard.writeText(code.textContent ?? '')
-          button.textContent = article.dataset.copied!
-        } catch {
-          button.textContent = article.dataset.copyFailed!
-        }
-      })
-      pre.append(button)
-    }
-  })
-</script>

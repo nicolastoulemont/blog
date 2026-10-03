@@ -5,9 +5,11 @@ import react from '@astrojs/react'
 import tailwindcss from '@tailwindcss/vite'
 import rehypeAutolinkHeadings from 'rehype-autolink-headings'
 import rehypeSlug from 'rehype-slug'
+import code from './src/lib/code.mjs'
 import figures from './src/lib/figures.mjs'
 import mermaid from './src/lib/mermaid.mjs'
 import tables from './src/lib/tables.mjs'
+import tabs from './src/lib/tabs.mjs'
 
 export default defineConfig({
   site: 'https://nicolastoulemont.dev',
@@ -67,6 +69,7 @@ export default defineConfig({
     shikiConfig: {
       theme: 'dark-plus',
       wrap: true,
+      transformers: code,
     },
     processor: unified({
       rehypePlugins: [
@@ -84,6 +87,7 @@ export default defineConfig({
         rehypeSlug,
         figures,
         tables,
+        tabs,
         [
           rehypeAutolinkHeadings,
           {

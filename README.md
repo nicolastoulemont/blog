@@ -17,6 +17,16 @@ English posts are served at `/blog/<year>/<slug>`, French posts at `/fr/blog/<ye
 
 Use fenced `mermaid` code blocks for diagrams. Light and dark SVGs render during the build; CSS selects the one matching the blog's theme. Set `accTitle` and `accDescr` in each diagram to give it an accessible name and description. Diagrams share the image figure numbering, with `accTitle` displayed as the caption.
 
+Fenced code blocks take a few extras:
+
+- `title="Accordion.Root.tsx"` after the language names the file in the block's tab.
+- A trailing `// [!code highlight]`, `// [!code ++]` or `// [!code --]` comment marks its line as highlighted, added or removed. The copy button leaves removed lines out.
+- `<Tabs>` around several blocks shows one at a time, with a tab per block named by its title or language. It needs no import, takes code blocks only, and shows every block when JavaScript is off.
+
+Write keys as `<kbd>Ctrl</kbd> + <kbd>K</kbd>`. `Callout` takes a `note` (default), `definition`, `tip` or `warning` variant, and `label` overrides its label.
+
+`pnpm dev` serves a preview of each of these at `/examples`, from `src/content/examples/`. The examples never ship.
+
 ## Commands
 
 Requires Node 24 and pnpm 12 (see `packageManager`).

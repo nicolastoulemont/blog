@@ -1,0 +1,71 @@
+---
+title: 'Code blocks'
+description: 'Code blocks with a file name, highlighted lines and diffs.'
+---
+
+Every fenced block gets a copy button. The tab above it shows the language, or the file name when the fence sets one.
+
+## Language
+
+A fence with only a language shows the language in its tab.
+
+```ts
+export function isLeapYear(year: number) {
+  return (year % 4 === 0 && year % 100 !== 0) || year % 400 === 0
+}
+```
+
+## File name
+
+A `title="..."` after the language names the file, so a post that walks through several files does not need a sentence to say which one is next.
+
+````md
+```tsx title="Accordion.Root.tsx"
+export function Root() {}
+```
+````
+
+```tsx title="Accordion.Root.tsx"
+import { Provider } from './Accordion.Provider'
+
+export function Root({ children }: { children: React.ReactNode }) {
+  return <Provider>{children}</Provider>
+}
+```
+
+## Highlighted lines
+
+A trailing `// [!code highlight]` comment marks the line the prose talks about. The comment does not render. `// [!code highlight:2]` marks that line and the next one.
+
+```ts title="tree.ts"
+class Tree {
+  *traverse(node = this.root): Iterable<Node> {
+    yield node // [!code highlight]
+    for (const child of node.children) yield* this.traverse(child)
+  }
+}
+```
+
+## Diff
+
+`// [!code ++]` marks an added line and `// [!code --]` a removed one. The copy button copies the code after the change, without the removed lines.
+
+```ts title="isType.ts"
+function isType<Result extends GraphQLResult>(
+  result: Result,
+  typename: ValueOfTypename<Result>, // [!code --]
+  typenames: Array<ValueOfTypename<Result>>, // [!code ++]
+) {
+  return result.__typename === typename // [!code --]
+  return typenames.includes(result.__typename) // [!code ++]
+}
+```
+
+## Long lines
+
+Lines wrap instead of scrolling, and marked lines keep their background across the wrap.
+
+```ts
+const query =
+  'SELECT id, title, description, published_at, updated_at FROM posts WHERE locale = $1 ORDER BY published_at DESC' // [!code highlight]
+```

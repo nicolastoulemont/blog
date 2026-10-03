@@ -18,4 +18,14 @@ const blog = defineCollection({
   }),
 })
 
-export const collections = { blog }
+// Each example previews one component a post can use. They render at
+// /examples in dev and never ship.
+const examples = defineCollection({
+  loader: glob({ base: './src/content/examples', pattern: '*.mdx' }),
+  schema: z.object({
+    title: z.string().trim().min(1),
+    description: z.string().trim().min(1),
+  }),
+})
+
+export const collections = { blog, examples }

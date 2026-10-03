@@ -1,0 +1,63 @@
+---
+import { getCollection, render, type CollectionEntry } from 'astro:content'
+import Prose from '~/components/Prose.astro'
+import BaseLayout from '~/layouts/BaseLayout.astro'
+
+// Examples render in dev to preview components, and never ship. /examples
+// lists them, /examples/<slug> renders one.
+export async function getStaticPaths() {
+  if (!import.meta.env.DEV) return []
+  const examples = (await getCollection('examples')).sort((left, right) =>
+    left.data.title.localeCompare(right.data.title),
+  )
+  return [
+    { params: { slug: undefined }, props: { examples } },
+    ...examples.map((example) => ({
+      params: { slug: example.id },
+      props: { examples, example },
+    })),
+  ]
+}
+
+interface Props {
+  examples: CollectionEntry<'examples'>[]
+  example?: CollectionEntry<'examples'>
+}
+const { examples, example } = Astro.props
+const Content = example && (await render(example)).Content
+---
+
+<BaseLayout
+  title={example?.data.title ?? 'Examples'}
+  description={example?.data.description}
+>
+  <main class="relative grid min-[56.01rem]:grid-cols-4">
+    <article class="min-w-0 bg-bg px-5 pt-10 pb-12 min-[56.01rem]:col-span-3 min-[56.01rem]:border-r min-[56.01rem]:border-line min-[56.01rem]:px-6">
+      <h1 class="text-[clamp(1.75rem,4vw,2.75rem)] leading-[1.15] font-bold tracking-[-0.02em]">
+        {example?.data.title ?? 'Examples'}
+      </h1>
+      <p class="mt-4 mb-10 text-[0.9375rem] text-muted">
+        {example?.data.description ?? 'Every component a post can use, one page each.'}
+      </p>
+      {Content && <Prose content={Content} locale="en" />}
+    </article>
+    <nav
+      class="order-first border-b border-line bg-bg px-5 py-6 min-[56.01rem]:order-none min-[56.01rem]:border-b-0 min-[56.01rem]:px-6 min-[56.01rem]:py-10"
+      aria-label="Examples"
+    >
+      <ul class="rail-sticky flex flex-col gap-2 text-sm">
+        {examples.map(({ id, data }) => (
+          <li>
+            <a
+              class="underline-offset-4 hover:text-accent aria-[current=page]:text-accent aria-[current=page]:underline"
+              href={`/examples/${id}`}
+              aria-current={id === example?.id ? 'page' : undefined}
+            >
+              {data.title}
+            </a>
+          </li>
+        ))}
+      </ul>
+    </nav>
+  </main>
+</BaseLayout>

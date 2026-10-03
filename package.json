@@ -27,6 +27,7 @@
     "@astrojs/rss": "4.0.19",
     "@base-ui/react": "1.8.0",
     "@headlessui/react": "2.2.10",
+    "@shikijs/transformers": "4.4.3",
     "astro": "7.3.3",
     "clsx": "2.1.1",
     "cmdk": "1.1.1",

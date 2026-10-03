@@ -1,0 +1,88 @@
+---
+import type { render } from 'astro:content'
+import FigureImage from '~/components/FigureImage.astro'
+import { UI_STRINGS, type SiteLocale } from '~/lib/site'
+
+// Renders a post body, with a copy button on each code block and working
+// tabs for each <Tabs> group.
+interface Props {
+  content: Awaited<ReturnType<typeof render>>['Content']
+  locale: SiteLocale
+}
+const { content: Content, locale } = Astro.props
+const ui = UI_STRINGS[locale]
+---
+
+<div
+  class="prose"
+  data-copy={ui.copy}
+  data-copied={ui.copied}
+  data-copy-failed={ui.copyFailed}
+>
+  <Content components={{ img: FigureImage }} />
+</div>
+<script>
+  document.addEventListener('astro:page-load', () => {
+    const prose = document.querySelector<HTMLElement>('[data-copy]')
+    if (!prose) return
+    for (const pre of prose.querySelectorAll('pre')) {
+      const code = pre.querySelector('code')
+      if (!code || pre.querySelector('button')) continue
+      const button = document.createElement('button')
+      button.type = 'button'
+      button.className = 'copy-code'
+      button.textContent = prose.dataset.copy!
+      button.setAttribute('aria-label', prose.dataset.copy!)
+      button.addEventListener('click', async () => {
+        // A diff block copies the code after the change, without removed lines.
+        const lines = [...code.querySelectorAll('.line:not(.remove)')]
+        try {
+          await navigator.clipboard.writeText(
+            lines.map((line) => line.textContent!.trimEnd()).join('\n'),
+          )
+          button.textContent = prose.dataset.copied!
+        } catch {
+          button.textContent = prose.dataset.copyFailed!
+        }
+      })
+      pre.append(button)
+    }
+    prose.addEventListener('click', (event) => {
+      const tab = tabOf(event.target)
+      if (tab) select(tab)
+    })
+    prose.addEventListener('keydown', (event) => {
+      const tab = tabOf(event.target)
+      if (!tab) return
+      const tabs = [...tab.parentElement!.children] as HTMLElement[]
+      const index = tabs.indexOf(tab)
+      const moves: Record<string, number> = {
+        ArrowRight: index + 1,
+        ArrowLeft: index - 1,
+        Home: 0,
+        End: tabs.length - 1,
+      }
+      if (!(event.key in moves)) return
+      event.preventDefault()
+      // .at() wraps -1 to the last tab, and % wraps past the last to the first.
+      const next = tabs.at(moves[event.key]! % tabs.length)!
+      select(next)
+      next.focus()
+    })
+  })
+
+  function tabOf(target: EventTarget | null) {
+    return target instanceof Element ? target.closest<HTMLElement>('[role="tab"]') : null
+  }
+
+  function select(tab: HTMLElement) {
+    for (const other of tab.parentElement!.children) {
+      const selected = other === tab
+      other.setAttribute('aria-selected', String(selected))
+      other.setAttribute('tabindex', selected ? '0' : '-1')
+      document
+        .getElementById(other.getAttribute('aria-controls')!)!
+        .toggleAttribute('data-selected', selected)
+    }
+  }
+</script>

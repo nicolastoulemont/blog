@@ -105,7 +105,7 @@ test('table of contents labels and tracks the active section', async ({ page }) 
   const links = page.locator('.rail [data-toc-link]')
   const labels = (await links.allTextContents()).map((label) => label.trim())
 
-  expect(labels).toContain('What is a Tree ?')
+  expect(labels).toContain('What is a Tree?')
 
   await page.evaluate(() => {
     const heading = document.getElementById('get-method')

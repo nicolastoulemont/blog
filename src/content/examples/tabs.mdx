@@ -1,0 +1,40 @@
+---
+title: 'Tabs'
+description: 'Code blocks grouped behind tabs, one block at a time.'
+---
+
+`<Tabs>` around fenced blocks shows one block at a time, with a tab per block named by its title or language. It takes code blocks only, and the build fails on anything else. Arrow keys move between tabs. Without JavaScript every block shows, each with its own tab.
+
+## Commands per package manager
+
+<Tabs>
+
+```bash title="pnpm"
+pnpm add zod
+```
+
+```bash title="npm"
+npm install zod
+```
+
+```bash title="yarn"
+yarn add zod
+```
+
+</Tabs>
+
+## Same file in two languages
+
+A block without a title takes its language as the tab label.
+
+<Tabs>
+
+```ts
+export const add = (a: number, b: number) => a + b
+```
+
+```js
+export const add = (a, b) => a + b
+```
+
+</Tabs>
