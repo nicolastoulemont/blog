@@ -15,14 +15,14 @@
   --color-accent-soft: var(--accent-soft);
 }
 :root {
-  --bg: #e8e3da;
-  --panel: #f8f6f1;
-  --panel-2: #eeeae2;
+  --bg: #f4f1eb;
+  --panel: #fcfbf8;
+  --panel-2: #f6f3ee;
   --fg: #141414;
   --fg-muted: #524d45;
   --fg-faint: #7a7468;
-  --line: #c1baad;
-  --line-strong: #968e80;
+  --line: #d4cec3;
+  --line-strong: #a39b8d;
 
   --accent: #1e3fa8;
   --accent-ink: #ffffff;
