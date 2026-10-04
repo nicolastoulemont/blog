@@ -78,7 +78,7 @@ export class Tree {
     yield node
     if (node.children.length) {
       for (const child of node.children) {
-        yield* this.traverse(child)
+        yield* this.traverse(child) // [!code highlight]
       }
     }
   }
@@ -104,7 +104,7 @@ export class Tree {
       const current = queue.shift()
       yield current
       if (current.children.length > 0) {
-        queue.push(...current.children)
+        queue.push(...current.children) // [!code highlight]
       }
     }
   }
@@ -149,6 +149,7 @@ export class Tree {
     }
 
     const inserted: Node[] = []
+    // [!code highlight]
     for (const node of this.traverse()) {
       if (node.name === parentNodeName) {
         node.children.push(newNode)
@@ -184,6 +185,7 @@ export class Tree {
   get(nodeName: string): IOResult {
     if (this.root === null) return null
     const results: Node[] = []
+    // [!code highlight]
     for (const node of this.traverse()) {
       if (node.name === nodeName) {
         results.push(node)
@@ -255,7 +257,7 @@ export class Tree {
     for (const node of this.traverse()) {
       const foundChildNode = node.children.find(({ name }) => name === nodeName)
       if (foundChildNode) {
-        removed.push(foundChildNode)
+        removed.push(foundChildNode) // [!code highlight:3]
         node.children = node.children.filter(({ name }) => name !== nodeName)
         node.children.push(...foundChildNode.children)
       }

@@ -207,8 +207,10 @@ hook became:
 function useV2Milestone1Beta(): boolean {
   const baselineEnabled = useV2Baseline()
   const { betaEnabled } = useV2SavedPreferences()
+  const milestoneEnabled = useFeatureFlag('milestone-1') // [!code --]
 
-  return baselineEnabled && betaEnabled
+  return baselineEnabled && betaEnabled && milestoneEnabled // [!code --]
+  return baselineEnabled && betaEnabled // [!code ++]
 }
 ```
 

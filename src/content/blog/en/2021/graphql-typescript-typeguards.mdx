@@ -143,6 +143,7 @@ async function handleSubmit(event) {
   const { data } = await saveUser({
     update: (cache, { data: { createUser } }) => {
       const existingUsers = cache.readQuery<UsersQuery>({ query: GET_USERS })
+      // [!code highlight]
       if (isType(createUser, 'ActiveUser')) {
         cache.writeQuery({
           query: GET_USERS,
@@ -153,11 +154,14 @@ async function handleSubmit(event) {
       }
     },
   })
+  // [!code highlight]
   if (isType(data?.createUser, 'ActiveUser')) {
     setState(initialUserState)
     setErrors({})
+    // [!code highlight]
   } else if (isType(data?.createUser, 'UserAuthenticationError')) {
     // Display missing authentication alert / toast
+    // [!code highlight]
   } else if (isType(data?.createUser, 'InvalidArgumentsError')) {
     setErrors(toErrorRecord(data.createUser.invalidArguments))
   }
@@ -291,7 +295,7 @@ const [changeUserStatus] = useChangeUserStatusMutation({
     const existingUsers = cache.readQuery<UsersQuery>({ query: GET_USERS })
     const filteredUsers = existingUsers.users.filter(
       (user) =>
-        (isType(user, 'ActiveUser') ||
+        (isType(user, 'ActiveUser') || // [!code highlight:6]
           isType(user, 'DeletedUser') ||
           isType(user, 'BannedUser')) &&
         (isType(changeUserStatus, 'ActiveUser') ||
@@ -351,7 +355,7 @@ const [changeUserStatus] = useChangeUserStatusMutation({
     const existingUsers = cache.readQuery<UsersQuery>({ query: GET_USERS })
     const filteredUsers = existingUsers.users.filter(
       (user) =>
-        isEither(user, ['ActiveUser', 'BannedUser', 'DeletedUser']) &&
+        isEither(user, ['ActiveUser', 'BannedUser', 'DeletedUser']) && // [!code highlight:2]
         isEither(changeUserStatus, ['ActiveUser', 'BannedUser', 'DeletedUser']) &&
         user.id !== changeUserStatus.id,
     )
@@ -396,7 +400,7 @@ const [changeUserStatus] = useChangeUserStatusMutation({
     const existingUsers = cache.readQuery<UsersQuery>({ query: GET_USERS })
     const filteredUsers = existingUsers.users.filter(
       (user) =>
-        isNot(user, ['UserAuthenticationError', 'InvalidArgumentsError']) &&
+        isNot(user, ['UserAuthenticationError', 'InvalidArgumentsError']) && // [!code highlight:2]
         isNot(changeUserStatus, ['UserAuthenticationError', 'InvalidArgumentsError']) &&
         user.id !== changeUserStatus.id,
     )
@@ -462,7 +466,7 @@ This tells typescript what to expect from it. Now we can use it as follows:
 
 ```typescript
 const activeUsers = useMemo(
-  () => data?.users?.filter(isTypeInTuple('ActiveUser')) ?? [],
+  () => data?.users?.filter(isTypeInTuple('ActiveUser')) ?? [], // [!code highlight]
   [data],
 )
 ```

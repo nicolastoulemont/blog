@@ -50,7 +50,7 @@ The idea is to show the calendar UI close to the user input device so that inter
 - on a **desktop** device that means close to the **mouse pointer**, so the popover will show the calendar UI just under the input with which the user just interacted.
 - on a **mobile** device that means close to the **user's fingers**, so most likely at the bottom of the screen (like in the recent IOS 16 lock screen that put notifications at the bottom of the screen).
 
-```tsx
+```tsx title="DatePicker.tsx"
 import { DatePickerProps } from './DatePicker.types'
 import { DatePickerMobile, DatePickerDesktop, DatePickerProvider } from './components'
 
@@ -77,7 +77,7 @@ so that the `Popover.Button` component can only wrap the input and not the label
 We also prevent the user from accessing the input itself with a `tabIndex:-1` property on the input, which we can safely do since the input itself is `readonly`.
 This way, we allow the `Popover.Button` to be the only element in the DOM focusable instead of the input itself.
 
-```tsx
+```tsx title="DatePickerDesktop.tsx"
 import { useEffect, useRef } from 'react'
 import { Calendar } from './Calendar'
 import { Input, InputContainer, InputLabel } from './Input'
@@ -103,7 +103,7 @@ export function DatePickerDesktop() {
             <InputContainer>
               <InputLabel />
               <Popover.Button ref={btnRef} className="w-[300px]" aria-label="Datepicker">
-                <Input tabIndex={-1} />
+                <Input tabIndex={-1} /> {/* [!code highlight] */}
               </Popover.Button>
             </InputContainer>
 
@@ -135,9 +135,9 @@ export function DatePickerDesktop() {
 
 Same as with the desktop behavior, we're not looking to make anything special here, only leverage the headless UI `Dialog`
 for our use case. Since the `Dialog` does a little less than the `Popover`, it doesn't have a `Dialog.Button` after all,
-we've to handle a bit more stuff here (open/close, focus, and event handling on the `Input` component).
+we've to handle a bit more stuff here (open/close, focus, and event handling on the `Input` component, where <kbd>Enter</kbd> opens the calendar and <kbd>Esc</kbd> closes it).
 
-```tsx
+```tsx title="DatePickerMobile.tsx"
 import { Dialog, Transition } from '@headlessui/react'
 import { Fragment, useRef, useState } from 'react'
 
@@ -221,7 +221,7 @@ export function DatePickerMobile() {
 To manage our datepicker internal state, we will use a context provider.
 Our internal state is fairly simple in itself as this `init` function which returns the initial `state` object shows.
 
-```ts
+```ts title="init.ts"
 import { DatePickerProviderProps, State } from './Provider.types'
 
 export function init({ value }: Partial<DatePickerProviderProps>): State {
@@ -281,7 +281,7 @@ its structure itself is fairly simple:
 
 The calendar header is fairly simple UI-wise, it's a row of buttons with some nice accessibility labels for screen readers users.
 
-```tsx
+```tsx title="Header.tsx"
 import { formatDate, getMonthsName } from '../../../../utils'
 import { useDatePicker } from '../../../Provider'
 import { CalendarProps } from '../../Calendar'
@@ -376,7 +376,7 @@ I ended up using the whole table node tree within my animation wrapper component
 and another row of regular `div`, hidden to screen readers but visible to others.
 This solution, while certainly not perfect, allowed me to get both the animation that I wanted and respect the HTML spec.
 
-```tsx
+```tsx title="DayView.tsx"
 import { formatDate, getMonthDays, getWeekDaysName } from '../../../../utils'
 import { useDatePicker } from '../../../Provider'
 import { AnimatedViewWrapper } from '../AnimatedViewWrapper'
@@ -457,11 +457,13 @@ export function DayView({ onClose }: DayViewProps) {
 ```
 
 You might also have noticed the `TableNavigationProvider` component wrapping the days table. This context provider is
-used to handle keyboard navigation within the table with the arrow keys. It's used with the `DayCell` component
+used to handle keyboard navigation within the table with the arrow keys (<kbd>↑</kbd> <kbd>↓</kbd> <kbd>←</kbd> <kbd>→</kbd>). It's used with the `DayCell` component
 to create a matrix of `ref` of the buttons within the days table body.
 The event handler then focuses the right ref based on the location (rowIndex, colIndex) of the event source.
 
-```tsx
+<Tabs>
+
+```tsx title="TableNavigationProvider.tsx"
 import { KeyboardEvent, useRef } from 'react'
 import { TableNavigationContext } from './context'
 import type {
@@ -481,7 +483,7 @@ export function TableNavigationProvider({
       matrix.current[rowIndex] = []
     }
 
-    matrix.current[rowIndex][colIndex] = ref
+    matrix.current[rowIndex][colIndex] = ref // [!code highlight]
   }
   function handleKeyboardNavigation(
     event: KeyboardEvent<HTMLButtonElement>,
@@ -533,7 +535,7 @@ export function TableNavigationProvider({
 }
 ```
 
-```tsx
+```tsx title="DayCell.tsx"
 import { CalendarButton } from '../../CalendarButton'
 import { CalendarUnderline } from '../../CalendarUnderline'
 import { isSameDay, isSameMonth } from 'date-fns'
@@ -579,7 +581,7 @@ export function DayCell({ day, rowIndex, colIndex, onClose }: DayCellProps) {
     <td className="h-10 w-10 sm:h-9 sm:w-9" aria-selected={isSelected ? 'true' : 'false'}>
       <div className="relative flex h-10 w-10 items-center justify-center sm:h-9 sm:w-9">
         <CalendarButton
-          ref={(ref) => mapRefToMatrix(ref as HTMLButtonElement, rowIndex, colIndex)}
+          ref={(ref) => mapRefToMatrix(ref as HTMLButtonElement, rowIndex, colIndex)} // [!code highlight]
           onKeyDown={handleKeyDown}
           isSelected={isSelected}
           onClick={selectDay}
@@ -594,6 +596,8 @@ export function DayCell({ day, rowIndex, colIndex, onClose }: DayCellProps) {
 }
 ```
 
+</Tabs>
+
 I must admit that I didn't come up with that idea myself, and shamelessly took it from [Mantine UI](https://mantine.dev/dates/date-picker/),
 with some changes to match how I wanted to use it. There are certainly other ways to do this tho!
 
@@ -601,7 +605,7 @@ with some changes to match how I wanted to use it. There are certainly other way
 
 The month view is a lot simpler as it's only a grid with the twelve available months to pick from.
 
-```tsx
+```tsx title="MonthView.tsx"
 import { isSameMonth } from 'date-fns'
 import { getMonthsName, formatDate } from '../../../../utils'
 import { useDatePicker } from '../../../Provider'
@@ -662,7 +666,7 @@ However, there is some complexity in handling how a user will change months, due
 A nice trick is to leverage the fact that these edge cases happen at the end of the month, not at the beginning.
 Therefore, if we encounter a conflict, we can always set the date manually to the last days of the targeted month.
 
-```ts
+```ts title="handleMonthChange.ts"
 // Conflicts due to the different number of days per month
 export const handleMonthChange = (currentDate: Date, nextMonthIndex: number) => {
   const nextDate = new Date(currentDate)
@@ -677,7 +681,7 @@ export const handleMonthChange = (currentDate: Date, nextMonthIndex: number) => 
    */
   if (nextMonthIndex !== nextDate.getMonth()) {
     // This trick allows us to get the last day of the targeted month
-    return new Date(currentDate.getFullYear(), nextMonthIndex + 1, 0)
+    return new Date(currentDate.getFullYear(), nextMonthIndex + 1, 0) // [!code highlight]
   } else {
     return nextDate
   }
@@ -688,7 +692,7 @@ export const handleMonthChange = (currentDate: Date, nextMonthIndex: number) => 
 
 The year view is also very simple UI-wise, it is practically the same as the month view.
 
-```tsx
+```tsx title="YearView.tsx"
 import { getYearsRange } from '../../../../utils'
 import { useDatePicker } from '../../../Provider'
 import { AnimatedViewWrapper } from '../AnimatedViewWrapper'
@@ -743,7 +747,7 @@ And in the same way that there were some edge cases when changing months, when c
 we've got to be aware of leap years. Fortunately for us, it's solved the same way we already solved the
 difference in months length.
 
-```ts
+```ts title="handleYearChange.ts"
 // Leap year edge cases
 export const handleYearChange = (currentDate: Date, nextYear: number) => {
   const nextDate = new Date(currentDate)
@@ -758,7 +762,7 @@ export const handleYearChange = (currentDate: Date, nextYear: number) => {
    */
   if (currentDate.getMonth() !== nextDate.getMonth()) {
     // This trick allows us to get the last day of the targeted month
-    return new Date(nextYear, currentDate.getMonth() + 1, 0)
+    return new Date(nextYear, currentDate.getMonth() + 1, 0) // [!code highlight]
   } else {
     return nextDate
   }
@@ -772,7 +776,7 @@ You might have noticed in the views components that they were wrapped by what I 
 
 This component uses framer-motion to handle both the slide animations and the drag gesture handling.
 
-```tsx
+```tsx title="AnimatedViewWrapper.tsx"
 import type { ReactNode } from 'react'
 import type { PanInfo } from 'framer-motion'
 import { AnimatePresence, motion } from 'framer-motion'
@@ -853,7 +857,7 @@ export function AnimatedViewWrapper({
           exit="exit"
           custom={{ slideDir, animationValuesMap }}
           transition={{ duration: 0.3, ease: 'easeOut' }}
-          drag={isMobile && drag ? 'x' : false}
+          drag={isMobile && drag ? 'x' : false} // [!code highlight:5]
           dragMomentum={false}
           dragConstraints={{ left: 75, right: 75 }}
           onDragEnd={handleDrag}
@@ -886,12 +890,12 @@ The drag gesture support comes from the props given to the `motion.div`
 and the `onDragLeft` and `onDragRight` properties that are given to the `AnimatedViewWrapper`
 in the days and years views like so:
 
-```tsx
+```tsx title="DayView.tsx"
 <AnimatedViewWrapper
   motionKey={state.calendarDate.getMonth()}
   slideDir={state.slideDir}
   drag
-  onDragLeft={() => dispatch({ type: 'DAY_VIEW_CHANGE', payload: 'increment' })}
+  onDragLeft={() => dispatch({ type: 'DAY_VIEW_CHANGE', payload: 'increment' })} // [!code highlight:2]
   onDragRight={() => dispatch({ type: 'DAY_VIEW_CHANGE', payload: 'decrement' })}
 >
   {children}

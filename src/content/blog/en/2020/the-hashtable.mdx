@@ -39,7 +39,7 @@ export async function batchQueries<T extends Document>(
     acc[item.id] = item
     return acc
   }, {})
-  return ids.map((id) => lookup[id] || null)
+  return ids.map((id) => lookup[id] || null) // [!code highlight]
 }
 ```
 

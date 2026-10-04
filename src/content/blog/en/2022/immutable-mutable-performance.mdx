@@ -9,6 +9,8 @@ locale: 'en'
 ogImage: '/img/growth.png'
 ---
 
+import { BarChart } from '~/components/charts'
+
 ## A bit of context
 
 I currently work as a software engineer on the design system team of a French scale-up.
@@ -258,6 +260,18 @@ Also, by accepting the mapping function impurity we can leverage the synchronous
 This may seem a bit counter-intuitive but this function runtime average over a 1 000 000 runs is 0.000322ms per iteration.
 For our medium to high complexity page we would only spend between 0,322ms and 0,966ms of main thread javascript execution time to process the props into styles, which is far more acceptable.
 The first solution, functionally pure, is 657.142% slower.
+
+<BarChart
+  client:visible
+  title="Main thread time to turn props into styles, per page"
+  index="page"
+  unit="ms"
+  series={{ pure: 'Immutable and pure', mutable: 'Mutable' }}
+  data={[
+    { page: '1,000 boxes', pure: 2.43, mutable: 0.322 },
+    { page: '3,000 boxes', pure: 7.29, mutable: 0.966 },
+  ]}
+/>
 
 Why is that?
 

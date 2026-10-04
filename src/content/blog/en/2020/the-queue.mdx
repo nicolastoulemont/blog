@@ -204,7 +204,7 @@ reverse(queue: PriorityQueue<Element>): PriorityQueue<Element> {
     const front = queue.peek();
     queue.dequeue();
     queue = this.reverse(queue);
-    this.queue.unshift(front as Element);
+    this.queue.unshift(front as Element); // [!code highlight]
     return queue;
   }
 ```

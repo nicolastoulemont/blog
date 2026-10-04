@@ -23,7 +23,7 @@ This is in contrast to components with an imperative API that usually requires m
 
 Which has the following API
 
-```tsx
+```tsx title="AccordionDemo.tsx"
 import * as Accordion from './Accordion'
 
 function AccordionDemo() {
@@ -59,7 +59,7 @@ Scoped information sharing can be implemented in multiple ways but the core idea
 In our case, we will use the context API to handle the accordion open/close state and make it available for subscriptions by
 other accordion components.
 
-```tsx
+```tsx title="Accordion.Provider.tsx"
 import { createContext, useContext, useState } from 'react'
 
 import type { AccordionRootProps } from './Accordion.Root'
@@ -111,7 +111,7 @@ export const Provider = ({
 We will then use it within our `Accordion.Root` component that will wrap our other components with the purpose of making the shared
 information available for others and applying some container styles to the accordion.
 
-```tsx
+```tsx title="Accordion.Root.tsx"
 import { ReactNode, useId, forwardRef } from 'react'
 import type { ComponentProps } from 'react'
 import clsx from 'clsx'
@@ -159,7 +159,7 @@ With composition, flexibility, and extensibility in mind, we will make these com
 Our header component is a styled button that triggers the open/close state of the accordion.
 As such, it's pretty simple, especially since the open/close logic is handled by the context provider.
 
-```tsx
+```tsx title="Accordion.Header.tsx"
 import clsx from 'clsx'
 import { ComponentProps, forwardRef } from 'react'
 
@@ -171,7 +171,7 @@ export const Header = forwardRef<HTMLButtonElement, AccordionHeaderProps>(functi
   { children, className, ...props },
   ref,
 ) {
-  const { isOpen, onToggleChange, id } = useAccordion()
+  const { isOpen, onToggleChange, id } = useAccordion() // [!code highlight]
 
   return (
     <h3 className="w-full">
@@ -201,7 +201,7 @@ export const Header = forwardRef<HTMLButtonElement, AccordionHeaderProps>(functi
 Our icon component is a purely decorative one that serves as a visual indicator of the opening capacity of the accordion when
 in its closed state.
 
-```tsx
+```tsx title="Accordion.Icon.tsx"
 import { motion } from 'framer-motion'
 import { ComponentProps, forwardRef } from 'react'
 import { ChevronDownIcon } from '@heroicons/react/24/solid'
@@ -220,7 +220,7 @@ export const Icon = forwardRef<SVGSVGElement, AccordionIconProps>(function (
   { className, ...props },
   ref,
 ) {
-  const { isOpen } = useAccordion()
+  const { isOpen } = useAccordion() // [!code highlight]
 
   return (
     <MotionChevronDownIcon
@@ -238,7 +238,7 @@ export const Icon = forwardRef<SVGSVGElement, AccordionIconProps>(function (
 Our panel component is fairly simple as well. It contains the elements that we want to show/hide
 based on the open/closed state of our accordion. Therefore, in our implementation, it's just a subscriber to our shared state with an animated open/close behavior.
 
-```tsx
+```tsx title="Accordion.Panel.tsx"
 import { motion } from 'framer-motion'
 import { ComponentProps, forwardRef } from 'react'
 import clsx from 'clsx'
@@ -259,7 +259,7 @@ export const Panel = forwardRef<HTMLDivElement, AccordionPanelProps>(function Pa
   { children, className, ...props },
   ref,
 ) {
-  const { isOpen, id } = useAccordion()
+  const { isOpen, id } = useAccordion() // [!code highlight]
 
   return (
     <motion.div
@@ -284,16 +284,20 @@ export const Panel = forwardRef<HTMLDivElement, AccordionPanelProps>(function Pa
 
 With all these components built, our export contract will be simple as well:
 
-```tsx
-// Accordion.tsx
+<Tabs>
+
+```tsx title="Accordion.tsx"
 export { Header } from './components/Accordion.Header'
 export { Icon } from './components/Accordion.Icon'
 export { Panel } from './components/Accordion.Panel'
 export { Root } from './components/Accordion.Root'
+```
 
-// Consumer file
+```tsx title="AccordionDemo.tsx"
 import * as Accordion from './Accordion'
 ```
+
+</Tabs>
 
 So looking back at this authoring pattern, what are its PROs and CONs:
 

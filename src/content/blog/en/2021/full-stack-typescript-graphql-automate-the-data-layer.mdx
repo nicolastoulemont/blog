@@ -47,9 +47,7 @@ Therefore we will use the serverless compatible [apollo-server-micro](https://ww
 Basically, in this very simple server setup, we provide the Apollo server with a schema that we will generate and specify the path of the graphql endpoint.
 The rest of the code is an implementation detail based on the [with apollo route and client nextJS example](https://github.com/vercel/next.js/blob/canary/examples/api-routes-apollo-server-and-client/pages/api/graphql.js).
 
-```typescript
-// in pages/api/graphql.ts
-
+```typescript title="pages/api/graphql.ts"
 import { ApolloServer } from 'apollo-server-micro'
 import { schema } from 'src/schema'
 export const config = {
@@ -82,9 +80,7 @@ We set the client config to make http requests to the `/api/graphql` endpoint th
 The apollo client is initialized outside of the functions calls to be re-used if already setup by the initializeApollo function.
 And finally we export a useApollo react hook who will just return the initializeApollo function (and therefore the apollo client).
 
-```typescript
-// in lib/apolloClient.ts
-
+```typescript title="lib/apolloClient.ts"
 import {
   InMemoryCache,
   ApolloClient,
@@ -118,9 +114,7 @@ export function useApollo() {
 In the \_app.tsx file we just wrap the top level component with the Apollo context provider that we provide with an apollo client returned from the useApollo() hook.
 This step is necessary to be able to use apollo client hooks such as useQuery or useMutation in our components and in our pages (or routes for a CRA).
 
-```typescript
-// in /pages/_app.tsx
-
+```tsx title="pages/_app.tsx"
 import { ApolloProvider } from '@apollo/client'
 import { useApollo } from 'lib/apolloClient'
 
@@ -141,9 +135,7 @@ export default MyApp
 
 In our src folder we will build a small basic schema using the nexus library.
 
-```typescript
-// in src/schema.ts
-
+```typescript title="src/schema.ts"
 import { makeSchema } from 'nexus'
 import * as types from './typeDefs'
 import path from 'path'
@@ -159,9 +151,7 @@ export const schema = makeSchema({
 
 And some basic types describing a user and some queries
 
-```typescript
-// in src/typeDefs.ts
-
+```typescript title="src/typeDefs.ts"
 import { idArg, nonNull, objectType, queryField } from 'nexus'
 
 const data = [
@@ -233,7 +223,7 @@ export const users = queryField('users', {
 
 This code will generate this GraphQL schema in the src/schema.graphql file:
 
-```graphql
+```graphql title="src/schema.graphql"
 type Error {
   key: String
   message: String
@@ -283,8 +273,7 @@ We will now setup the code generation script and modules.
 
 First we need the following dependencies (versions may have changed since the writing of this article)
 
-```typescript
-// in package.json
+```json title="package.json"
 "dependencies": {
 	"@apollo/client": "^3.3.7",
 	"graphql": "^15.4.0",
@@ -312,7 +301,7 @@ We then need to setup the [graphql-code-generator](https://graphql-code-generato
 You can find their complete documentation in the links above if needed.
 We then need to write a codegen.yml config file at the root of the project.
 
-```yaml
+```yaml title="codegen.yml"
 overwrite: true
 schema: 'src/schema.graphql'
 documents: 'graphql/**/*.ts'
@@ -332,7 +321,7 @@ generates:
 
 And write the following script in package.json to run it:
 
-```json
+```json title="package.json"
 "scripts": {
 	"gen": "graphql-codegen --config codegen.yml"
 },
@@ -346,7 +335,7 @@ What this config and script will then do is the following:
 
 It is important to note that while here our schema is a local graphql file, it can also be a remote graphql schema emitted by a running graphql server with introspection allowed ( in our project it would be located at "http://localhost:3000/api/graphql")
 
-```yaml
+```yaml title="codegen.yml"
 overwrite: true
 schema: "http://localhost:3000/api/graphql"
 ...rest on the config
@@ -354,8 +343,7 @@ schema: "http://localhost:3000/api/graphql"
 
 We now need to create at least one graphql operation. So we will create two simple queries:
 
-```typescript
-// in graphql/user/queries.ts
+```typescript title="graphql/user/queries.ts"
 import gql from 'graphql-tag'
 
 export const GET_USER_BY_ID = gql`
@@ -402,8 +390,7 @@ Right now as the queries perfectly match the graphql schema the script will succ
 
 And now we can verify that we have our custom in the generated files where we have all our types and our custom hooks:
 
-```typescript
-// in gql-gen/index.tsx
+```typescript title="gql-gen/index.tsx"
 export const UserByIdDocument = gql`
   query UserById($id: ID!) {
     userById(id: $id) {
@@ -506,7 +493,7 @@ export type UsersQueryResult = Apollo.QueryResult<UsersQuery, UsersQueryVariable
 
 And we can now simply use them in our React components this way:
 
-```typescript
+```tsx title="pages/index.tsx"
 import { useUsersQuery } from 'gql-gen'
 import Head from 'next/head'
 
@@ -537,8 +524,7 @@ But what if there is a mismatch between one of the queries and the graphql schem
 
 Let's imagine we made a typo in our graphql query like this one: missing the l of email.
 
-```typescript
-// in graphql/user/queries.ts
+```typescript title="graphql/user/queries.ts"
 import gql from 'graphql-tag'
 
 export const GET_USER_BY_ID = gql`
@@ -571,7 +557,7 @@ You also gain a lot of confidence in your refactoring capabilities because you k
 
 Finally as a conclusion here the development script I run when working on this kind of project:
 
-```typescript
+```json title="package.json"
 "scripts": {
 		"dev": "concurrently \"next\" \"yarn gen\" ",
 		"gen": "graphql-codegen --config codegen.yml"
