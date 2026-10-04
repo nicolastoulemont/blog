@@ -49,6 +49,7 @@
   --cat-career: #2563eb;
   --cat-architecture: #7c3aed;
   --cat-general: #16a34a;
+  --cat-productivity: #a16207;
 
   /* Chart series, in the order a chart assigns them. Validated for colorblind
      separation and contrast against --panel. */
@@ -86,6 +87,7 @@
   --cat-career: #60a5fa;
   --cat-architecture: #a78bfa;
   --cat-general: #4ade80;
+  --cat-productivity: #facc15;
 
   /* The light blue and violet sit too dark on the dark panel; the rest carry over. */
   --chart-1: #5b7be0;
@@ -195,6 +197,9 @@
 }
 [data-cat='general'] {
   --cat: var(--cat-general);
+}
+[data-cat='productivity'] {
+  --cat: var(--cat-productivity);
 }
 /* ---------- prose ---------- */
 

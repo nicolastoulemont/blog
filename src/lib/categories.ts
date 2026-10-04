@@ -5,6 +5,7 @@ export const CATEGORY_NAMES = [
   'Data Structures',
   'General',
   'GraphQL',
+  'Productivity',
   'React',
 ] as const
 
@@ -18,5 +19,6 @@ export const CATEGORY_SLUGS = {
   Career: 'career',
   Architecture: 'architecture',
   General: 'general',
+  Productivity: 'productivity',
 } as const satisfies Record<CategoryName, string>
 export type CategorySlug = (typeof CATEGORY_SLUGS)[CategoryName]
