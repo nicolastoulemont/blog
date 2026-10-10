@@ -6,7 +6,7 @@ import * as z from 'zod/mini'
 // with the props the server already checked, so it skips the check, and Zod
 // stays out of the client bundle.
 
-const UNITS = ['%', 'ms', 's', 'B', 'kB', 'MB'] as const
+const UNITS = ['%', 'ms', 's', 'h', 'B', 'kB', 'MB'] as const
 export type Unit = (typeof UNITS)[number]
 
 // The palette has this many colors. A chart needing more should fold the extra
