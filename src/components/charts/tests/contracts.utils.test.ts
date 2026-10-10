@@ -41,7 +41,7 @@ describe('parseSeries', () => {
   })
 
   it.each([
-    [{ unit: 'km' }, 'unit "km" is not one of %, ms, s, B, kB, MB'],
+    [{ unit: 'km' }, 'unit "km" is not one of %, ms, s, h, B, kB, MB'],
     [{ filterable: 'yes' }, 'filterable is a flag: write filterable or leave it out'],
     [{ series: {} }, 'series needs at least one entry'],
     [{ series: many(7, 'Series') }, 'series has 7 entries; charts have 6 colors'],
@@ -60,7 +60,7 @@ describe('parseValues', () => {
     [{ data: {} }, 'data needs at least one value'],
     [{ data: many(7, 1) }, 'data has 7 values; charts have 6 colors'],
     [{ data: { core: -1 } }, '"core" needs a number of 0 or more'],
-    [{ unit: 'km' }, 'unit "km" is not one of %, ms, s, B, kB, MB'],
+    [{ unit: 'km' }, 'unit "km" is not one of %, ms, s, h, B, kB, MB'],
   ])('rejects %j', (changes, reason) => {
     expect(() => parseValues('PieChart', values(changes))).toThrow(
       `PieChart "Coverage": ${reason}`,
