@@ -12,7 +12,7 @@ const SUGGESTED_POSTS = [
     title: 'The rise of multiframeworks paradigm in the frontend OSS',
     description:
       'Looking at the rising trend of libraries developed with support for many UI frameworks.',
-    category: 'General',
+    category: 'OSS',
   },
   {
     href: '/blog/2021/graphql-typescript-typeguards',

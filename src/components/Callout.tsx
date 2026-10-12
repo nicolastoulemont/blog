@@ -3,7 +3,7 @@ import type { CSSProperties, ReactNode } from 'react'
 const VARIANTS = {
   note: { label: 'Note', color: 'var(--accent)' },
   definition: { label: 'Definition', color: 'var(--fg-muted)' },
-  tip: { label: 'Tip', color: 'var(--cat-general)' },
+  tip: { label: 'Tip', color: 'var(--cat-oss)' },
   warning: { label: 'Warning', color: 'var(--cat-animations)' },
 } as const
 interface CalloutProps {

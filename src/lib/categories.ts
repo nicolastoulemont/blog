@@ -3,10 +3,12 @@ export const CATEGORY_NAMES = [
   'Architecture',
   'Career',
   'Data Structures',
-  'General',
   'GraphQL',
-  'Productivity',
+  'OSS',
+  'Performance',
+  'Product Engineering',
   'React',
+  'Scaling Teams',
 ] as const
 
 export type CategoryName = (typeof CATEGORY_NAMES)[number]
@@ -18,7 +20,9 @@ export const CATEGORY_SLUGS = {
   Animations: 'animations',
   Career: 'career',
   Architecture: 'architecture',
-  General: 'general',
-  Productivity: 'productivity',
+  OSS: 'oss',
+  Performance: 'performance',
+  'Product Engineering': 'product-engineering',
+  'Scaling Teams': 'scaling-teams',
 } as const satisfies Record<CategoryName, string>
 export type CategorySlug = (typeof CATEGORY_SLUGS)[CategoryName]

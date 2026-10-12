@@ -48,8 +48,10 @@
   --cat-animations: #ea580c;
   --cat-career: #2563eb;
   --cat-architecture: #7c3aed;
-  --cat-general: #16a34a;
-  --cat-productivity: #a16207;
+  --cat-oss: #16a34a;
+  --cat-performance: #a21caf;
+  --cat-product-engineering: #0f766e;
+  --cat-scaling-teams: #a16207;
 
   /* Chart series, in the order a chart assigns them. Validated for colorblind
      separation and contrast against --panel. */
@@ -86,8 +88,10 @@
   --cat-animations: #fb923c;
   --cat-career: #60a5fa;
   --cat-architecture: #a78bfa;
-  --cat-general: #4ade80;
-  --cat-productivity: #facc15;
+  --cat-oss: #4ade80;
+  --cat-performance: #e879f9;
+  --cat-product-engineering: #2dd4bf;
+  --cat-scaling-teams: #facc15;
 
   /* The light blue and violet sit too dark on the dark panel; the rest carry over. */
   --chart-1: #5b7be0;
@@ -195,11 +199,17 @@
 [data-cat='architecture'] {
   --cat: var(--cat-architecture);
 }
-[data-cat='general'] {
-  --cat: var(--cat-general);
+[data-cat='oss'] {
+  --cat: var(--cat-oss);
 }
-[data-cat='productivity'] {
-  --cat: var(--cat-productivity);
+[data-cat='performance'] {
+  --cat: var(--cat-performance);
+}
+[data-cat='product-engineering'] {
+  --cat: var(--cat-product-engineering);
+}
+[data-cat='scaling-teams'] {
+  --cat: var(--cat-scaling-teams);
 }
 /* ---------- prose ---------- */
 
