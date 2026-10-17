@@ -107,11 +107,32 @@ describe('getTranslation', () => {
 describe('readingMinutes', () => {
   it.each([
     [0, 1],
-    [200, 1],
-    [201, 2],
-    [600, 3],
+    [238, 1],
+    [239, 2],
+    [714, 3],
   ])('counts %i words as %i minutes', (words, minutes) => {
     expect(readingMinutes('word '.repeat(words))).toBe(minutes)
+  })
+
+  it('counts code at a quarter of prose', () => {
+    const code = ['```ts', 'code '.repeat(400), '```'].join('\n')
+
+    expect(readingMinutes(`${'word '.repeat(238)}\n\n${code}`)).toBe(2)
+  })
+
+  it('ignores MDX imports and component tags', () => {
+    const body = [
+      "import { BarChart, Callout } from '~/components'",
+      '<BarChart',
+      '  title="Merged PRs per week"',
+      "  data={[{ week: 'Aug 24', agent: 6 }]}",
+      '/>',
+      '<Callout variant="tip">',
+      'word '.repeat(238),
+      '</Callout>',
+    ].join('\n')
+
+    expect(readingMinutes(body)).toBe(1)
   })
 })
 

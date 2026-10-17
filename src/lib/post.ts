@@ -121,8 +121,22 @@ export type SearchIndexItem = Pick<
   'id' | 'title' | 'description' | 'categories'
 >
 
+// Silent reading of non-fiction runs about 238 words a minute (Brysbaert 2019).
+// Readers skim code, so a code token counts as a quarter of a word, and MDX
+// imports and component tags count as nothing.
+const WORDS_PER_MINUTE = 238
+const CODE_WEIGHT = 0.25
+const FENCE = /^(`{3,}|~{3,})[^]*?^\1/gm
+const MDX = /^(?:import|export)\s.*$|^<\/?[A-Za-z][^]*?>[ \t]*$/gm
+
+function countWords(text: string) {
+  return text.match(/\S+/g)?.length ?? 0
+}
+
 export function readingMinutes(body: string) {
-  return Math.max(1, Math.ceil((body.match(/\S+/g)?.length ?? 0) / 200))
+  const code = countWords(body.match(FENCE)?.join('\n') ?? '')
+  const prose = countWords(body.replace(FENCE, '').replace(MDX, ''))
+  return Math.max(1, Math.ceil((prose + code * CODE_WEIGHT) / WORDS_PER_MINUTE))
 }
 
 export function filterPosts<T extends SearchIndexItem>(
