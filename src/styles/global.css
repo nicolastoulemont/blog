@@ -48,6 +48,7 @@
   --cat-animations: #ea580c;
   --cat-career: #2563eb;
   --cat-architecture: #7c3aed;
+  --cat-guardrails: #475569;
   --cat-oss: #16a34a;
   --cat-performance: #a21caf;
   --cat-product-engineering: #0f766e;
@@ -88,6 +89,7 @@
   --cat-animations: #fb923c;
   --cat-career: #60a5fa;
   --cat-architecture: #a78bfa;
+  --cat-guardrails: #94a3b8;
   --cat-oss: #4ade80;
   --cat-performance: #e879f9;
   --cat-product-engineering: #2dd4bf;
@@ -198,6 +200,9 @@
 }
 [data-cat='architecture'] {
   --cat: var(--cat-architecture);
+}
+[data-cat='guardrails'] {
+  --cat: var(--cat-guardrails);
 }
 [data-cat='oss'] {
   --cat: var(--cat-oss);
