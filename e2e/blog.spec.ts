@@ -163,6 +163,16 @@ test('reading progress stays inside the rail on posts with many sections', async
   expect(progress.right).toBeLessThanOrEqual(rail!.x + rail!.width)
 })
 
+test('chart data tables do not scroll the page sideways on mobile', async ({ page }) => {
+  await page.setViewportSize({ width: 390, height: 844 })
+  await page.goto('/blog/2026/deprecation-policy')
+  const width = await page.evaluate(() => ({
+    scroll: document.documentElement.scrollWidth,
+    client: document.documentElement.clientWidth,
+  }))
+  expect(width.scroll).toBe(width.client)
+})
+
 test('mobile contents opens to section links', async ({ page }) => {
   await page.setViewportSize({ width: 390, height: 844 })
   await page.goto('/blog/2022/the-tree')

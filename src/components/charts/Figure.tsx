@@ -84,27 +84,30 @@ export function Figure({
       )}
       <div className={`chart-plot ${shape}`}>{children}</div>
       <figcaption>{title}</figcaption>
-      <table className="sr-only">
-        <thead>
-          <tr>
-            {table.head.map((cell, column) => (
-              <th key={column} scope="col">
-                {cell}
-              </th>
-            ))}
-          </tr>
-        </thead>
-        <tbody>
-          {table.rows.map(([head, ...cells], row) => (
-            <tr key={row}>
-              <th scope="row">{head}</th>
-              {cells.map((cell, column) => (
-                <td key={column}>{cell}</td>
+      {/* Tables ignore width and overflow, so the wrapper clips it */}
+      <div className="sr-only">
+        <table>
+          <thead>
+            <tr>
+              {table.head.map((cell, column) => (
+                <th key={column} scope="col">
+                  {cell}
+                </th>
               ))}
             </tr>
-          ))}
-        </tbody>
-      </table>
+          </thead>
+          <tbody>
+            {table.rows.map(([head, ...cells], row) => (
+              <tr key={row}>
+                <th scope="row">{head}</th>
+                {cells.map((cell, column) => (
+                  <td key={column}>{cell}</td>
+                ))}
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
     </figure>
   )
 }
